@@ -24,6 +24,7 @@ class PublicCiPolicyTests(unittest.TestCase):
             ".github/workflows/public-validation.yml",
             "requirements.lock",
             "requirements.ci.lock",
+            "tools/ci/promote_verified.py",
         ]:
             source = ROOT / relative
             target = self.root / relative
@@ -52,6 +53,10 @@ class PublicCiPolicyTests(unittest.TestCase):
     def test_privileged_pull_request_trigger_is_rejected(self) -> None:
         self.mutate_workflow("  pull_request:", "  pull_request_target:")
         self.assertIn("forbidden-trigger", self.codes())
+
+    def test_missing_main_push_trigger_is_rejected(self) -> None:
+        self.mutate_workflow("      - main", "      - release")
+        self.assertIn("missing-main-trigger", self.codes())
 
     def test_write_permission_is_rejected(self) -> None:
         self.mutate_workflow("contents: read", "contents: write")
@@ -90,10 +95,40 @@ class PublicCiPolicyTests(unittest.TestCase):
         path.write_text(text.replace("    --hash=sha256:c647aa4a12dfbad9333ca4e71fe62ddc36f4e63b2d260a37a8b83d2f043ac309", ""), encoding="utf-8")
         self.assertIn("dependency-hash-count", self.codes())
 
-    def test_branch_protection_drift_is_rejected(self) -> None:
+    def test_server_ruleset_dependency_is_rejected(self) -> None:
         path = self.root / ".github" / "policies" / "main-protection.json"
-        path.write_text(path.read_text(encoding="utf-8").replace('"block_force_pushes": true', '"block_force_pushes": false'), encoding="utf-8")
-        self.assertIn("branch-protection", self.codes())
+        path.write_text(path.read_text(encoding="utf-8").replace('"server_ruleset_required": false', '"server_ruleset_required": true'), encoding="utf-8")
+        self.assertIn("server-enforcement", self.codes())
+
+    def test_unverified_commit_promotion_is_rejected(self) -> None:
+        path = self.root / ".github" / "policies" / "main-protection.json"
+        path.write_text(path.read_text(encoding="utf-8").replace('"verified_commit_required": true', '"verified_commit_required": false'), encoding="utf-8")
+        self.assertIn("verified-commit", self.codes())
+
+    def test_non_fast_forward_promotion_is_rejected(self) -> None:
+        path = self.root / ".github" / "policies" / "main-protection.json"
+        path.write_text(path.read_text(encoding="utf-8").replace('"fast_forward_only": true', '"fast_forward_only": false'), encoding="utf-8")
+        self.assertIn("fast-forward-only", self.codes())
+
+    def test_pull_request_delivery_dependency_is_rejected(self) -> None:
+        path = self.root / ".github" / "policies" / "main-protection.json"
+        path.write_text(path.read_text(encoding="utf-8").replace('"pull_request_required": false', '"pull_request_required": true'), encoding="utf-8")
+        self.assertIn("pull-request-delivery", self.codes())
+
+    def test_force_push_permission_is_rejected(self) -> None:
+        path = self.root / ".github" / "policies" / "main-protection.json"
+        path.write_text(path.read_text(encoding="utf-8").replace('"force_push_allowed": false', '"force_push_allowed": true'), encoding="utf-8")
+        self.assertIn("force-push", self.codes())
+
+    def test_missing_remote_sha_reconciliation_is_rejected(self) -> None:
+        path = self.root / ".github" / "policies" / "main-protection.json"
+        path.write_text(path.read_text(encoding="utf-8").replace('"remote_sha_verification_required": true', '"remote_sha_verification_required": false'), encoding="utf-8")
+        self.assertIn("remote-sha", self.codes())
+
+    def test_unvalidated_source_prefix_is_rejected(self) -> None:
+        path = self.root / ".github" / "policies" / "main-protection.json"
+        path.write_text(path.read_text(encoding="utf-8").replace('"source_branch_prefix": "codex/"', '"source_branch_prefix": "feature/"'), encoding="utf-8")
+        self.assertIn("promotion-source", self.codes())
 
     def test_repository_action_policy_drift_is_rejected(self) -> None:
         path = self.root / ".github" / "policies" / "main-protection.json"

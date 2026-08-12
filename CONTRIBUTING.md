@@ -12,7 +12,7 @@ Report suspected vulnerabilities privately as described in the security policy.
 If a proposal changes constitutional scope, durable identity, consequential
 schemas, completeness semantics, evidence or correction policy, certification,
 or trusted execution, it must be recorded in the canonical Decision Register and
-receive the required governance approval. A pull request alone cannot authorize
+receive the required governance approval. A code submission alone cannot authorize
 such a change.
 
 ## Contribution requirements
@@ -32,16 +32,27 @@ such a change.
   toolchains, caches, local Control Plane state, large diagnostics, execution
   spools, raw campaign evidence, or machine-local configuration.
 
-## Pull requests
+## Program-owned changes
 
-A pull request should explain the objective, affected authority boundary,
-validation performed, failure and boundary cases exercised, and any generated
-artifact changes. Keep each change coherent and exclude unrelated edits.
+Program work is implemented on a `codex/**` working branch. After complete
+objective verification and diff inspection, create one coherent substantive
+commit and record its full SHA. The authorized promotion tool synchronizes
+local `main`, fast-forwards it to that exact verified commit, pushes `main`
+normally, fetches again, and requires local `main` and `origin/main` to match.
+The working branch need not be pushed. Program work does not use pull requests,
+server-side review requirements, merge commits, force pushes, or history
+rewrites. A real remote push restriction must be reported rather than bypassed.
 
 Use substantive conventional commit subjects that describe the permanent
 outcome, for example `feat(matrix): compile deterministic applicable execution
 coordinates`. Do not use task identifiers or progress bookkeeping as commit
 subjects.
+
+## External pull requests
+
+A pull request should explain the objective, affected authority boundary,
+validation performed, failure and boundary cases exercised, and any generated
+artifact changes. Keep each change coherent and exclude unrelated edits.
 
 Fork and pull-request validation is untrusted and disposable. It must not request
 trusted self-hosted labels, evidence credentials, publication credentials, or

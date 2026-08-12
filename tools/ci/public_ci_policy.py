@@ -57,6 +57,7 @@ def evaluate(root: Path) -> list[Violation]:
             _require(marker not in folded, violations, code, f"public workflow contains forbidden marker {marker!r}")
 
     _require("\n  pull_request:\n" in workflow, violations, "missing-pr-trigger", "pull_request validation is required")
+    _require("\n      - main\n" in workflow, violations, "missing-main-trigger", "main pushes must receive public validation")
     _require("\npermissions:\n  contents: read\n" in workflow, violations, "workflow-permissions", "top-level permissions must be contents: read")
     _require(re.search(r"^\s+[a-z-]+:\s+write\s*$", workflow, re.MULTILINE) is None, violations, "write-permission", "public workflow may not request write permission")
     _require("runs-on: ubuntu-24.04" in workflow, violations, "runner-class", "public workflow must use the audited disposable hosted image")
@@ -91,14 +92,32 @@ def evaluate(root: Path) -> list[Violation]:
             _require(allowed[action].get("revision") == revision, violations, "action-revision-mismatch", f"{action} does not match its audited revision")
     _require(set(action for action, _ in observed_actions) == set(allowed), violations, "action-allowlist-drift", "workflow actions and allowlist differ")
 
-    _require(policy.get("branch") == "main" and policy.get("enforcement") == "active", violations, "protection-target", "main protection must be active")
-    rules = policy.get("rules", {})
-    _require(rules.get("required_status_checks") == ["public-validation"], violations, "required-check", "public-validation must be the sole bootstrap required check")
-    for key in ["block_deletions", "block_force_pushes", "require_linear_history"]:
-        _require(rules.get(key) is True, violations, "branch-protection", f"{key} must be true")
-    pull_request = policy.get("pull_request", {})
-    _require(pull_request.get("required") is True, violations, "pull-request-boundary", "main must require pull requests")
-    _require(pull_request.get("require_conversation_resolution") is True, violations, "conversation-resolution", "main must require conversation resolution")
+    _require(
+        policy.get("branch") == "main" and policy.get("enforcement") == "verified-local-fast-forward",
+        violations,
+        "promotion-target",
+        "main must use verified local fast-forward promotion",
+    )
+    promotion = policy.get("promotion", {})
+    _require(promotion.get("source_branch_prefix") == "codex/", violations, "promotion-source", "program work must originate on codex/ branches")
+    _require(promotion.get("clean_worktree_required") is True, violations, "clean-worktree", "promotion requires a clean working tree")
+    _require(promotion.get("verified_commit_required") is True, violations, "verified-commit", "promotion requires the exact caller-recorded verified commit")
+    _require(promotion.get("fast_forward_only") is True, violations, "fast-forward-only", "main promotion must preserve the validated commit SHA")
+    _require(promotion.get("merge_commits_allowed") is False, violations, "merge-commit", "promotion ranges may not contain merge commits")
+    _require(promotion.get("force_push_allowed") is False, violations, "force-push", "main promotion may not force-push")
+    _require(promotion.get("pull_request_required") is False, violations, "pull-request-delivery", "program delivery must not require a pull request")
+    _require(promotion.get("server_side_review_required") is False, violations, "server-review", "program delivery must not require server-side review")
+    _require(
+        promotion.get("server_ruleset_required") is False and promotion.get("legacy_branch_protection_required") is False,
+        violations,
+        "server-enforcement",
+        "ordinary delivery must not depend on a ruleset or legacy branch protection",
+    )
+    _require(promotion.get("working_branch_push_required") is False, violations, "working-branch-push", "the verified local branch need not be pushed before main")
+    _require(promotion.get("remote_sha_verification_required") is True, violations, "remote-sha", "local main and origin/main must be reconciled after push")
+    _require(promotion.get("remote_restriction_behavior") == "stop-and-report", violations, "remote-restriction", "real remote push restrictions must stop and be reported")
+    promotion_tool = root / str(promotion.get("tool", ""))
+    _require(promotion_tool == root / "tools" / "ci" / "promote_verified.py" and promotion_tool.is_file(), violations, "promotion-tool", "the authorized promotion tool is missing or misdirected")
     actions = policy.get("actions", {})
     _require(actions.get("default_workflow_permissions") == "read", violations, "default-token-permission", "default workflow token must be read-only")
     _require(actions.get("can_approve_pull_requests") is False, violations, "workflow-approval", "workflows may not approve pull requests")

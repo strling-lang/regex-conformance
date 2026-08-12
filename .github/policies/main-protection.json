@@ -21,23 +21,24 @@
     "public_artifact_upload": false
   },
   "branch": "main",
-  "enforcement": "active",
-  "pull_request": {
-    "dismiss_stale_reviews": true,
-    "required": true,
-    "required_approvals": 0,
-    "require_code_owner_review": false,
-    "require_conversation_resolution": true
+  "enforcement": "verified-local-fast-forward",
+  "promotion": {
+    "clean_worktree_required": true,
+    "fast_forward_only": true,
+    "force_push_allowed": false,
+    "legacy_branch_protection_required": false,
+    "merge_commits_allowed": false,
+    "pull_request_required": false,
+    "remote_restriction_behavior": "stop-and-report",
+    "remote_sha_verification_required": true,
+    "server_ruleset_required": false,
+    "server_side_review_required": false,
+    "source_branch_prefix": "codex/",
+    "tool": "tools/ci/promote_verified.py",
+    "verified_commit_required": true,
+    "working_branch_push_required": false
   },
-  "rules": {
-    "block_deletions": true,
-    "block_force_pushes": true,
-    "require_linear_history": true,
-    "required_status_checks": [
-      "public-validation"
-    ]
-  },
-  "schema_version": "1.0.0",
+  "schema_version": "1.2.0",
   "trusted_runner": {
     "admission_from_public_workflow": false,
     "self_hosted_labels_allowed": []

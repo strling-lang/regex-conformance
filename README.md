@@ -91,21 +91,34 @@ Node.js 18 or newer is required for the independent canonical-byte oracle. These
 bootstrap tooling choices do not select the later Control Plane implementation
 language or packaging strategy.
 
-## Public validation
+## Public validation and promotion
 
-Every pull request runs the public-validation check on a disposable GitHub-
-hosted Ubuntu worker with read-only repository permission. The workflow has no
-trusted evidence credentials, publication permission, self-hosted runner label,
-or cross-zone artifact output. Its action revisions and Linux dependency wheels
-are SHA-256 pinned.
+Every external pull request and `main` push runs the public-validation check on
+a disposable GitHub-hosted Ubuntu worker with read-only repository permission.
+The workflow has no trusted evidence credentials, publication permission,
+self-hosted runner label, or cross-zone artifact output. Its action revisions
+and Linux dependency wheels are SHA-256 pinned.
+
+Program work is fully verified and committed on a local `codex/**` branch, then
+promoted without a pull request or server-administration dependency. Record the
+exact commit that passed task verification; the authorized tool checks that
+identity, fetches `origin/main`, fast-forwards local `main`, pushes normally,
+fetches again, and proves local and remote main identify the same commit:
+
+    VERIFIED_SHA=$(git rev-parse HEAD)
+    python tools/ci/promote_verified.py --verified-sha "$VERIFIED_SHA" --dry-run
+    python tools/ci/promote_verified.py --verified-sha "$VERIFIED_SHA"
 
 Run the same gate locally after installing requirements.lock:
 
     python tools/ci/verify_public_ci.py --root .
     python -m unittest discover -s tests/ci -v
 
-The machine-readable desired protection state and the operator verification
-procedure are documented in the [repository protection policy][protection].
+The machine-readable promotion/public-CI state and operator verification
+procedure are documented in the [repository delivery policy][protection]. No
+GitHub ruleset or legacy branch protection is required solely for this delivery
+path. If GitHub rejects a normal `main` push because a real rule exists, stop
+and report that specific restriction.
 
 See [GOVERNANCE.md](GOVERNANCE.md) for authority and change control,
 [CONTRIBUTING.md](CONTRIBUTING.md) for contribution requirements, and

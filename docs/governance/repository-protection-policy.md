@@ -1,68 +1,79 @@
-# Repository Protection Policy
+# Repository Delivery and Public CI Policy
 
-This policy implements the program's public-validation trust zone. It is
-controlled by accepted decisions D019 and D091–D094 and by sections 21 and 22
-of the Foundation Specification.
+This policy implements the program's disposable public-validation trust zone and
+verified local fast-forward promotion boundary. It is controlled by accepted
+decisions D019, D091–D094, and D100 and by sections 21 and 22 of the Foundation
+Specification. The existing filename is retained as a stable documentation and
+tooling path; this policy does not require GitHub branch protection.
 
 ## Public contribution boundary
 
 The public-validation workflow is the only public contribution workflow at
-repository bootstrap. It runs pull requests, protected-main pushes, and manual
-validation events exclusively on GitHub-hosted ubuntu-24.04. It uses read-only
-repository permission and retains no checkout credential. It has no secret
-reference, OIDC permission, artifact upload, publication step, reusable-
-workflow handoff, privileged trigger, or self-hosted runner route.
+repository bootstrap. It runs external pull requests, `main` pushes,
+and manual validation events exclusively on GitHub-hosted ubuntu-24.04. It uses
+read-only repository permission and retains no checkout credential. It has no
+secret reference, OIDC permission, artifact upload, publication step,
+reusable-workflow handoff, privileged trigger, or self-hosted runner route.
 
 The workflow validates untrusted source. Its outputs are never empirical
-evidence, trusted executables, environment inputs, or publication authority.
-A future protected evidence workflow must be a separate trust zone with local
+evidence, trusted executables, environment inputs, or publication authority. A
+future protected evidence workflow must be a separate trust zone with local
 admission; it may not extend or call this workflow across the boundary.
 
 The public-CI verifier makes this contract executable and fail-closed. The CI
 dependency lock pins exact Linux wheels by SHA-256. Every action is pinned to a
 full commit SHA and recorded with its audited release in the machine-readable
-main protection policy.
+policy.
 
-## Required default-branch state
+## Program-owned delivery boundary
 
-Repository administrators apply the following state to main:
+Program-owned changes use a dedicated local `codex/**` branch and do not use a
+pull request. Safety is established before promotion:
 
-- active ruleset with no bypass actor;
-- changes enter through a pull request;
-- required public-validation status check on the current revision;
-- required conversation resolution and linear history;
-- branch deletion and force-push blocked;
-- zero required approvals during the single-authority bootstrap period;
-- default workflow token permission contents: read;
-- workflows cannot approve pull requests; and
-- action policy admits organization-owned actions and only the exact audited
-  external actions used by the workflow, with full-length SHA pinning required
-  for every action. The bootstrap workflow currently uses no organization-owned
-  action.
+- satisfy the task objective and all applicable positive, negative, boundary,
+  fault, regression, structural, security, determinism, and integration checks;
+- inspect the complete diff and exclude unrelated changes, secrets, caches,
+  runtime state, execution spools, and generated junk;
+- create one substantive commit and record its full 40-character SHA;
+- require a clean working tree and a fast-forward descendant of current
+  `origin/main`, with no merge commit in the promotion range;
+- synchronize local `main` using `git pull --ff-only`, then integrate only with
+  `git merge --ff-only`;
+- push local `main` normally, never by force; and
+- fetch again and require the local, remote-tracking, and observed remote main
+  SHAs to equal the verified commit.
 
-Zero approvals is intentional, not a waiver: the repository currently has one
-authorized owner, who cannot supply an independent approval of their own change.
-The pull-request boundary, required check, ownership routing, and conversation
-resolution remain mandatory. Review requirements must increase when another
-authorized reviewer becomes available; they must never be satisfied by fake or
-self approval.
+The working branch need not be pushed. GitHub pull-request approval,
+conversation resolution, rulesets, legacy branch protection, browser
+administration, and Administration:write credentials are not prerequisites for
+ordinary program delivery. If a real existing remote rule rejects the normal
+push, stop and report the specific restriction; do not invent a workaround.
 
-## Verification procedure
+The repository currently has one authorized promotion authority. D100 must be
+reviewed if authority becomes multi-party, public contributors enter the trusted
+promotion path, a later task independently requires server enforcement, or a
+real remote restriction changes the delivery boundary.
 
-After any settings or workflow change:
+## Verification and promotion procedure
 
-1. Run the public-CI verifier and CI test suite.
-2. Inspect Actions settings for read-only default workflow permission, disabled
-   workflow PR approval, and no public-validation self-hosted route.
-3. Inspect the active main ruleset against every field in the desired-state
-   record.
-4. Open a pull request from a public fork that changes only a harmless fixture
-   input or documentation line.
-5. Confirm public-validation runs on a GitHub-hosted runner, receives no
-   secrets, emits no repository artifact, and passes.
-6. Confirm a deliberately policy-violating workflow mutation fails in the
-   verifier before it can alter the trust boundary.
-7. Close the test pull request without merging and preserve its URL and workflow
-   run as task evidence.
+After completing a coherent repository-changing task:
 
-Failure of any step keeps repository bootstrap uncertified.
+1. Run every affected local verifier, test, lint, security, reproducibility,
+   generated-artifact, and integration check.
+2. Inspect `git status`, the complete diff, and the exact staged diff; commit
+   only the coherent verified task result with a substantive subject.
+3. Record the exact verified commit: `VERIFIED_SHA=$(git rev-parse HEAD)`.
+4. Run `python tools/ci/promote_verified.py --verified-sha "$VERIFIED_SHA"
+   --dry-run` and inspect the JSON plan.
+5. Run the same command without `--dry-run`. It fetches origin, switches to
+   `main`, pulls with `--ff-only`, merges the verified SHA with `--ff-only`,
+   pushes `main`, fetches again, and verifies all main SHAs.
+6. Independently compare `git rev-parse main`, `git rev-parse origin/main`, and
+   `git ls-remote origin refs/heads/main` with the recorded verified SHA.
+7. Confirm the resulting main public-validation run used the disposable hosted
+   runner, requested no secrets or write permission, and produced no artifact.
+8. Update canonical Notion evidence only after repository and remote state agree.
+
+Any failure keeps the task incomplete. The promotion tool deliberately surfaces
+Git's remote rejection diagnostic so a real server-side restriction can be
+reported without bypassing it.
