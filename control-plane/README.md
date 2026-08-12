@@ -48,7 +48,39 @@ Run its cross-platform fixtures, boundary tests, and real-host smoke test with:
 python -m unittest discover -s tests/control_plane -v
 ```
 
-Local Control Plane state remains operational and non-canonical. This task does
-not yet implement environment acquisition, admission, cache mutation, durable
-state, events, or workload containment; those enter through their separately
-gated P16A contracts.
+## Transactional environment lifecycle
+
+The environment manager exposes a provider-neutral service API for:
+
+`plan → admit → acquire → verify artifacts → construct → verify runtime →
+verify smoke probes → fingerprint → Ready → release`.
+
+Provider descriptors negotiate required and optional capabilities before any
+mutation. Plans are explicitly non-mutating. The manager independently reads and
+SHA-256-verifies acquired regular files, rejects symlinks and artifact-set
+substitution, compares behaviorally relevant runtime/configuration facts, and
+requires every recipe smoke probe to pass. A download, install, provider handle,
+or version string alone can never produce `Ready`.
+
+Lifecycle records retain every transition, provider failure, verification
+failure, rollback outcome, and cleanup-required state. Provider failures remain
+operational and never become regex observations. Release failure likewise stays
+explicit instead of pretending an environment disappeared. Diagnosis is
+available without changing lifecycle state.
+
+Ready records receive an `environment-fingerprint:h` derived from verified
+artifacts, provider implementation/capabilities, runtime facts, relevant
+configuration, isolation/network policy, and a verification digest. The
+fingerprint uses the exact locked RFC 8785 implementation and is cross-checked
+against the certified schema identity tooling. Physical transaction IDs are
+separate `opid:v1:environment:u7` values and local provider handles/paths do not
+enter scientific identity.
+
+P16A-T02 certifies the common contract through materially different native-like
+and OCI-like deterministic providers. It does not claim those fixtures are
+certified ecosystem environments. Concrete runtime archetypes and minimal
+certified environments enter in P17. Resource admission policy, durable state,
+global lifecycle events, CLI environment commands, cache mutation, and hard
+workload containment remain in their separately gated P16A tasks.
+
+Local Control Plane state remains operational and non-canonical.

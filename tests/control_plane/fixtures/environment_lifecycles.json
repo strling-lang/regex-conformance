@@ -1,0 +1,124 @@
+[
+  {
+    "case": "native-host",
+    "expected_fingerprint_id": "rcid:v1:environment-fingerprint:h:jcs-sha256-v1:667830896fa481bbd25f2522b0fca89c36cb539df599869ff7bb5530133acd26",
+    "provider": {
+      "name": "fixture-native",
+      "strategy": "native-host",
+      "implementation_digest": "cf64d6db4fddfdd019f1d866a609d632b8538744bd4d35df42240e808365cb50",
+      "capabilities": [
+        { "name": "acquisition", "status": "supported" },
+        { "name": "artifact-digest-visibility", "status": "supported" },
+        { "name": "construction", "status": "supported" },
+        { "name": "diagnostics", "status": "supported" },
+        { "name": "network-control", "status": "unsupported", "diagnostic": "native fixture cannot independently enforce network isolation" },
+        { "name": "process-limits", "status": "supported" },
+        { "name": "rollback", "status": "supported" },
+        { "name": "runtime-identity", "status": "supported" },
+        { "name": "safe-release", "status": "supported" },
+        { "name": "smoke-verification", "status": "supported" },
+        { "name": "snapshot-restore", "status": "unsupported", "diagnostic": "native fixture has no snapshot primitive" }
+      ]
+    },
+    "recipe": {
+      "recipe_revision_id": "rcid:v1:environment-recipe-revision:h:jcs-sha256-v1:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "target_profile_id": "rcid:v1:profile-revision:h:jcs-sha256-v1:1111111111111111111111111111111111111111111111111111111111111111",
+      "target_release_id": "rcid:v1:release-revision:h:jcs-sha256-v1:2222222222222222222222222222222222222222222222222222222222222222",
+      "strategy": "native-host",
+      "artifacts": [
+        {
+          "name": "runtime",
+          "content": "native-runtime-1.0\n",
+          "sha256": "aaa49f5f47adf6d28867ae4ee1cbd111f90aa559b38fc9bee908723cfcc2c1e8",
+          "size_bytes": 19,
+          "media_type": "native-binary",
+          "locators": ["fixture://native/runtime-1.0"]
+        }
+      ],
+      "expected_runtime_facts": [
+        { "name": "architecture", "value": "x86_64" },
+        { "name": "operating-system", "value": "linux" },
+        { "name": "runtime-build", "value": "fixture-native" },
+        { "name": "runtime-version", "value": "1.0" }
+      ],
+      "expected_configuration": [
+        { "name": "locale", "value": "en_US.UTF-8" },
+        { "name": "timezone", "value": "UTC" }
+      ],
+      "required_capabilities": ["process-limits"],
+      "smoke_probe_ids": ["adapter-handshake", "runtime-identity"],
+      "isolation_policy_digest": "343b48f04c60edab6b183e207ddaa80b8dc5014f5d6fa008c3e6e0b50b0cc333",
+      "network_policy": "host-observed"
+    },
+    "plan": {
+      "expected_download_bytes": 19,
+      "expected_expanded_bytes": 19,
+      "expected_scratch_bytes": 64
+    }
+  },
+  {
+    "case": "oci-image",
+    "expected_fingerprint_id": "rcid:v1:environment-fingerprint:h:jcs-sha256-v1:39991b9b6cbd070840589d8d9b7d767d59182a50f1a209da7e8fbd45ca009ca9",
+    "provider": {
+      "name": "fixture-oci",
+      "strategy": "oci",
+      "implementation_digest": "d8ecc245011a5c5ae5dd8775b6dea8d82e7d733de4e5fa08bcab917996a066e6",
+      "capabilities": [
+        { "name": "acquisition", "status": "supported" },
+        { "name": "artifact-digest-visibility", "status": "supported" },
+        { "name": "construction", "status": "supported" },
+        { "name": "diagnostics", "status": "supported" },
+        { "name": "network-control", "status": "supported" },
+        { "name": "resource-limits", "status": "supported" },
+        { "name": "rollback", "status": "supported" },
+        { "name": "runtime-identity", "status": "supported" },
+        { "name": "safe-release", "status": "supported" },
+        { "name": "smoke-verification", "status": "supported" },
+        { "name": "snapshot-restore", "status": "supported" }
+      ]
+    },
+    "recipe": {
+      "recipe_revision_id": "rcid:v1:environment-recipe-revision:h:jcs-sha256-v1:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "target_profile_id": "rcid:v1:profile-revision:h:jcs-sha256-v1:3333333333333333333333333333333333333333333333333333333333333333",
+      "target_release_id": "rcid:v1:release-revision:h:jcs-sha256-v1:4444444444444444444444444444444444444444444444444444444444444444",
+      "strategy": "oci",
+      "artifacts": [
+        {
+          "name": "image-manifest",
+          "content": "oci-manifest-2.0\n",
+          "sha256": "4757bbeac1fbc1cadc6608ed0d50c8a7710cb415253510500d4f4ddf6750b49f",
+          "size_bytes": 17,
+          "media_type": "oci-manifest",
+          "locators": ["fixture://oci/manifest-2.0"]
+        },
+        {
+          "name": "runtime-layer",
+          "content": "oci-layer-runtime-2.0\n",
+          "sha256": "c98837a74ee962e033f1bafe26e162fe8d6610304b03fa7916a17da15a119b87",
+          "size_bytes": 22,
+          "media_type": "oci-layer",
+          "locators": ["fixture://oci/layer-runtime-2.0"]
+        }
+      ],
+      "expected_runtime_facts": [
+        { "name": "architecture", "value": "x86_64" },
+        { "name": "image-manifest", "value": "4757bbeac1fbc1cadc6608ed0d50c8a7710cb415253510500d4f4ddf6750b49f" },
+        { "name": "kernel-boundary", "value": "host" },
+        { "name": "runtime-version", "value": "2.0" }
+      ],
+      "expected_configuration": [
+        { "name": "locale", "value": "C.UTF-8" },
+        { "name": "timezone", "value": "UTC" }
+      ],
+      "required_capabilities": ["network-control", "resource-limits", "snapshot-restore"],
+      "smoke_probe_ids": ["adapter-handshake", "runtime-identity"],
+      "isolation_policy_digest": "15b77960b5ef8aa67ab3938737d8f77b3f8fb614d8f2851eb6321cbeeb062437",
+      "network_policy": "offline"
+    },
+    "plan": {
+      "expected_download_bytes": 39,
+      "expected_expanded_bytes": 96,
+      "expected_scratch_bytes": 128
+    }
+  }
+]

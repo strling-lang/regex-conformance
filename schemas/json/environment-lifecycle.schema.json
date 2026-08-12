@@ -1,0 +1,388 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://strling.dev/regex-conformance/schemas/environment-lifecycle.v1.schema.json",
+  "title": "Environment Lifecycle v1",
+  "description": "Recoverable non-canonical Control Plane transaction record for one verified environment lifecycle.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "transaction_id",
+    "state",
+    "recipe",
+    "provider",
+    "plan",
+    "admission",
+    "provider_handle",
+    "verified_artifacts",
+    "runtime_identity",
+    "smoke_observations",
+    "verification_digest",
+    "environment_fingerprint_id",
+    "transitions",
+    "failure",
+    "rollback",
+    "diagnostics"
+  ],
+  "properties": {
+    "schema_version": { "const": "environment-lifecycle.v1" },
+    "transaction_id": {
+      "type": "string",
+      "pattern": "^opid:v1:environment:u7:[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "state": { "$ref": "#/$defs/state" },
+    "recipe": { "$ref": "#/$defs/recipe" },
+    "provider": { "$ref": "#/$defs/provider" },
+    "plan": { "oneOf": [{ "$ref": "#/$defs/plan" }, { "type": "null" }] },
+    "admission": { "oneOf": [{ "$ref": "#/$defs/admission" }, { "type": "null" }] },
+    "provider_handle": { "type": ["string", "null"] },
+    "verified_artifacts": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/verified_artifact" }
+    },
+    "runtime_identity": { "oneOf": [{ "$ref": "#/$defs/runtime_identity" }, { "type": "null" }] },
+    "smoke_observations": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/smoke" }
+    },
+    "verification_digest": { "$ref": "#/$defs/nullable_digest" },
+    "environment_fingerprint_id": {
+      "type": ["string", "null"],
+      "pattern": "^rcid:v1:environment-fingerprint:h:jcs-sha256-v1:[0-9a-f]{64}$"
+    },
+    "transitions": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/transition" }
+    },
+    "failure": { "oneOf": [{ "$ref": "#/$defs/failure" }, { "type": "null" }] },
+    "rollback": { "oneOf": [{ "$ref": "#/$defs/outcome" }, { "type": "null" }] },
+    "diagnostics": { "type": "array", "items": { "type": "string" } }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "state": { "const": "ready" } }, "required": ["state"] },
+      "then": {
+        "properties": {
+          "provider_handle": { "type": "string", "minLength": 1 },
+          "plan": { "$ref": "#/$defs/plan" },
+          "admission": {
+            "allOf": [
+              { "$ref": "#/$defs/admission" },
+              { "properties": { "admitted": { "const": true } } }
+            ]
+          },
+          "verified_artifacts": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "$ref": "#/$defs/verified_artifact" }
+          },
+          "runtime_identity": { "$ref": "#/$defs/runtime_identity" },
+          "smoke_observations": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "allOf": [
+                { "$ref": "#/$defs/smoke" },
+                { "properties": { "passed": { "const": true } } }
+              ]
+            }
+          },
+          "verification_digest": { "$ref": "#/$defs/digest" },
+          "environment_fingerprint_id": {
+            "type": "string",
+            "pattern": "^rcid:v1:environment-fingerprint:h:jcs-sha256-v1:[0-9a-f]{64}$"
+          },
+          "failure": { "type": "null" },
+          "rollback": { "type": "null" }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "state": { "const": "cancelled" } }, "required": ["state"] },
+      "then": { "properties": { "failure": { "$ref": "#/$defs/failure" } } }
+    },
+    {
+      "if": {
+        "properties": { "state": { "enum": ["cleanup_required", "release_failed"] } },
+        "required": ["state"]
+      },
+      "then": {
+        "properties": {
+          "failure": {
+            "allOf": [
+              { "$ref": "#/$defs/failure" },
+              { "properties": { "cleanup_required": { "const": true } } }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "state": { "enum": ["rejected", "failed", "cleanup_required", "release_failed"] }
+        },
+        "required": ["state"]
+      },
+      "then": { "properties": { "failure": { "$ref": "#/$defs/failure" } } }
+    }
+  ],
+  "$defs": {
+    "token": { "type": "string", "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$" },
+    "digest": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "nullable_digest": { "type": ["string", "null"], "pattern": "^[0-9a-f]{64}$" },
+    "rcid": {
+      "type": "string",
+      "pattern": "^rcid:v1:[a-z][a-z0-9]*(?:-[a-z0-9]+)*:(?:u7:[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|h:[a-z][a-z0-9]*(?:-[a-z0-9]+)*:[0-9a-f]{64})$"
+    },
+    "state": {
+      "enum": [
+        "planned",
+        "admitted",
+        "acquiring",
+        "verifying_artifacts",
+        "artifacts_verified",
+        "constructing",
+        "constructed",
+        "verifying_runtime",
+        "runtime_verified",
+        "verifying_smoke",
+        "smoke_verified",
+        "fingerprinting",
+        "ready",
+        "releasing",
+        "released",
+        "cancelled",
+        "rejected",
+        "failed",
+        "cleanup_required",
+        "release_failed"
+      ]
+    },
+    "named_value": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "value"],
+      "properties": {
+        "name": { "$ref": "#/$defs/token" },
+        "value": { "type": "string", "minLength": 1 }
+      }
+    },
+    "artifact_requirement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "sha256", "size_bytes", "media_type", "locators"],
+      "properties": {
+        "name": { "$ref": "#/$defs/token" },
+        "sha256": { "$ref": "#/$defs/digest" },
+        "size_bytes": { "type": "integer", "minimum": 0, "maximum": 9007199254740991 },
+        "media_type": { "$ref": "#/$defs/token" },
+        "locators": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "recipe": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "recipe_revision_id",
+        "target_profile_id",
+        "target_release_id",
+        "strategy",
+        "artifacts",
+        "expected_runtime_facts",
+        "expected_configuration",
+        "required_capabilities",
+        "smoke_probe_ids",
+        "isolation_policy_digest",
+        "network_policy"
+      ],
+      "properties": {
+        "recipe_revision_id": { "$ref": "#/$defs/rcid" },
+        "target_profile_id": { "$ref": "#/$defs/rcid" },
+        "target_release_id": { "$ref": "#/$defs/rcid" },
+        "strategy": { "$ref": "#/$defs/token" },
+        "artifacts": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/artifact_requirement" }
+        },
+        "expected_runtime_facts": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/named_value" }
+        },
+        "expected_configuration": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/named_value" }
+        },
+        "required_capabilities": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/token" }
+        },
+        "smoke_probe_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/token" }
+        },
+        "isolation_policy_digest": { "$ref": "#/$defs/digest" },
+        "network_policy": { "$ref": "#/$defs/token" }
+      }
+    },
+    "capability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "status", "diagnostic"],
+      "properties": {
+        "name": { "$ref": "#/$defs/token" },
+        "status": { "enum": ["supported", "unsupported", "unknown"] },
+        "diagnostic": { "type": ["string", "null"] }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "status": { "enum": ["unsupported", "unknown"] } }, "required": ["status"] },
+          "then": { "properties": { "diagnostic": { "type": "string", "minLength": 1 } } }
+        }
+      ]
+    },
+    "provider": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "strategy", "implementation_digest", "capabilities"],
+      "properties": {
+        "name": { "$ref": "#/$defs/token" },
+        "strategy": { "$ref": "#/$defs/token" },
+        "implementation_digest": { "$ref": "#/$defs/digest" },
+        "capabilities": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/capability" }
+        }
+      }
+    },
+    "plan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "provider_name",
+        "plan_token",
+        "expected_download_bytes",
+        "expected_expanded_bytes",
+        "expected_scratch_bytes",
+        "diagnostics",
+        "mutation_permitted"
+      ],
+      "properties": {
+        "provider_name": { "$ref": "#/$defs/token" },
+        "plan_token": { "type": "string", "minLength": 1 },
+        "expected_download_bytes": { "type": "integer", "minimum": 0, "maximum": 9007199254740991 },
+        "expected_expanded_bytes": { "type": "integer", "minimum": 0, "maximum": 9007199254740991 },
+        "expected_scratch_bytes": { "type": "integer", "minimum": 0, "maximum": 9007199254740991 },
+        "diagnostics": { "type": "array", "items": { "type": "string" } },
+        "mutation_permitted": { "const": false }
+      }
+    },
+    "admission": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["admitted", "decision_id", "reason"],
+      "properties": {
+        "admitted": { "type": "boolean" },
+        "decision_id": { "type": "string", "minLength": 1 },
+        "reason": { "type": "string", "minLength": 1 }
+      }
+    },
+    "verified_artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "sha256", "size_bytes", "media_type"],
+      "properties": {
+        "name": { "$ref": "#/$defs/token" },
+        "sha256": { "$ref": "#/$defs/digest" },
+        "size_bytes": { "type": "integer", "minimum": 0, "maximum": 9007199254740991 },
+        "media_type": { "$ref": "#/$defs/token" }
+      }
+    },
+    "runtime_identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "strategy",
+        "provider_implementation_digest",
+        "facts",
+        "relevant_configuration",
+        "isolation_policy_digest",
+        "network_policy"
+      ],
+      "properties": {
+        "strategy": { "$ref": "#/$defs/token" },
+        "provider_implementation_digest": { "$ref": "#/$defs/digest" },
+        "facts": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/named_value" }
+        },
+        "relevant_configuration": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/named_value" }
+        },
+        "isolation_policy_digest": { "$ref": "#/$defs/digest" },
+        "network_policy": { "$ref": "#/$defs/token" }
+      }
+    },
+    "smoke": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["probe_id", "passed", "diagnostic"],
+      "properties": {
+        "probe_id": { "$ref": "#/$defs/token" },
+        "passed": { "type": "boolean" },
+        "diagnostic": { "type": ["string", "null"] }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "passed": { "const": false } }, "required": ["passed"] },
+          "then": { "properties": { "diagnostic": { "type": "string", "minLength": 1 } } }
+        }
+      ]
+    },
+    "transition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sequence", "from_state", "to_state", "observed_at", "detail"],
+      "properties": {
+        "sequence": { "type": "integer", "minimum": 1 },
+        "from_state": { "oneOf": [{ "$ref": "#/$defs/state" }, { "type": "null" }] },
+        "to_state": { "$ref": "#/$defs/state" },
+        "observed_at": { "type": "string", "format": "date-time" },
+        "detail": { "type": "string", "minLength": 1 }
+      }
+    },
+    "failure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["classification", "code", "message", "cleanup_required"],
+      "properties": {
+        "classification": { "enum": ["admission", "cancelled", "input", "provider", "verification"] },
+        "code": { "$ref": "#/$defs/token" },
+        "message": { "type": "string", "minLength": 1 },
+        "cleanup_required": { "type": "boolean" }
+      }
+    },
+    "outcome": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["succeeded", "diagnostics"],
+      "properties": {
+        "succeeded": { "type": "boolean" },
+        "diagnostics": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

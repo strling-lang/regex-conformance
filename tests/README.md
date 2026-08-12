@@ -16,3 +16,11 @@ Linux, Windows, and macOS fixtures through the same controller service, validate
 the machine-inventory schema and deterministic JSON, exercises actionable
 failure diagnostics, proves unknown telemetry remains unknown, confirms the CLI
 is only a client, and runs a read-only real-host smoke test.
+
+The same suite drives native-like and OCI-like environment providers through one
+transactional lifecycle. It proves planning is non-mutating; artifact bytes,
+runtime identity, smoke probes, and JCS fingerprints gate Ready; operational
+transaction identity does not perturb realized identity; and partial acquisition,
+artifact substitution, symlinks, capability gaps, admission denial, cancellation,
+runtime mismatch, smoke failure, rollback failure, diagnosis outage, and release
+failure remain explicit and recoverable.

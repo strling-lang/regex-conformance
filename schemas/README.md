@@ -22,6 +22,21 @@ state—not canonical evidence—and therefore has no content-derived scientific
 Typed resource pools preserve unknown values as `null` and retain discovery
 source, time, accuracy, visibility, and staleness.
 
+`json/environment-lifecycle.schema.json` defines the recoverable operational
+transaction record for provider-neutral planning, admission, verification,
+rollback, Ready, release, and failure states. It cannot validate as Ready without
+an admitted plan, non-empty verified artifacts and passing smoke observations,
+a runtime identity, verification digest, realized fingerprint, provider handle,
+and no failure or rollback.
+
+`identity-profiles/environment-fingerprint.v1.json` defines the scientific
+identity projection for verified realized environments. It excludes physical
+transaction IDs, cache paths, provider handles, and timestamps while binding the
+recipe revision, target coordinates, actual artifacts, provider implementation
+and capabilities, runtime/configuration facts, isolation/network policy, and
+verification digest. Its permanent schema-family ID is
+`rcid:v1:schema-family:u7:019ff82c-9517-76fb-a67d-c461e9145384`.
+
 Run all schema and fixture checks from the repository root:
 
 ```sh

@@ -1,0 +1,83 @@
+{
+  "profile_version": "1.0.0",
+  "root": {
+    "additional_properties": false,
+    "kind": "object",
+    "properties": {
+      "artifacts": {
+        "items": {
+          "additional_properties": false,
+          "kind": "object",
+          "properties": {
+            "digest": { "kind": "digest" },
+            "media_type": { "kind": "token" },
+            "name": { "kind": "token" },
+            "size_bytes": { "kind": "safe_integer" }
+          },
+          "required": ["name", "digest", "size_bytes", "media_type"]
+        },
+        "kind": "set"
+      },
+      "isolation_policy_digest": { "kind": "digest" },
+      "network_policy": { "kind": "token" },
+      "provider_capabilities": {
+        "items": {
+          "additional_properties": false,
+          "kind": "object",
+          "properties": {
+            "name": { "kind": "token" },
+            "status": { "kind": "enum", "values": ["supported", "unsupported", "unknown"] }
+          },
+          "required": ["name", "status"]
+        },
+        "kind": "set"
+      },
+      "provider_implementation_digest": { "kind": "digest" },
+      "provider_name": { "kind": "token" },
+      "provider_strategy": { "kind": "token" },
+      "recipe_revision": { "kind": "rcid" },
+      "relevant_configuration": {
+        "items": {
+          "additional_properties": false,
+          "kind": "object",
+          "properties": {
+            "name": { "kind": "token" },
+            "value": { "kind": "canonical_text" }
+          },
+          "required": ["name", "value"]
+        },
+        "kind": "set"
+      },
+      "runtime_facts": {
+        "items": {
+          "additional_properties": false,
+          "kind": "object",
+          "properties": {
+            "name": { "kind": "token" },
+            "value": { "kind": "canonical_text" }
+          },
+          "required": ["name", "value"]
+        },
+        "kind": "set"
+      },
+      "target_profile": { "kind": "rcid" },
+      "target_release": { "kind": "rcid" },
+      "verification_digest": { "kind": "digest" }
+    },
+    "required": [
+      "recipe_revision",
+      "target_profile",
+      "target_release",
+      "provider_name",
+      "provider_strategy",
+      "provider_implementation_digest",
+      "provider_capabilities",
+      "artifacts",
+      "runtime_facts",
+      "relevant_configuration",
+      "isolation_policy_digest",
+      "network_policy",
+      "verification_digest"
+    ]
+  }
+}
