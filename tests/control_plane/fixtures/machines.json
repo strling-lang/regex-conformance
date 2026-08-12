@@ -1,0 +1,139 @@
+[
+  {
+    "case": "linux-oci-qemu",
+    "observed_at": "2026-08-12T12:00:00Z",
+    "trust_class": "trusted_executioner",
+    "machine": {
+      "os_family": "linux",
+      "os_name": "Linux",
+      "os_release": "6.8.0",
+      "architecture": "x86_64",
+      "architecture_raw": "x86_64",
+      "python_implementation": "CPython",
+      "python_version": "3.12.10"
+    },
+    "disk": {
+      "capacity": 1099511627776,
+      "used": 274877906944,
+      "available": 824633720832,
+      "backing_store": "device:8"
+    },
+    "ram": {
+      "status": "observed",
+      "capacity": 68719476736,
+      "used": 17179869184,
+      "available": 51539607552,
+      "accuracy": "exact"
+    },
+    "swap": {
+      "status": "observed",
+      "capacity": 8589934592,
+      "used": 1073741824,
+      "available": 7516192768,
+      "accuracy": "exact"
+    },
+    "cpu_capacity": 16,
+    "providers": [
+      { "name": "native", "availability": "available", "strategies": ["native"] },
+      { "name": "docker", "availability": "detected_unverified", "strategies": ["oci"], "executable": "/usr/bin/docker" },
+      { "name": "qemu", "availability": "detected_unverified", "strategies": ["vm", "emulated"], "executable": "/usr/bin/qemu-system-x86_64" }
+    ],
+    "capabilities": [
+      { "name": "process_tree_termination", "status": "supported", "value": true },
+      { "name": "posix_resource_limits", "status": "supported", "value": { "rlimit_nofile": { "soft": 1024, "hard": 1048576 } } },
+      { "name": "thermal_throttling_telemetry", "status": "unknown", "value": null }
+    ],
+    "expected_status": "healthy"
+  },
+  {
+    "case": "windows-hyperv",
+    "observed_at": "2026-08-12T12:00:00Z",
+    "trust_class": "development",
+    "machine": {
+      "os_family": "windows",
+      "os_name": "Windows",
+      "os_release": "11",
+      "architecture": "x86_64",
+      "architecture_raw": "AMD64",
+      "python_implementation": "CPython",
+      "python_version": "3.12.10"
+    },
+    "disk": {
+      "capacity": 549755813888,
+      "used": 274877906944,
+      "available": 274877906944,
+      "backing_store": "volume:c:"
+    },
+    "ram": {
+      "status": "observed",
+      "capacity": 34359738368,
+      "used": 12884901888,
+      "available": 21474836480,
+      "accuracy": "exact"
+    },
+    "swap": {
+      "status": "unknown",
+      "capacity": null,
+      "used": null,
+      "available": null,
+      "accuracy": "unknown"
+    },
+    "cpu_capacity": 12,
+    "providers": [
+      { "name": "native", "availability": "available", "strategies": ["native"] },
+      { "name": "hyperv", "availability": "detected_unverified", "strategies": ["vm"] },
+      { "name": "wsl", "availability": "detected_unverified", "strategies": ["linux-hosted"], "executable": "C:\\Windows\\System32\\wsl.exe" }
+    ],
+    "capabilities": [
+      { "name": "process_tree_termination", "status": "supported", "value": true },
+      { "name": "windows_job_objects", "status": "supported", "value": true },
+      { "name": "thermal_throttling_telemetry", "status": "unknown", "value": null }
+    ],
+    "expected_status": "healthy"
+  },
+  {
+    "case": "macos-native-vm",
+    "observed_at": "2026-08-12T12:00:00Z",
+    "trust_class": "untrusted_public",
+    "machine": {
+      "os_family": "macos",
+      "os_name": "Darwin",
+      "os_release": "25.6.0",
+      "architecture": "aarch64",
+      "architecture_raw": "arm64",
+      "python_implementation": "CPython",
+      "python_version": "3.12.10"
+    },
+    "disk": {
+      "capacity": 1099511627776,
+      "used": 329853488332,
+      "available": 769658139444,
+      "backing_store": "device:1"
+    },
+    "ram": {
+      "status": "observed",
+      "capacity": 68719476736,
+      "used": 21474836480,
+      "available": 47244640256,
+      "accuracy": "estimated"
+    },
+    "swap": {
+      "status": "observed",
+      "capacity": 4294967296,
+      "used": 1073741824,
+      "available": 3221225472,
+      "accuracy": "estimated"
+    },
+    "cpu_capacity": 12,
+    "providers": [
+      { "name": "native", "availability": "available", "strategies": ["native"] },
+      { "name": "apple-virtualization", "availability": "detected_unverified", "strategies": ["vm"] }
+    ],
+    "capabilities": [
+      { "name": "process_tree_termination", "status": "supported", "value": true },
+      { "name": "posix_resource_limits", "status": "supported", "value": { "rlimit_nofile": { "soft": 256, "hard": "unlimited" } } },
+      { "name": "thermal_throttling_telemetry", "status": "unknown", "value": null }
+    ],
+    "expected_status": "healthy"
+  }
+]

@@ -13,9 +13,10 @@ a standards guarantee.
 
 ## Program status
 
-The project is in repository bootstrap. No observation in this repository is a
-certified conformance result yet, and no production evidence campaign has been
-authorized merely by the existence of this repository.
+Repository bootstrap is certified and the portable Control Plane foundation is
+being implemented. No observation in this repository is a certified conformance
+result yet, and no production evidence campaign has been authorized merely by
+the existence of this repository.
 
 Program planning, dependencies, decisions, risks, and certification gates are
 maintained in the canonical [STRling Regex Conformance Program][program-hub].
@@ -90,6 +91,23 @@ python3 -m venv .venv
 Node.js 18 or newer is required for the independent canonical-byte oracle. These
 bootstrap tooling choices do not select the later Control Plane implementation
 language or packaging strategy.
+
+## Control Plane machine inspection
+
+The first Control Plane slice is a read-only machine doctor. It reports typed
+resource pools, provider visibility, process capabilities, explicit trust, and
+actionable diagnostics without creating environments, cache entries, spools, or
+local state:
+
+```sh
+python control-plane/python/run.py doctor --trust-class development
+python control-plane/python/run.py machine inspect --format json --trust-class development
+```
+
+The JSON output conforms to `machine-inventory.v1`. Unknown values remain null,
+trust is never inferred, and the CLI delegates to the reusable controller
+service. See [the Control Plane module](control-plane/README.md) for configuration
+and validation details.
 
 ## Public validation and promotion
 

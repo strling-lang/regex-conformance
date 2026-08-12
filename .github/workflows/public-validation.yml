@@ -52,9 +52,10 @@ jobs:
           python schemas/tooling/python/run.py validate-repository
           python schemas/tooling/python/run.py verify-fixtures
 
-      - name: Exercise bootstrap and trust-boundary tests
+      - name: Exercise bootstrap, Control Plane, and trust-boundary tests
         run: |
           python -m unittest discover -s tests/schema -v
+          python -m unittest discover -s tests/control_plane -v
           python -m unittest discover -s tests/ci -v
 
       - name: Prove fixture regeneration is byte-stable

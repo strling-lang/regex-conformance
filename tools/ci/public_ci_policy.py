@@ -69,6 +69,7 @@ def evaluate(root: Path) -> list[Violation]:
         "validate-repository",
         "verify-fixtures",
         "unittest discover -s tests/schema",
+        "unittest discover -s tests/control_plane",
         "unittest discover -s tests/ci",
         "materialize-fixtures",
         "git diff --exit-code -- tests/fixtures/identity/manifest.json",

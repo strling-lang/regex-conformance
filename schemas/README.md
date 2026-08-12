@@ -16,6 +16,12 @@ bootstrap contract.
   fixture tooling.
 - `tooling/node/` contains the independent dependency-free JCS oracle.
 
+`json/machine-inventory.schema.json` defines the versioned machine-readable
+Control Plane doctor report. Machine inventory is fresh, recoverable operational
+state—not canonical evidence—and therefore has no content-derived scientific ID.
+Typed resource pools preserve unknown values as `null` and retain discovery
+source, time, accuracy, visibility, and staleness.
+
 Run all schema and fixture checks from the repository root:
 
 ```sh

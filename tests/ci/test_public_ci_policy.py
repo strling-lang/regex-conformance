@@ -58,6 +58,13 @@ class PublicCiPolicyTests(unittest.TestCase):
         self.mutate_workflow("      - main", "      - release")
         self.assertIn("missing-main-trigger", self.codes())
 
+    def test_missing_control_plane_tests_are_rejected(self) -> None:
+        self.mutate_workflow(
+            "python -m unittest discover -s tests/control_plane -v",
+            "python -m unittest discover -s tests/schema -v",
+        )
+        self.assertIn("missing-validation", self.codes())
+
     def test_write_permission_is_rejected(self) -> None:
         self.mutate_workflow("contents: read", "contents: write")
         self.assertIn("write-permission", self.codes())

@@ -1,0 +1,247 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://strling.dev/regex-conformance/schemas/machine-inventory.v1.schema.json",
+  "title": "Machine Inventory v1",
+  "description": "Recoverable, non-canonical Control Plane inventory for one read-only observation instant.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "status",
+    "observed_at",
+    "valid_until",
+    "machine",
+    "trust",
+    "resource_pools",
+    "providers",
+    "capabilities",
+    "safety_configuration",
+    "diagnostics"
+  ],
+  "properties": {
+    "schema_version": { "const": "machine-inventory.v1" },
+    "status": { "enum": ["healthy", "degraded", "unsupported"] },
+    "observed_at": { "type": "string", "format": "date-time" },
+    "valid_until": { "type": "string", "format": "date-time" },
+    "machine": { "$ref": "#/$defs/machine" },
+    "trust": { "$ref": "#/$defs/trust" },
+    "resource_pools": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/resource_pool" },
+      "minItems": 8
+    },
+    "providers": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/provider" },
+      "minItems": 1
+    },
+    "capabilities": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/capability" },
+      "minItems": 1
+    },
+    "safety_configuration": { "$ref": "#/$defs/safety_configuration" },
+    "diagnostics": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/diagnostic" }
+    }
+  },
+  "$defs": {
+    "nullable_nonnegative_integer": {
+      "type": ["integer", "null"],
+      "minimum": 0
+    },
+    "nullable_string": {
+      "type": ["string", "null"]
+    },
+    "machine": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "os_family",
+        "os_name",
+        "os_release",
+        "architecture",
+        "architecture_raw",
+        "python_implementation",
+        "python_version"
+      ],
+      "properties": {
+        "os_family": { "enum": ["linux", "windows", "macos", "freebsd", "unknown"] },
+        "os_name": { "type": "string", "minLength": 1 },
+        "os_release": { "type": "string", "minLength": 1 },
+        "architecture": { "type": "string", "minLength": 1 },
+        "architecture_raw": { "type": "string", "minLength": 1 },
+        "python_implementation": { "type": "string", "minLength": 1 },
+        "python_version": { "type": "string", "minLength": 1 }
+      }
+    },
+    "trust": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["trust_class", "source", "configured"],
+      "properties": {
+        "trust_class": { "enum": ["unknown", "development", "trusted_executioner", "untrusted_public"] },
+        "source": { "type": "string", "minLength": 1 },
+        "configured": { "type": "boolean" }
+      }
+    },
+    "resource_pool": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "unit",
+        "status",
+        "capacity",
+        "used",
+        "reserved",
+        "available",
+        "source",
+        "accuracy",
+        "visibility",
+        "observed_at",
+        "staleness_seconds",
+        "configured_path",
+        "observed_path",
+        "backing_store",
+        "diagnostic"
+      ],
+      "properties": {
+        "kind": { "type": "string", "minLength": 1 },
+        "unit": { "enum": ["bytes", "logical_cpu"] },
+        "status": { "enum": ["observed", "partial", "unknown"] },
+        "capacity": { "$ref": "#/$defs/nullable_nonnegative_integer" },
+        "used": { "$ref": "#/$defs/nullable_nonnegative_integer" },
+        "reserved": { "type": "integer", "minimum": 0 },
+        "available": { "$ref": "#/$defs/nullable_nonnegative_integer" },
+        "source": { "type": "string", "minLength": 1 },
+        "accuracy": { "enum": ["exact", "bounded", "estimated", "unknown"] },
+        "visibility": { "enum": ["host", "process", "configured"] },
+        "observed_at": { "type": "string", "format": "date-time" },
+        "staleness_seconds": { "type": "integer", "minimum": 0 },
+        "configured_path": { "$ref": "#/$defs/nullable_string" },
+        "observed_path": { "$ref": "#/$defs/nullable_string" },
+        "backing_store": { "$ref": "#/$defs/nullable_string" },
+        "diagnostic": { "$ref": "#/$defs/nullable_string" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "status": { "const": "unknown" } }, "required": ["status"] },
+          "then": {
+            "properties": {
+              "accuracy": { "const": "unknown" },
+              "capacity": { "type": "null" },
+              "used": { "type": "null" },
+              "available": { "type": "null" }
+            }
+          }
+        }
+      ]
+    },
+    "provider": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "availability", "strategies", "source", "observed_at", "accuracy", "visibility", "staleness_seconds", "executable", "diagnostic"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "availability": { "enum": ["available", "detected_unverified", "unavailable", "unknown"] },
+        "strategies": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "source": { "type": "string", "minLength": 1 },
+        "observed_at": { "type": "string", "format": "date-time" },
+        "accuracy": { "enum": ["exact", "bounded", "estimated", "unknown"] },
+        "visibility": { "enum": ["host", "process", "configured"] },
+        "staleness_seconds": { "type": "integer", "minimum": 0 },
+        "executable": { "$ref": "#/$defs/nullable_string" },
+        "diagnostic": { "$ref": "#/$defs/nullable_string" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "availability": { "const": "unknown" } }, "required": ["availability"] },
+          "then": {
+            "properties": {
+              "accuracy": { "const": "unknown" },
+              "executable": { "type": "null" }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": { "availability": { "enum": ["unavailable", "unknown"] } },
+            "required": ["availability"]
+          },
+          "then": { "properties": { "executable": { "type": "null" } } }
+        }
+      ]
+    },
+    "capability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "status", "source", "observed_at", "accuracy", "visibility", "staleness_seconds", "value", "diagnostic"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "status": { "enum": ["supported", "unsupported", "unknown"] },
+        "source": { "type": "string", "minLength": 1 },
+        "observed_at": { "type": "string", "format": "date-time" },
+        "accuracy": { "enum": ["exact", "bounded", "estimated", "unknown"] },
+        "visibility": { "enum": ["host", "process", "configured"] },
+        "staleness_seconds": { "type": "integer", "minimum": 0 },
+        "value": true,
+        "diagnostic": { "$ref": "#/$defs/nullable_string" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "status": { "const": "unknown" } }, "required": ["status"] },
+          "then": {
+            "properties": {
+              "accuracy": { "const": "unknown" },
+              "value": { "type": "null" }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "status": { "const": "unsupported" } }, "required": ["status"] },
+          "then": { "properties": { "value": { "type": "null" } } }
+        }
+      ]
+    },
+    "safety_configuration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["inventory_only", "mutation_permitted", "inventory_max_age_seconds", "configured_pool_paths"],
+      "properties": {
+        "inventory_only": { "const": true },
+        "mutation_permitted": { "const": false },
+        "inventory_max_age_seconds": { "type": "integer", "minimum": 1 },
+        "configured_pool_paths": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["persistent_disk", "environment_cache", "build_scratch", "execution_scratch", "result_spool"],
+          "properties": {
+            "persistent_disk": { "type": "string" },
+            "environment_cache": { "type": "string" },
+            "build_scratch": { "type": "string" },
+            "execution_scratch": { "type": "string" },
+            "result_spool": { "type": "string" }
+          }
+        }
+      }
+    },
+    "diagnostic": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["severity", "code", "message", "remediation"],
+      "properties": {
+        "severity": { "enum": ["info", "warning", "error"] },
+        "code": { "type": "string", "minLength": 1 },
+        "message": { "type": "string", "minLength": 1 },
+        "remediation": { "$ref": "#/$defs/nullable_string" }
+      }
+    }
+  }
+}
