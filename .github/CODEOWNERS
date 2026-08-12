@@ -3,6 +3,9 @@
 
 # Consequential and trust-sensitive surfaces retain Program Owner review.
 /.github/ @TheCyberLocal
+/tools/ci/ @TheCyberLocal
+/docs/governance/repository-protection-policy.md @TheCyberLocal
+/requirements.ci.lock @TheCyberLocal
 /GOVERNANCE.md @TheCyberLocal
 /SECURITY.md @TheCyberLocal
 /LICENSE @TheCyberLocal

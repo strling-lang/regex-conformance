@@ -34,4 +34,11 @@ current protected default branch unless a release-specific policy is published.
 
 Security shortcuts invalidate certification even when functional tests pass.
 
+The executable public-CI trust contract, required branch controls, and settings
+audit procedure are defined in the
+[repository protection policy](docs/governance/repository-protection-policy.md).
+Any change that introduces pull_request_target, a self-hosted label, write
+permission, a secret reference, an unpinned action, or an artifact handoff into
+the public workflow is rejected by repository tests.
+
 [advisory]: https://github.com/strling-lang/regex-conformance/security/advisories/new

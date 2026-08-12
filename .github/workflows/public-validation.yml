@@ -1,0 +1,63 @@
+name: Public validation
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  public-validation:
+    name: public-validation
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      PIP_DISABLE_PIP_VERSION_CHECK: "1"
+      PIP_NO_INPUT: "1"
+      PYTHONDONTWRITEBYTECODE: "1"
+      PYTHONHASHSEED: "0"
+    steps:
+      - name: Check out untrusted revision without retained credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Select exact Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12.10"
+          cache: ""
+
+      - name: Select exact Node.js LTS
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24.18.0"
+          cache: ""
+
+      - name: Enforce public-CI trust contract
+        run: python tools/ci/verify_public_ci.py --root .
+
+      - name: Install hash-locked Linux validation dependencies
+        run: "python -m pip install --only-binary=:all: --require-hashes --requirement requirements.ci.lock"
+
+      - name: Check installed dependency consistency
+        run: python -m pip check
+
+      - name: Validate repository schemas and fixtures
+        run: |
+          python schemas/tooling/python/run.py validate-repository
+          python schemas/tooling/python/run.py verify-fixtures
+
+      - name: Exercise bootstrap and trust-boundary tests
+        run: |
+          python -m unittest discover -s tests/schema -v
+          python -m unittest discover -s tests/ci -v
+
+      - name: Prove fixture regeneration is byte-stable
+        run: |
+          python schemas/tooling/python/run.py materialize-fixtures
+          git diff --exit-code -- tests/fixtures/identity/manifest.json
