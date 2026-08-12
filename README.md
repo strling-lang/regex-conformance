@@ -74,6 +74,23 @@ records, diagnostics, execution spools, and warehouse datasets remain outside
 Git. Compact definitions, schemas, manifests, reports, hashes, and source belong
 here only when the architecture assigns them to repository authority.
 
+## Bootstrap schema and identity checks
+
+The schema foundation uses an exact dependency lock, a Python validator/content
+ID implementation, and an independent dependency-free Node.js JCS oracle:
+
+```sh
+python3 -m venv .venv
+.venv/bin/python -m pip install -r requirements.lock
+.venv/bin/python schemas/tooling/python/run.py validate-repository
+.venv/bin/python schemas/tooling/python/run.py verify-fixtures
+.venv/bin/python -m unittest discover -s tests/schema -v
+```
+
+Node.js 18 or newer is required for the independent canonical-byte oracle. These
+bootstrap tooling choices do not select the later Control Plane implementation
+language or packaging strategy.
+
 See [GOVERNANCE.md](GOVERNANCE.md) for authority and change control,
 [CONTRIBUTING.md](CONTRIBUTING.md) for contribution requirements, and
 [SECURITY.md](SECURITY.md) for private vulnerability reporting and execution

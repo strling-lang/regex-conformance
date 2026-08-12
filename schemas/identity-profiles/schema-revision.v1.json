@@ -1,0 +1,43 @@
+{
+  "profile_version": "1.0.0",
+  "root": {
+    "additional_properties": false,
+    "kind": "object",
+    "properties": {
+      "definition": {
+        "additional_properties": false,
+        "kind": "object",
+        "properties": {
+          "additional_properties": {
+            "kind": "boolean"
+          },
+          "name": {
+            "kind": "token"
+          },
+          "required_fields": {
+            "items": {
+              "kind": "token"
+            },
+            "kind": "set"
+          }
+        },
+        "required": [
+          "name",
+          "required_fields",
+          "additional_properties"
+        ]
+      },
+      "schema_family_id": {
+        "kind": "rcid"
+      },
+      "schema_version": {
+        "kind": "semver"
+      }
+    },
+    "required": [
+      "schema_family_id",
+      "schema_version",
+      "definition"
+    ]
+  }
+}

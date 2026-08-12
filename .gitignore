@@ -11,6 +11,7 @@
 .runtime-environments/
 
 # Common tool output
+.venv/
 __pycache__/
 *.py[cod]
 .pytest_cache/

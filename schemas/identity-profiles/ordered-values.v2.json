@@ -1,0 +1,36 @@
+{
+  "profile_version": "2.0.0",
+  "root": {
+    "additional_properties": false,
+    "kind": "object",
+    "properties": {
+      "flag": {
+        "kind": "boolean"
+      },
+      "label": {
+        "kind": "canonical_text"
+      },
+      "pattern": {
+        "kind": "raw_text"
+      },
+      "sequence": {
+        "items": {
+          "kind": "token"
+        },
+        "kind": "sequence"
+      },
+      "tags": {
+        "items": {
+          "kind": "token"
+        },
+        "kind": "set"
+      }
+    },
+    "required": [
+      "label",
+      "pattern",
+      "sequence",
+      "tags"
+    ]
+  }
+}

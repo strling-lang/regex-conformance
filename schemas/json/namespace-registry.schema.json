@@ -1,0 +1,63 @@
+{
+  "$id": "https://strling.dev/regex-conformance/schemas/namespace-registry/1.0.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "hash_policies": {
+      "items": {
+        "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "opid": {
+      "$ref": "#/$defs/modes"
+    },
+    "rcid": {
+      "$ref": "#/$defs/modes"
+    },
+    "registry_version": {
+      "pattern": "^(?:0|[1-9][0-9]*)\\.(?:0|[1-9][0-9]*)\\.(?:0|[1-9][0-9]*)$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "registry_version",
+    "hash_policies",
+    "rcid",
+    "opid"
+  ],
+  "type": "object",
+  "$defs": {
+    "modes": {
+      "additionalProperties": false,
+      "properties": {
+        "h": {
+          "items": {
+            "$ref": "#/$defs/namespace"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "u7": {
+          "items": {
+            "$ref": "#/$defs/namespace"
+          },
+          "type": "array",
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "u7",
+        "h"
+      ],
+      "type": "object"
+    },
+    "namespace": {
+      "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+      "type": "string"
+    }
+  }
+}

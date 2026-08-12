@@ -1,0 +1,23 @@
+{
+  "profile_version": "1.0.0",
+  "root": {
+    "additional_properties": false,
+    "kind": "object",
+    "properties": {
+      "cutoff": {
+        "kind": "utc_instant",
+        "precision": 3
+      },
+      "members": {
+        "items": {
+          "kind": "rcid"
+        },
+        "kind": "set"
+      }
+    },
+    "required": [
+      "cutoff",
+      "members"
+    ]
+  }
+}

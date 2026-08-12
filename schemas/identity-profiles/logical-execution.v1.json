@@ -1,0 +1,34 @@
+{
+  "profile_version": "1.0.0",
+  "root": {
+    "additional_properties": false,
+    "kind": "object",
+    "properties": {
+      "dimensions": {
+        "items": {
+          "kind": "token"
+        },
+        "kind": "set"
+      },
+      "environment": {
+        "kind": "rcid"
+      },
+      "operation": {
+        "kind": "token"
+      },
+      "profile": {
+        "kind": "rcid"
+      },
+      "vector": {
+        "kind": "rcid"
+      }
+    },
+    "required": [
+      "profile",
+      "vector",
+      "environment",
+      "operation",
+      "dimensions"
+    ]
+  }
+}

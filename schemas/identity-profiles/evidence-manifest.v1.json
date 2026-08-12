@@ -1,0 +1,31 @@
+{
+  "profile_version": "1.0.0",
+  "root": {
+    "additional_properties": false,
+    "kind": "object",
+    "properties": {
+      "campaign": {
+        "kind": "rcid"
+      },
+      "issued_at": {
+        "kind": "utc_instant",
+        "precision": 3
+      },
+      "root_digest": {
+        "kind": "digest"
+      },
+      "shards": {
+        "items": {
+          "kind": "rcid"
+        },
+        "kind": "set"
+      }
+    },
+    "required": [
+      "campaign",
+      "shards",
+      "root_digest",
+      "issued_at"
+    ]
+  }
+}

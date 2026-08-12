@@ -1,0 +1,49 @@
+{
+  "profile_version": "1.0.0",
+  "root": {
+    "additional_properties": false,
+    "kind": "object",
+    "properties": {
+      "blob": {
+        "kind": "base64url"
+      },
+      "day": {
+        "kind": "date"
+      },
+      "decimal": {
+        "kind": "exact_decimal"
+      },
+      "flag": {
+        "kind": "boolean"
+      },
+      "instant": {
+        "kind": "utc_instant",
+        "precision": 3
+      },
+      "nothing": {
+        "kind": "null"
+      },
+      "safe": {
+        "kind": "safe_integer"
+      },
+      "token": {
+        "kind": "token"
+      },
+      "uuid": {
+        "kind": "uuid",
+        "version": 7
+      }
+    },
+    "required": [
+      "blob",
+      "day",
+      "decimal",
+      "flag",
+      "instant",
+      "nothing",
+      "safe",
+      "token",
+      "uuid"
+    ]
+  }
+}

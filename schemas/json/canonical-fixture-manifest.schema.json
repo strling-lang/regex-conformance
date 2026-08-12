@@ -1,0 +1,237 @@
+{
+  "$id": "https://strling.dev/regex-conformance/schemas/canonical-fixture-manifest/1.0.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "assertions": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "cases": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 2,
+            "type": "array"
+          },
+          "kind": {
+            "enum": [
+              "equal-id",
+              "different-id",
+              "equal-canonical",
+              "different-canonical"
+            ]
+          }
+        },
+        "required": [
+          "kind",
+          "cases"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "cases": {
+      "items": {
+        "oneOf": [
+          {
+            "$ref": "#/$defs/jcsCase"
+          },
+          {
+            "$ref": "#/$defs/contentCase"
+          },
+          {
+            "$ref": "#/$defs/errorCase"
+          }
+        ]
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "manifest_version": {
+      "const": "1.0.0"
+    }
+  },
+  "required": [
+    "manifest_version",
+    "cases",
+    "assertions"
+  ],
+  "type": "object",
+  "$defs": {
+    "baseCase": {
+      "properties": {
+        "case_id": {
+          "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "case_id"
+      ],
+      "type": "object"
+    },
+    "contentCase": {
+      "additionalProperties": false,
+      "properties": {
+        "case_id": {
+          "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+          "type": "string"
+        },
+        "expected": {
+          "$ref": "#/$defs/contentExpected"
+        },
+        "identity": {},
+        "identity_schema_family_id": {
+          "type": "string"
+        },
+        "identity_schema_version": {
+          "type": "string"
+        },
+        "kind": {
+          "const": "content-id"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "profile": {
+          "type": "string"
+        },
+        "wire_schema": {
+          "$ref": "#/$defs/wireCoordinates"
+        }
+      },
+      "required": [
+        "case_id",
+        "kind",
+        "profile",
+        "namespace",
+        "identity_schema_family_id",
+        "identity_schema_version",
+        "identity",
+        "expected"
+      ],
+      "type": "object"
+    },
+    "contentExpected": {
+      "additionalProperties": false,
+      "properties": {
+        "canonical_byte_length": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "canonical_utf8_hex": {
+          "pattern": "^[0-9a-f]+$",
+          "type": "string"
+        },
+        "content_id": {
+          "pattern": "^rcid:v1:[a-z][a-z0-9]*(?:-[a-z0-9]+)*:h:jcs-sha256-v1:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "projection": {},
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "projection",
+        "canonical_utf8_hex",
+        "canonical_byte_length",
+        "sha256",
+        "content_id"
+      ],
+      "type": "object"
+    },
+    "errorCase": {
+      "additionalProperties": false,
+      "properties": {
+        "case_id": {
+          "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+          "type": "string"
+        },
+        "error_code": {
+          "type": "string"
+        },
+        "identity": {},
+        "kind": {
+          "const": "projection-error"
+        },
+        "profile": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "case_id",
+        "kind",
+        "profile",
+        "identity",
+        "error_code"
+      ],
+      "type": "object"
+    },
+    "jcsCase": {
+      "additionalProperties": false,
+      "properties": {
+        "case_id": {
+          "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+          "type": "string"
+        },
+        "expected": {
+          "additionalProperties": false,
+          "properties": {
+            "canonical_byte_length": {
+              "minimum": 1,
+              "type": "integer"
+            },
+            "canonical_utf8_hex": {
+              "pattern": "^[0-9a-f]+$",
+              "type": "string"
+            },
+            "sha256": {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "canonical_utf8_hex",
+            "canonical_byte_length",
+            "sha256"
+          ],
+          "type": "object"
+        },
+        "input": {},
+        "kind": {
+          "const": "jcs"
+        }
+      },
+      "required": [
+        "case_id",
+        "kind",
+        "input",
+        "expected"
+      ],
+      "type": "object"
+    },
+    "wireCoordinates": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_family_id": {
+          "type": "string"
+        },
+        "schema_revision_id": {
+          "type": "string"
+        },
+        "schema_version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_family_id",
+        "schema_version",
+        "schema_revision_id"
+      ],
+      "type": "object"
+    }
+  }
+}

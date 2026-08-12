@@ -1,0 +1,161 @@
+{
+  "$id": "https://strling.dev/regex-conformance/schemas/identity-profile/1.0.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "profile_version": {
+      "pattern": "^(?:0|[1-9][0-9]*)\\.(?:0|[1-9][0-9]*)\\.(?:0|[1-9][0-9]*)$",
+      "type": "string"
+    },
+    "root": {
+      "$ref": "#/$defs/node"
+    }
+  },
+  "required": [
+    "profile_version",
+    "root"
+  ],
+  "type": "object",
+  "$defs": {
+    "node": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/plainScalar"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "utc_instant"
+            },
+            "precision": {
+              "maximum": 9,
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "required": [
+            "kind",
+            "precision"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "uuid"
+            },
+            "version": {
+              "enum": [
+                4,
+                7
+              ],
+              "type": "integer"
+            }
+          },
+          "required": [
+            "kind"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "enum"
+            },
+            "values": {
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1,
+              "type": "array",
+              "uniqueItems": true
+            }
+          },
+          "required": [
+            "kind",
+            "values"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "additional_properties": {
+              "const": false
+            },
+            "kind": {
+              "const": "object"
+            },
+            "properties": {
+              "additionalProperties": {
+                "$ref": "#/$defs/node"
+              },
+              "type": "object"
+            },
+            "required": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "uniqueItems": true
+            }
+          },
+          "required": [
+            "kind",
+            "properties",
+            "required",
+            "additional_properties"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "items": {
+              "$ref": "#/$defs/node"
+            },
+            "kind": {
+              "enum": [
+                "sequence",
+                "set"
+              ]
+            }
+          },
+          "required": [
+            "kind",
+            "items"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "plainScalar": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "raw_text",
+            "canonical_text",
+            "token",
+            "safe_integer",
+            "exact_decimal",
+            "date",
+            "base64url",
+            "boolean",
+            "null",
+            "semver",
+            "rcid",
+            "digest"
+          ]
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "type": "object"
+    }
+  }
+}

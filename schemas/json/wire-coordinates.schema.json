@@ -1,0 +1,25 @@
+{
+  "$id": "https://strling.dev/regex-conformance/schemas/wire-coordinates/1.0.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "schema_family_id": {
+      "pattern": "^rcid:v1:schema-family:u7:[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+      "type": "string"
+    },
+    "schema_revision_id": {
+      "pattern": "^rcid:v1:schema-revision:h:jcs-sha256-v1:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "schema_version": {
+      "pattern": "^(?:0|[1-9][0-9]*)\\.(?:0|[1-9][0-9]*)\\.(?:0|[1-9][0-9]*)$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_family_id",
+    "schema_version",
+    "schema_revision_id"
+  ],
+  "type": "object"
+}
