@@ -91,6 +91,22 @@ Node.js 18 or newer is required for the independent canonical-byte oracle. These
 bootstrap tooling choices do not select the later Control Plane implementation
 language or packaging strategy.
 
+## Public validation
+
+Every pull request runs the public-validation check on a disposable GitHub-
+hosted Ubuntu worker with read-only repository permission. The workflow has no
+trusted evidence credentials, publication permission, self-hosted runner label,
+or cross-zone artifact output. Its action revisions and Linux dependency wheels
+are SHA-256 pinned.
+
+Run the same gate locally after installing requirements.lock:
+
+    python tools/ci/verify_public_ci.py --root .
+    python -m unittest discover -s tests/ci -v
+
+The machine-readable desired protection state and the operator verification
+procedure are documented in the [repository protection policy][protection].
+
 See [GOVERNANCE.md](GOVERNANCE.md) for authority and change control,
 [CONTRIBUTING.md](CONTRIBUTING.md) for contribution requirements, and
 [SECURITY.md](SECURITY.md) for private vulnerability reporting and execution
@@ -105,3 +121,4 @@ the repository source license.
 
 [program-hub]: https://app.notion.com/p/3ba7d9406475810db8eec9b5c449ffb7?pvs=204
 [foundation]: https://app.notion.com/p/3ba7d94064758154bf88ddfc16566b33?pvs=204
+[protection]: docs/governance/repository-protection-policy.md
