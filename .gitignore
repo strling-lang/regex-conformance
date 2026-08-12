@@ -1,0 +1,27 @@
+# Credentials and machine-local configuration
+.env
+.env.*
+!.env.example
+.secrets/
+
+# Local Control Plane and execution state (never canonical evidence)
+.conformance-state/
+.conformance-cache/
+.conformance-spool/
+.runtime-environments/
+
+# Common tool output
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage/
+node_modules/
+dist/
+build/
+*.tmp
+*.swp
+.DS_Store
+Thumbs.db

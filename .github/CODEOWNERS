@@ -1,0 +1,12 @@
+# Review routing does not supersede the authority rules in GOVERNANCE.md.
+* @TheCyberLocal
+
+# Consequential and trust-sensitive surfaces retain Program Owner review.
+/.github/ @TheCyberLocal
+/GOVERNANCE.md @TheCyberLocal
+/SECURITY.md @TheCyberLocal
+/LICENSE @TheCyberLocal
+/schemas/ @TheCyberLocal
+/certification/ @TheCyberLocal
+/environments/ @TheCyberLocal
+/protocol/ @TheCyberLocal
