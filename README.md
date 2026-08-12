@@ -61,6 +61,19 @@ never silently reported as regex non-conformance.
   code.
 - Certification gates pass through evidence, never declaration.
 
+## Repository layout
+
+The repository uses a language-neutral module scaffold so canonical definitions,
+runtime orchestration, verification, and analytical projections retain explicit
+boundaries before implementation-language choices are made. See the
+[repository layout and architecture traceability map](docs/architecture/repository-layout.md).
+Each module contains a local README defining what may and may not live there.
+
+Large runtime artifacts, realized environments, raw observations, physical-run
+records, diagnostics, execution spools, and warehouse datasets remain outside
+Git. Compact definitions, schemas, manifests, reports, hashes, and source belong
+here only when the architecture assigns them to repository authority.
+
 See [GOVERNANCE.md](GOVERNANCE.md) for authority and change control,
 [CONTRIBUTING.md](CONTRIBUTING.md) for contribution requirements, and
 [SECURITY.md](SECURITY.md) for private vulnerability reporting and execution
