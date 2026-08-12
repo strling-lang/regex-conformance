@@ -35,8 +35,10 @@ Repository administrators apply the following state to main:
 - zero required approvals during the single-authority bootstrap period;
 - default workflow token permission contents: read;
 - workflows cannot approve pull requests; and
-- action policy admits only the audited GitHub-owned actions used by the
-  workflow.
+- action policy admits organization-owned actions and only the exact audited
+  external actions used by the workflow, with full-length SHA pinning required
+  for every action. The bootstrap workflow currently uses no organization-owned
+  action.
 
 Zero approvals is intentional, not a waiver: the repository currently has one
 authorized owner, who cannot supply an independent approval of their own change.

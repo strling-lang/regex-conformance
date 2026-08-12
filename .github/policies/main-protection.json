@@ -16,6 +16,8 @@
     },
     "can_approve_pull_requests": false,
     "default_workflow_permissions": "read",
+    "organization_actions_allowed": true,
+    "require_full_length_sha": true,
     "public_artifact_upload": false
   },
   "branch": "main",

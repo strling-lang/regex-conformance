@@ -102,6 +102,8 @@ def evaluate(root: Path) -> list[Violation]:
     actions = policy.get("actions", {})
     _require(actions.get("default_workflow_permissions") == "read", violations, "default-token-permission", "default workflow token must be read-only")
     _require(actions.get("can_approve_pull_requests") is False, violations, "workflow-approval", "workflows may not approve pull requests")
+    _require(actions.get("organization_actions_allowed") is True, violations, "organization-action-policy", "repository enforcement must admit organization-owned actions")
+    _require(actions.get("require_full_length_sha") is True, violations, "action-pinning-policy", "repository enforcement must require full-length action SHAs")
     _require(actions.get("public_artifact_upload") is False, violations, "artifact-policy", "public artifact upload must be disabled")
     trusted_runner = policy.get("trusted_runner", {})
     _require(trusted_runner.get("admission_from_public_workflow") is False, violations, "trusted-admission", "public workflow may not admit trusted execution")

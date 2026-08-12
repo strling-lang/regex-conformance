@@ -94,3 +94,13 @@ class PublicCiPolicyTests(unittest.TestCase):
         path = self.root / ".github" / "policies" / "main-protection.json"
         path.write_text(path.read_text(encoding="utf-8").replace('"block_force_pushes": true', '"block_force_pushes": false'), encoding="utf-8")
         self.assertIn("branch-protection", self.codes())
+
+    def test_repository_action_policy_drift_is_rejected(self) -> None:
+        path = self.root / ".github" / "policies" / "main-protection.json"
+        path.write_text(path.read_text(encoding="utf-8").replace('"require_full_length_sha": true', '"require_full_length_sha": false'), encoding="utf-8")
+        self.assertIn("action-pinning-policy", self.codes())
+
+    def test_organization_action_policy_drift_is_rejected(self) -> None:
+        path = self.root / ".github" / "policies" / "main-protection.json"
+        path.write_text(path.read_text(encoding="utf-8").replace('"organization_actions_allowed": true', '"organization_actions_allowed": false'), encoding="utf-8")
+        self.assertIn("organization-action-policy", self.codes())
