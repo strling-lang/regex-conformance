@@ -1,0 +1,337 @@
+{
+  "$id": "https://strling.dev/regex-conformance/schemas/vertical-slice-selection/1.0.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "authority": {
+      "$ref": "#/$defs/authority"
+    },
+    "coverage_claims": {
+      "$ref": "#/$defs/coverageClaims"
+    },
+    "deferred_candidates": {
+      "items": {
+        "$ref": "#/$defs/deferredCandidate"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "vertical-slice-selection.v1"
+    },
+    "seed_accounting": {
+      "$ref": "#/$defs/seedAccounting"
+    },
+    "selected_archetypes": {
+      "items": {
+        "$ref": "#/$defs/archetype"
+      },
+      "maxItems": 6,
+      "minItems": 3,
+      "type": "array"
+    },
+    "selection_policy": {
+      "$ref": "#/$defs/selectionPolicy"
+    }
+  },
+  "required": [
+    "schema_version",
+    "authority",
+    "selection_policy",
+    "seed_accounting",
+    "selected_archetypes",
+    "deferred_candidates",
+    "coverage_claims"
+  ],
+  "type": "object",
+  "$defs": {
+    "archetype": {
+      "additionalProperties": false,
+      "properties": {
+        "architecture_purposes": {
+          "items": {
+            "$ref": "#/$defs/token"
+          },
+          "minItems": 1,
+          "type": "array",
+          "uniqueItems": true
+        },
+        "component_kind": {
+          "enum": [
+            "regex-engine-core",
+            "runtime-regex-facility",
+            "database-regex-subsystem"
+          ]
+        },
+        "display_name": {
+          "$ref": "#/$defs/nonempty"
+        },
+        "graph_shape": {
+          "enum": [
+            "standalone-ordinary-matcher",
+            "language-runtime-facility",
+            "database-embedded-backend"
+          ]
+        },
+        "profile_family_shape": {
+          "$ref": "#/$defs/token"
+        },
+        "registry_disposition": {
+          "const": "in-scope"
+        },
+        "required_environment_strategy": {
+          "enum": [
+            "native-source-build",
+            "native-runtime",
+            "oci-service"
+          ]
+        },
+        "required_node_roles": {
+          "items": {
+            "$ref": "#/$defs/nodeRole"
+          },
+          "minItems": 4,
+          "type": "array",
+          "uniqueItems": true
+        },
+        "seed_handle": {
+          "$ref": "#/$defs/seedHandle"
+        },
+        "selection_key": {
+          "$ref": "#/$defs/token"
+        },
+        "surface_class": {
+          "enum": [
+            "standalone-library-api",
+            "host-runtime-api",
+            "database-sql-api"
+          ]
+        },
+        "system_kind": {
+          "enum": [
+            "standalone-implementation-project",
+            "standard-library",
+            "database-product"
+          ]
+        },
+        "t02_coordinate_requirements": {
+          "$ref": "#/$defs/t02Requirements"
+        }
+      },
+      "required": [
+        "selection_key",
+        "seed_handle",
+        "display_name",
+        "registry_disposition",
+        "system_kind",
+        "component_kind",
+        "surface_class",
+        "graph_shape",
+        "profile_family_shape",
+        "required_environment_strategy",
+        "required_node_roles",
+        "architecture_purposes",
+        "t02_coordinate_requirements"
+      ],
+      "type": "object"
+    },
+    "authority": {
+      "additionalProperties": false,
+      "properties": {
+        "canonical_ids_allocated": {
+          "const": false
+        },
+        "profile_graph_page_url": {
+          "const": "https://app.notion.com/p/3ba7d9406475810da5f7ffc87e5e6753"
+        },
+        "registry_artifact_label": {
+          "const": "P04-SEED-DESIGN-2026-08-11-r1"
+        },
+        "registry_cutoff_date": {
+          "const": "2026-08-11"
+        },
+        "registry_page_url": {
+          "const": "https://app.notion.com/p/3ba7d940647581f6b7c3e1bf049c63c1"
+        },
+        "release_profile_gate_page_url": {
+          "const": "https://app.notion.com/p/3ba7d9406475815dbf8ef5bc4179f96a"
+        },
+        "type": {
+          "const": "governed-notion-seed-crosswalk"
+        }
+      },
+      "required": [
+        "type",
+        "registry_artifact_label",
+        "registry_cutoff_date",
+        "registry_page_url",
+        "profile_graph_page_url",
+        "release_profile_gate_page_url",
+        "canonical_ids_allocated"
+      ],
+      "type": "object"
+    },
+    "coverageClaims": {
+      "additionalProperties": false,
+      "properties": {
+        "embedded-api-distinct": {
+          "$ref": "#/$defs/selectionReferences"
+        },
+        "environment-strategy-diversity": {
+          "$ref": "#/$defs/selectionReferences"
+        },
+        "host-runtime": {
+          "$ref": "#/$defs/selectionReferences"
+        },
+        "standalone": {
+          "$ref": "#/$defs/selectionReferences"
+        }
+      },
+      "required": [
+        "standalone",
+        "host-runtime",
+        "embedded-api-distinct",
+        "environment-strategy-diversity"
+      ],
+      "type": "object"
+    },
+    "deferredCandidate": {
+      "additionalProperties": false,
+      "properties": {
+        "display_name": {
+          "$ref": "#/$defs/nonempty"
+        },
+        "reason_code": {
+          "enum": [
+            "backend-node-not-root-target",
+            "non-executable-authority",
+            "pending-investigation"
+          ]
+        },
+        "registry_disposition": {
+          "enum": [
+            "in-scope",
+            "normative-only-authority",
+            "pending-investigation"
+          ]
+        },
+        "seed_handle": {
+          "$ref": "#/$defs/seedHandle"
+        }
+      },
+      "required": [
+        "seed_handle",
+        "display_name",
+        "registry_disposition",
+        "reason_code"
+      ],
+      "type": "object"
+    },
+    "nodeRole": {
+      "enum": [
+        "surface",
+        "host-runtime",
+        "regex-facility",
+        "engine-backend",
+        "grammar-dialect-authority",
+        "unicode-text-provider",
+        "matching-backend",
+        "replacement-subsystem",
+        "error-result-adapter",
+        "platform-dependency"
+      ]
+    },
+    "nonempty": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "seedAccounting": {
+      "additionalProperties": false,
+      "properties": {
+        "candidate_count": {
+          "const": 19
+        },
+        "deferred_count": {
+          "const": 16
+        },
+        "selected_count": {
+          "const": 3
+        }
+      },
+      "required": [
+        "candidate_count",
+        "selected_count",
+        "deferred_count"
+      ],
+      "type": "object"
+    },
+    "seedHandle": {
+      "pattern": "^seed:p04:[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "type": "string"
+    },
+    "selectionPolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "basis": {
+          "const": "architectural-diversity"
+        },
+        "canonical_execution_coordinates_allocated": {
+          "const": false
+        },
+        "exact_coordinates_deferred_to": {
+          "const": "P17-T02"
+        },
+        "execution_eligible": {
+          "const": false
+        },
+        "installed_runtime_preference": {
+          "const": false
+        },
+        "minimum_archetypes": {
+          "const": 3
+        }
+      },
+      "required": [
+        "basis",
+        "minimum_archetypes",
+        "installed_runtime_preference",
+        "canonical_execution_coordinates_allocated",
+        "execution_eligible",
+        "exact_coordinates_deferred_to"
+      ],
+      "type": "object"
+    },
+    "selectionReferences": {
+      "items": {
+        "$ref": "#/$defs/token"
+      },
+      "minItems": 1,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "t02Requirements": {
+      "additionalProperties": false,
+      "properties": {
+        "environment": {
+          "const": "verified-recipe-and-realized-fingerprint"
+        },
+        "profile": {
+          "const": "exact-required-component-graph"
+        },
+        "release": {
+          "const": "verified-stable-public-release"
+        }
+      },
+      "required": [
+        "release",
+        "profile",
+        "environment"
+      ],
+      "type": "object"
+    },
+    "token": {
+      "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+      "type": "string"
+    }
+  }
+}

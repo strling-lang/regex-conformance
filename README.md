@@ -13,10 +13,11 @@ a standards guarantee.
 
 ## Program status
 
-Repository bootstrap is certified and the portable Control Plane foundation is
-being implemented. No observation in this repository is a certified conformance
-result yet, and no production evidence campaign has been authorized merely by
-the existence of this repository.
+Repository bootstrap and the portable Control Plane foundation are certified.
+The P17 architectural vertical slice is active, with its representative runtime
+archetypes selected from the governed seed registry. No observation in this
+repository is a certified conformance result yet, and no production evidence
+campaign has been authorized merely by the existence of this repository.
 
 Program planning, dependencies, decisions, risks, and certification gates are
 maintained in the canonical [STRling Regex Conformance Program][program-hub].

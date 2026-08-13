@@ -85,6 +85,16 @@ authority. Typed models additionally enforce metric-name uniqueness,
 cross-field bounds, RFC 8785 determinism, secret rejection, and append-only
 sample identity.
 
+`json/vertical-slice-selection.schema.json` defines the governed P17 archetype
+crosswalk. It requires three in-scope root surfaces spanning standalone,
+host/runtime, and database/embedded APIs; requires native-build,
+native-runtime, and OCI-service environment strategies; conserves the complete
+19-candidate design-seed ledger; and permanently keeps the selection
+non-executable until exact release/profile/environment coordinates are supplied
+by P17-T02. Semantic validation additionally rejects identity collisions,
+candidate-accounting overlap, nondeterministic ordering, unknown coverage,
+disposition/reason mismatch, and missing architecture diversity.
+
 `identity-profiles/environment-fingerprint.v1.json` defines the scientific
 identity projection for verified realized environments. It excludes physical
 transaction IDs, cache paths, provider handles, and timestamps while binding the

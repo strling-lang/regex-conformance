@@ -9,6 +9,7 @@ from jsonschema import ValidationError, validators
 
 from .errors import ConformanceDataError
 from .jsonio import load_strict
+from .selection import validate_vertical_slice_selection
 
 
 def validate_instance(instance: Any, schema: dict[str, Any], *, source: str = "record") -> None:
@@ -35,6 +36,7 @@ def validate_repository(root: Path) -> dict[str, int]:
     profile_schema = load_strict(schemas / "identity-profile.schema.json")
     registry_schema = load_strict(schemas / "namespace-registry.schema.json")
     fixture_schema = load_strict(schemas / "canonical-fixture-manifest.schema.json")
+    selection_schema = load_strict(schemas / "vertical-slice-selection.schema.json")
 
     for source in sorted(schemas.glob("*.schema.json")):
         schema = load_strict(source)
@@ -52,4 +54,14 @@ def validate_repository(root: Path) -> dict[str, int]:
     manifests = sorted((root / "tests" / "fixtures" / "identity").glob("manifest*.json"))
     for source in manifests:
         validate_instance(load_strict(source), fixture_schema, source=str(source))
-    return {"schemas": len(list(schemas.glob("*.schema.json"))), "profiles": len(profiles), "manifests": len(manifests)}
+    selections = sorted((root / "registries" / "profiles").glob("vertical-slice-archetypes*.json"))
+    for source in selections:
+        record = load_strict(source)
+        validate_instance(record, selection_schema, source=str(source))
+        validate_vertical_slice_selection(record, source=str(source))
+    return {
+        "schemas": len(list(schemas.glob("*.schema.json"))),
+        "profiles": len(profiles),
+        "manifests": len(manifests),
+        "vertical_slice_selections": len(selections),
+    }

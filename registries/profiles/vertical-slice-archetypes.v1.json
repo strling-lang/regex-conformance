@@ -1,0 +1,240 @@
+{
+  "authority": {
+    "canonical_ids_allocated": false,
+    "profile_graph_page_url": "https://app.notion.com/p/3ba7d9406475810da5f7ffc87e5e6753",
+    "registry_artifact_label": "P04-SEED-DESIGN-2026-08-11-r1",
+    "registry_cutoff_date": "2026-08-11",
+    "registry_page_url": "https://app.notion.com/p/3ba7d940647581f6b7c3e1bf049c63c1",
+    "release_profile_gate_page_url": "https://app.notion.com/p/3ba7d9406475815dbf8ef5bc4179f96a",
+    "type": "governed-notion-seed-crosswalk"
+  },
+  "coverage_claims": {
+    "embedded-api-distinct": [
+      "mysql-regex"
+    ],
+    "environment-strategy-diversity": [
+      "mysql-regex",
+      "pcre2-ordinary",
+      "python-re"
+    ],
+    "host-runtime": [
+      "python-re"
+    ],
+    "standalone": [
+      "pcre2-ordinary"
+    ]
+  },
+  "deferred_candidates": [
+    {
+      "display_name": "C++ std::regex host facility",
+      "reason_code": "pending-investigation",
+      "registry_disposition": "pending-investigation",
+      "seed_handle": "seed:p04:cpp-std-regex"
+    },
+    {
+      "display_name": ".NET System.Text.RegularExpressions facility",
+      "reason_code": "pending-investigation",
+      "registry_disposition": "pending-investigation",
+      "seed_handle": "seed:p04:dotnet-regex"
+    },
+    {
+      "display_name": "ECMAScript RegExp definition",
+      "reason_code": "non-executable-authority",
+      "registry_disposition": "normative-only-authority",
+      "seed_handle": "seed:p04:ecmascript-regexp-standard"
+    },
+    {
+      "display_name": "ECMAScript runtime implementations",
+      "reason_code": "pending-investigation",
+      "registry_disposition": "pending-investigation",
+      "seed_handle": "seed:p04:ecmascript-runtime-family"
+    },
+    {
+      "display_name": "Go regexp facility",
+      "reason_code": "pending-investigation",
+      "registry_disposition": "pending-investigation",
+      "seed_handle": "seed:p04:go-regexp"
+    },
+    {
+      "display_name": "ICU Regular Expressions",
+      "reason_code": "backend-node-not-root-target",
+      "registry_disposition": "in-scope",
+      "seed_handle": "seed:p04:icu-regex"
+    },
+    {
+      "display_name": "Java Pattern regex facility",
+      "reason_code": "pending-investigation",
+      "registry_disposition": "pending-investigation",
+      "seed_handle": "seed:p04:java-pattern"
+    },
+    {
+      "display_name": "Onigmo implementation",
+      "reason_code": "pending-investigation",
+      "registry_disposition": "pending-investigation",
+      "seed_handle": "seed:p04:onigmo"
+    },
+    {
+      "display_name": "Perl regex facility",
+      "reason_code": "pending-investigation",
+      "registry_disposition": "pending-investigation",
+      "seed_handle": "seed:p04:perl-regex"
+    },
+    {
+      "display_name": "POSIX BRE definition",
+      "reason_code": "non-executable-authority",
+      "registry_disposition": "normative-only-authority",
+      "seed_handle": "seed:p04:posix-bre-standard"
+    },
+    {
+      "display_name": "POSIX ERE definition",
+      "reason_code": "non-executable-authority",
+      "registry_disposition": "normative-only-authority",
+      "seed_handle": "seed:p04:posix-ere-standard"
+    },
+    {
+      "display_name": "RE2 implementation",
+      "reason_code": "pending-investigation",
+      "registry_disposition": "pending-investigation",
+      "seed_handle": "seed:p04:re2"
+    },
+    {
+      "display_name": "Ruby Regexp host facility",
+      "reason_code": "pending-investigation",
+      "registry_disposition": "pending-investigation",
+      "seed_handle": "seed:p04:ruby-regexp"
+    },
+    {
+      "display_name": "Rust regex crate",
+      "reason_code": "pending-investigation",
+      "registry_disposition": "pending-investigation",
+      "seed_handle": "seed:p04:rust-regex"
+    },
+    {
+      "display_name": "Rust regex-automata crate",
+      "reason_code": "pending-investigation",
+      "registry_disposition": "pending-investigation",
+      "seed_handle": "seed:p04:rust-regex-automata"
+    },
+    {
+      "display_name": "Swift Regex facility",
+      "reason_code": "pending-investigation",
+      "registry_disposition": "pending-investigation",
+      "seed_handle": "seed:p04:swift-regex"
+    }
+  ],
+  "schema_version": "vertical-slice-selection.v1",
+  "seed_accounting": {
+    "candidate_count": 19,
+    "deferred_count": 16,
+    "selected_count": 3
+  },
+  "selected_archetypes": [
+    {
+      "architecture_purposes": [
+        "byte-code-unit-indexing",
+        "native-source-acquisition",
+        "ordinary-matcher-path",
+        "standalone-root-surface"
+      ],
+      "component_kind": "regex-engine-core",
+      "display_name": "PCRE2 ordinary matching API",
+      "graph_shape": "standalone-ordinary-matcher",
+      "profile_family_shape": "ordinary-matcher",
+      "registry_disposition": "in-scope",
+      "required_environment_strategy": "native-source-build",
+      "required_node_roles": [
+        "surface",
+        "regex-facility",
+        "engine-backend",
+        "grammar-dialect-authority",
+        "unicode-text-provider",
+        "matching-backend",
+        "platform-dependency"
+      ],
+      "seed_handle": "seed:p04:pcre2",
+      "selection_key": "pcre2-ordinary",
+      "surface_class": "standalone-library-api",
+      "system_kind": "standalone-implementation-project",
+      "t02_coordinate_requirements": {
+        "environment": "verified-recipe-and-realized-fingerprint",
+        "profile": "exact-required-component-graph",
+        "release": "verified-stable-public-release"
+      }
+    },
+    {
+      "architecture_purposes": [
+        "host-owned-api",
+        "host-result-error-transforms",
+        "runtime-bound-unicode",
+        "string-and-bytes-boundary"
+      ],
+      "component_kind": "runtime-regex-facility",
+      "display_name": "Python standard-library re API",
+      "graph_shape": "language-runtime-facility",
+      "profile_family_shape": "python-standard-library-re",
+      "registry_disposition": "in-scope",
+      "required_environment_strategy": "native-runtime",
+      "required_node_roles": [
+        "surface",
+        "host-runtime",
+        "regex-facility",
+        "grammar-dialect-authority",
+        "unicode-text-provider",
+        "replacement-subsystem",
+        "error-result-adapter",
+        "platform-dependency"
+      ],
+      "seed_handle": "seed:p04:python-re",
+      "selection_key": "python-re",
+      "surface_class": "host-runtime-api",
+      "system_kind": "standard-library",
+      "t02_coordinate_requirements": {
+        "environment": "verified-recipe-and-realized-fingerprint",
+        "profile": "exact-required-component-graph",
+        "release": "verified-stable-public-release"
+      }
+    },
+    {
+      "architecture_purposes": [
+        "database-sql-surface",
+        "embedded-backend-boundary",
+        "host-collation-transforms",
+        "service-process-lifecycle"
+      ],
+      "component_kind": "database-regex-subsystem",
+      "display_name": "MySQL regular-expression SQL surface",
+      "graph_shape": "database-embedded-backend",
+      "profile_family_shape": "mysql-regex-sql",
+      "registry_disposition": "in-scope",
+      "required_environment_strategy": "oci-service",
+      "required_node_roles": [
+        "surface",
+        "host-runtime",
+        "regex-facility",
+        "engine-backend",
+        "grammar-dialect-authority",
+        "unicode-text-provider",
+        "replacement-subsystem",
+        "error-result-adapter",
+        "platform-dependency"
+      ],
+      "seed_handle": "seed:p04:mysql-regex",
+      "selection_key": "mysql-regex",
+      "surface_class": "database-sql-api",
+      "system_kind": "database-product",
+      "t02_coordinate_requirements": {
+        "environment": "verified-recipe-and-realized-fingerprint",
+        "profile": "exact-required-component-graph",
+        "release": "verified-stable-public-release"
+      }
+    }
+  ],
+  "selection_policy": {
+    "basis": "architectural-diversity",
+    "canonical_execution_coordinates_allocated": false,
+    "exact_coordinates_deferred_to": "P17-T02",
+    "execution_eligible": false,
+    "installed_runtime_preference": false,
+    "minimum_archetypes": 3
+  }
+}

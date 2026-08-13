@@ -88,3 +88,10 @@ bounded low-confidence estimates receive their safety margin; interrupted and
 identity-mismatched acquisitions roll back; an admitted environment reaches a
 verified Ready state; cache protection, transfer resume, durable restart,
 structured progress, and process-tree containment survive their fault cases.
+
+Schema tests also validate the governed P17 vertical-slice archetype crosswalk.
+They conserve all 19 design-seed candidates; prove that only in-scope subjects
+are selected; require standalone, host/runtime, database/embedded, native-build,
+native-runtime, and OCI-service coverage; keep the selection non-executable
+until exact T02 coordinates exist; and reject collisions, unknown coverage,
+convenience selection, false deferrals, and accounting gaps.
