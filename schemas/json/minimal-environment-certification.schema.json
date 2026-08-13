@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://strling.org/regex-conformance/schemas/minimal-environment-certification.v1.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version","repository_state","observed_at","evidence_sha256","evidence_filename","trust_class","all_ready_and_released","results"],
+  "properties": {
+    "schema_version": {"const":"minimal-environment-certification.v1"},
+    "repository_state": {
+      "type":"object",
+      "additionalProperties":false,
+      "required":["head_commit","worktree_clean"],
+      "properties": {
+        "head_commit":{"type":"string","pattern":"^[0-9a-f]{40}$"},
+        "worktree_clean":{"type":"boolean"}
+      }
+    },
+    "observed_at": {"type":"string","format":"date-time"},
+    "evidence_sha256": {"type":"string","pattern":"^[0-9a-f]{64}$"},
+    "evidence_filename": {"type":"string","pattern":"^minimal-environment-certification-sha256-[0-9a-f]{64}\\.json$"},
+    "trust_class": {"enum":["development","trusted_executioner","untrusted_public"]},
+    "all_ready_and_released": {"const":true},
+    "results": {
+      "type":"array","minItems":3,"maxItems":3,
+      "items": {
+        "type":"object","additionalProperties":false,
+        "required":["selection_key","recipe_revision_id","target_profile_id","target_release_id","environment_fingerprint_id","verification_digest","provider_implementation_digest","smoke_probe_count"],
+        "properties": {
+          "selection_key":{"enum":["pcre2-ordinary","python-re","mysql-regex"]},
+          "recipe_revision_id":{"type":"string","pattern":"^rcid:v1:environment-recipe-revision:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+          "target_profile_id":{"type":"string","pattern":"^rcid:v1:profile:u7:"},
+          "target_release_id":{"type":"string","pattern":"^rcid:v1:release:u7:"},
+          "environment_fingerprint_id":{"type":"string","pattern":"^rcid:v1:environment-fingerprint:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+          "verification_digest":{"type":"string","pattern":"^[0-9a-f]{64}$"},
+          "provider_implementation_digest":{"type":"string","pattern":"^[0-9a-f]{64}$"},
+          "smoke_probe_count":{"type":"integer","minimum":2}
+        }
+      }
+    }
+  }
+}

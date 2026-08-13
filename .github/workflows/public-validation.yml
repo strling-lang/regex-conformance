@@ -62,3 +62,47 @@ jobs:
         run: |
           python schemas/tooling/python/run.py materialize-fixtures
           git diff --exit-code -- tests/fixtures/identity/manifest.json
+
+  minimal-environment-certification:
+    name: minimal-environment-certification
+    if: github.event_name != 'pull_request'
+    needs: public-validation
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      PIP_DISABLE_PIP_VERSION_CHECK: "1"
+      PIP_NO_INPUT: "1"
+      PYTHONDONTWRITEBYTECODE: "1"
+      PYTHONHASHSEED: "0"
+    steps:
+      - name: Check out the validated revision without retained credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Select exact Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12.10"
+          cache: ""
+
+      - name: Install hash-locked certification dependencies
+        run: "python -m pip install --only-binary=:all: --require-hashes --requirement requirements.ci.lock"
+
+      - name: Verify disposable worker prerequisites
+        run: |
+          python -m pip check
+          cmake --version
+          cc --version
+          docker version
+          python schemas/tooling/python/run.py validate-repository
+          python -m unittest discover -s tests/control_plane -p 'test_certified_environment*.py' -v
+          python -m unittest discover -s tests/control_plane -p 'test_minimal_environment_certification.py' -v
+
+      - name: Realize, verify, fingerprint, and release minimal environments
+        run: |
+          python tools/environments/certify_minimal.py --state-root "$RUNNER_TEMP/strling-regex-state" --evidence-dir "$RUNNER_TEMP/strling-regex-evidence" --trust-class untrusted_public --compact-report "$RUNNER_TEMP/minimal-environment-certification.json"
+          python schemas/tooling/python/run.py validate "$RUNNER_TEMP/minimal-environment-certification.json" schemas/json/minimal-environment-certification.schema.json
+          test -z "$(find "$RUNNER_TEMP/strling-regex-state" -mindepth 1 -print -quit)"
+          test -z "$(docker ps --all --quiet --filter name=strling-rc-)"
+          git diff --exit-code

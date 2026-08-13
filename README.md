@@ -14,10 +14,11 @@ a standards guarantee.
 ## Program status
 
 Repository bootstrap and the portable Control Plane foundation are certified.
-The P17 architectural vertical slice is active, with its representative runtime
-archetypes selected from the governed seed registry. No observation in this
-repository is a certified conformance result yet, and no production evidence
-campaign has been authorized merely by the existence of this repository.
+The P17 architectural vertical slice is active. Its exact PCRE2, CPython, and
+MySQL release/profile coordinates and minimal reproducible environments are
+certified. Environment smoke observations establish executable identity only;
+no repository observation is a conformance result yet, and no production
+evidence campaign is authorized merely by this certification.
 
 Program planning, dependencies, decisions, risks, and certification gates are
 maintained in the canonical [STRling Regex Conformance Program][program-hub].
@@ -112,6 +113,25 @@ and the CLI delegates to reusable controller services. See [the Control Plane
 module](control-plane/README.md) for its command groups, stable exit codes,
 dry-run contract, service-injection boundary, configuration, and validation
 details.
+
+## Minimal certified environments
+
+A Linux worker with CMake, a C compiler, and Docker can independently realize,
+verify, fingerprint, and release all three vertical-slice environments:
+
+```sh
+python tools/environments/certify_minimal.py \
+  --state-root /var/tmp/strling-regex-state \
+  --evidence-dir /var/tmp/strling-regex-evidence \
+  --trust-class development \
+  --compact-report reports/vertical-slice/minimal-environment-certification.json
+```
+
+The state root and raw content-addressed evidence directory must remain outside
+Git. The compact report records their digest, the exact repository `HEAD`, and
+whether certification ran from a clean worktree. See the [minimal certified
+environment architecture](docs/architecture/minimal-certified-environments.md)
+for provenance, containment, commands, trust boundaries, and known limits.
 
 ## Public validation and promotion
 

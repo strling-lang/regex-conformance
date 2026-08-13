@@ -65,6 +65,13 @@ class PublicCiPolicyTests(unittest.TestCase):
         )
         self.assertIn("missing-validation", self.codes())
 
+    def test_missing_or_trust_upgraded_environment_certification_is_rejected(self) -> None:
+        self.mutate_workflow("certify_minimal.py", "certification-disabled.py")
+        self.assertIn("missing-validation", self.codes())
+        self.mutate_workflow("certification-disabled.py", "certify_minimal.py")
+        self.mutate_workflow("--trust-class untrusted_public", "--trust-class trusted_executioner")
+        self.assertIn("missing-validation", self.codes())
+
     def test_write_permission_is_rejected(self) -> None:
         self.mutate_workflow("contents: read", "contents: write")
         self.assertIn("write-permission", self.codes())

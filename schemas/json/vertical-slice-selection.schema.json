@@ -139,7 +139,10 @@
       "additionalProperties": false,
       "properties": {
         "canonical_ids_allocated": {
-          "const": false
+          "const": true
+        },
+        "coordinate_registry_path": {
+          "const": "registries/profiles/vertical-slice-coordinates.v1.json"
         },
         "profile_graph_page_url": {
           "const": "https://app.notion.com/p/3ba7d9406475810da5f7ffc87e5e6753"
@@ -167,7 +170,8 @@
         "registry_page_url",
         "profile_graph_page_url",
         "release_profile_gate_page_url",
-        "canonical_ids_allocated"
+        "canonical_ids_allocated",
+        "coordinate_registry_path"
       ],
       "type": "object"
     },
@@ -276,13 +280,13 @@
           "const": "architectural-diversity"
         },
         "canonical_execution_coordinates_allocated": {
-          "const": false
+          "const": true
         },
-        "exact_coordinates_deferred_to": {
-          "const": "P17-T02"
+        "exact_coordinates_source": {
+          "const": "registries/profiles/vertical-slice-coordinates.v1.json"
         },
         "execution_eligible": {
-          "const": false
+          "const": true
         },
         "installed_runtime_preference": {
           "const": false
@@ -297,7 +301,7 @@
         "installed_runtime_preference",
         "canonical_execution_coordinates_allocated",
         "execution_eligible",
-        "exact_coordinates_deferred_to"
+        "exact_coordinates_source"
       ],
       "type": "object"
     },

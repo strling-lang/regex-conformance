@@ -78,9 +78,12 @@ enter scientific identity.
 
 P16A-T02 certifies the common contract through materially different native-like
 and OCI-like deterministic providers. It does not claim those fixtures are
-certified ecosystem environments. Concrete runtime archetypes and minimal
-certified environments enter in P17. CLI environment commands and hard workload
-containment remain in their separately gated P16A tasks.
+certified ecosystem environments. P17 adds typed providers for the exact PCRE2
+source build, CPython archive, and MySQL OCI service. Those providers accept no
+recipe-supplied shell, enforce immutable acquisition and containment, verify
+runtime/configuration facts and smoke behavior, fingerprint `Ready`, and release
+realizations. Their certification harness rejects concurrent use of one state
+root and writes raw evidence outside Git.
 
 Local Control Plane state remains operational and non-canonical.
 

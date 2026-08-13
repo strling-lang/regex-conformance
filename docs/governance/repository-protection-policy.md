@@ -9,14 +9,19 @@ tooling path; this policy does not require GitHub branch protection.
 ## Public contribution boundary
 
 The public-validation workflow is the only public contribution workflow at
-repository bootstrap. It runs external pull requests, `main` pushes,
-and manual validation events exclusively on GitHub-hosted ubuntu-24.04. It uses
-read-only repository permission and retains no checkout credential. It has no
+repository bootstrap. Its source-validation job runs external pull requests,
+`main` pushes, and manual validation events exclusively on GitHub-hosted
+ubuntu-24.04. A separate job realizes the three minimal certified environments
+on `main` pushes and manual events after source validation; it never runs pull
+request code. Both jobs use
+read-only repository permission and retain no checkout credential. They have no
 secret reference, OIDC permission, artifact upload, publication step,
 reusable-workflow handoff, privileged trigger, or self-hosted runner route.
 
 The workflow validates untrusted source. Its outputs are never empirical
-evidence, trusted executables, environment inputs, or publication authority. A
+production evidence, trusted executables, reusable environment inputs, or
+publication authority. Ephemeral certification evidence is destroyed with the
+hosted worker after its digest and compact result are emitted to the job log. A
 future protected evidence workflow must be a separate trust zone with local
 admission; it may not extend or call this workflow across the boundary.
 

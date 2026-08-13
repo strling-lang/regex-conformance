@@ -1,0 +1,162 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://strling.org/regex-conformance/schemas/vertical-slice-coordinates.v1.json",
+  "title": "STRling vertical-slice execution coordinates",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "coordinate_schema_family_id",
+    "selection_source",
+    "systems",
+    "components",
+    "releases",
+    "profile_families",
+    "profiles",
+    "environment_bindings"
+  ],
+  "properties": {
+    "schema_version": { "const": "vertical-slice-coordinates.v1" },
+    "coordinate_schema_family_id": { "$ref": "#/$defs/assignedSchemaFamilyId" },
+    "selection_source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "selected_keys"],
+      "properties": {
+        "path": { "const": "registries/profiles/vertical-slice-archetypes.v1.json" },
+        "selected_keys": {
+          "type": "array",
+          "prefixItems": [
+            { "const": "pcre2-ordinary" },
+            { "const": "python-re" },
+            { "const": "mysql-regex" }
+          ],
+          "items": false
+        }
+      }
+    },
+    "systems": { "type": "array", "minItems": 4, "maxItems": 4, "items": { "$ref": "#/$defs/system" } },
+    "components": { "type": "array", "minItems": 4, "maxItems": 4, "items": { "$ref": "#/$defs/component" } },
+    "releases": { "type": "array", "minItems": 4, "maxItems": 4, "items": { "$ref": "#/$defs/release" } },
+    "profile_families": { "type": "array", "minItems": 3, "maxItems": 3, "items": { "$ref": "#/$defs/profileFamily" } },
+    "profiles": { "type": "array", "minItems": 3, "maxItems": 3, "items": { "$ref": "#/$defs/profile" } },
+    "environment_bindings": { "type": "array", "minItems": 3, "maxItems": 3, "items": { "$ref": "#/$defs/environmentBinding" } }
+  },
+  "$defs": {
+    "token": { "type": "string", "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$" },
+    "assignedId": { "type": "string", "pattern": "^rcid:v1:[a-z][a-z0-9]*(?:-[a-z0-9]+)*:u7:[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$" },
+    "assignedSchemaFamilyId": { "type": "string", "pattern": "^rcid:v1:schema-family:u7:[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$" },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["authority", "url"],
+      "properties": {
+        "authority": { "$ref": "#/$defs/token" },
+        "url": { "type": "string", "pattern": "^https://" }
+      }
+    },
+    "system": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["system_id", "system_key", "display_name", "kind"],
+      "properties": {
+        "system_id": { "$ref": "#/$defs/assignedId" },
+        "system_key": { "$ref": "#/$defs/token" },
+        "display_name": { "type": "string", "minLength": 1 },
+        "kind": { "$ref": "#/$defs/token" }
+      }
+    },
+    "component": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["component_id", "component_key", "system_id", "kind"],
+      "properties": {
+        "component_id": { "$ref": "#/$defs/assignedId" },
+        "component_key": { "$ref": "#/$defs/token" },
+        "system_id": { "$ref": "#/$defs/assignedId" },
+        "kind": { "$ref": "#/$defs/token" }
+      }
+    },
+    "release": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["release_id", "component_id", "version", "release_date", "channel", "stability", "upstream_identity", "evidence"],
+      "properties": {
+        "release_id": { "$ref": "#/$defs/assignedId" },
+        "component_id": { "$ref": "#/$defs/assignedId" },
+        "version": { "type": "string", "minLength": 1 },
+        "release_date": { "type": "string", "format": "date" },
+        "channel": { "const": "stable" },
+        "stability": { "enum": ["stable", "lts"] },
+        "upstream_identity": { "type": "string", "minLength": 1 },
+        "evidence": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/evidence" } }
+      }
+    },
+    "profileFamily": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["profile_family_id", "selection_key", "shape"],
+      "properties": {
+        "profile_family_id": { "$ref": "#/$defs/assignedId" },
+        "selection_key": { "$ref": "#/$defs/token" },
+        "shape": { "$ref": "#/$defs/token" }
+      }
+    },
+    "profileNode": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["node_key", "component_id", "release_id", "roles", "facets"],
+      "properties": {
+        "node_key": { "$ref": "#/$defs/token" },
+        "component_id": { "$ref": "#/$defs/assignedId" },
+        "release_id": { "$ref": "#/$defs/assignedId" },
+        "roles": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/token" } },
+        "facets": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "value"],
+            "properties": { "name": { "$ref": "#/$defs/token" }, "value": { "type": "string", "minLength": 1 } }
+          }
+        }
+      }
+    },
+    "profileEdge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["from", "to", "relation"],
+      "properties": {
+        "from": { "$ref": "#/$defs/token" },
+        "to": { "$ref": "#/$defs/token" },
+        "relation": { "$ref": "#/$defs/token" }
+      }
+    },
+    "profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["profile_id", "profile_family_id", "selection_key", "root_node", "nodes", "edges"],
+      "properties": {
+        "profile_id": { "$ref": "#/$defs/assignedId" },
+        "profile_family_id": { "$ref": "#/$defs/assignedId" },
+        "selection_key": { "$ref": "#/$defs/token" },
+        "root_node": { "$ref": "#/$defs/token" },
+        "nodes": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/profileNode" } },
+        "edges": { "type": "array", "items": { "$ref": "#/$defs/profileEdge" } }
+      }
+    },
+    "environmentBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["selection_key", "profile_id", "target_release_id", "environment_recipe_id", "strategy"],
+      "properties": {
+        "selection_key": { "$ref": "#/$defs/token" },
+        "profile_id": { "$ref": "#/$defs/assignedId" },
+        "target_release_id": { "$ref": "#/$defs/assignedId" },
+        "environment_recipe_id": { "$ref": "#/$defs/assignedId" },
+        "strategy": { "enum": ["native-source-build", "native-runtime", "oci-service"] }
+      }
+    }
+  }
+}

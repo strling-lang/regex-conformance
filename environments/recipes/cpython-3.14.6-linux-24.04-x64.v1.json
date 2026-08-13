@@ -1,0 +1,19 @@
+{
+  "schema_version":"certified-environment-recipe.v1",
+  "recipe_schema_family_id":"rcid:v1:schema-family:u7:019ff984-a52e-74e2-bc5c-82fcc3e2134a",
+  "environment_recipe_id":"rcid:v1:environment-recipe:u7:019ff984-a52e-7e2b-8bef-a29dd16f7bd8",
+  "recipe_revision_id":"rcid:v1:environment-recipe-revision:h:jcs-sha256-v1:5186355eb6137b5ec6692dff7b03df4afe45bf5d9a572f97572730585080b029",
+  "selection_key":"python-re",
+  "target_profile_id":"rcid:v1:profile:u7:019ff984-a52e-746c-b7c9-7f82de44ebfd",
+  "target_release_id":"rcid:v1:release:u7:019ff984-a52e-755c-a7b5-29741bc00c2c",
+  "strategy":"native-runtime",
+  "provider_name":"cpython-archive",
+  "artifacts":[{"name":"cpython-runtime","sha256":"29dc7f3887a430fe7a0005fee4732b00be1bbed5bf21aa1e43f8d947eb1b9f61","size_bytes":108818658,"media_type":"gzip-tar","locators":["https://github.com/actions/python-versions/releases/download/3.14.6-27283001424/python-3.14.6-linux-24.04-x64.tar.gz"]}],
+  "expected_runtime_facts":[{"name":"architecture","value":"x86_64"},{"name":"cache-tag","value":"cpython-314"},{"name":"implementation","value":"cpython"},{"name":"python-version","value":"3.14.6"},{"name":"soabi","value":"cpython-314-x86_64-linux-gnu"},{"name":"unicode-version","value":"16.0.0"}],
+  "expected_configuration":[{"name":"locale","value":"C.UTF-8"},{"name":"runtime-layout","value":"actions-python-versions-portable"},{"name":"timezone","value":"UTC"}],
+  "required_capabilities":["immutable-runtime-archive","offline-runtime","safe-archive-extraction"],
+  "smoke_probe_ids":["python-re-match","python-replacement","python-version"],
+  "isolation_policy":{"digest":"c3ce618a81249d0dba3af5a2d21f35410f51ba38e5fc92a887796acee0879bdc","policy_version":"1.0.0","acquisition_network":"https-allowlisted","build_network":"not-applicable","runtime_network":"none","process_tree":"contained","filesystem":"transaction-root","resource_limits":{"wall_time_ms":300000,"stdout_bytes":1048576,"stderr_bytes":1048576,"memory_bytes":2147483648,"cpu_time_seconds":120}},
+  "construction":{"platform":{"os":"linux","architecture":"x86-64","distribution":"ubuntu","distribution_version":"24.04"},"hermeticity":"immutable-binary-artifact","download_upper_bound_bytes":109000000,"expanded_upper_bound_bytes":700000000,"scratch_upper_bound_bytes":1073741824,"parameters":[{"name":"archive-setup-script","value":"never-executed"},{"name":"runtime-entrypoint","value":"bin/python3.14"},{"name":"shared-library-path","value":"lib"}]},
+  "provenance":[{"authority":"python-software-foundation","url":"https://www.python.org/downloads/release/python-3146/","claim":"release-identity"},{"authority":"github-actions","url":"https://github.com/actions/python-versions/releases/tag/3.14.6-27283001424","claim":"binary-artifact"}]
+}

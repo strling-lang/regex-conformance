@@ -1,6 +1,7 @@
 {
   "authority": {
-    "canonical_ids_allocated": false,
+    "canonical_ids_allocated": true,
+    "coordinate_registry_path": "registries/profiles/vertical-slice-coordinates.v1.json",
     "profile_graph_page_url": "https://app.notion.com/p/3ba7d9406475810da5f7ffc87e5e6753",
     "registry_artifact_label": "P04-SEED-DESIGN-2026-08-11-r1",
     "registry_cutoff_date": "2026-08-11",
@@ -231,9 +232,9 @@
   ],
   "selection_policy": {
     "basis": "architectural-diversity",
-    "canonical_execution_coordinates_allocated": false,
-    "exact_coordinates_deferred_to": "P17-T02",
-    "execution_eligible": false,
+    "canonical_execution_coordinates_allocated": true,
+    "exact_coordinates_source": "registries/profiles/vertical-slice-coordinates.v1.json",
+    "execution_eligible": true,
     "installed_runtime_preference": false,
     "minimum_archetypes": 3
   }

@@ -1,0 +1,68 @@
+{
+  "schema_version": "vertical-slice-coordinates.v1",
+  "coordinate_schema_family_id": "rcid:v1:schema-family:u7:019ff984-a52e-7a92-b209-bf5f2d1de5e3",
+  "selection_source": {
+    "path": "registries/profiles/vertical-slice-archetypes.v1.json",
+    "selected_keys": ["pcre2-ordinary", "python-re", "mysql-regex"]
+  },
+  "systems": [
+    {"system_id":"rcid:v1:system:u7:019ff994-940f-73d5-af51-cb3549c0061e","system_key":"icu","display_name":"ICU","kind":"standalone-implementation-project"},
+    {"system_id":"rcid:v1:system:u7:019ff984-a52e-7aee-bd5b-b67ecf1d7bee","system_key":"mysql","display_name":"MySQL","kind":"database-product"},
+    {"system_id":"rcid:v1:system:u7:019ff984-a52e-7696-a3cf-b4a3025d9ba4","system_key":"pcre2","display_name":"PCRE2","kind":"standalone-implementation-project"},
+    {"system_id":"rcid:v1:system:u7:019ff984-a52e-7c6e-8e59-d2cfeb651bc0","system_key":"python","display_name":"Python","kind":"language-runtime"}
+  ],
+  "components": [
+    {"component_id":"rcid:v1:component:u7:019ff984-a52e-75ad-b94d-4e0bd6a7d890","component_key":"icu-regex","system_id":"rcid:v1:system:u7:019ff994-940f-73d5-af51-cb3549c0061e","kind":"regex-engine-core"},
+    {"component_id":"rcid:v1:component:u7:019ff993-a481-7e09-a4d2-7bdb6950ef72","component_key":"mysql-regex","system_id":"rcid:v1:system:u7:019ff984-a52e-7aee-bd5b-b67ecf1d7bee","kind":"database-regex-subsystem"},
+    {"component_id":"rcid:v1:component:u7:019ff984-a52e-750e-8c26-ac2f0ab2ec6f","component_key":"pcre2-core","system_id":"rcid:v1:system:u7:019ff984-a52e-7696-a3cf-b4a3025d9ba4","kind":"regex-engine-core"},
+    {"component_id":"rcid:v1:component:u7:019ff984-a52e-7921-a344-3cf937dec0c0","component_key":"python-re","system_id":"rcid:v1:system:u7:019ff984-a52e-7c6e-8e59-d2cfeb651bc0","kind":"runtime-regex-facility"}
+  ],
+  "releases": [
+    {
+      "release_id":"rcid:v1:release:u7:019ff984-a52e-7ad9-ab88-8c7e238031a5","component_id":"rcid:v1:component:u7:019ff984-a52e-75ad-b94d-4e0bd6a7d890","version":"77.1","release_date":"2025-03-13","channel":"stable","stability":"stable","upstream_identity":"icu-release-77-1",
+      "evidence":[{"authority":"unicode-consortium","url":"https://github.com/unicode-org/icu/releases/tag/release-77-1"}]
+    },
+    {
+      "release_id":"rcid:v1:release:u7:019ff984-a52e-7487-8f0d-5046164b1b61","component_id":"rcid:v1:component:u7:019ff993-a481-7e09-a4d2-7bdb6950ef72","version":"8.4.10","release_date":"2026-06-16","channel":"stable","stability":"lts","upstream_identity":"mysql-8.4.10",
+      "evidence":[{"authority":"oracle-mysql","url":"https://dev.mysql.com/doc/relnotes/mysql/8.4/en/news-8-4-10.html"},{"authority":"oracle-mysql","url":"https://github.com/mysql/mysql-server/tree/mysql-8.4.10"}]
+    },
+    {
+      "release_id":"rcid:v1:release:u7:019ff984-a52e-737a-8353-17af9584dc6f","component_id":"rcid:v1:component:u7:019ff984-a52e-750e-8c26-ac2f0ab2ec6f","version":"10.47","release_date":"2025-10-21","channel":"stable","stability":"stable","upstream_identity":"pcre2-10.47",
+      "evidence":[{"authority":"pcre2-project","url":"https://github.com/PCRE2Project/pcre2/releases/tag/pcre2-10.47"}]
+    },
+    {
+      "release_id":"rcid:v1:release:u7:019ff984-a52e-755c-a7b5-29741bc00c2c","component_id":"rcid:v1:component:u7:019ff984-a52e-7921-a344-3cf937dec0c0","version":"3.14.6","release_date":"2026-06-10","channel":"stable","stability":"stable","upstream_identity":"cpython-3.14.6",
+      "evidence":[{"authority":"python-software-foundation","url":"https://www.python.org/downloads/release/python-3146/"},{"authority":"github-actions","url":"https://github.com/actions/python-versions/releases/tag/3.14.6-27283001424"}]
+    }
+  ],
+  "profile_families": [
+    {"profile_family_id":"rcid:v1:profile-family:u7:019ff984-dba4-75fa-b62a-528c12f71669","selection_key":"mysql-regex","shape":"mysql-regex-sql"},
+    {"profile_family_id":"rcid:v1:profile-family:u7:019ff984-dba4-7241-a200-2324aa777c04","selection_key":"pcre2-ordinary","shape":"ordinary-matcher"},
+    {"profile_family_id":"rcid:v1:profile-family:u7:019ff984-dba4-7946-836b-551295df9cbe","selection_key":"python-re","shape":"python-standard-library-re"}
+  ],
+  "profiles": [
+    {
+      "profile_id":"rcid:v1:profile:u7:019ff984-a52e-7cff-8789-6bbe35540702","profile_family_id":"rcid:v1:profile-family:u7:019ff984-dba4-7241-a200-2324aa777c04","selection_key":"pcre2-ordinary","root_node":"pcre2",
+      "nodes":[{"node_key":"pcre2","component_id":"rcid:v1:component:u7:019ff984-a52e-750e-8c26-ac2f0ab2ec6f","release_id":"rcid:v1:release:u7:019ff984-a52e-737a-8353-17af9584dc6f","roles":["surface","regex-facility","engine-backend","grammar-dialect-authority","unicode-text-provider","matching-backend","platform-dependency"],"facets":[{"name":"api-path","value":"ordinary"},{"name":"code-unit-width","value":"8"},{"name":"unicode-mode","value":"enabled"}]}],
+      "edges":[]
+    },
+    {
+      "profile_id":"rcid:v1:profile:u7:019ff984-a52e-746c-b7c9-7f82de44ebfd","profile_family_id":"rcid:v1:profile-family:u7:019ff984-dba4-7946-836b-551295df9cbe","selection_key":"python-re","root_node":"python-re",
+      "nodes":[{"node_key":"python-re","component_id":"rcid:v1:component:u7:019ff984-a52e-7921-a344-3cf937dec0c0","release_id":"rcid:v1:release:u7:019ff984-a52e-755c-a7b5-29741bc00c2c","roles":["surface","host-runtime","regex-facility","grammar-dialect-authority","unicode-text-provider","replacement-subsystem","error-result-adapter","platform-dependency"],"facets":[{"name":"host-runtime","value":"CPython 3.14.6"},{"name":"unicode-data","value":"16.0.0"},{"name":"value-domain","value":"str-and-bytes"}]}],
+      "edges":[]
+    },
+    {
+      "profile_id":"rcid:v1:profile:u7:019ff984-a52e-711e-82d2-03b77a6192e7","profile_family_id":"rcid:v1:profile-family:u7:019ff984-dba4-75fa-b62a-528c12f71669","selection_key":"mysql-regex","root_node":"mysql-regex",
+      "nodes":[
+        {"node_key":"mysql-regex","component_id":"rcid:v1:component:u7:019ff993-a481-7e09-a4d2-7bdb6950ef72","release_id":"rcid:v1:release:u7:019ff984-a52e-7487-8f0d-5046164b1b61","roles":["surface","host-runtime","regex-facility","replacement-subsystem","error-result-adapter","platform-dependency"],"facets":[{"name":"surface","value":"SQL REGEXP functions"},{"name":"character-set","value":"utf8mb4"},{"name":"collation","value":"utf8mb4_0900_ai_ci"}]},
+        {"node_key":"icu-regex","component_id":"rcid:v1:component:u7:019ff984-a52e-75ad-b94d-4e0bd6a7d890","release_id":"rcid:v1:release:u7:019ff984-a52e-7ad9-ab88-8c7e238031a5","roles":["engine-backend","grammar-dialect-authority","unicode-text-provider"],"facets":[{"name":"linkage","value":"bundled"},{"name":"upstream-tag","value":"icu-release-77-1"}]}
+      ],
+      "edges":[{"from":"mysql-regex","to":"icu-regex","relation":"embeds-backend"}]
+    }
+  ],
+  "environment_bindings": [
+    {"selection_key":"pcre2-ordinary","profile_id":"rcid:v1:profile:u7:019ff984-a52e-7cff-8789-6bbe35540702","target_release_id":"rcid:v1:release:u7:019ff984-a52e-737a-8353-17af9584dc6f","environment_recipe_id":"rcid:v1:environment-recipe:u7:019ff984-a52e-7613-b5e2-56f9267c4b24","strategy":"native-source-build"},
+    {"selection_key":"python-re","profile_id":"rcid:v1:profile:u7:019ff984-a52e-746c-b7c9-7f82de44ebfd","target_release_id":"rcid:v1:release:u7:019ff984-a52e-755c-a7b5-29741bc00c2c","environment_recipe_id":"rcid:v1:environment-recipe:u7:019ff984-a52e-7e2b-8bef-a29dd16f7bd8","strategy":"native-runtime"},
+    {"selection_key":"mysql-regex","profile_id":"rcid:v1:profile:u7:019ff984-a52e-711e-82d2-03b77a6192e7","target_release_id":"rcid:v1:release:u7:019ff984-a52e-7487-8f0d-5046164b1b61","environment_recipe_id":"rcid:v1:environment-recipe:u7:019ff984-a52e-7450-9f57-8933ed04af6f","strategy":"oci-service"}
+  ]
+}

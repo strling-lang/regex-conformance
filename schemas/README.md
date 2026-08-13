@@ -16,6 +16,14 @@ bootstrap contract.
   fixture tooling.
 - `tooling/node/` contains the independent dependency-free JCS oracle.
 
+The P17 executable boundary is defined by
+`vertical-slice-coordinates.schema.json`,
+`certified-environment-recipe.schema.json`, and
+`minimal-environment-certification.schema.json`. Semantic validation binds the
+activated selection to one exact coordinate registry, requires complete
+release/profile/recipe accounting, derives recipe and isolation identities from
+canonical bytes, and rejects mutable acquisition locators.
+
 `json/machine-inventory.schema.json` defines the versioned machine-readable
 Control Plane doctor report. Machine inventory is fresh, recoverable operational
 state—not canonical evidence—and therefore has no content-derived scientific ID.

@@ -31,7 +31,12 @@ class VerticalSliceSelectionTests(unittest.TestCase):
         self.assertTrue(
             all(item["registry_disposition"] == "in-scope" for item in self.record["selected_archetypes"])
         )
-        self.assertFalse(self.record["selection_policy"]["execution_eligible"])
+        self.assertTrue(self.record["authority"]["canonical_ids_allocated"])
+        self.assertTrue(self.record["selection_policy"]["execution_eligible"])
+        self.assertEqual(
+            self.record["selection_policy"]["exact_coordinates_source"],
+            "registries/profiles/vertical-slice-coordinates.v1.json",
+        )
 
     def test_selection_covers_required_surface_and_environment_archetypes(self) -> None:
         by_key = {item["selection_key"]: item for item in self.record["selected_archetypes"]}

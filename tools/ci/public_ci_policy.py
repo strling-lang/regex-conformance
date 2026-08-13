@@ -62,17 +62,31 @@ def evaluate(root: Path) -> list[Violation]:
     _require(re.search(r"^\s+[a-z-]+:\s+write\s*$", workflow, re.MULTILINE) is None, violations, "write-permission", "public workflow may not request write permission")
     _require("runs-on: ubuntu-24.04" in workflow, violations, "runner-class", "public workflow must use the audited disposable hosted image")
     _require("timeout-minutes: 10" in workflow, violations, "missing-timeout", "public job must have a bounded timeout")
-    _require("persist-credentials: false" in workflow, violations, "checkout-credentials", "checkout credentials must not persist")
+    checkout_count = len(re.findall(r"^\s*uses:\s*actions/checkout@", workflow, re.MULTILINE))
+    _require(
+        checkout_count > 0 and workflow.count("persist-credentials: false") == checkout_count,
+        violations,
+        "checkout-credentials",
+        "every checkout must explicitly disable persisted credentials",
+    )
     _require("--require-hashes" in workflow and "--only-binary=:all:" in workflow, violations, "dependency-install", "CI dependency installation must enforce hashes and wheels")
     for command in [
         "verify_public_ci.py --root .",
         "validate-repository",
         "verify-fixtures",
         "unittest discover -s tests/schema",
-        "unittest discover -s tests/control_plane",
+        "python -m unittest discover -s tests/control_plane -v",
         "unittest discover -s tests/ci",
         "materialize-fixtures",
         "git diff --exit-code -- tests/fixtures/identity/manifest.json",
+        "minimal-environment-certification:",
+        "if: github.event_name != 'pull_request'",
+        "timeout-minutes: 45",
+        "certify_minimal.py",
+        "--trust-class untrusted_public",
+        "minimal-environment-certification.schema.json",
+        "docker ps --all --quiet --filter name=strling-rc-",
+        "git diff --exit-code",
     ]:
         _require(command in workflow, violations, "missing-validation", f"workflow omits required command {command!r}")
 

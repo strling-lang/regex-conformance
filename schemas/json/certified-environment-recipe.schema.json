@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://strling.org/regex-conformance/schemas/certified-environment-recipe.v1.json",
+  "title": "STRling certified environment recipe",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "recipe_schema_family_id", "environment_recipe_id",
+    "recipe_revision_id", "selection_key", "target_profile_id",
+    "target_release_id", "strategy", "provider_name", "artifacts",
+    "expected_runtime_facts", "expected_configuration", "required_capabilities",
+    "smoke_probe_ids", "isolation_policy", "construction", "provenance"
+  ],
+  "properties": {
+    "schema_version": { "const": "certified-environment-recipe.v1" },
+    "recipe_schema_family_id": { "$ref": "#/$defs/schemaFamilyId" },
+    "environment_recipe_id": { "$ref": "#/$defs/assignedId" },
+    "recipe_revision_id": { "type": "string", "pattern": "^rcid:v1:environment-recipe-revision:h:jcs-sha256-v1:[0-9a-f]{64}$" },
+    "selection_key": { "$ref": "#/$defs/token" },
+    "target_profile_id": { "$ref": "#/$defs/assignedId" },
+    "target_release_id": { "$ref": "#/$defs/assignedId" },
+    "strategy": { "enum": ["native-source-build", "native-runtime", "oci-service"] },
+    "provider_name": { "$ref": "#/$defs/token" },
+    "artifacts": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/artifact" } },
+    "expected_runtime_facts": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/namedValue" } },
+    "expected_configuration": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/namedValue" } },
+    "required_capabilities": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/token" } },
+    "smoke_probe_ids": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/token" } },
+    "isolation_policy": { "$ref": "#/$defs/isolationPolicy" },
+    "construction": { "$ref": "#/$defs/construction" },
+    "provenance": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/evidence" } }
+  },
+  "$defs": {
+    "token": { "type": "string", "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$" },
+    "digest": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "assignedId": { "type": "string", "pattern": "^rcid:v1:[a-z][a-z0-9]*(?:-[a-z0-9]+)*:u7:[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$" },
+    "schemaFamilyId": { "type": "string", "pattern": "^rcid:v1:schema-family:u7:[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$" },
+    "namedValue": {
+      "type": "object", "additionalProperties": false, "required": ["name", "value"],
+      "properties": { "name": { "$ref": "#/$defs/token" }, "value": { "type": "string", "minLength": 1, "maxLength": 1024 } }
+    },
+    "artifact": {
+      "type": "object", "additionalProperties": false,
+      "required": ["name", "sha256", "size_bytes", "media_type", "locators"],
+      "properties": {
+        "name": { "$ref": "#/$defs/token" }, "sha256": { "$ref": "#/$defs/digest" },
+        "size_bytes": { "type": "integer", "minimum": 1, "maximum": 9007199254740991 },
+        "media_type": { "$ref": "#/$defs/token" },
+        "locators": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "pattern": "^(?:https|oci)://" } }
+      }
+    },
+    "isolationPolicy": {
+      "type": "object", "additionalProperties": false,
+      "required": ["digest", "policy_version", "acquisition_network", "build_network", "runtime_network", "process_tree", "filesystem", "resource_limits"],
+      "properties": {
+        "digest": { "$ref": "#/$defs/digest" }, "policy_version": { "const": "1.0.0" },
+        "acquisition_network": { "const": "https-allowlisted" },
+        "build_network": { "enum": ["none", "not-applicable"] }, "runtime_network": { "const": "none" },
+        "process_tree": { "const": "contained" }, "filesystem": { "enum": ["transaction-root", "oci-tmpfs"] },
+        "resource_limits": {
+          "type": "object", "additionalProperties": false,
+          "required": ["wall_time_ms", "stdout_bytes", "stderr_bytes", "memory_bytes", "cpu_time_seconds"],
+          "properties": {
+            "wall_time_ms": { "type": "integer", "minimum": 1000 }, "stdout_bytes": { "type": "integer", "minimum": 1024 },
+            "stderr_bytes": { "type": "integer", "minimum": 1024 }, "memory_bytes": { "type": ["integer", "null"], "minimum": 1048576 },
+            "cpu_time_seconds": { "type": ["integer", "null"], "minimum": 1, "maximum": 86400 }
+          }
+        }
+      }
+    },
+    "construction": {
+      "type": "object", "additionalProperties": false,
+      "required": ["platform", "hermeticity", "download_upper_bound_bytes", "expanded_upper_bound_bytes", "scratch_upper_bound_bytes", "parameters"],
+      "properties": {
+        "platform": {
+          "type": "object", "additionalProperties": false, "required": ["os", "architecture", "distribution", "distribution_version"],
+          "properties": { "os": { "const": "linux" }, "architecture": { "enum": ["x86-64", "amd64"] }, "distribution": { "enum": ["ubuntu", "oci-image"] }, "distribution_version": { "type": "string", "minLength": 1 } }
+        },
+        "hermeticity": { "enum": ["bounded-host-toolchain", "immutable-binary-artifact", "immutable-oci-manifest"] },
+        "download_upper_bound_bytes": { "type": "integer", "minimum": 1 }, "expanded_upper_bound_bytes": { "type": "integer", "minimum": 1 },
+        "scratch_upper_bound_bytes": { "type": "integer", "minimum": 1 },
+        "parameters": {
+          "type": "array", "minItems": 1,
+          "items": { "$ref": "#/$defs/namedValue" }
+        }
+      }
+    },
+    "evidence": {
+      "type": "object", "additionalProperties": false, "required": ["authority", "url", "claim"],
+      "properties": { "authority": { "$ref": "#/$defs/token" }, "url": { "type": "string", "pattern": "^https://" }, "claim": { "$ref": "#/$defs/token" } }
+    }
+  }
+}
