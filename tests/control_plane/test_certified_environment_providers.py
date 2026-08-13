@@ -9,6 +9,7 @@ import tarfile
 import tempfile
 from types import SimpleNamespace
 import unittest
+from unittest.mock import patch
 import urllib.request
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -256,6 +257,28 @@ class CertifiedEnvironmentProviderTests(unittest.TestCase):
             self.assertIsNone(provider._cli_limits().memory_bytes)
             self.assertIsNone(provider._cli_limits().cpu_time_seconds)
             self.assertEqual(provider._cli_limits().wall_time_ms, definition.limits.wall_time_ms)
+
+    def test_mysql_readiness_must_survive_temporary_initialization_server_handoff(self) -> None:
+        definition = next(item for item in load_certified_recipes(ROOT) if item.selection_key == "mysql-regex")
+        temporary_server = [process_result(), process_result(), process_result(exit_code=1)]
+        final_server = [process_result() for _ in range(MysqlOciProvider._STABLE_READINESS_OBSERVATIONS)]
+        supervisor = ScriptedSupervisor(*temporary_server, *final_server)
+        with tempfile.TemporaryDirectory() as temporary:
+            provider = MysqlOciProvider(definition, Path(temporary), supervisor=supervisor)
+            with (
+                patch(
+                    "regex_conformance_control_plane.certified_environments.time.monotonic",
+                    side_effect=[0, *range(len(temporary_server) + len(final_server))],
+                ),
+                patch("regex_conformance_control_plane.certified_environments.time.sleep") as sleep,
+            ):
+                provider._wait_for_stable_service("strling-rc-" + "0" * 32, temporary)
+
+        self.assertEqual(len(supervisor.commands), len(temporary_server) + len(final_server))
+        self.assertTrue(
+            all(command[:3] == ("docker", "exec", "strling-rc-" + "0" * 32) for command in supervisor.commands)
+        )
+        self.assertEqual(sleep.call_count, len(supervisor.commands) - 1)
 
     def test_https_fetcher_rejects_insecure_or_unapproved_locators_without_network(self) -> None:
         fetcher = VerifiedHttpsFetcher()

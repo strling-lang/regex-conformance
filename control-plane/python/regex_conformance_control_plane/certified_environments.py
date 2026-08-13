@@ -699,6 +699,7 @@ class CpythonArchiveProvider(CertifiedEnvironmentProvider):
 
 class MysqlOciProvider(CertifiedEnvironmentProvider):
     machine_provider_name = "docker"
+    _STABLE_READINESS_OBSERVATIONS = 5
 
     def _cli_limits(self, wall_time_ms: int | None = None) -> ExecutionLimits:
         values = self.definition.limits
@@ -722,6 +723,26 @@ class MysqlOciProvider(CertifiedEnvironmentProvider):
         self._transaction_root(transaction_id)
         return "strling-rc-" + transaction_id.rsplit(":", 1)[-1].replace("-", "")
 
+    def _wait_for_stable_service(self, container: str, handle: str) -> None:
+        deadline = time.monotonic() + 180
+        consecutive = 0
+        while time.monotonic() < deadline:
+            check = self._supervisor.run(
+                ("docker", "exec", container, "mysqladmin", "ping", "-uroot", "--silent"),
+                limits=ExecutionLimits(10_000, 65_536, 65_536),
+            )
+            if check.outcome == "completed" and check.exit_code == 0:
+                consecutive += 1
+                if consecutive >= self._STABLE_READINESS_OBSERVATIONS:
+                    return
+            else:
+                consecutive = 0
+            time.sleep(1)
+        raise ProviderOperationError(
+            "service-readiness-timeout",
+            "MySQL final service did not remain ready across the initialization handoff",
+            handle,
+        )
 
     def construct(self, recipe: EnvironmentRecipe, acquisition: ProviderAcquisition, transaction_id: str) -> str:
         self._require_recipe(recipe)
@@ -747,17 +768,9 @@ class MysqlOciProvider(CertifiedEnvironmentProvider):
             "--regexp-time-limit=1000",
         )
         self._run(command, limits=self._cli_limits())
-        deadline = time.monotonic() + 180
-        while time.monotonic() < deadline:
-            check = self._supervisor.run(
-                ("docker", "exec", container, "mysqladmin", "ping", "-uroot", "--silent"),
-                limits=ExecutionLimits(10_000, 65_536, 65_536),
-            )
-            if check.outcome == "completed" and check.exit_code == 0:
-                self._write_metadata(root, {"state": "constructed"})
-                return str(root)
-            time.sleep(1)
-        raise ProviderOperationError("service-readiness-timeout", "MySQL service did not become ready within 180 seconds", str(root))
+        self._wait_for_stable_service(container, str(root))
+        self._write_metadata(root, {"state": "constructed"})
+        return str(root)
 
     def _image_inspection(self, image: str) -> dict[str, Any]:
         raw = _safe_value(self._run(("docker", "image", "inspect", image, "--format", "{{json .}}"), limits=ExecutionLimits(30_000, 262_144, 65_536)).stdout, "image inspection")
