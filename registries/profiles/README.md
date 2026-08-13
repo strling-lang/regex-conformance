@@ -11,3 +11,7 @@ releases, component-graph profile families/profiles, systems, components, and
 environment recipe bindings for the three selected archetypes. The selection
 is execution-eligible only while its canonical source path and the complete
 coordinate/recipe cross-record invariants validate.
+
+`small-scale-qualification.v1.json` binds the exact frozen coordinate-file
+digest and adds the behaviorally distinct PCRE2 DFA matcher profile. It is an
+overlay, not a rewrite of the P17 coordinate universe.

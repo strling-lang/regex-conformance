@@ -1,0 +1,22 @@
+{
+  "schema_version":"certified-environment-recipe.v1",
+  "recipe_schema_family_id":"rcid:v1:schema-family:u7:019ff984-a52e-74e2-bc5c-82fcc3e2134a",
+  "environment_recipe_id":"rcid:v1:environment-recipe:u7:019ffc57-9ad1-773f-81a4-1e719de4f94e",
+  "recipe_revision_id":"rcid:v1:environment-recipe-revision:h:jcs-sha256-v1:91d8986cd5caab9eb16a03fa33a18561a6e7e1fecccf14da990a5ed201e830e9",
+  "selection_key":"pcre2-dfa",
+  "target_profile_id":"rcid:v1:profile:u7:019ffc57-9ad1-7be2-8067-73fce0a50770",
+  "target_release_id":"rcid:v1:release:u7:019ff984-a52e-737a-8353-17af9584dc6f",
+  "strategy":"native-source-build",
+  "provider_name":"pcre2-source",
+  "artifacts":[
+    {"name":"pcre2-signature","sha256":"113b9d73680472e3d7e51e7e4c6bce9b48a9a1db4d986adcea17a35ac97a5326","size_bytes":566,"media_type":"openpgp-signature","locators":["https://github.com/PCRE2Project/pcre2/releases/download/pcre2-10.47/pcre2-10.47.tar.gz.sig"]},
+    {"name":"pcre2-source","sha256":"c08ae2388ef333e8403e670ad70c0a11f1eed021fd88308d7e02f596fcd9dc16","size_bytes":2792969,"media_type":"gzip-tar","locators":["https://github.com/PCRE2Project/pcre2/releases/download/pcre2-10.47/pcre2-10.47.tar.gz"]}
+  ],
+  "expected_runtime_facts":[{"name":"architecture","value":"x86-64"},{"name":"engine-version","value":"10.47"},{"name":"runtime-kind","value":"pcre2"}],
+  "expected_configuration":[{"name":"build-type","value":"Release"},{"name":"code-unit-widths","value":"8"},{"name":"jit","value":"enabled"},{"name":"library-linkage","value":"shared"},{"name":"locale","value":"C.UTF-8"},{"name":"newline","value":"LF"},{"name":"timezone","value":"UTC"},{"name":"unicode","value":"enabled"}],
+  "required_capabilities":["bounded-source-build","offline-runtime","safe-archive-extraction"],
+  "smoke_probe_ids":["pcre2-dfa-symbol","pcre2-version"],
+  "isolation_policy":{"digest":"4f8bf0f726b255c0231a3600121f1fbdbc3418748fb2b39f8320bc4fe2d309fe","policy_version":"1.0.0","acquisition_network":"https-allowlisted","build_network":"none","runtime_network":"none","process_tree":"contained","filesystem":"transaction-root","resource_limits":{"wall_time_ms":900000,"stdout_bytes":1048576,"stderr_bytes":1048576,"memory_bytes":4294967296,"cpu_time_seconds":600}},
+  "construction":{"platform":{"os":"linux","architecture":"x86-64","distribution":"ubuntu","distribution_version":"24.04"},"hermeticity":"bounded-host-toolchain","download_upper_bound_bytes":3000000,"expanded_upper_bound_bytes":50000000,"scratch_upper_bound_bytes":2147483648,"parameters":[{"name":"cmake-build-pcre2grep","value":"ON"},{"name":"cmake-build-shared-libs","value":"ON"},{"name":"cmake-build-tests","value":"OFF"},{"name":"cmake-support-jit","value":"ON"},{"name":"cmake-support-unicode","value":"ON"},{"name":"toolchain-bound","value":"Ubuntu 24.04 package-family; exact realization fingerprinted"}]},
+  "provenance":[{"authority":"pcre2-project","url":"https://github.com/PCRE2Project/pcre2/releases/tag/pcre2-10.47","claim":"release-and-assets"},{"authority":"pcre2-project","url":"https://pcre2project.github.io/pcre2/","claim":"source-release-policy"}]
+}

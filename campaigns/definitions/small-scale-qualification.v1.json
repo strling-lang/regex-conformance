@@ -1,0 +1,38 @@
+{
+  "schema_version": "small-scale-campaign-definition.v1",
+  "campaign_definition_id": "rcid:v1:campaign-definition:u7:019ffc57-9ad1-7dfa-bf03-9464bd047e20",
+  "campaign_id": "rcid:v1:campaign:u7:019ffc57-9ad1-7d54-9aff-ea92443bece2",
+  "base_coordinates_source": "registries/profiles/vertical-slice-coordinates.v1.json",
+  "profile_overlay_source": "registries/profiles/small-scale-qualification.v1.json",
+  "vector_source": "vectors/definitions/small-scale-qualification.v1.json",
+  "applicability_source": "applicability/policies/small-scale-qualification.v1.json",
+  "classification": {"completion_denominator": "development-only", "normative_authority": false, "probe_only": true, "semantic_authority": false},
+  "shard_size": 8,
+  "profile_inputs": [
+    {
+      "selection_key": "mysql-regex",
+      "dimensions": [
+        {"name": "character-set", "value": "utf8mb4"},
+        {"name": "collation", "value": "utf8mb4_0900_ai_ci"},
+        {"name": "regexp-time-limit-ms", "value": 1000},
+        {"name": "timezone", "value": "UTC"}
+      ],
+      "options": [{"name": "match-type", "value": "c"}]
+    },
+    {
+      "selection_key": "pcre2-dfa",
+      "dimensions": [{"name": "locale", "value": "C.UTF-8"}, {"name": "newline", "value": "LF"}, {"name": "timezone", "value": "UTC"}],
+      "options": []
+    },
+    {
+      "selection_key": "pcre2-ordinary",
+      "dimensions": [{"name": "locale", "value": "C.UTF-8"}, {"name": "newline", "value": "LF"}, {"name": "timezone", "value": "UTC"}],
+      "options": []
+    },
+    {
+      "selection_key": "python-re",
+      "dimensions": [{"name": "locale", "value": "C.UTF-8"}, {"name": "timezone", "value": "UTC"}],
+      "options": []
+    }
+  ]
+}

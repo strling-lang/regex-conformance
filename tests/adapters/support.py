@@ -28,6 +28,12 @@ BINDINGS = {
         "release": "rcid:v1:release:u7:019ff984-a52e-737a-8353-17af9584dc6f",
         "constraints": (("engine-version", "10.47"),),
     },
+    "pcre2-dfa": {
+        "manifest": "rcid:v1:adapter-release-manifest:h:jcs-sha256-v1:" + "e" * 64,
+        "profile": "rcid:v1:profile:u7:019ffc57-9ad1-7be2-8067-73fce0a50770",
+        "release": "rcid:v1:release:u7:019ff984-a52e-737a-8353-17af9584dc6f",
+        "constraints": (("engine-version", "10.47"), ("matcher-api", "pcre2-dfa-match-8")),
+    },
     "python-re": {
         "manifest": "rcid:v1:adapter-release-manifest:h:jcs-sha256-v1:" + "c" * 64,
         "profile": "rcid:v1:profile:u7:019ff984-a52e-746c-b7c9-7f82de44ebfd",

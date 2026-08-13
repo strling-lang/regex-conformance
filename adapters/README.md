@@ -16,3 +16,7 @@ Run `python -m unittest discover -s tests/adapters -v` for deterministic
 compliance checks. Run `tools/adapters/certify_minimal.py` for exact-runtime
 certification; its state and raw evidence directories must be outside Git. See
 [the architecture and reproduction procedure](../docs/architecture/minimal-thin-adapters.md).
+
+Post-P17 adapters use isolated qualification manifests and entrypoints. The
+first such adapter binds PCRE2's public DFA API, preserves alternative native
+octet spans, and reports unavailable subgroup capture data explicitly.

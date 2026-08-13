@@ -57,13 +57,13 @@
           "uniqueItems": true,
           "items": { "$ref": "#/$defs/token" }
         },
-        "entrypoint": { "const": "adapters/python/run.py" },
+        "entrypoint": { "enum": ["adapters/python/run.py", "adapters/python/run_qualification.py"] },
         "profile": { "type": "string", "pattern": "^rcid:v1:profile:u7:[0-9a-f-]{36}$" },
         "protocol_revision": {
           "type": "string",
           "pattern": "^rcid:v1:adapter-protocol-revision:h:jcs-sha256-v1:[0-9a-f]{64}$"
         },
-        "selection_key": { "enum": ["mysql-regex", "pcre2-ordinary", "python-re"] },
+        "selection_key": { "enum": ["mysql-regex", "pcre2-dfa", "pcre2-ordinary", "python-re"] },
         "source_digest": { "$ref": "#/$defs/digest" },
         "target_release": { "type": "string", "pattern": "^rcid:v1:release:u7:[0-9a-f-]{36}$" }
       }

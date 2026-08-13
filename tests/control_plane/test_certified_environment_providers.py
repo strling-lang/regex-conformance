@@ -28,6 +28,7 @@ from regex_conformance_control_plane.certified_environments import (
     _safe_extract,
     build_certified_providers,
     load_certified_recipes,
+    load_qualification_recipes,
 )
 from regex_conformance_control_plane.environment_manager import BASE_READY_CAPABILITIES, EnvironmentManager
 from regex_conformance_control_plane.environment_models import (
@@ -128,6 +129,43 @@ class CertifiedEnvironmentProviderTests(unittest.TestCase):
         for provider in providers:
             supported = {item.name for item in provider.descriptor.capabilities if item.status == "supported"}
             self.assertTrue(BASE_READY_CAPABILITIES.issubset(supported))
+
+    def test_qualification_recipe_selects_the_typed_dfa_provider(self) -> None:
+        definitions = load_qualification_recipes(ROOT)
+        self.assertEqual([item.selection_key for item in definitions], ["pcre2-dfa"])
+        with tempfile.TemporaryDirectory() as temporary:
+            providers = build_certified_providers(definitions, Path(temporary))
+        self.assertEqual(len(providers), 1)
+        self.assertIsInstance(providers[0], Pcre2SourceProvider)
+        self.assertEqual(
+            definitions[0].lifecycle.smoke_probe_ids,
+            ("pcre2-dfa-symbol", "pcre2-version"),
+        )
+
+    def test_dfa_smoke_probe_requires_the_exported_public_matcher_symbol(self) -> None:
+        definition = load_qualification_recipes(ROOT)[0]
+        transaction = "opid:v1:environment:u7:019ff999-0000-7000-8000-000000000007"
+        for symbols, expected in ((b"000 T pcre2_dfa_match_8\n", True), (b"000 T pcre2_match_8\n", False)):
+            supervisor = ScriptedSupervisor(
+                process_result(stdout=b"10.47\n"),
+                process_result(stdout=symbols),
+            )
+            with self.subTest(expected=expected), tempfile.TemporaryDirectory() as temporary:
+                state = Path(temporary)
+                root = state / transaction.rsplit(":", 1)[-1]
+                library = root / "install" / "lib" / "libpcre2-8.so.0.14.0"
+                library.parent.mkdir(parents=True)
+                library.write_bytes(b"fixture")
+                provider = build_certified_providers(
+                    (definition,), state, supervisor=supervisor
+                )[0]
+                observations = {
+                    item.probe_id: item for item in provider.smoke_verify(
+                        definition.lifecycle, str(root), transaction
+                    )
+                }
+                self.assertTrue(observations["pcre2-version"].passed)
+                self.assertEqual(observations["pcre2-dfa-symbol"].passed, expected)
 
     def test_pcre_recipe_and_provider_require_one_loadable_shared_library(self) -> None:
         definition = next(item for item in load_certified_recipes(ROOT) if item.selection_key == "pcre2-ordinary")

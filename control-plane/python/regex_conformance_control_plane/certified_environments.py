@@ -144,6 +144,17 @@ def load_certified_recipes(repository_root: Path) -> tuple[CertifiedRecipeDefini
     return tuple(sorted(definitions, key=lambda item: item.selection_key))
 
 
+def load_qualification_recipes(repository_root: Path) -> tuple[CertifiedRecipeDefinition, ...]:
+    """Load post-P17 recipes without changing the frozen minimal recipe set."""
+    paths = sorted((repository_root / "environments" / "qualification-recipes").glob("*.json"))
+    definitions = tuple(CertifiedRecipeDefinition.load(path) for path in paths)
+    if {item.selection_key for item in definitions} != {"pcre2-dfa"}:
+        raise ValueError("qualification recipe set must exactly cover the added DFA profile")
+    if len({item.lifecycle.recipe_revision_id for item in definitions}) != len(definitions):
+        raise ValueError("qualification recipe revisions must be unique")
+    return definitions
+
+
 class ArtifactFetcher(Protocol):
     def fetch(self, requirement: ArtifactRequirement, destination: Path) -> None: ...
 
@@ -625,11 +636,25 @@ class Pcre2SourceProvider(CertifiedEnvironmentProvider):
             observations.append(SmokeObservation("pcre2-version", version == "10.47", None if version == "10.47" else "unexpected version"))
         except ProviderOperationError:
             observations.append(SmokeObservation("pcre2-version", False, "version probe failed"))
-        try:
-            self._run((str(install / "bin" / "pcre2grep"), "-q", "a+"), environment=environment, stdin=b"baaac\n")
-            observations.append(SmokeObservation("pcre2-ordinary-match", True))
-        except ProviderOperationError:
-            observations.append(SmokeObservation("pcre2-ordinary-match", False, "ordinary match probe failed"))
+        if self.definition.selection_key == "pcre2-ordinary":
+            try:
+                self._run((str(install / "bin" / "pcre2grep"), "-q", "a+"), environment=environment, stdin=b"baaac\n")
+                observations.append(SmokeObservation("pcre2-ordinary-match", True))
+            except ProviderOperationError:
+                observations.append(SmokeObservation("pcre2-ordinary-match", False, "ordinary match probe failed"))
+        else:
+            try:
+                symbols = self._run(("nm", "-D", str(regular)), environment=environment).stdout
+                available = b" pcre2_dfa_match_8" in symbols
+                observations.append(
+                    SmokeObservation(
+                        "pcre2-dfa-symbol",
+                        available,
+                        None if available else "DFA matcher symbol was absent",
+                    )
+                )
+            except ProviderOperationError:
+                observations.append(SmokeObservation("pcre2-dfa-symbol", False, "DFA symbol probe failed"))
         return tuple(sorted(observations, key=lambda item: item.probe_id))
 
 
@@ -913,6 +938,7 @@ def build_certified_providers(
     supervisor: ContainedProcessSupervisor | None = None,
 ) -> tuple[EnvironmentProvider, ...]:
     implementations = {
+        "pcre2-dfa": Pcre2SourceProvider,
         "pcre2-ordinary": Pcre2SourceProvider,
         "python-re": CpythonArchiveProvider,
         "mysql-regex": MysqlOciProvider,
