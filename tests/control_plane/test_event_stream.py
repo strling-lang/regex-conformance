@@ -549,6 +549,25 @@ class EventStreamTests(unittest.TestCase):
             self.assertTrue(events[-1].terminal)
             journal.close()
 
+    def test_environment_states_are_normalized_to_event_phase_tokens(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            selected_case = json.loads(ENVIRONMENT_FIXTURE.read_text(encoding="utf-8"))[0]
+            journal = self.open_journal(root / "events.sqlite3", seconds=tuple(range(100)))
+            provider = FixtureProvider(selected_case, root / "provider")
+            manager = EnvironmentManager(
+                ProviderRegistry((provider,)),
+                clock=EnvironmentClock(),
+                id_generator=EnvironmentIds(),
+                event_publisher=journal,
+            )
+            record = manager.plan(recipe(selected_case), provider.descriptor.name)
+            manager._transition(record, "verifying_artifacts", "fixture transition")
+            events = journal.read_stream(record.transaction_id)
+            self.assertEqual(events[-1].phase, "verifying-artifacts")
+            self.assertEqual(events[-1].attributes["to_state"], "verifying_artifacts")
+            journal.close()
+
     def test_controller_exposes_events_subscriptions_health_and_progress_without_rendering(self) -> None:
         class NullDoctor:
             def inspect(self, configuration: object) -> object:

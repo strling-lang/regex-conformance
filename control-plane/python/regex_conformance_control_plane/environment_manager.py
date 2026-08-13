@@ -555,7 +555,7 @@ class EnvironmentManager:
                 stream_id=record.transaction_id,
                 operation_kind="environment-lifecycle",
                 event_type="lifecycle",
-                phase=record.state,
+                phase=record.state.replace("_", "-"),
                 status=terminal_status or "running",
                 message=f"environment lifecycle entered {record.state}",
                 attributes={
