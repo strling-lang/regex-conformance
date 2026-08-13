@@ -8,4 +8,7 @@ immutable evidence or operational storage.
 digest-bound overlay. Its 48 candidates reconcile to 26 included logical
 executions and 22 explicit exclusions. See the [qualification design and
 reproduction procedure](../docs/campaigns/small-scale-qualification.md).
-nThe deliberate-fault qualification surface classifies target timeout and crash separately from adapter, worker, network, and storage failures. The deliberate-faults documentation defines the closed reference cases and reproduction procedure.
+
+The deliberate-fault qualification surface classifies target timeout and crash separately from adapter, worker, network, and storage failures. The deliberate-faults documentation defines the closed reference cases and reproduction procedure.
+
+The restart/resume qualification surface repeatedly interrupts the small-scale campaign across every durable boundary. It preserves old attempts, creates distinct retry runs, and treats only a verified manifest commit as durable logical completion; see docs/campaigns/restart-resume.md.

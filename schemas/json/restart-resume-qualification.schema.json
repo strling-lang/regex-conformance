@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://strling.dev/regex-conformance/schemas/restart-resume-qualification.v1.schema.json",
+  "title": "Restart, Resume, and Duplicate-Attempt Qualification v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["cases", "classification", "schema_version", "summary"],
+  "properties": {
+    "cases": {
+      "type": "array",
+      "minItems": 14,
+      "maxItems": 14,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "case_key",
+          "expected_action",
+          "latest_checkpoint",
+          "preserve_physical_run",
+          "requires_new_physical_run"
+        ],
+        "properties": {
+          "case_key": { "type": "string", "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$" },
+          "expected_action": { "enum": ["committed", "continue", "quarantine", "retry"] },
+          "latest_checkpoint": {
+            "oneOf": [
+              {
+                "enum": [
+                  "leased",
+                  "environment-ready",
+                  "running",
+                  "observation-finalized",
+                  "spooled",
+                  "segment-finalized",
+                  "uploaded",
+                  "verified",
+                  "manifest-committed",
+                  "acknowledged"
+                ]
+              },
+              { "type": "null" }
+            ]
+          },
+          "preserve_physical_run": { "type": "boolean" },
+          "requires_new_physical_run": { "type": "boolean" }
+        }
+      }
+    },
+    "classification": { "$ref": "#/$defs/classification" },
+    "schema_version": { "const": "restart-resume-qualification.v1" },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "case_count",
+        "committed_case_count",
+        "continue_case_count",
+        "quarantine_case_count",
+        "retry_case_count"
+      ],
+      "properties": {
+        "case_count": { "const": 14 },
+        "committed_case_count": { "type": "integer", "minimum": 0 },
+        "continue_case_count": { "type": "integer", "minimum": 0 },
+        "quarantine_case_count": { "type": "integer", "minimum": 0 },
+        "retry_case_count": { "type": "integer", "minimum": 0 }
+      }
+    }
+  },
+  "$defs": {
+    "classification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "canonical_authority",
+        "normative_authority",
+        "operational_qualification_only",
+        "semantic_authority"
+      ],
+      "properties": {
+        "canonical_authority": { "const": false },
+        "normative_authority": { "const": false },
+        "operational_qualification_only": { "const": true },
+        "semantic_authority": { "const": false }
+      }
+    }
+  }
+}

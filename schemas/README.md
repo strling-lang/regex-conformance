@@ -66,6 +66,8 @@ add JCS integrity, secret rejection, migration/history verification, freshness,
 source-authority, and cross-source conflict semantics that JSON Schema alone
 cannot express.
 
+The JSON restart-resume qualification schema defines the deterministic 14-case D090 recovery matrix, while the restart-resume execution schema validates live external interruption evidence. Both schemas permanently deny canonical, normative, and semantic authority. The typed scheduler adds exact transition, identity, canonical payload, hash-chain, commit-receipt, private-path, and secret-rejection checks.
+
 `json/lifecycle-event.schema.json` defines the strict machine interface for
 individual lifecycle events, durable journal cursors and batches, and derived
 progress projections. Events preserve logical stream identity separately from

@@ -7,4 +7,7 @@ not become independently hand-maintained truth.
 `small-scale/qualification-coverage.json` is generated from the compiled
 logical-execution set and proves operational category coverage without making
 normative, semantic, or conformance claims.
-nThe generated small-scale fault-classification report is recomputed from the closed deliberate-fault matrix. It distinguishes target terminal observations from adapter, worker, network, and storage attempts without assigning normative authority.
+
+The generated small-scale fault-classification report is recomputed from the closed deliberate-fault matrix. It distinguishes target terminal observations from adapter, worker, network, and storage attempts without assigning normative authority.
+
+The generated small-scale restart-resume qualification report is recomputed from the closed D090 boundary matrix. It governs continue, retry, committed, and quarantine decisions while remaining operational and non-authoritative.

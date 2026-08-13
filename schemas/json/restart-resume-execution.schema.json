@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://strling.dev/regex-conformance/schemas/restart-resume-execution.v1.schema.json",
+  "title": "Live Restart and Resume Execution Evidence v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "campaign_manifest_id",
+    "cases",
+    "classification",
+    "observed_at",
+    "reference_report_sha256",
+    "schema_version",
+    "summary"
+  ],
+  "properties": {
+    "campaign_manifest_id": { "type": "string", "minLength": 1, "maxLength": 2048 },
+    "cases": {
+      "type": "array",
+      "minItems": 14,
+      "maxItems": 14,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "attempt_count",
+          "case_key",
+          "committed_attempt_count",
+          "distinct_physical_run_count",
+          "expected_action",
+          "interrupted_attempt_count",
+          "observed_action",
+          "physical_run_ids"
+        ],
+        "properties": {
+          "attempt_count": { "type": "integer", "minimum": 0 },
+          "case_key": { "type": "string", "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$" },
+          "committed_attempt_count": { "type": "integer", "minimum": 0, "maximum": 1 },
+          "distinct_physical_run_count": { "type": "integer", "minimum": 0 },
+          "expected_action": { "enum": ["committed", "continue", "quarantine", "retry"] },
+          "interrupted_attempt_count": { "type": "integer", "minimum": 0 },
+          "observed_action": { "enum": ["committed", "continue", "quarantine", "retry"] },
+          "physical_run_ids": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": { "type": "string", "minLength": 1, "maxLength": 2048 }
+          }
+        }
+      }
+    },
+    "classification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "canonical_authority",
+        "normative_authority",
+        "operational_qualification_only",
+        "semantic_authority"
+      ],
+      "properties": {
+        "canonical_authority": { "const": false },
+        "normative_authority": { "const": false },
+        "operational_qualification_only": { "const": true },
+        "semantic_authority": { "const": false }
+      }
+    },
+    "observed_at": { "type": "string", "format": "date-time" },
+    "reference_report_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "schema_version": { "const": "restart-resume-execution.v1" },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "case_count",
+        "completed_case_count",
+        "forced_process_exit_count",
+        "quarantined_case_count",
+        "restart_count"
+      ],
+      "properties": {
+        "case_count": { "const": 14 },
+        "completed_case_count": { "const": 13 },
+        "forced_process_exit_count": { "type": "integer", "minimum": 1 },
+        "quarantined_case_count": { "const": 1 },
+        "restart_count": { "type": "integer", "minimum": 10 }
+      }
+    }
+  }
+}
