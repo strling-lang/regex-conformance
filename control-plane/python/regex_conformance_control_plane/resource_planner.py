@@ -34,6 +34,16 @@ class ReservationIdGenerator(Protocol):
     def new_resource_reservation_id(self) -> str: ...
 
 
+class EstimateCalibrator(Protocol):
+    def calibrate_all(
+        self,
+        estimates: tuple[ResourceEstimate, ...],
+        *,
+        operation_kind: str,
+        calibration_key: str,
+    ) -> tuple[ResourceEstimate, ...]: ...
+
+
 class UtcClock:
     def now(self) -> datetime:
         return datetime.now(timezone.utc)
@@ -101,10 +111,12 @@ class ResourcePlanner:
         *,
         clock: Clock | None = None,
         id_generator: ReservationIdGenerator | None = None,
+        calibrator: EstimateCalibrator | None = None,
     ) -> None:
         self._policy = policy
         self._clock = clock or UtcClock()
         self._ids = id_generator or Uuid7ReservationIdGenerator()
+        self._calibrator = calibrator
 
     def workload_plan(
         self,
@@ -118,11 +130,19 @@ class ResourcePlanner:
         required_capabilities: tuple[str, ...] = (),
         eligible_trust_classes: tuple[str, ...] = ("development", "trusted_executioner"),
         requested_concurrency: int = 1,
+        calibration_key: str | None = None,
     ) -> WorkloadResourcePlan:
+        calibrated = estimates
+        if self._calibrator is not None and calibration_key is not None:
+            calibrated = self._calibrator.calibrate_all(
+                estimates,
+                operation_kind=operation_kind,
+                calibration_key=calibration_key,
+            )
         return WorkloadResourcePlan(
             operation_kind=operation_kind,
             operation_id=operation_id,
-            estimates=estimates,
+            estimates=calibrated,
             transfers=transfers,
             provider_name=provider_name,
             provider_strategy=provider_strategy,
@@ -193,6 +213,7 @@ class ResourcePlanner:
             provider_strategy=record.recipe.strategy,
             required_capabilities=required_capabilities,
             eligible_trust_classes=eligible_trust_classes,
+            calibration_key=record.recipe.recipe_revision_id,
         )
 
     def preflight(

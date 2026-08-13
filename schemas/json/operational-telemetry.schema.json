@@ -1,0 +1,165 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/operational-telemetry.schema.json",
+  "title": "STRling Regex Conformance Operational Telemetry",
+  "oneOf": [
+    { "$ref": "#/$defs/telemetrySample" },
+    { "$ref": "#/$defs/calibrationSnapshot" }
+  ],
+  "$defs": {
+    "safeInteger": { "type": "integer", "minimum": 0, "maximum": 9007199254740991 },
+    "token": { "type": "string", "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$", "maxLength": 128 },
+    "telemetryId": {
+      "type": "string",
+      "pattern": "^opid:v1:telemetry:u7:[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "identity": {
+      "type": "string",
+      "pattern": "^opid:v1:[a-z][a-z0-9]*(?:-[a-z0-9]+)*:u7:[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+      "maxLength": 512
+    },
+    "metric": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["metric_kind", "name", "pool_kind", "unit", "value"],
+      "properties": {
+        "metric_kind": { "enum": ["resource-usage", "transfer-volume", "transfer-rate", "wall-clock", "output-volume"] },
+        "name": { "$ref": "#/$defs/token" },
+        "pool_kind": {
+          "oneOf": [
+            { "enum": ["persistent_disk", "environment_cache", "build_scratch", "execution_scratch", "result_spool", "ram", "swap", "cpu"] },
+            { "type": "null" }
+          ]
+        },
+        "unit": { "enum": ["bytes", "bytes_per_second", "logical_cpu", "milliseconds"] },
+        "value": { "$ref": "#/$defs/safeInteger" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "metric_kind": { "const": "resource-usage" } }, "required": ["metric_kind"] },
+          "then": { "properties": { "pool_kind": { "type": "string" }, "unit": { "enum": ["bytes", "logical_cpu"] } } },
+          "else": { "properties": { "pool_kind": { "type": "null" } } }
+        },
+        {
+          "if": { "properties": { "pool_kind": { "const": "cpu" } }, "required": ["pool_kind"] },
+          "then": { "properties": { "unit": { "const": "logical_cpu" } } }
+        },
+        {
+          "if": {
+            "properties": {
+              "pool_kind": { "enum": ["persistent_disk", "environment_cache", "build_scratch", "execution_scratch", "result_spool", "ram", "swap"] }
+            },
+            "required": ["pool_kind"]
+          },
+          "then": { "properties": { "unit": { "const": "bytes" } } }
+        },
+        {
+          "if": { "properties": { "metric_kind": { "enum": ["transfer-volume", "output-volume"] } }, "required": ["metric_kind"] },
+          "then": { "properties": { "unit": { "const": "bytes" } } }
+        },
+        {
+          "if": { "properties": { "metric_kind": { "const": "transfer-rate" } }, "required": ["metric_kind"] },
+          "then": { "properties": { "unit": { "const": "bytes_per_second" } } }
+        },
+        {
+          "if": { "properties": { "metric_kind": { "const": "wall-clock" } }, "required": ["metric_kind"] },
+          "then": { "properties": { "unit": { "const": "milliseconds" } } }
+        }
+      ]
+    },
+    "telemetrySample": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "attempt_id", "calibration_key", "canonical_authority", "metrics", "observed_at",
+        "operation_kind", "quality", "record_type", "sample_id", "schema_version",
+        "semantic_authority", "source"
+      ],
+      "properties": {
+        "attempt_id": { "$ref": "#/$defs/identity" },
+        "calibration_key": { "type": "string", "minLength": 1, "maxLength": 512, "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f]+$" },
+        "canonical_authority": { "const": false },
+        "metrics": { "type": "array", "minItems": 1, "maxItems": 128, "items": { "$ref": "#/$defs/metric" } },
+        "observed_at": { "type": "string", "format": "date-time", "maxLength": 64 },
+        "operation_kind": { "enum": ["environment", "campaign", "shard", "execution", "transfer", "provider"] },
+        "quality": { "enum": ["complete", "partial"] },
+        "record_type": { "const": "telemetry-sample" },
+        "sample_id": { "$ref": "#/$defs/telemetryId" },
+        "schema_version": { "const": "operational-telemetry.v1" },
+        "semantic_authority": { "const": false },
+        "source": { "$ref": "#/$defs/token" }
+      }
+    },
+    "calibrationPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "expected_percentile_basis_points", "headroom_basis_points", "maximum_samples",
+        "minimum_samples", "upper_percentile_basis_points"
+      ],
+      "properties": {
+        "expected_percentile_basis_points": { "type": "integer", "minimum": 1, "maximum": 10000 },
+        "headroom_basis_points": { "type": "integer", "minimum": 0, "maximum": 100000 },
+        "maximum_samples": { "type": "integer", "minimum": 1, "maximum": 10000 },
+        "minimum_samples": { "type": "integer", "minimum": 1, "maximum": 10000 },
+        "upper_percentile_basis_points": { "type": "integer", "minimum": 1, "maximum": 10000 }
+      }
+    },
+    "calibrationSnapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "calibration_digest", "calibration_key", "canonical_authority", "eligible", "expected",
+        "maximum", "metric_name", "minimum", "operation_kind", "policy", "pool_kind",
+        "record_type", "sample_count", "sample_ids", "schema_version", "semantic_authority",
+        "unit", "upper_bound"
+      ],
+      "properties": {
+        "calibration_digest": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "calibration_key": { "type": "string", "minLength": 1, "maxLength": 512, "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f]+$" },
+        "canonical_authority": { "const": false },
+        "eligible": { "type": "boolean" },
+        "expected": { "oneOf": [{ "$ref": "#/$defs/safeInteger" }, { "type": "null" }] },
+        "maximum": { "oneOf": [{ "$ref": "#/$defs/safeInteger" }, { "type": "null" }] },
+        "metric_name": { "$ref": "#/$defs/token" },
+        "minimum": { "oneOf": [{ "$ref": "#/$defs/safeInteger" }, { "type": "null" }] },
+        "operation_kind": { "enum": ["environment", "campaign", "shard", "execution", "transfer", "provider"] },
+        "policy": { "$ref": "#/$defs/calibrationPolicy" },
+        "pool_kind": { "enum": ["persistent_disk", "environment_cache", "build_scratch", "execution_scratch", "result_spool", "ram", "swap", "cpu"] },
+        "record_type": { "const": "calibration-snapshot" },
+        "sample_count": { "$ref": "#/$defs/safeInteger" },
+        "sample_ids": { "type": "array", "maxItems": 10000, "items": { "$ref": "#/$defs/telemetryId" }, "uniqueItems": true },
+        "schema_version": { "const": "operational-telemetry.v1" },
+        "semantic_authority": { "const": false },
+        "unit": { "enum": ["bytes", "logical_cpu"] },
+        "upper_bound": { "oneOf": [{ "$ref": "#/$defs/safeInteger" }, { "type": "null" }] }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "eligible": { "const": true } }, "required": ["eligible"] },
+          "then": {
+            "properties": {
+              "expected": { "$ref": "#/$defs/safeInteger" },
+              "maximum": { "$ref": "#/$defs/safeInteger" },
+              "minimum": { "$ref": "#/$defs/safeInteger" },
+              "upper_bound": { "$ref": "#/$defs/safeInteger" }
+            }
+          },
+          "else": {
+            "properties": {
+              "expected": { "type": "null" },
+              "maximum": { "type": "null" },
+              "minimum": { "type": "null" },
+              "upper_bound": { "type": "null" }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "pool_kind": { "const": "cpu" } }, "required": ["pool_kind"] },
+          "then": { "properties": { "unit": { "const": "logical_cpu" } } },
+          "else": { "properties": { "unit": { "const": "bytes" } } }
+        }
+      ]
+    }
+  }
+}

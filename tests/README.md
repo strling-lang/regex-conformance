@@ -71,3 +71,12 @@ admission refusal without mutation, post-mutation verification failure, typed
 campaign/cache/evidence inputs, duplicate-key and credential-bearing input
 rejection, service-unavailable behavior, and omission of unimplemented future
 authority surfaces.
+
+Telemetry and containment tests prove that complete numeric measurements
+adapt future resource estimates only after a conservative sample threshold,
+while partial runs, unrelated keys, tampered databases, credential-bearing
+identifiers, and low sample counts fail closed or remain ineligible. Seeded
+runaway process trees, timeouts, output floods, diagnostic floods, CPU and
+memory pressure, unsupported host limits, launch failures, and concurrent work
+demonstrate that provider safety limits remain independent of prediction and
+cannot manufacture semantic observations.

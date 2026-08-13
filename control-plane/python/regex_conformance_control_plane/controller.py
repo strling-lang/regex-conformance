@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Protocol
+from typing import TYPE_CHECKING, Mapping, Protocol, Sequence
 
 from .configuration import DoctorConfiguration
 from .discovery import StandardLibraryMachineDiscovery
@@ -22,6 +22,7 @@ if TYPE_CHECKING:
         TransferRecord,
     )
     from .environment_models import AdmissionDecision, EnvironmentDiagnosis, EnvironmentLifecycleRecord, EnvironmentRecipe
+    from .containment import ContainedExecutionResult, ExecutionLimits
     from .event_models import EventBatch, EventCursor, EventDraft, LifecycleEvent, ProgressProjection
     from .event_store import EventSubscription
     from .resource_models import (
@@ -38,6 +39,7 @@ if TYPE_CHECKING:
         StateMutation,
         StateSnapshot,
     )
+    from .telemetry_models import TelemetryMetric, TelemetrySample
 
 
 class MachineDoctorService(Protocol):
@@ -79,6 +81,7 @@ class ResourcePlannerService(Protocol):
         required_capabilities: tuple[str, ...] = (),
         eligible_trust_classes: tuple[str, ...] = ("development", "trusted_executioner"),
         requested_concurrency: int = 1,
+        calibration_key: str | None = None,
     ) -> "WorkloadResourcePlan": ...
 
     def environment_plan(
@@ -223,6 +226,31 @@ class EventJournalService(Protocol):
     def close(self) -> None: ...
 
 
+class TelemetryCollectorService(Protocol):
+    def collect(
+        self,
+        *,
+        operation_kind: str,
+        calibration_key: str,
+        attempt_id: str,
+        source: str,
+        metrics: tuple["TelemetryMetric", ...],
+        quality: str = "complete",
+    ) -> "TelemetrySample": ...
+
+
+class ProcessSupervisorService(Protocol):
+    def run(
+        self,
+        command: Sequence[str],
+        *,
+        limits: "ExecutionLimits",
+        cwd: str | None = None,
+        environment: Mapping[str, str] | None = None,
+        stdin: bytes | None = None,
+    ) -> "ContainedExecutionResult": ...
+
+
 @dataclass(frozen=True)
 class ControlPlaneServices:
     machine_doctor: MachineDoctorService
@@ -232,6 +260,8 @@ class ControlPlaneServices:
     transfer_manager: TransferManagerService | None = None
     local_state: LocalStateService | None = None
     event_journal: EventJournalService | None = None
+    telemetry_collector: TelemetryCollectorService | None = None
+    process_supervisor: ProcessSupervisorService | None = None
 
 
 class ControlPlaneController:
@@ -277,6 +307,7 @@ class ControlPlaneController:
         required_capabilities: tuple[str, ...] = (),
         eligible_trust_classes: tuple[str, ...] = ("development", "trusted_executioner"),
         requested_concurrency: int = 1,
+        calibration_key: str | None = None,
     ) -> "WorkloadResourcePlan":
         return self._resource_planner().workload_plan(
             operation_kind=operation_kind,
@@ -288,6 +319,7 @@ class ControlPlaneController:
             required_capabilities=required_capabilities,
             eligible_trust_classes=eligible_trust_classes,
             requested_concurrency=requested_concurrency,
+            calibration_key=calibration_key,
         )
 
     def plan_environment_resources(
@@ -493,6 +525,42 @@ class ControlPlaneController:
     def close_event_journal(self) -> None:
         self._event_journal().close()
 
+    def record_operational_telemetry(
+        self,
+        *,
+        operation_kind: str,
+        calibration_key: str,
+        attempt_id: str,
+        source: str,
+        metrics: tuple["TelemetryMetric", ...],
+        quality: str = "complete",
+    ) -> "TelemetrySample":
+        return self._telemetry_collector().collect(
+            operation_kind=operation_kind,
+            calibration_key=calibration_key,
+            attempt_id=attempt_id,
+            source=source,
+            metrics=metrics,
+            quality=quality,
+        )
+
+    def run_contained_process(
+        self,
+        command: Sequence[str],
+        *,
+        limits: "ExecutionLimits",
+        cwd: str | None = None,
+        environment: Mapping[str, str] | None = None,
+        stdin: bytes | None = None,
+    ) -> "ContainedExecutionResult":
+        return self._process_supervisor().run(
+            command,
+            limits=limits,
+            cwd=cwd,
+            environment=environment,
+            stdin=stdin,
+        )
+
     def _environment_manager(self) -> EnvironmentManagerService:
         if self._services.environment_manager is None:
             raise ControlPlaneServiceUnavailable("environment manager service is not configured")
@@ -522,6 +590,16 @@ class ControlPlaneController:
         if self._services.event_journal is None:
             raise ControlPlaneServiceUnavailable("event journal service is not configured")
         return self._services.event_journal
+
+    def _telemetry_collector(self) -> TelemetryCollectorService:
+        if self._services.telemetry_collector is None:
+            raise ControlPlaneServiceUnavailable("telemetry collector service is not configured")
+        return self._services.telemetry_collector
+
+    def _process_supervisor(self) -> ProcessSupervisorService:
+        if self._services.process_supervisor is None:
+            raise ControlPlaneServiceUnavailable("process supervisor service is not configured")
+        return self._services.process_supervisor
 
 
 def build_default_controller() -> ControlPlaneController:

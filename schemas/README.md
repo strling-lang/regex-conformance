@@ -75,6 +75,16 @@ secret-safe payload plus SHA-256 digest, and typed issues. The schema forbids
 dry-run mutation, mutation by non-execution actions, successful results with
 issues, and any claim of canonical authority.
 
+`json/operational-telemetry.schema.json` defines separate, explicitly
+non-canonical telemetry samples and deterministic calibration snapshots.
+Samples contain only typed numeric operational measurements, bind an exact
+attempt and calibration key, and distinguish complete from partial runs.
+Snapshots become eligible only after a governed sample threshold and publish
+conservative expected and upper bounds without acquiring semantic or evidence
+authority. Typed models additionally enforce metric-name uniqueness,
+cross-field bounds, RFC 8785 determinism, secret rejection, and append-only
+sample identity.
+
 `identity-profiles/environment-fingerprint.v1.json` defines the scientific
 identity projection for verified realized environments. It excludes physical
 transaction IDs, cache paths, provider handles, and timestamps while binding the

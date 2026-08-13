@@ -11,6 +11,15 @@ from .cache_models import (
     TransferRecord,
 )
 from .configuration import DoctorConfiguration
+from .containment import (
+    ContainedExecutionResult,
+    ContainedProcessSupervisor,
+    ExecutionLimits,
+    NativeSafetyLimitAdapter,
+    OciSafetyLimitAdapter,
+    ProviderLimitPlan,
+    UnsupportedContainmentError,
+)
 from .command_models import CommandDocument, CommandIssue, CommandModelError
 from .controller import ControlPlaneController, ControlPlaneServiceUnavailable, ControlPlaneServices, build_default_controller
 from .environment_models import AdmissionDecision, EnvironmentLifecycleRecord, EnvironmentRecipe
@@ -53,17 +62,29 @@ from .state_store import (
     StateRecovery,
     StateStoreBusyError,
 )
+from .telemetry_collector import OperationalTelemetryCollector, Uuid7TelemetryIds
+from .telemetry_models import CalibrationPolicy, CalibrationSnapshot, TelemetryMetric, TelemetrySample
+from .telemetry_store import (
+    TelemetryStore,
+    TelemetryStoreConflictError,
+    TelemetryStoreCorruptionError,
+    UnsafeTelemetryPathError,
+)
 
 __all__ = [
     "CacheEntry",
     "CacheInventory",
     "CacheManager",
     "CacheReconciliation",
+    "CalibrationPolicy",
+    "CalibrationSnapshot",
     "CleanupPlan",
     "CleanupReport",
     "CommandDocument",
     "CommandIssue",
     "CommandModelError",
+    "ContainedExecutionResult",
+    "ContainedProcessSupervisor",
     "ControlPlaneController",
     "ControlPlaneServiceUnavailable",
     "ControlPlaneServices",
@@ -75,6 +96,7 @@ __all__ = [
     "DurableStateService",
     "EnvironmentLifecycleRecord",
     "EnvironmentRecipe",
+    "ExecutionLimits",
     "EvictionPolicy",
     "EventBatch",
     "EventCursor",
@@ -89,9 +111,13 @@ __all__ = [
     "IncompatibleStateVersionError",
     "LocalStateStore",
     "LifecycleEvent",
+    "NativeSafetyLimitAdapter",
+    "OciSafetyLimitAdapter",
+    "OperationalTelemetryCollector",
     "ProviderRegistry",
     "ProgressAggregator",
     "ProgressProjection",
+    "ProviderLimitPlan",
     "ResourceAdmissionReport",
     "ResourceEstimate",
     "ReconciliationObservation",
@@ -107,7 +133,15 @@ __all__ = [
     "StateSourceReference",
     "StateStoreBusyError",
     "StoredEvent",
+    "TelemetryMetric",
+    "TelemetrySample",
+    "TelemetryStore",
+    "TelemetryStoreConflictError",
+    "TelemetryStoreCorruptionError",
     "TransferManager",
     "TransferRecord",
+    "UnsupportedContainmentError",
+    "UnsafeTelemetryPathError",
+    "Uuid7TelemetryIds",
     "build_default_controller",
 ]
