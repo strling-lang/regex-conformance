@@ -16,13 +16,16 @@ adapter_process_limits = HARNESS["_adapter_process_limits"]
 report_failure = HARNESS["_report_failure"]
 adapter_failure_code = HARNESS["_adapter_failure_code"]
 run_adapter_process_attempts = HARNESS["_run_adapter_process_attempts"]
+completed_invocation_failure_code = HARNESS["_completed_invocation_failure_code"]
+encode_frame = HARNESS["encode_frame"]
 
 
-def execution(*, exit_code: int, stderr: bytes = b"") -> SimpleNamespace:
+def execution(*, exit_code: int, stderr: bytes = b"", stdout: bytes = b"") -> SimpleNamespace:
     value = SimpleNamespace(
         outcome="completed",
         exit_code=exit_code,
         stderr=stderr,
+        stdout=stdout,
     )
     value.to_dict = lambda: {
         "outcome": value.outcome,
@@ -61,6 +64,14 @@ class MinimalAdapterCertificationTests(unittest.TestCase):
                 with self.assertRaises(RuntimeError):
                     run_adapter_process_attempts(selection_key, lambda: calls.pop(0))
                 self.assertEqual(calls, [])
+        completed = [execution(exit_code=0)]
+        with self.assertRaises(RuntimeError):
+            run_adapter_process_attempts(
+                "mysql-regex",
+                lambda: completed.pop(0),
+                lambda _: "runtime-identity-mismatch",
+            )
+        self.assertEqual(completed, [])
 
     def test_failure_code_requires_exact_machine_readable_adapter_error(self) -> None:
         self.assertEqual(
@@ -71,6 +82,56 @@ class MinimalAdapterCertificationTests(unittest.TestCase):
         )
         self.assertIsNone(adapter_failure_code(b'{"error":{"code":3},"ok":false}\n'))
         self.assertIsNone(adapter_failure_code(b'{"error":{"code":"runtime-identity-failed"},"ok":true}\n'))
+
+    def test_completed_mysql_invocation_failure_retries_and_preserves_failed_attempt(self) -> None:
+        frames = [
+            {},
+            {
+                "failure": {
+                    "code": "mysql-client-failed",
+                    "kind": "adapter-invocation",
+                    "layer": "invocation",
+                },
+                "status": "failed",
+            },
+            {},
+            {},
+        ]
+        failed = execution(exit_code=0, stdout=b"".join(encode_frame(item) for item in frames))
+        succeeded = execution(exit_code=0)
+        pending = [failed, succeeded]
+        classifications = ["mysql-client-failed", None]
+
+        selected, attempts = run_adapter_process_attempts(
+            "mysql-regex",
+            lambda: pending.pop(0),
+            lambda _: classifications.pop(0),
+        )
+
+        self.assertIs(selected, succeeded)
+        self.assertEqual([item["failure_code"] for item in attempts], ["mysql-client-failed", None])
+        self.assertEqual([item["selected"] for item in attempts], [False, True])
+
+    def test_only_exact_completed_invocation_failure_shape_is_classified(self) -> None:
+        failure = {
+            "code": "mysql-client-failed",
+            "kind": "adapter-invocation",
+            "layer": "invocation",
+        }
+        frames = [{}, {"failure": failure, "status": "failed"}, {}, {}]
+        value = execution(exit_code=0, stdout=b"".join(encode_frame(item) for item in frames))
+        self.assertEqual(completed_invocation_failure_code(value), "mysql-client-failed")
+        self.assertIsNone(completed_invocation_failure_code(value, {"type": "null"}))
+
+        for mutation in (
+            [{}, {"failure": failure, "status": "completed"}, {}, {}],
+            [{}, {"failure": {**failure, "layer": "materialization"}, "status": "failed"}, {}, {}],
+            [{}, {"failure": {**failure, "kind": "unsupported"}, "status": "failed"}, {}, {}],
+            [{}, {"failure": failure, "status": "failed"}, {}],
+        ):
+            with self.subTest(mutation=mutation):
+                malformed = execution(exit_code=0, stdout=b"".join(encode_frame(item) for item in mutation))
+                self.assertIsNone(completed_invocation_failure_code(malformed))
 
     def test_failure_reporting_is_machine_readable_and_workflow_safe(self) -> None:
         output = StringIO()

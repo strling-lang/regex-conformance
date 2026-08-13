@@ -52,7 +52,15 @@ ORDER = {"pcre2-ordinary": 0, "python-re": 1, "mysql-regex": 2}
 CASE_COUNT = 3
 MAXIMUM_PROCESS_ATTEMPTS = 2
 RETRYABLE_INFRASTRUCTURE_FAILURES = {
-    "mysql-regex": frozenset({"runtime-identity-failed"}),
+    "mysql-regex": frozenset(
+        {
+            "mysql-client-failed",
+            "mysql-client-launch-failed",
+            "mysql-client-timeout",
+            "mysql-service-unavailable",
+            "runtime-identity-failed",
+        }
+    ),
 }
 
 
@@ -334,13 +342,18 @@ def _adapter_failure_code(stderr: bytes) -> str | None:
 def _run_adapter_process_attempts(
     selection_key: str,
     run_attempt: Callable[[], Any],
+    completed_failure_code: Callable[[Any], str | None] | None = None,
 ) -> tuple[Any, list[dict[str, Any]]]:
     attempts: list[dict[str, Any]] = []
     retryable = RETRYABLE_INFRASTRUCTURE_FAILURES.get(selection_key, frozenset())
     for attempt_number in range(1, MAXIMUM_PROCESS_ATTEMPTS + 1):
         execution = run_attempt()
-        succeeded = execution.outcome == "completed" and execution.exit_code == 0
-        failure_code = None if succeeded else _adapter_failure_code(execution.stderr)
+        process_succeeded = execution.outcome == "completed" and execution.exit_code == 0
+        if process_succeeded:
+            failure_code = None if completed_failure_code is None else completed_failure_code(execution)
+        else:
+            failure_code = _adapter_failure_code(execution.stderr)
+        succeeded = process_succeeded and failure_code is None
         attempts.append(
             {
                 "attempt_number": attempt_number,
@@ -356,9 +369,37 @@ def _run_adapter_process_attempts(
         diagnostic = execution.stderr.decode("utf-8", "replace")[:1024]
         raise RuntimeError(
             f"adapter process failed for {selection_key}: "
-            f"{execution.outcome}/{execution.exit_code}: {diagnostic}"
+            f"{execution.outcome}/{execution.exit_code}, failure_code={failure_code}: {diagnostic}"
         )
     raise AssertionError("bounded adapter attempt loop terminated without a result")
+
+
+def _completed_invocation_failure_code(
+    execution: Any,
+    response_schema: dict[str, Any] | None = None,
+) -> str | None:
+    try:
+        frames = _decode_frames(execution.stdout)
+    except Exception:
+        return None
+    if len(frames) != CASE_COUNT + 1 or not isinstance(frames[1], dict):
+        return None
+    response = frames[1]
+    if response_schema is not None:
+        try:
+            validate_instance(response, response_schema, source="retry-candidate-response")
+        except Exception:
+            return None
+    failure = response.get("failure")
+    if (
+        response.get("status") != "failed"
+        or not isinstance(failure, dict)
+        or failure.get("layer") != "invocation"
+        or failure.get("kind") != "adapter-invocation"
+    ):
+        return None
+    code = failure.get("code")
+    return code if isinstance(code, str) else None
 
 
 def _invoke_adapter(selection_key: str, ready: Any, package: AdapterManifest) -> dict[str, Any]:
@@ -366,6 +407,7 @@ def _invoke_adapter(selection_key: str, ready: Any, package: AdapterManifest) ->
     stdin = b"".join(encode_frame(item) for item in [_offer(package), *requests])
     command, environment, binding = _adapter_command(selection_key, ready)
     limits = _adapter_process_limits(selection_key)
+    response_schema = load_strict(ROOT / "schemas" / "json" / "adapter-response.schema.json")
     supervisor = ContainedProcessSupervisor(maximum_concurrency=1)
     execution, process_attempts = _run_adapter_process_attempts(
         selection_key,
@@ -376,13 +418,13 @@ def _invoke_adapter(selection_key: str, ready: Any, package: AdapterManifest) ->
             environment=environment,
             stdin=stdin,
         ),
+        lambda execution: _completed_invocation_failure_code(execution, response_schema),
     )
     frames = _decode_frames(execution.stdout)
     if len(frames) != CASE_COUNT + 1:
         raise RuntimeError(f"adapter emitted {len(frames)} frames; expected {CASE_COUNT + 1}")
     handshake, *responses = frames
     validate_instance(handshake, load_strict(ROOT / "schemas" / "json" / "adapter-handshake.schema.json"), source="handshake")
-    response_schema = load_strict(ROOT / "schemas" / "json" / "adapter-response.schema.json")
     for index, response in enumerate(responses):
         validate_instance(response, response_schema, source=f"response[{index}]")
     if (
