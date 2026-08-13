@@ -80,3 +80,11 @@ runaway process trees, timeouts, output floods, diagnostic floods, CPU and
 memory pressure, unsupported host limits, launch failures, and concurrent work
 demonstrate that provider safety limits remain independent of prediction and
 cannot manufacture semantic observations.
+
+The Linux-only foundation acceptance test independently composes these Control
+Plane services into one clean-host certification scenario. It proves that host
+inspection and dry-run planning precede mutation; insufficient disk is refused;
+bounded low-confidence estimates receive their safety margin; interrupted and
+identity-mismatched acquisitions roll back; an admitted environment reaches a
+verified Ready state; cache protection, transfer resume, durable restart,
+structured progress, and process-tree containment survive their fault cases.
