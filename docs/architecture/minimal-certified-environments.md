@@ -24,7 +24,8 @@ The PCRE2 recipe pins the upstream 10.47 source archive and detached signature
 by exact size and SHA-256. Its build is deliberately classified
 `bounded-host-toolchain`, not hermetic: certification records the admitted CMake
 and compiler realization, verifies the requested 8-bit/JIT/Unicode build
-facets, and hashes the installed PCRE2 library. A different admitted toolchain
+facets, requires the loadable shared-library public ABI needed by the thin
+adapter, and hashes that exact installed library. A different admitted toolchain
 may therefore produce a different legitimate environment fingerprint.
 
 The CPython recipe pins the official GitHub Actions Ubuntu 24.04 x64 archive by

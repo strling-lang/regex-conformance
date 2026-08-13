@@ -541,6 +541,7 @@ class Pcre2SourceProvider(CertifiedEnvironmentProvider):
         configure = (
             "cmake", "-S", str(source), "-B", str(build),
             f"-DCMAKE_INSTALL_PREFIX={install}", "-DCMAKE_BUILD_TYPE=Release",
+            "-DBUILD_SHARED_LIBS=ON",
             "-DPCRE2_BUILD_PCRE2_8=ON", "-DPCRE2_BUILD_PCRE2_16=OFF", "-DPCRE2_BUILD_PCRE2_32=OFF",
             "-DPCRE2_BUILD_PCRE2GREP=ON", "-DPCRE2_BUILD_TESTS=OFF",
             "-DPCRE2_NEWLINE=LF", "-DPCRE2_SUPPORT_JIT=ON", "-DPCRE2_SUPPORT_UNICODE=ON",
@@ -557,17 +558,26 @@ class Pcre2SourceProvider(CertifiedEnvironmentProvider):
     @staticmethod
     def _library(install: Path) -> Path:
         candidates = sorted(
-            item for item in install.rglob("libpcre2-8.*")
-            if item.name == "libpcre2-8.a" or ".so" in item.name
+            item
+            for item in install.rglob("libpcre2-8.so*")
+            if item.name == "libpcre2-8.so" or item.name.startswith("libpcre2-8.so.")
         )
-        regular = next((item.resolve() for item in candidates if item.resolve().is_file()), None)
-        if regular is None:
-            raise ProviderOperationError("runtime-library-missing", "PCRE2 8-bit static or shared library was not installed")
-        try:
-            regular.relative_to(install.resolve())
-        except ValueError as error:
-            raise ProviderOperationError("runtime-library-unsafe", "PCRE2 library resolved outside the install root") from error
-        return regular
+        regular: set[Path] = set()
+        for candidate in candidates:
+            try:
+                resolved = candidate.resolve(strict=True)
+                resolved.relative_to(install.resolve(strict=True))
+            except (OSError, ValueError) as error:
+                raise ProviderOperationError(
+                    "runtime-library-unsafe", "PCRE2 shared library resolved outside the install root"
+                ) from error
+            if resolved.is_file():
+                regular.add(resolved)
+        if not regular:
+            raise ProviderOperationError("runtime-library-missing", "PCRE2 8-bit shared library was not installed")
+        if len(regular) != 1:
+            raise ProviderOperationError("runtime-library-ambiguous", "PCRE2 install contains multiple shared libraries")
+        return regular.pop()
 
     def inspect_runtime(self, recipe: EnvironmentRecipe, handle: str, transaction_id: str) -> RuntimeIdentity:
         root = self._handle_root(handle, transaction_id)
@@ -579,6 +589,7 @@ class Pcre2SourceProvider(CertifiedEnvironmentProvider):
             raise ProviderOperationError("runtime-version-mismatch", "PCRE2 runtime version did not match 10.47", handle)
         cache = (root / "build" / "CMakeCache.txt").read_text(encoding="utf-8")
         required_cache = (
+            "BUILD_SHARED_LIBS:BOOL=ON",
             "CMAKE_BUILD_TYPE:STRING=Release", "PCRE2_BUILD_PCRE2_8:BOOL=ON",
             "PCRE2_BUILD_PCRE2_16:BOOL=OFF", "PCRE2_BUILD_PCRE2_32:BOOL=OFF",
             "PCRE2_NEWLINE:STRING=LF", "PCRE2_SUPPORT_JIT:BOOL=ON", "PCRE2_SUPPORT_UNICODE:BOOL=ON",
@@ -597,6 +608,7 @@ class Pcre2SourceProvider(CertifiedEnvironmentProvider):
             NamedValue("build-type", "Release"), NamedValue("cmake-version", cmake),
             NamedValue("code-unit-widths", "8"), NamedValue("compiler-version", compiler),
             NamedValue("glibc-version", glibc), NamedValue("jit", "enabled"),
+            NamedValue("library-linkage", "shared"),
             NamedValue("locale", environment["LC_ALL"]), NamedValue("newline", "LF"),
             NamedValue("timezone", environment["TZ"]), NamedValue("unicode", "enabled"),
         ]

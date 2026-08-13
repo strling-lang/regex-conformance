@@ -128,6 +128,37 @@ class CertifiedEnvironmentProviderTests(unittest.TestCase):
             supported = {item.name for item in provider.descriptor.capabilities if item.status == "supported"}
             self.assertTrue(BASE_READY_CAPABILITIES.issubset(supported))
 
+    def test_pcre_recipe_and_provider_require_one_loadable_shared_library(self) -> None:
+        definition = next(item for item in load_certified_recipes(ROOT) if item.selection_key == "pcre2-ordinary")
+        parameters = definition.parameters
+        configuration = {item.name: item.value for item in definition.lifecycle.expected_configuration}
+        self.assertEqual(parameters["cmake-build-shared-libs"], "ON")
+        self.assertEqual(configuration["library-linkage"], "shared")
+
+        with tempfile.TemporaryDirectory() as temporary:
+            install = Path(temporary) / "install"
+            library_directory = install / "lib"
+            library_directory.mkdir(parents=True)
+            (library_directory / "libpcre2-8.a").write_bytes(b"static")
+            with self.assertRaisesRegex(ProviderOperationError, "shared library was not installed"):
+                Pcre2SourceProvider._library(install)
+
+            shared = library_directory / "libpcre2-8.so.0.13.0"
+            shared.write_bytes(b"shared")
+            (library_directory / "libpcre2-8.so").symlink_to(shared.name)
+            self.assertEqual(Pcre2SourceProvider._library(install), shared.resolve())
+
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            install = root / "install"
+            library_directory = install / "lib"
+            library_directory.mkdir(parents=True)
+            outside = root / "outside.so"
+            outside.write_bytes(b"outside")
+            (library_directory / "libpcre2-8.so").symlink_to(outside)
+            with self.assertRaisesRegex(ProviderOperationError, "outside the install root"):
+                Pcre2SourceProvider._library(install)
+
     def test_planning_is_nonmutating_and_binds_provider_implementation(self) -> None:
         definition = load_certified_recipes(ROOT)[0]
         with tempfile.TemporaryDirectory() as temporary:
