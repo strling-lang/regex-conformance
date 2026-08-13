@@ -11,7 +11,8 @@ from .cache_models import (
     TransferRecord,
 )
 from .configuration import DoctorConfiguration
-from .controller import ControlPlaneController, ControlPlaneServices, build_default_controller
+from .command_models import CommandDocument, CommandIssue, CommandModelError
+from .controller import ControlPlaneController, ControlPlaneServiceUnavailable, ControlPlaneServices, build_default_controller
 from .environment_models import AdmissionDecision, EnvironmentLifecycleRecord, EnvironmentRecipe
 from .environment_providers import ProviderRegistry
 from .event_models import (
@@ -60,7 +61,11 @@ __all__ = [
     "CacheReconciliation",
     "CleanupPlan",
     "CleanupReport",
+    "CommandDocument",
+    "CommandIssue",
+    "CommandModelError",
     "ControlPlaneController",
+    "ControlPlaneServiceUnavailable",
     "ControlPlaneServices",
     "AdmissionDecision",
     "AdmissionContext",

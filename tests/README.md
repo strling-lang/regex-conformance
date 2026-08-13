@@ -63,3 +63,11 @@ bytes, database columns, stream heads, cursor identity, retention policy,
 progress order, resume status, schema authority, and transfer interruption; the
 journal must fail closed while infrastructure outcomes remain operational rather
 than becoming regex observations.
+
+CLI tests validate the shared command schema, stable outcome/exit-code mapping,
+deterministic secret-safe payloads, parity between human and JSON rendering,
+canonical JSONL events, default dry-run behavior, two-factor mutation consent,
+admission refusal without mutation, post-mutation verification failure, typed
+campaign/cache/evidence inputs, duplicate-key and credential-bearing input
+rejection, service-unavailable behavior, and omission of unimplemented future
+authority surfaces.

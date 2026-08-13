@@ -92,9 +92,9 @@ Node.js 18 or newer is required for the independent canonical-byte oracle. These
 bootstrap tooling choices do not select the later Control Plane implementation
 language or packaging strategy.
 
-## Control Plane machine inspection
+## Control Plane command surface
 
-The first Control Plane slice is a read-only machine doctor. It reports typed
+The Control Plane includes a read-only machine doctor. It reports typed
 resource pools, provider visibility, process capabilities, explicit trust, and
 actionable diagnostics without creating environments, cache entries, spools, or
 local state:
@@ -104,10 +104,13 @@ python control-plane/python/run.py doctor --trust-class development
 python control-plane/python/run.py machine inspect --format json --trust-class development
 ```
 
-The JSON output conforms to `machine-inventory.v1`. Unknown values remain null,
-trust is never inferred, and the CLI delegates to the reusable controller
-service. See [the Control Plane module](control-plane/README.md) for configuration
-and validation details.
+Machine JSON conforms to `machine-inventory.v1`; every other non-event command
+conforms to `control-plane-command.v1`. Unknown values remain null, trust is
+never inferred, mutating environment acquisition requires `--execute --yes`,
+and the CLI delegates to reusable controller services. See [the Control Plane
+module](control-plane/README.md) for its command groups, stable exit codes,
+dry-run contract, service-injection boundary, configuration, and validation
+details.
 
 ## Public validation and promotion
 

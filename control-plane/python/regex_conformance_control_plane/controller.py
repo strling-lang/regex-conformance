@@ -44,6 +44,10 @@ class MachineDoctorService(Protocol):
     def inspect(self, configuration: DoctorConfiguration) -> DoctorReport: ...
 
 
+class ControlPlaneServiceUnavailable(RuntimeError):
+    """A requested client-neutral service has not been configured."""
+
+
 class EnvironmentManagerService(Protocol):
     def plan(self, recipe: "EnvironmentRecipe", provider_name: str) -> "EnvironmentLifecycleRecord": ...
 
@@ -491,32 +495,32 @@ class ControlPlaneController:
 
     def _environment_manager(self) -> EnvironmentManagerService:
         if self._services.environment_manager is None:
-            raise RuntimeError("environment manager service is not configured")
+            raise ControlPlaneServiceUnavailable("environment manager service is not configured")
         return self._services.environment_manager
 
     def _resource_planner(self) -> ResourcePlannerService:
         if self._services.resource_planner is None:
-            raise RuntimeError("resource planner service is not configured")
+            raise ControlPlaneServiceUnavailable("resource planner service is not configured")
         return self._services.resource_planner
 
     def _cache_manager(self) -> CacheManagerService:
         if self._services.cache_manager is None:
-            raise RuntimeError("cache manager service is not configured")
+            raise ControlPlaneServiceUnavailable("cache manager service is not configured")
         return self._services.cache_manager
 
     def _transfer_manager(self) -> TransferManagerService:
         if self._services.transfer_manager is None:
-            raise RuntimeError("transfer manager service is not configured")
+            raise ControlPlaneServiceUnavailable("transfer manager service is not configured")
         return self._services.transfer_manager
 
     def _local_state(self) -> LocalStateService:
         if self._services.local_state is None:
-            raise RuntimeError("local state service is not configured")
+            raise ControlPlaneServiceUnavailable("local state service is not configured")
         return self._services.local_state
 
     def _event_journal(self) -> EventJournalService:
         if self._services.event_journal is None:
-            raise RuntimeError("event journal service is not configured")
+            raise ControlPlaneServiceUnavailable("event journal service is not configured")
         return self._services.event_journal
 
 

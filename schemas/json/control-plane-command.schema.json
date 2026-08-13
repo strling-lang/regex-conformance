@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/control-plane-command.schema.json",
+  "title": "STRling Regex Conformance Control Plane Command Document",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "action",
+    "canonical_authority",
+    "changed",
+    "command",
+    "dry_run",
+    "exit_code",
+    "issues",
+    "outcome",
+    "payload",
+    "payload_sha256",
+    "schema_version"
+  ],
+  "properties": {
+    "action": { "enum": ["execute", "inspect", "plan", "verify"] },
+    "canonical_authority": { "const": false },
+    "changed": { "type": "boolean" },
+    "command": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*(?: [a-z0-9]+(?:-[a-z0-9]+)*)*$",
+      "maxLength": 128
+    },
+    "dry_run": { "type": "boolean" },
+    "exit_code": { "enum": [0, 2, 3, 4] },
+    "issues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["category", "code", "message", "remediation"],
+        "properties": {
+          "category": { "enum": ["admission", "input", "integrity", "runtime", "unavailable"] },
+          "code": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$", "maxLength": 128 },
+          "message": { "type": "string", "minLength": 1, "maxLength": 1024, "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f]+$" },
+          "remediation": {
+            "oneOf": [
+              { "type": "string", "minLength": 1, "maxLength": 1024, "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f]+$" },
+              { "type": "null" }
+            ]
+          }
+        }
+      }
+    },
+    "outcome": { "enum": ["succeeded", "rejected", "failed", "unavailable"] },
+    "payload": { "type": "object" },
+    "payload_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "schema_version": { "const": "control-plane-command.v1" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "dry_run": { "const": true } }, "required": ["dry_run"] },
+      "then": { "properties": { "changed": { "const": false } } }
+    },
+    {
+      "if": { "properties": { "changed": { "const": true } }, "required": ["changed"] },
+      "then": { "properties": { "action": { "const": "execute" }, "dry_run": { "const": false } } }
+    },
+    {
+      "if": { "properties": { "outcome": { "const": "succeeded" } }, "required": ["outcome"] },
+      "then": { "properties": { "exit_code": { "const": 0 }, "issues": { "maxItems": 0 } } }
+    },
+    {
+      "if": { "properties": { "outcome": { "const": "rejected" } }, "required": ["outcome"] },
+      "then": { "properties": { "exit_code": { "const": 2 }, "issues": { "minItems": 1 } } }
+    },
+    {
+      "if": { "properties": { "outcome": { "const": "failed" } }, "required": ["outcome"] },
+      "then": { "properties": { "exit_code": { "const": 3 }, "issues": { "minItems": 1 } } }
+    },
+    {
+      "if": { "properties": { "outcome": { "const": "unavailable" } }, "required": ["outcome"] },
+      "then": { "properties": { "exit_code": { "const": 4 }, "issues": { "minItems": 1 } } }
+    }
+  ]
+}

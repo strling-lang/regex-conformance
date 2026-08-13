@@ -68,6 +68,13 @@ global hash-chain integrity, contiguous stream/attempt rules, exact resume
 coordinates, bounded-retention gap detection, and restart-aware rate/ETA
 semantics that cannot be expressed as independent JSON fields.
 
+`json/control-plane-command.schema.json` defines the shared non-canonical
+command result used by human and automation clients. It binds the selected
+command and action to an outcome, stable exit code, dry-run and mutation flags,
+secret-safe payload plus SHA-256 digest, and typed issues. The schema forbids
+dry-run mutation, mutation by non-execution actions, successful results with
+issues, and any claim of canonical authority.
+
 `identity-profiles/environment-fingerprint.v1.json` defines the scientific
 identity projection for verified realized environments. It excludes physical
 transaction IDs, cache paths, provider handles, and timestamps while binding the

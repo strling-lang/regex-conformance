@@ -134,8 +134,7 @@ downloads verify the durable partial-file checkpoint before continuing, fsync
 each chunk, retain interrupted and failed attempts, and publish with a
 non-overwriting atomic link only after exact final verification. A corrupted
 checkpoint, destination race, or digest mismatch never becomes a completed
-transfer. CLI commands and human terminal rendering remain owned by their later
-P16A contracts.
+transfer.
 
 ## Durable local state and restart reconciliation
 
@@ -173,7 +172,7 @@ quarantine directory, hashes it in a non-canonical manifest, creates a fresh
 store, and reconciles from identified external sources. The original bytes are
 not deleted. `DurableStateService` exposes snapshot, plan, apply, reconcile,
 transaction, health, readiness, and clean/aborted close operations through the
-client-neutral controller facade. CLI commands remain a later P16A contract.
+client-neutral controller facade.
 
 ## Structured lifecycle events, progress, and ETA
 
@@ -200,3 +199,44 @@ attempt must begin at the last durable coordinate, so restart cannot double-coun
 work. A projection explicitly declares when bounded retention removed its early
 history. The controller exposes publish, cursor reads, subscriptions, progress
 inspection, and health without making the local journal a scientific authority.
+
+## CLI and automation contract
+
+`control-plane/python/run.py` exposes the currently backed `doctor`, `machine`,
+`env`, `cache`, `campaign`, `worker`, and `evidence` command groups. It does not
+advertise future registry, coverage, or report authority before those services
+exist. Every non-event command produces a `control-plane-command.v1` document;
+human and JSON renderings derive from the same validated payload and SHA-256
+digest. Outcomes map stably to exit codes: success `0`, rejected input or
+admission `2`, runtime failure `3`, and unavailable service `4`.
+
+Environment acquisition is dry-run by default. It compiles the provider plan,
+resource forecast, machine inventory, and preflight admission without invoking
+admission or realization. Mutation requires both `--execute` and `--yes`, then
+reuses that same inspected plan and verifies the resulting Ready state. A
+refused preflight never mutates. Campaign planning accepts typed resource and
+transfer forecasts; cache inventory accepts typed entries; evidence transfer
+planning binds an exact digest and size; and worker commands inspect durable
+state, health, progress, or canonical JSONL lifecycle events.
+
+All JSON input files are bounded to 1 MiB and must be regular, non-symlink,
+stable UTF-8 files without duplicate keys or non-finite values. Canonical
+serialization rejects credential-bearing data, so command output remains
+secret-safe and explicitly non-authoritative. Event mode emits exactly one
+canonical JSON object per line and cannot be combined with pretty output.
+
+Command syntax on a host that has supplied the corresponding controller
+services:
+
+```sh
+python control-plane/python/run.py campaign plan --request campaign-request.json --format json --compact
+python control-plane/python/run.py env acquire --recipe recipe.json --provider native --machine-provider host --format json
+python control-plane/python/run.py env acquire --recipe recipe.json --provider native --machine-provider host --execute --yes --format json
+python control-plane/python/run.py worker events --format event --maximum-events 100
+```
+
+The default process configures only universally safe host inspection. Commands
+whose provider, policy, store, or journal is not configured fail explicitly with
+exit `4`; embedded operators supply those services through
+`ControlPlaneServices`. Local command documents are operational projections,
+never canonical research, observations, or evidence.
