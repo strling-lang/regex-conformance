@@ -11,6 +11,7 @@ from .adapters import load_and_validate_adapter_records
 from .campaigns import load_and_validate_campaign_records
 from .errors import ConformanceDataError
 from .environments import load_and_validate_environment_records
+from .faults import load_and_validate_fault_records
 from .jsonio import load_strict
 from .qualification import load_and_validate_qualification_records
 from .selection import validate_vertical_slice_selection
@@ -69,6 +70,7 @@ def validate_repository(root: Path) -> dict[str, int]:
         root, validate_instance=validate_instance
     )
     campaign_counts = load_and_validate_campaign_records(root, validate_instance=validate_instance)
+    fault_counts = load_and_validate_fault_records(root, validate_instance=validate_instance)
     return {
         "schemas": len(list(schemas.glob("*.schema.json"))),
         "profiles": len(profiles),
@@ -78,4 +80,5 @@ def validate_repository(root: Path) -> dict[str, int]:
         **adapter_counts,
         **qualification_counts,
         **campaign_counts,
+        **fault_counts,
     }

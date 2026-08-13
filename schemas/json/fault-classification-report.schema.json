@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/fault-classification-report.schema.json",
+  "title": "STRling Deliberate Fault Classification Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["cases", "classification", "schema_version", "summary"],
+  "properties": {
+    "cases": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["assessment", "stimulus"],
+        "properties": {
+          "assessment": { "$ref": "#/$defs/assessment" },
+          "stimulus": { "$ref": "#/$defs/stimulus" }
+        }
+      }
+    },
+    "classification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["normative_authority", "operational_qualification_only", "semantic_authority"],
+      "properties": {
+        "normative_authority": { "const": false },
+        "operational_qualification_only": { "const": true },
+        "semantic_authority": { "const": false }
+      }
+    },
+    "schema_version": { "const": "fault-classification-report.v1" },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["accepted_terminal_count", "case_count", "inconclusive_attempt_count"],
+      "properties": {
+        "accepted_terminal_count": { "const": 2 },
+        "case_count": { "const": 7 },
+        "inconclusive_attempt_count": { "const": 5 }
+      }
+    }
+  },
+  "$defs": {
+    "token": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$", "maxLength": 128 },
+    "stimulus": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "adapter_response_state", "containment", "environment_health_after",
+        "environment_health_before", "fault_key", "injection_point", "network_observation",
+        "protocol_checkpoint", "schema_version", "storage_observation", "supervisor_health"
+      ],
+      "properties": {
+        "adapter_response_state": { "enum": ["malformed", "missing", "not-applicable", "valid"] },
+        "containment": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["exit_code", "outcome"],
+          "properties": {
+            "exit_code": { "oneOf": [{ "type": "integer" }, { "type": "null" }] },
+            "outcome": { "enum": ["completed", "cpu-time-limit", "launch-failed", "not-run", "stderr-limit", "stdout-limit", "wall-time-limit"] }
+          }
+        },
+        "environment_health_after": { "enum": ["healthy", "unhealthy", "unknown"] },
+        "environment_health_before": { "enum": ["healthy", "unhealthy", "unknown"] },
+        "fault_key": { "$ref": "#/$defs/token" },
+        "injection_point": { "enum": ["adapter-process", "evidence-storage", "network-acquisition", "target-invocation", "worker-process"] },
+        "network_observation": { "enum": ["none", "transport-failed"] },
+        "protocol_checkpoint": { "enum": ["not-applicable", "target-invocation-started", "target-not-started", "target-response-complete"] },
+        "schema_version": { "const": "deliberate-fault-stimulus.v1" },
+        "storage_observation": { "enum": ["none", "publication-failed"] },
+        "supervisor_health": { "enum": ["healthy", "unhealthy", "unknown"] }
+      }
+    },
+    "assessment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "attribution_layer", "c5_terminal_eligible", "canonical_authority",
+        "completion_disposition", "fault_key", "logical_execution_satisfied",
+        "normative_authority", "outcome_class", "reason_code", "schema_version",
+        "semantic_authority", "stimulus_sha256"
+      ],
+      "properties": {
+        "attribution_layer": { "enum": ["adapter-protocol", "network", "storage", "target", "unknown", "worker"] },
+        "c5_terminal_eligible": { "type": "boolean" },
+        "canonical_authority": { "const": false },
+        "completion_disposition": { "enum": ["accepted-terminal-observation", "inconclusive-attempt"] },
+        "fault_key": { "$ref": "#/$defs/token" },
+        "logical_execution_satisfied": { "type": "boolean" },
+        "normative_authority": { "const": false },
+        "outcome_class": { "enum": ["adapter-protocol-failure", "inconclusive", "network-failure", "storage-publication-failure", "target-crash", "target-timeout", "worker-failure"] },
+        "reason_code": { "$ref": "#/$defs/token" },
+        "schema_version": { "const": "fault-attribution-assessment.v1" },
+        "semantic_authority": { "const": false },
+        "stimulus_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "c5_terminal_eligible": { "const": true } }, "required": ["c5_terminal_eligible"] },
+          "then": {
+            "properties": {
+              "attribution_layer": { "const": "target" },
+              "completion_disposition": { "const": "accepted-terminal-observation" },
+              "logical_execution_satisfied": { "const": true },
+              "outcome_class": { "enum": ["target-crash", "target-timeout"] }
+            }
+          },
+          "else": {
+            "properties": {
+              "completion_disposition": { "const": "inconclusive-attempt" },
+              "logical_execution_satisfied": { "const": false }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

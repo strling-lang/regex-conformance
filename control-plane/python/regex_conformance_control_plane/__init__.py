@@ -24,6 +24,7 @@ from .command_models import CommandDocument, CommandIssue, CommandModelError
 from .controller import ControlPlaneController, ControlPlaneServiceUnavailable, ControlPlaneServices, build_default_controller
 from .environment_models import AdmissionDecision, EnvironmentLifecycleRecord, EnvironmentRecipe
 from .environment_providers import ProviderRegistry
+from .fault_attribution import FaultAttributionError, build_reference_report, classify_fault, reference_stimuli
 from .event_models import (
     EventBatch,
     EventCursor,
@@ -107,6 +108,7 @@ __all__ = [
     "EventJournalCorruptionError",
     "EventModelError",
     "EventSubscription",
+    "FaultAttributionError",
     "FilesystemCacheProvider",
     "IncompatibleStateVersionError",
     "LocalStateStore",
@@ -143,5 +145,8 @@ __all__ = [
     "UnsupportedContainmentError",
     "UnsafeTelemetryPathError",
     "Uuid7TelemetryIds",
+    "build_reference_report",
+    "classify_fault",
+    "reference_stimuli",
     "build_default_controller",
 ]
