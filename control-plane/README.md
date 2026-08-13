@@ -84,3 +84,26 @@ global lifecycle events, CLI environment commands, cache mutation, and hard
 workload containment remain in their separately gated P16A tasks.
 
 Local Control Plane state remains operational and non-canonical.
+
+## Predictive resource preflight and admission
+
+Every environment, campaign, and shard now carries a deterministic,
+non-mutating resource plan before expensive work begins. Plans distinguish
+expected and conservative upper-bound downloads, expanded environments, build
+and execution scratch, result spool, RAM, CPU, and transfer volumes. Each
+forecast declares `known`, `measured`, `estimated`, `bounded`, or `unknown`
+confidence with provenance; unknown never means zero.
+
+The admission engine applies integer basis-point confidence margins and typed
+pool safety reserves, rejects stale or ambiguous inventory, verifies provider,
+capability, trust, and concurrency constraints, and aggregates logical disk
+pools that share a physical backing store. This prevents separately plausible
+cache and spool allocations from double-spending the same bytes. Preflight is a
+hard gate before environment acquisition. Dynamic re-evaluation returns either
+`admitted`, recoverable `backpressure`, or non-recoverable `drain`, with stable
+issue codes and concrete remediation.
+
+Environment admission accepts only the exact preflight report produced under
+the active policy for the same planned transaction. Admission consumes inventory
+without changing it; containment, measured telemetry feedback, and automatic
+forecast calibration remain later P16A contracts.

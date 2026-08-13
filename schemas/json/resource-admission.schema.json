@@ -1,0 +1,371 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://strling.dev/regex-conformance/schemas/resource-admission.v1.schema.json",
+  "title": "Resource Admission v1",
+  "description": "Recoverable non-canonical predictive resource plan and admission decision for one workload.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "reservation_id",
+    "stage",
+    "outcome",
+    "observed_at",
+    "inventory_observed_at",
+    "plan",
+    "policy",
+    "context",
+    "resource_evaluations",
+    "backing_store_evaluations",
+    "issues",
+    "mutation_permitted"
+  ],
+  "properties": {
+    "schema_version": { "const": "resource-admission.v1" },
+    "reservation_id": {
+      "type": "string",
+      "pattern": "^opid:v1:resource-reservation:u7:[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "stage": { "enum": ["preflight", "dynamic"] },
+    "outcome": { "enum": ["admitted", "rejected", "backpressure", "drain"] },
+    "observed_at": { "type": "string", "format": "date-time" },
+    "inventory_observed_at": { "type": "string", "format": "date-time" },
+    "plan": { "$ref": "#/$defs/plan" },
+    "policy": { "$ref": "#/$defs/policy" },
+    "context": { "$ref": "#/$defs/context" },
+    "resource_evaluations": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/resource_evaluation" }
+    },
+    "backing_store_evaluations": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/backing_store_evaluation" }
+    },
+    "issues": { "type": "array", "items": { "$ref": "#/$defs/issue" } },
+    "mutation_permitted": { "const": false }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "outcome": { "const": "admitted" } }, "required": ["outcome"] },
+      "then": {
+        "properties": {
+          "issues": { "maxItems": 0 },
+          "resource_evaluations": {
+            "items": {
+              "allOf": [
+                { "$ref": "#/$defs/resource_evaluation" },
+                { "properties": { "status": { "const": "pass" } } }
+              ]
+            }
+          },
+          "backing_store_evaluations": {
+            "items": {
+              "allOf": [
+                { "$ref": "#/$defs/backing_store_evaluation" },
+                { "properties": { "status": { "const": "pass" } } }
+              ]
+            }
+          }
+        }
+      },
+      "else": { "properties": { "issues": { "minItems": 1 } } }
+    },
+    {
+      "if": { "properties": { "stage": { "const": "preflight" } }, "required": ["stage"] },
+      "then": { "properties": { "outcome": { "enum": ["admitted", "rejected"] } } },
+      "else": { "properties": { "outcome": { "enum": ["admitted", "backpressure", "drain"] } } }
+    },
+    {
+      "if": { "properties": { "outcome": { "const": "backpressure" } }, "required": ["outcome"] },
+      "then": { "properties": { "issues": { "items": { "properties": { "recoverable": { "const": true } } } } } }
+    },
+    {
+      "if": { "properties": { "outcome": { "const": "drain" } }, "required": ["outcome"] },
+      "then": {
+        "properties": {
+          "issues": {
+            "contains": { "properties": { "recoverable": { "const": false } }, "required": ["recoverable"] },
+            "minContains": 1
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "safe_integer": { "type": "integer", "minimum": 0, "maximum": 9007199254740991 },
+    "nullable_safe_integer": { "type": ["integer", "null"], "minimum": 0, "maximum": 9007199254740991 },
+    "nullable_string": { "type": ["string", "null"] },
+    "token": { "type": "string", "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$" },
+    "pool_kind": {
+      "enum": [
+        "persistent_disk",
+        "environment_cache",
+        "build_scratch",
+        "execution_scratch",
+        "result_spool",
+        "ram",
+        "swap",
+        "cpu"
+      ]
+    },
+    "disk_pool_kind": {
+      "enum": ["persistent_disk", "environment_cache", "build_scratch", "execution_scratch", "result_spool"]
+    },
+    "unit": { "enum": ["bytes", "logical_cpu"] },
+    "confidence": { "enum": ["known", "measured", "estimated", "bounded", "unknown"] },
+    "identity": {
+      "type": "string",
+      "pattern": "^(?:opid|rcid):v1:[a-z][a-z0-9]*(?:-[a-z0-9]+)*:(?:u7:[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|h:[a-z][a-z0-9]*(?:-[a-z0-9]+)*:[0-9a-f]{64})$"
+    },
+    "estimate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "pool_kind", "unit", "expected", "upper_bound", "confidence", "source", "diagnostic"],
+      "properties": {
+        "name": { "$ref": "#/$defs/token" },
+        "pool_kind": { "$ref": "#/$defs/pool_kind" },
+        "unit": { "$ref": "#/$defs/unit" },
+        "expected": { "$ref": "#/$defs/nullable_safe_integer" },
+        "upper_bound": { "$ref": "#/$defs/nullable_safe_integer" },
+        "confidence": { "$ref": "#/$defs/confidence" },
+        "source": { "type": "string", "minLength": 1 },
+        "diagnostic": { "$ref": "#/$defs/nullable_string" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "pool_kind": { "const": "cpu" } }, "required": ["pool_kind"] },
+          "then": { "properties": { "unit": { "const": "logical_cpu" } } },
+          "else": { "properties": { "unit": { "const": "bytes" } } }
+        },
+        {
+          "if": { "properties": { "confidence": { "const": "unknown" } }, "required": ["confidence"] },
+          "then": {
+            "properties": {
+              "expected": { "type": "null" },
+              "upper_bound": { "type": "null" },
+              "diagnostic": { "type": "string", "minLength": 1 }
+            }
+          },
+          "else": { "properties": { "upper_bound": { "$ref": "#/$defs/safe_integer" } } }
+        },
+        {
+          "if": {
+            "properties": { "confidence": { "enum": ["known", "measured", "estimated"] } },
+            "required": ["confidence"]
+          },
+          "then": { "properties": { "expected": { "$ref": "#/$defs/safe_integer" } } }
+        }
+      ]
+    },
+    "transfer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "direction", "expected_bytes", "upper_bound_bytes", "confidence", "source", "diagnostic"],
+      "properties": {
+        "name": { "$ref": "#/$defs/token" },
+        "direction": { "enum": ["download", "upload", "internal"] },
+        "expected_bytes": { "$ref": "#/$defs/nullable_safe_integer" },
+        "upper_bound_bytes": { "$ref": "#/$defs/nullable_safe_integer" },
+        "confidence": { "$ref": "#/$defs/confidence" },
+        "source": { "type": "string", "minLength": 1 },
+        "diagnostic": { "$ref": "#/$defs/nullable_string" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "confidence": { "const": "unknown" } }, "required": ["confidence"] },
+          "then": {
+            "properties": {
+              "expected_bytes": { "type": "null" },
+              "upper_bound_bytes": { "type": "null" },
+              "diagnostic": { "type": "string", "minLength": 1 }
+            }
+          },
+          "else": { "properties": { "upper_bound_bytes": { "$ref": "#/$defs/safe_integer" } } }
+        }
+      ]
+    },
+    "plan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operation_kind",
+        "operation_id",
+        "estimates",
+        "transfers",
+        "provider_name",
+        "provider_strategy",
+        "required_capabilities",
+        "eligible_trust_classes",
+        "requested_concurrency",
+        "mutation_permitted"
+      ],
+      "properties": {
+        "operation_kind": { "enum": ["environment", "campaign", "shard"] },
+        "operation_id": { "$ref": "#/$defs/identity" },
+        "estimates": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/estimate" } },
+        "transfers": { "type": "array", "items": { "$ref": "#/$defs/transfer" } },
+        "provider_name": { "oneOf": [{ "$ref": "#/$defs/token" }, { "type": "null" }] },
+        "provider_strategy": { "oneOf": [{ "$ref": "#/$defs/token" }, { "type": "null" }] },
+        "required_capabilities": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/token" } },
+        "eligible_trust_classes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "enum": ["unknown", "development", "trusted_executioner", "untrusted_public"] }
+        },
+        "requested_concurrency": { "type": "integer", "minimum": 1, "maximum": 9007199254740991 },
+        "mutation_permitted": { "const": false }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "operation_kind": { "const": "environment" } }, "required": ["operation_kind"] },
+          "then": {
+            "properties": {
+              "operation_id": {
+                "type": "string",
+                "pattern": "^opid:v1:environment:u7:[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "confidence_margin": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["confidence", "basis_points"],
+      "properties": {
+        "confidence": { "enum": ["known", "measured", "estimated", "bounded"] },
+        "basis_points": { "type": "integer", "minimum": 0, "maximum": 100000 }
+      }
+    },
+    "pool_reserve": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pool_kind", "minimum_units", "capacity_basis_points"],
+      "properties": {
+        "pool_kind": { "$ref": "#/$defs/pool_kind" },
+        "minimum_units": { "$ref": "#/$defs/safe_integer" },
+        "capacity_basis_points": { "type": "integer", "minimum": 0, "maximum": 10000 }
+      }
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["confidence_margins", "pool_reserves", "max_concurrency", "inventory_max_age_seconds"],
+      "properties": {
+        "confidence_margins": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": { "$ref": "#/$defs/confidence_margin" }
+        },
+        "pool_reserves": { "type": "array", "items": { "$ref": "#/$defs/pool_reserve" } },
+        "max_concurrency": { "type": "integer", "minimum": 1, "maximum": 9007199254740991 },
+        "inventory_max_age_seconds": { "type": "integer", "minimum": 1, "maximum": 9007199254740991 }
+      }
+    },
+    "active_usage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pool_kind", "unit", "amount"],
+      "properties": {
+        "pool_kind": { "$ref": "#/$defs/pool_kind" },
+        "unit": { "$ref": "#/$defs/unit" },
+        "amount": { "$ref": "#/$defs/safe_integer" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "pool_kind": { "const": "cpu" } }, "required": ["pool_kind"] },
+          "then": { "properties": { "unit": { "const": "logical_cpu" } } },
+          "else": { "properties": { "unit": { "const": "bytes" } } }
+        }
+      ]
+    },
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["active_concurrency", "active_usage"],
+      "properties": {
+        "active_concurrency": { "$ref": "#/$defs/safe_integer" },
+        "active_usage": { "type": "array", "items": { "$ref": "#/$defs/active_usage" } }
+      }
+    },
+    "issue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "category", "message", "remediation", "recoverable", "pool_kind", "required", "available"],
+      "properties": {
+        "code": { "$ref": "#/$defs/token" },
+        "category": { "enum": ["inventory", "provider", "capability", "trust", "resource", "concurrency", "plan"] },
+        "message": { "type": "string", "minLength": 1 },
+        "remediation": { "type": "string", "minLength": 1 },
+        "recoverable": { "type": "boolean" },
+        "pool_kind": { "oneOf": [{ "$ref": "#/$defs/pool_kind" }, { "type": "null" }] },
+        "required": { "$ref": "#/$defs/nullable_safe_integer" },
+        "available": { "$ref": "#/$defs/nullable_safe_integer" }
+      }
+    },
+    "resource_evaluation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pool_kind",
+        "unit",
+        "estimate_names",
+        "expected",
+        "upper_bound",
+        "margin",
+        "required",
+        "observed_available",
+        "inventory_accuracy",
+        "inventory_source",
+        "safety_reserve",
+        "active_usage",
+        "post_admission_available",
+        "backing_store",
+        "status"
+      ],
+      "properties": {
+        "pool_kind": { "$ref": "#/$defs/pool_kind" },
+        "unit": { "$ref": "#/$defs/unit" },
+        "estimate_names": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/token" } },
+        "expected": { "$ref": "#/$defs/nullable_safe_integer" },
+        "upper_bound": { "$ref": "#/$defs/nullable_safe_integer" },
+        "margin": { "$ref": "#/$defs/nullable_safe_integer" },
+        "required": { "$ref": "#/$defs/nullable_safe_integer" },
+        "observed_available": { "$ref": "#/$defs/nullable_safe_integer" },
+        "inventory_accuracy": { "enum": ["exact", "bounded", "estimated", "unknown"] },
+        "inventory_source": { "type": "string", "minLength": 1 },
+        "safety_reserve": { "$ref": "#/$defs/nullable_safe_integer" },
+        "active_usage": { "$ref": "#/$defs/safe_integer" },
+        "post_admission_available": { "$ref": "#/$defs/nullable_safe_integer" },
+        "backing_store": { "$ref": "#/$defs/nullable_string" },
+        "status": { "enum": ["pass", "fail", "unknown"] }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "pool_kind": { "const": "cpu" } }, "required": ["pool_kind"] },
+          "then": { "properties": { "unit": { "const": "logical_cpu" } } },
+          "else": { "properties": { "unit": { "const": "bytes" } } }
+        }
+      ]
+    },
+    "backing_store_evaluation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["backing_store", "pool_kinds", "required", "observed_available", "safety_reserve", "active_usage", "post_admission_available", "status"],
+      "properties": {
+        "backing_store": { "type": "string", "minLength": 1 },
+        "pool_kinds": { "type": "array", "minItems": 2, "uniqueItems": true, "items": { "$ref": "#/$defs/disk_pool_kind" } },
+        "required": { "$ref": "#/$defs/safe_integer" },
+        "observed_available": { "$ref": "#/$defs/safe_integer" },
+        "safety_reserve": { "$ref": "#/$defs/safe_integer" },
+        "active_usage": { "$ref": "#/$defs/safe_integer" },
+        "post_admission_available": { "$ref": "#/$defs/safe_integer" },
+        "status": { "enum": ["pass", "fail"] }
+      }
+    }
+  }
+}

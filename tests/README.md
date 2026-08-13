@@ -24,3 +24,11 @@ transaction identity does not perturb realized identity; and partial acquisition
 artifact substitution, symlinks, capability gaps, admission denial, cancellation,
 runtime mismatch, smoke failure, rollback failure, diagnosis outage, and release
 failure remain explicit and recoverable.
+
+Resource-planner tests bind provider plans to environment preflight, expose
+campaign and shard requirements, and validate the admission schema. Boundary
+and adversarial cases cover exact capacity, one-byte shortfall, uncertainty
+margins, unknown forecasts, stale/future inventory, wrong units, missing backing
+identity, shared-store double spending, active usage, provider/capability/trust
+gaps, concurrency pressure, forged reports, cross-policy reuse, and explicit
+backpressure or drain outcomes.

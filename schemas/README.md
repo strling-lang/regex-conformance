@@ -29,6 +29,13 @@ an admitted plan, non-empty verified artifacts and passing smoke observations,
 a runtime identity, verification digest, realized fingerprint, provider handle,
 and no failure or rollback.
 
+`json/resource-admission.schema.json` defines deterministic environment,
+campaign, and shard forecasts plus preflight/dynamic admission reports. It
+preserves confidence and provenance, uses safe integers and basis-point margins,
+accounts for typed pools and shared physical stores, and forbids an admitted
+report from carrying a blocking issue or failed/unknown evaluation. These are
+operational plans and decisions, not canonical observations or evidence.
+
 `identity-profiles/environment-fingerprint.v1.json` defines the scientific
 identity projection for verified realized environments. It excludes physical
 transaction IDs, cache paths, provider handles, and timestamps while binding the

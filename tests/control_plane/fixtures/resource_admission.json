@@ -1,0 +1,63 @@
+{
+  "policy": {
+    "confidence_margins": {
+      "known": 0,
+      "measured": 1000,
+      "estimated": 5000,
+      "bounded": 2500
+    },
+    "pool_reserves": {
+      "environment_cache": { "minimum_units": 100, "capacity_basis_points": 0 },
+      "build_scratch": { "minimum_units": 50, "capacity_basis_points": 0 },
+      "execution_scratch": { "minimum_units": 100, "capacity_basis_points": 0 },
+      "result_spool": { "minimum_units": 100, "capacity_basis_points": 0 },
+      "ram": { "minimum_units": 500, "capacity_basis_points": 0 }
+    },
+    "max_concurrency": 4,
+    "inventory_max_age_seconds": 60
+  },
+  "campaign": {
+    "operation_id": "rcid:v1:campaign-manifest:h:jcs-sha256-v1:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "requested_concurrency": 2,
+    "required_capabilities": ["process-tree-termination"],
+    "estimates": [
+      {
+        "name": "execution-working-set",
+        "pool_kind": "execution_scratch",
+        "unit": "bytes",
+        "expected": 100,
+        "upper_bound": 100,
+        "confidence": "known",
+        "source": "compiled-campaign"
+      },
+      {
+        "name": "result-spool-growth",
+        "pool_kind": "result_spool",
+        "unit": "bytes",
+        "expected": 200,
+        "upper_bound": 300,
+        "confidence": "estimated",
+        "source": "vector-sample"
+      },
+      {
+        "name": "worker-ram-envelope",
+        "pool_kind": "ram",
+        "unit": "bytes",
+        "expected": 400,
+        "upper_bound": 500,
+        "confidence": "measured",
+        "source": "calibration-fixture"
+      }
+    ],
+    "transfers": [
+      {
+        "name": "evidence-upload",
+        "direction": "upload",
+        "expected_bytes": 200,
+        "upper_bound_bytes": 300,
+        "confidence": "estimated",
+        "source": "vector-sample"
+      }
+    ]
+  }
+}
