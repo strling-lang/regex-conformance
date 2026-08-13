@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/scale-campaign-plan.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "base_campaign", "campaign_definition_id", "campaign_definition_revision_id",
+    "campaign_id", "campaign_manifest", "campaign_manifest_id", "classification",
+    "denominator", "logical_execution_index", "planned_interruptions", "schema_version",
+    "shards", "source_digests", "workload_distribution"
+  ],
+  "properties": {
+    "base_campaign": {"$ref": "#/$defs/baseCampaign"},
+    "campaign_definition_id": {"$ref": "#/$defs/rcid"},
+    "campaign_definition_revision_id": {"$ref": "#/$defs/rcid"},
+    "campaign_id": {"$ref": "#/$defs/rcid"},
+    "campaign_manifest": {"type": "object"},
+    "campaign_manifest_id": {"$ref": "#/$defs/rcid"},
+    "classification": {"type": "object"},
+    "denominator": {"$ref": "#/$defs/denominator"},
+    "logical_execution_index": {"$ref": "#/$defs/logicalIndex"},
+    "planned_interruptions": {"type": "array", "minItems": 1, "items": {"type": "object"}},
+    "schema_version": {"const": "scale-campaign-plan.v1"},
+    "shards": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/shard"}},
+    "source_digests": {"type": "object", "minProperties": 1, "additionalProperties": {"$ref": "#/$defs/digest"}},
+    "workload_distribution": {"$ref": "#/$defs/distribution"}
+  },
+  "$defs": {
+    "baseCampaign": {
+      "type": "object", "additionalProperties": false,
+      "required": ["campaign_manifest_id", "path", "sha256"],
+      "properties": {
+        "campaign_manifest_id": {"$ref": "#/$defs/rcid"},
+        "path": {"type": "string"},
+        "sha256": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "denominator": {
+      "type": "object", "additionalProperties": false,
+      "required": ["candidate_count", "excluded_count", "included_count", "invalid_count", "unresolved_count"],
+      "properties": {
+        "candidate_count": {"const": 100000},
+        "excluded_count": {"const": 0},
+        "included_count": {"const": 100000},
+        "invalid_count": {"const": 0},
+        "unresolved_count": {"const": 0}
+      }
+    },
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "distribution": {
+      "type": "object", "additionalProperties": false,
+      "required": ["base_logical_templates", "categories", "profiles", "vectors"],
+      "properties": {
+        "base_logical_templates": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/distributionItem"}},
+        "categories": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/namedCount"}},
+        "profiles": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/namedCount"}},
+        "vectors": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/distributionItem"}}
+      }
+    },
+    "distributionItem": {
+      "type": "object", "additionalProperties": false,
+      "required": ["key", "logical_execution_count"],
+      "properties": {
+        "key": {"type": "string", "minLength": 1},
+        "logical_execution_count": {"type": "integer", "minimum": 1}
+      }
+    },
+    "logicalIndex": {
+      "type": "object", "additionalProperties": false,
+      "required": ["logical_execution_count", "ordered_ids_sha256", "ordering", "segment_count"],
+      "properties": {
+        "logical_execution_count": {"const": 100000},
+        "ordered_ids_sha256": {"$ref": "#/$defs/digest"},
+        "ordering": {"const": "selection-key-then-logical-id-v1"},
+        "segment_count": {"type": "integer", "minimum": 1}
+      }
+    },
+    "namedCount": {
+      "type": "object", "additionalProperties": false,
+      "required": ["key", "logical_execution_count"],
+      "properties": {
+        "key": {"$ref": "#/$defs/token"},
+        "logical_execution_count": {"type": "integer", "minimum": 1}
+      }
+    },
+    "rcid": {"type": "string", "pattern": "^rcid:v1:[a-z0-9]+(?:-[a-z0-9]+)*:(?:u7:[0-9a-f-]{36}|h:jcs-sha256-v1:[0-9a-f]{64})$"},
+    "shard": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "category", "first_logical_execution_id", "last_logical_execution_id",
+        "logical_execution_count", "logical_execution_ids_sha256", "relative_path",
+        "selection_key", "sha256", "shard_id", "size_bytes"
+      ],
+      "properties": {
+        "category": {"const": "logical-execution-segments"},
+        "first_logical_execution_id": {"$ref": "#/$defs/rcid"},
+        "last_logical_execution_id": {"$ref": "#/$defs/rcid"},
+        "logical_execution_count": {"type": "integer", "minimum": 1, "maximum": 1000},
+        "logical_execution_ids_sha256": {"$ref": "#/$defs/digest"},
+        "relative_path": {"type": "string", "pattern": "^logical-execution-segments/sha256/[0-9a-f]{64}\\.json$"},
+        "selection_key": {"$ref": "#/$defs/token"},
+        "sha256": {"$ref": "#/$defs/digest"},
+        "shard_id": {"$ref": "#/$defs/rcid"},
+        "size_bytes": {"type": "integer", "minimum": 1}
+      }
+    },
+    "token": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"}
+  }
+}

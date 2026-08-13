@@ -24,6 +24,9 @@ def load_and_validate_campaign_records(
     reports = sorted((root / "reports" / "vertical-slice").glob("first-campaign*.json"))
     policies = sorted((root / "applicability" / "policies").glob("*.json"))
     definition_schemas = {
+        "100k-qualification.v1.json": load_strict(
+            root / "schemas" / "json" / "scale-campaign-definition.schema.json"
+        ),
         "first-vertical-slice.v1.json": definition_schema,
         "small-scale-qualification.v1.json": load_strict(
             root / "schemas" / "json" / "small-scale-campaign-definition.schema.json"
@@ -68,14 +71,22 @@ def load_and_validate_campaign_records(
             verify_compiled_qualification,
             verify_coverage_report,
         )
+        from regex_conformance_scale import verify_scale_plan
+        scale_plan_schema = load_strict(
+            root / "schemas" / "json" / "scale-campaign-plan.schema.json"
+        )
 
         for source in compiled:
             record = load_strict(source)
-            validate_instance(record, compiled_schema, source=str(source))
             if source.name == "first-vertical-slice.v1.json":
+                validate_instance(record, compiled_schema, source=str(source))
                 verify_compiled_campaign(root, record)
             elif source.name == "small-scale-qualification.v1.json":
+                validate_instance(record, compiled_schema, source=str(source))
                 verify_compiled_qualification(root, record)
+            elif source.name == "100k-qualification.v1.json":
+                validate_instance(record, scale_plan_schema, source=str(source))
+                verify_scale_plan(root, record)
             else:
                 raise ConformanceDataError(
                     "compiled-campaign-accounting",
@@ -108,6 +119,25 @@ def load_and_validate_campaign_records(
                 path=str(source),
             )
         verify_coverage_report(root, compiled_record, report)
+    scale_reports = sorted(
+        (root / "reports" / "scale").glob("100k-qualification-design*.json")
+    )
+    if compiled and any(item.name == "100k-qualification.v1.json" for item in compiled) and len(scale_reports) != 1:
+        raise ConformanceDataError(
+            "scale-report-accounting",
+            "the 100K compiled campaign requires exactly one design report",
+            path="reports/scale",
+        )
+    if scale_reports:
+        from regex_conformance_scale import verify_design_report
+        scale_schema = load_strict(root / "schemas" / "json" / "scale-qualification-design-report.schema.json")
+        for source in scale_reports:
+            report = load_strict(source)
+            validate_instance(report, scale_schema, source=str(source))
+            plan = compiled_by_id.get(report["campaign_manifest_id"])
+            if plan is None or plan.get("schema_version") != "scale-campaign-plan.v1":
+                raise ConformanceDataError("campaign-report-drift", "100K design report references an unknown scale plan", path=str(source))
+            verify_design_report(root, plan, report)
     return {
         "applicability_policies": len(policies),
         "campaign_definitions": len(definitions),
@@ -115,4 +145,5 @@ def load_and_validate_campaign_records(
         "compiled_campaigns": len(compiled),
         "probe_vector_sets": len(vector_sets),
         "qualification_coverage_reports": len(coverage_reports),
+        "scale_qualification_reports": len(scale_reports),
     }

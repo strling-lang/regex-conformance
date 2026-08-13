@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/scale-campaign-definition.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "attempt_policy", "base_campaign", "base_coverage", "base_vectors",
+    "campaign_definition_id", "campaign_id", "classification", "expansion_policy",
+    "logical_execution_target", "planned_interruptions", "schema_version",
+    "shard_policy", "stress_obligations"
+  ],
+  "properties": {
+    "attempt_policy": {"$ref": "#/$defs/attemptPolicy"},
+    "base_campaign": {"$ref": "#/$defs/baseCampaign"},
+    "base_coverage": {"$ref": "#/$defs/source"},
+    "base_vectors": {"$ref": "#/$defs/source"},
+    "campaign_definition_id": {"$ref": "#/$defs/rcid"},
+    "campaign_id": {"$ref": "#/$defs/rcid"},
+    "classification": {"$ref": "#/$defs/classification"},
+    "expansion_policy": {"$ref": "#/$defs/expansionPolicy"},
+    "logical_execution_target": {"const": 100000},
+    "planned_interruptions": {
+      "type": "array", "minItems": 3, "uniqueItems": true,
+      "items": {"$ref": "#/$defs/interruption"}
+    },
+    "schema_version": {"const": "scale-campaign-definition.v1"},
+    "shard_policy": {"$ref": "#/$defs/shardPolicy"},
+    "stress_obligations": {"$ref": "#/$defs/stressObligations"}
+  },
+  "$defs": {
+    "attemptPolicy": {
+      "type": "object", "additionalProperties": false,
+      "required": ["attempts_are_append_only", "infrastructure_failure_is_observation", "maximum_attempts_per_logical_execution"],
+      "properties": {
+        "attempts_are_append_only": {"const": true},
+        "infrastructure_failure_is_observation": {"const": false},
+        "maximum_attempts_per_logical_execution": {"type": "integer", "minimum": 2, "maximum": 10}
+      }
+    },
+    "baseCampaign": {
+      "type": "object", "additionalProperties": false,
+      "required": ["campaign_manifest_id", "path", "sha256"],
+      "properties": {
+        "campaign_manifest_id": {"$ref": "#/$defs/rcid"},
+        "path": {"const": "campaigns/compiled/small-scale-qualification.v1.json"},
+        "sha256": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "classification": {
+      "type": "object", "additionalProperties": false,
+      "required": ["completion_denominator", "normative_authority", "operational_qualification_only", "probe_only", "semantic_authority"],
+      "properties": {
+        "completion_denominator": {"const": "development-only"},
+        "normative_authority": {"const": false},
+        "operational_qualification_only": {"const": true},
+        "probe_only": {"const": true},
+        "semantic_authority": {"const": false}
+      }
+    },
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "expansionPolicy": {
+      "type": "object", "additionalProperties": false,
+      "required": ["logical_order", "name", "quota_order"],
+      "properties": {
+        "logical_order": {"const": "selection-key-then-logical-id-v1"},
+        "name": {"const": "balanced-planned-repetition-v1"},
+        "quota_order": {"const": "base-logical-id-code-point-v1"}
+      }
+    },
+    "interruption": {
+      "type": "object", "additionalProperties": false,
+      "required": ["action", "after_committed_shards", "key"],
+      "properties": {
+        "action": {"enum": ["controller-restart", "worker-process-kill"]},
+        "after_committed_shards": {"type": "integer", "minimum": 1},
+        "key": {"$ref": "#/$defs/token"}
+      }
+    },
+    "rcid": {"type": "string", "pattern": "^rcid:v1:[a-z0-9]+(?:-[a-z0-9]+)*:(?:u7:[0-9a-f-]{36}|h:jcs-sha256-v1:[0-9a-f]{64})$"},
+    "shardPolicy": {
+      "type": "object", "additionalProperties": false,
+      "required": ["algorithm", "maximum_execution_count"],
+      "properties": {
+        "algorithm": {"const": "bounded-selection-locality-then-logical-id-v1"},
+        "maximum_execution_count": {"type": "integer", "minimum": 1, "maximum": 1000}
+      }
+    },
+    "source": {
+      "type": "object", "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._/-]+$"},
+        "sha256": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "stressObligations": {
+      "type": "object", "additionalProperties": false,
+      "required": ["minimum_base_logical_templates", "minimum_profile_coordinates", "required_categories"],
+      "properties": {
+        "minimum_base_logical_templates": {"const": 26},
+        "minimum_profile_coordinates": {"const": 4},
+        "required_categories": {
+          "type": "array", "minItems": 9, "maxItems": 9, "uniqueItems": true,
+          "items": {"$ref": "#/$defs/token"}
+        }
+      }
+    },
+    "token": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"}
+  }
+}

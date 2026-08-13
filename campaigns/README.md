@@ -17,3 +17,10 @@ The evidence verification qualification seeds 18 malformed, truncated, substitut
 semantically impossible, and reconciliation-invalid object variants. Every variant
 is immutably quarantined and excluded from warehouse admission while its clean
 source evidence is preserved; see `docs/campaigns/evidence-verification.md`.
+
+The 100K qualification plan expands all 26 eligible P18 logical templates into
+exactly 100,000 balanced planned repetitions and 402 bounded locality shards.
+Git retains the compact manifest, ordered-ID commitment, exact segment hashes,
+distribution proof, and design report; the 100,000 logical records materialize
+as immutable content-addressed segments outside Git. See
+`docs/campaigns/100k-qualification-design.md`.

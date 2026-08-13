@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/scale-qualification-design-report.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "base_logical_template_count", "campaign_manifest_id", "classification",
+    "logical_execution_count", "maximum_shard_size", "planned_interruptions",
+    "profile_coordinate_count", "required_categories", "safety_contract",
+    "schema_version", "shard_count", "workload_distribution"
+  ],
+  "properties": {
+    "base_logical_template_count": {"const": 26},
+    "campaign_manifest_id": {"type": "string"},
+    "classification": {"type": "object"},
+    "logical_execution_count": {"const": 100000},
+    "maximum_shard_size": {"type": "integer", "minimum": 1, "maximum": 1000},
+    "planned_interruptions": {"type": "array", "minItems": 3, "items": {"type": "object"}},
+    "profile_coordinate_count": {"const": 4},
+    "required_categories": {"type": "array", "minItems": 9, "maxItems": 9, "uniqueItems": true, "items": {"type": "string"}},
+    "safety_contract": {
+      "type": "object", "additionalProperties": false,
+      "required": ["attempts_append_only", "infrastructure_failure_excluded", "large_segments_outside_git", "logical_physical_identity_separate", "semantic_authority"],
+      "properties": {
+        "attempts_append_only": {"const": true},
+        "infrastructure_failure_excluded": {"const": true},
+        "large_segments_outside_git": {"const": true},
+        "logical_physical_identity_separate": {"const": true},
+        "semantic_authority": {"const": false}
+      }
+    },
+    "schema_version": {"const": "scale-qualification-design-report.v1"},
+    "shard_count": {"type": "integer", "minimum": 100},
+    "workload_distribution": {"type": "object"}
+  }
+}

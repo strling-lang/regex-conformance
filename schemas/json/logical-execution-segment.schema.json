@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/logical-execution-segment.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["logical_executions", "schema_version", "selection_key", "shard_id"],
+  "properties": {
+    "logical_executions": {
+      "type": "array", "minItems": 1, "maxItems": 1000, "uniqueItems": true,
+      "items": {"$ref": "#/$defs/logical"}
+    },
+    "schema_version": {"const": "logical-execution-segment.v1"},
+    "selection_key": {"$ref": "#/$defs/token"},
+    "shard_id": {"$ref": "#/$defs/rcid"}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "logical": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "base_logical_execution_id", "logical_execution_id", "planned_repetition",
+        "profile_id", "request_template_sha256", "selection_key",
+        "target_release_id", "vector_revision_id"
+      ],
+      "properties": {
+        "base_logical_execution_id": {"$ref": "#/$defs/rcid"},
+        "logical_execution_id": {"$ref": "#/$defs/rcid"},
+        "planned_repetition": {"type": "integer", "minimum": 1},
+        "profile_id": {"$ref": "#/$defs/rcid"},
+        "request_template_sha256": {"$ref": "#/$defs/digest"},
+        "selection_key": {"$ref": "#/$defs/token"},
+        "target_release_id": {"$ref": "#/$defs/rcid"},
+        "vector_revision_id": {"$ref": "#/$defs/rcid"}
+      }
+    },
+    "rcid": {"type": "string", "pattern": "^rcid:v1:[a-z0-9]+(?:-[a-z0-9]+)*:(?:u7:[0-9a-f-]{36}|h:jcs-sha256-v1:[0-9a-f]{64})$"},
+    "token": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"}
+  }
+}
