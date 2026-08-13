@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/first-campaign-report.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "campaign_manifest_id", "evidence_manifest_id", "evidence_manifest_sha256",
+    "warehouse_build_id", "warehouse_sha256", "candidate_count", "excluded_count", "logical_execution_count",
+    "accepted_observation_count", "infrastructure_failure_count", "result_shard_count", "reconciliation",
+    "classification", "trust_class"
+  ],
+  "properties": {
+    "schema_version": { "const": "first-campaign-report.v1" },
+    "campaign_manifest_id": { "type": "string" },
+    "evidence_manifest_id": { "type": "string" },
+    "evidence_manifest_sha256": { "$ref": "#/$defs/digest" },
+    "warehouse_build_id": { "type": "string" },
+    "warehouse_sha256": { "$ref": "#/$defs/digest" },
+    "candidate_count": { "type": "integer", "minimum": 1 },
+    "excluded_count": { "type": "integer", "minimum": 0 },
+    "logical_execution_count": { "type": "integer", "minimum": 1 },
+    "accepted_observation_count": { "type": "integer", "minimum": 1 },
+    "infrastructure_failure_count": { "const": 0 },
+    "result_shard_count": { "type": "integer", "minimum": 1 },
+    "reconciliation": { "const": "exact" },
+    "classification": { "type": "object" },
+    "trust_class": { "enum": ["development", "trusted_executioner", "untrusted_public"] }
+  },
+  "$defs": { "digest": { "type": "string", "pattern": "^[0-9a-f]{64}$" } }
+}

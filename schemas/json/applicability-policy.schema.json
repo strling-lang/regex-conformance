@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/applicability-policy.schema.json",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "classification", "default_outcome", "predicate", "rules"],
+  "properties": {
+    "schema_version": {"const": "applicability-policy.v1"},
+    "classification": {
+      "type": "object", "additionalProperties": false,
+      "required": ["normative_authority", "semantic_authority"],
+      "properties": {"normative_authority": {"const": false}, "semantic_authority": {"const": false}}
+    },
+    "default_outcome": {"const": "excluded"},
+    "predicate": {"const": "exact-selection-and-vector-key-membership"},
+    "rules": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["rule_key", "selection_key", "vector_key"],
+        "properties": {
+          "rule_key": {"$ref": "#/$defs/token"},
+          "selection_key": {"$ref": "#/$defs/token"},
+          "vector_key": {"$ref": "#/$defs/token"}
+        }
+      }
+    }
+  },
+  "$defs": {"token": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"}}
+}

@@ -76,6 +76,7 @@ def evaluate(root: Path) -> list[Violation]:
         "verify-fixtures",
         "unittest discover -s tests/schema",
         "unittest discover -s tests/adapters",
+        "unittest discover -s tests/campaign",
         "python -m unittest discover -s tests/control_plane -v",
         "unittest discover -s tests/ci",
         "materialize-fixtures",
@@ -104,6 +105,19 @@ def evaluate(root: Path) -> list[Violation]:
         ),
         "minimal-adapter-certification.schema.json",
         "strling-regex-adapter-state",
+        "first-end-to-end-campaign:",
+        "needs: minimal-adapter-certification",
+        (
+            "python tools/campaigns/run_vertical_slice.py "
+            '--state-root "$RUNNER_TEMP/strling-regex-campaign-state" '
+            '--evidence-dir "$RUNNER_TEMP/strling-regex-campaign-evidence" '
+            '--warehouse-dir "$RUNNER_TEMP/strling-regex-campaign-warehouse" '
+            "--trust-class untrusted_public "
+            '--compact-report "$RUNNER_TEMP/first-campaign-report.json"'
+        ),
+        "first-campaign-report.schema.json",
+        "strling-regex-campaign-evidence",
+        "strling-regex-campaign-warehouse",
     ]:
         _require(command in workflow, violations, "missing-validation", f"workflow omits required command {command!r}")
 

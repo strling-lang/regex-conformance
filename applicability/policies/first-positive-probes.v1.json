@@ -1,0 +1,15 @@
+{
+  "schema_version": "applicability-policy.v1",
+  "classification": {
+    "normative_authority": false,
+    "semantic_authority": false
+  },
+  "default_outcome": "excluded",
+  "predicate": "exact-selection-and-vector-key-membership",
+  "rules": [
+    {"rule_key": "mysql-unicode", "selection_key": "mysql-regex", "vector_key": "positive-unicode-scalars"},
+    {"rule_key": "pcre2-octets", "selection_key": "pcre2-ordinary", "vector_key": "positive-octets"},
+    {"rule_key": "python-octets", "selection_key": "python-re", "vector_key": "positive-octets"},
+    {"rule_key": "python-unicode", "selection_key": "python-re", "vector_key": "positive-unicode-scalars"}
+  ]
+}

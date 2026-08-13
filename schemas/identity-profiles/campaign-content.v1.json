@@ -1,0 +1,12 @@
+{
+  "profile_version": "1.0.0",
+  "root": {
+    "additional_properties": false,
+    "kind": "object",
+    "properties": {
+      "artifact_kind": { "kind": "token" },
+      "content_sha256": { "kind": "digest" }
+    },
+    "required": ["artifact_kind", "content_sha256"]
+  }
+}

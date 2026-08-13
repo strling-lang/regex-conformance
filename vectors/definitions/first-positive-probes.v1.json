@@ -1,0 +1,49 @@
+{
+  "schema_version": "probe-vector-set.v1",
+  "vector_family_id": "rcid:v1:vector-family:u7:019ffbeb-56fb-7dd1-a71d-bc9baac60898",
+  "classification": {
+    "normative_authority": false,
+    "probe_only": true,
+    "semantic_authority": false
+  },
+  "vectors": [
+    {
+      "vector_id": "rcid:v1:vector:u7:019ffbeb-56fb-7e3a-9971-a87a9900f11f",
+      "key": "positive-octets",
+      "domain": "octets",
+      "pattern": {
+        "data": "YSs",
+        "domain": "octets",
+        "encoding": null,
+        "endianness": null,
+        "unit_width_bits": 8
+      },
+      "subject": {
+        "data": "YmFhYWM",
+        "domain": "octets",
+        "encoding": null,
+        "endianness": null,
+        "unit_width_bits": 8
+      }
+    },
+    {
+      "vector_id": "rcid:v1:vector:u7:019ffbeb-56fb-701b-b735-3ab3cd693fa2",
+      "key": "positive-unicode-scalars",
+      "domain": "unicode-scalars",
+      "pattern": {
+        "domain": "unicode-scalars",
+        "encoding": "unicode-scalar-values",
+        "endianness": null,
+        "text": "a+",
+        "unit_width_bits": null
+      },
+      "subject": {
+        "domain": "unicode-scalars",
+        "encoding": "unicode-scalar-values",
+        "endianness": null,
+        "text": "baaac",
+        "unit_width_bits": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/probe-vector-set.schema.json",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "vector_family_id", "classification", "vectors"],
+  "properties": {
+    "schema_version": {"const": "probe-vector-set.v1"},
+    "vector_family_id": {"type": "string", "pattern": "^rcid:v1:vector-family:u7:"},
+    "classification": {
+      "type": "object", "additionalProperties": false,
+      "required": ["normative_authority", "probe_only", "semantic_authority"],
+      "properties": {"normative_authority": {"const": false}, "probe_only": {"const": true}, "semantic_authority": {"const": false}}
+    },
+    "vectors": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["vector_id", "key", "domain", "pattern", "subject"],
+        "properties": {
+          "vector_id": {"type": "string", "pattern": "^rcid:v1:vector:u7:"},
+          "key": {"$ref": "#/$defs/token"},
+          "domain": {"enum": ["octets", "unicode-scalars"]},
+          "pattern": {"$ref": "#/$defs/datum"},
+          "subject": {"$ref": "#/$defs/datum"}
+        }
+      }
+    }
+  },
+  "$defs": {
+    "token": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "base64url": {"type": "string", "pattern": "^[A-Za-z0-9_-]*$"},
+    "datum": {
+      "oneOf": [
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["data", "domain", "encoding", "endianness", "unit_width_bits"],
+          "properties": {"data": {"$ref": "#/$defs/base64url"}, "domain": {"const": "octets"}, "encoding": {"type": "null"}, "endianness": {"type": "null"}, "unit_width_bits": {"const": 8}}
+        },
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["domain", "encoding", "endianness", "text", "unit_width_bits"],
+          "properties": {"domain": {"const": "unicode-scalars"}, "encoding": {"const": "unicode-scalar-values"}, "endianness": {"type": "null"}, "text": {"type": "string", "maxLength": 4194304}, "unit_width_bits": {"type": "null"}}
+        }
+      ]
+    }
+  }
+}

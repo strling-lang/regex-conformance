@@ -1,0 +1,58 @@
+{
+  "schema_version": "vertical-slice-campaign-definition.v1",
+  "campaign_definition_id": "rcid:v1:campaign-definition:u7:019ffbeb-56fb-72a2-9453-10b733891024",
+  "campaign_id": "rcid:v1:campaign:u7:019ffbeb-56fb-7435-92ad-2e283697a10f",
+  "vector_source": "vectors/definitions/first-positive-probes.v1.json",
+  "applicability_source": "applicability/policies/first-positive-probes.v1.json",
+  "classification": {
+    "completion_denominator": "development-only",
+    "normative_authority": false,
+    "probe_only": true,
+    "semantic_authority": false
+  },
+  "operation": "search",
+  "shard_size": 2,
+  "limits": {
+    "maximum_diagnostic_bytes": 65536,
+    "maximum_matches": 100,
+    "maximum_output_bytes": 1048576,
+    "wall_time_ms": 30000
+  },
+  "requested_observations": [
+    "captures",
+    "compile-diagnostics",
+    "match-state",
+    "native-errors",
+    "runtime-identity",
+    "spans"
+  ],
+  "profile_inputs": [
+    {
+      "selection_key": "pcre2-ordinary",
+      "dimensions": [
+        {"name": "locale", "value": "C.UTF-8"},
+        {"name": "newline", "value": "LF"},
+        {"name": "timezone", "value": "UTC"}
+      ],
+      "options": []
+    },
+    {
+      "selection_key": "python-re",
+      "dimensions": [
+        {"name": "locale", "value": "C.UTF-8"},
+        {"name": "timezone", "value": "UTC"}
+      ],
+      "options": []
+    },
+    {
+      "selection_key": "mysql-regex",
+      "dimensions": [
+        {"name": "character-set", "value": "utf8mb4"},
+        {"name": "collation", "value": "utf8mb4_0900_ai_ci"},
+        {"name": "regexp-time-limit-ms", "value": 1000},
+        {"name": "timezone", "value": "UTC"}
+      ],
+      "options": [{"name": "match-type", "value": "c"}]
+    }
+  ]
+}
