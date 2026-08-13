@@ -145,9 +145,13 @@ jobs:
           python -m unittest discover -s tests/control_plane -p 'test_certified_environment*.py' -v
 
       - name: Realize exact runtimes, certify thin adapters, and release environments
+        run: python tools/adapters/certify_minimal.py --state-root "$RUNNER_TEMP/strling-regex-adapter-state" --evidence-dir "$RUNNER_TEMP/strling-regex-adapter-evidence" --trust-class untrusted_public --compact-report "$RUNNER_TEMP/minimal-adapter-certification.json"
+
+      - name: Validate the adapter certification report
+        run: python schemas/tooling/python/run.py validate "$RUNNER_TEMP/minimal-adapter-certification.json" schemas/json/minimal-adapter-certification.schema.json
+
+      - name: Prove adapter certification cleanup and repository immutability
         run: |
-          python tools/adapters/certify_minimal.py --state-root "$RUNNER_TEMP/strling-regex-adapter-state" --evidence-dir "$RUNNER_TEMP/strling-regex-adapter-evidence" --trust-class untrusted_public --compact-report "$RUNNER_TEMP/minimal-adapter-certification.json"
-          python schemas/tooling/python/run.py validate "$RUNNER_TEMP/minimal-adapter-certification.json" schemas/json/minimal-adapter-certification.schema.json
           test -z "$(find "$RUNNER_TEMP/strling-regex-adapter-state" -mindepth 1 -print -quit)"
           test -z "$(docker ps --all --quiet --filter name=strling-rc-)"
           git diff --exit-code

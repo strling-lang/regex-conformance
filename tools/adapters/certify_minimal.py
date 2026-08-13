@@ -426,6 +426,24 @@ def _write_compact(path: Path, payload: dict[str, Any]) -> None:
     os.replace(temporary, destination)
 
 
+def _report_failure(error: Exception) -> None:
+    """Preserve machine output and expose a bounded public-CI annotation."""
+    diagnostic = str(error)
+    failure = {
+        "error_type": type(error).__name__,
+        "diagnostic": diagnostic,
+        "ok": False,
+    }
+    print(rfc8785.dumps(failure).decode("utf-8"), file=sys.stderr)
+    if os.environ.get("GITHUB_ACTIONS") == "true":
+        bounded = diagnostic[:1_000]
+        escaped = bounded.replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
+        print(
+            f"::error title=Minimal adapter certification failed::{type(error).__name__}: {escaped}",
+            file=sys.stderr,
+        )
+
+
 def certify(state_root: Path, evidence_dir: Path, trust_class: str, compact_report: Path | None) -> dict[str, Any]:
     schema_counts = validate_repository(ROOT)
     definitions = tuple(sorted(load_certified_recipes(ROOT), key=lambda item: ORDER[item.selection_key]))
@@ -571,8 +589,12 @@ def main() -> int:
     arguments = parser.parse_args()
     state_root = _outside_repository(arguments.state_root, "state root")
     evidence_dir = _outside_repository(arguments.evidence_dir, "evidence directory")
-    with _exclusive_lock(state_root):
-        compact = certify(state_root, evidence_dir, arguments.trust_class, arguments.compact_report)
+    try:
+        with _exclusive_lock(state_root):
+            compact = certify(state_root, evidence_dir, arguments.trust_class, arguments.compact_report)
+    except Exception as error:
+        _report_failure(error)
+        return 1
     sys.stdout.buffer.write(rfc8785.dumps({"ok": True, **compact}) + b"\n")
     return 0
 

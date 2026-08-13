@@ -1,15 +1,35 @@
 from __future__ import annotations
 
+from contextlib import redirect_stderr
+from io import StringIO
+import os
 import runpy
 import unittest
+from unittest.mock import patch
 
 from support import ROOT
 
 HARNESS = runpy.run_path(str(ROOT / "tools" / "adapters" / "certify_minimal.py"))
 adapter_process_limits = HARNESS["_adapter_process_limits"]
+report_failure = HARNESS["_report_failure"]
 
 
 class MinimalAdapterCertificationTests(unittest.TestCase):
+    def test_failure_reporting_is_machine_readable_and_workflow_safe(self) -> None:
+        output = StringIO()
+        with patch.dict(os.environ, {"GITHUB_ACTIONS": "true"}), redirect_stderr(output):
+            report_failure(RuntimeError("line one%\nline two"))
+
+        lines = output.getvalue().splitlines()
+        self.assertEqual(
+            lines[0],
+            '{"diagnostic":"line one%\\nline two","error_type":"RuntimeError","ok":false}',
+        )
+        self.assertEqual(
+            lines[1],
+            "::error title=Minimal adapter certification failed::RuntimeError: line one%25%0Aline two",
+        )
+
     def test_mysql_client_does_not_inherit_daemon_memory_or_cpu_limits(self) -> None:
         limits = adapter_process_limits("mysql-regex")
         self.assertIsNone(limits.memory_bytes)
