@@ -13,6 +13,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Protocol
 
+from .event_models import EventDraft, EventPublisher
 from .environment_fingerprint import EnvironmentFingerprinter
 from .environment_models import (
     AdmissionDecision,
@@ -117,11 +118,13 @@ class EnvironmentManager:
         clock: Clock | None = None,
         id_generator: IdGenerator | None = None,
         fingerprinter: EnvironmentFingerprinter | None = None,
+        event_publisher: EventPublisher | None = None,
     ) -> None:
         self._providers = providers
         self._clock = clock or UtcClock()
         self._ids = id_generator or Uuid7EnvironmentIdGenerator()
         self._fingerprinter = fingerprinter or EnvironmentFingerprinter()
+        self._event_publisher = event_publisher
 
     def plan(self, recipe: EnvironmentRecipe, provider_name: str) -> EnvironmentLifecycleRecord:
         provider = self._providers.get(provider_name)
@@ -495,7 +498,7 @@ class EnvironmentManager:
         diagnostics: tuple[str, ...] = (),
     ) -> EnvironmentLifecycleRecord:
         transition = LifecycleTransition(1, None, state, _rfc3339(self._clock.now()), f"environment {state}")
-        return EnvironmentLifecycleRecord(
+        record = EnvironmentLifecycleRecord(
             transaction_id=transaction_id,
             state=state,
             recipe=recipe,
@@ -512,6 +515,8 @@ class EnvironmentManager:
             failure=failure,
             diagnostics=diagnostics,
         )
+        self._emit_transition(record, transition)
+        return record
 
     def _transition(
         self,
@@ -526,7 +531,43 @@ class EnvironmentManager:
             _rfc3339(self._clock.now()),
             detail,
         )
-        return replace(record, state=state, transitions=record.transitions + (transition,))
+        updated = replace(record, state=state, transitions=record.transitions + (transition,))
+        self._emit_transition(updated, transition)
+        return updated
+
+    def _emit_transition(
+        self,
+        record: EnvironmentLifecycleRecord,
+        transition: LifecycleTransition,
+    ) -> None:
+        if self._event_publisher is None:
+            return
+        terminal_status = {
+            "cancelled": "cancelled",
+            "cleanup_required": "failed",
+            "failed": "failed",
+            "rejected": "refused",
+            "release_failed": "failed",
+            "released": "completed",
+        }.get(record.state)
+        self._event_publisher.publish(
+            EventDraft(
+                stream_id=record.transaction_id,
+                operation_kind="environment-lifecycle",
+                event_type="lifecycle",
+                phase=record.state,
+                status=terminal_status or "running",
+                message=f"environment lifecycle entered {record.state}",
+                attributes={
+                    "from_state": transition.from_state,
+                    "provider_name": record.provider.name,
+                    "recipe_revision_id": record.recipe.recipe_revision_id,
+                    "to_state": transition.to_state,
+                    "transition_sequence": transition.sequence,
+                },
+                terminal=terminal_status is not None,
+            )
+        )
 
     @staticmethod
     def _require_state(record: EnvironmentLifecycleRecord, allowed: set[str], operation: str) -> None:

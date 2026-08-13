@@ -14,6 +14,23 @@ from .configuration import DoctorConfiguration
 from .controller import ControlPlaneController, ControlPlaneServices, build_default_controller
 from .environment_models import AdmissionDecision, EnvironmentLifecycleRecord, EnvironmentRecipe
 from .environment_providers import ProviderRegistry
+from .event_models import (
+    EventBatch,
+    EventCursor,
+    EventDraft,
+    EventModelError,
+    LifecycleEvent,
+    ProgressAggregator,
+    ProgressProjection,
+    StoredEvent,
+)
+from .event_store import (
+    EventCursorGapError,
+    EventJournal,
+    EventJournalConflictError,
+    EventJournalCorruptionError,
+    EventSubscription,
+)
 from .models import DoctorReport
 from .resource_models import AdmissionContext, AdmissionPolicy, ResourceAdmissionReport, ResourceEstimate
 from .state_models import (
@@ -54,10 +71,22 @@ __all__ = [
     "EnvironmentLifecycleRecord",
     "EnvironmentRecipe",
     "EvictionPolicy",
+    "EventBatch",
+    "EventCursor",
+    "EventCursorGapError",
+    "EventDraft",
+    "EventJournal",
+    "EventJournalConflictError",
+    "EventJournalCorruptionError",
+    "EventModelError",
+    "EventSubscription",
     "FilesystemCacheProvider",
     "IncompatibleStateVersionError",
     "LocalStateStore",
+    "LifecycleEvent",
     "ProviderRegistry",
+    "ProgressAggregator",
+    "ProgressProjection",
     "ResourceAdmissionReport",
     "ResourceEstimate",
     "ReconciliationObservation",
@@ -72,6 +101,7 @@ __all__ = [
     "StateSnapshot",
     "StateSourceReference",
     "StateStoreBusyError",
+    "StoredEvent",
     "TransferManager",
     "TransferRecord",
     "build_default_controller",

@@ -79,9 +79,8 @@ enter scientific identity.
 P16A-T02 certifies the common contract through materially different native-like
 and OCI-like deterministic providers. It does not claim those fixtures are
 certified ecosystem environments. Concrete runtime archetypes and minimal
-certified environments enter in P17. Global lifecycle events, CLI environment
-commands, and hard workload containment remain in their separately gated P16A
-tasks.
+certified environments enter in P17. CLI environment commands and hard workload
+containment remain in their separately gated P16A tasks.
 
 Local Control Plane state remains operational and non-canonical.
 
@@ -135,8 +134,8 @@ downloads verify the durable partial-file checkpoint before continuing, fsync
 each chunk, retain interrupted and failed attempts, and publish with a
 non-overwriting atomic link only after exact final verification. A corrupted
 checkpoint, destination race, or digest mismatch never becomes a completed
-transfer. Structured lifecycle events, CLI commands, and progress rendering
-remain owned by their later P16A contracts.
+transfer. CLI commands and human terminal rendering remain owned by their later
+P16A contracts.
 
 ## Durable local state and restart reconciliation
 
@@ -174,5 +173,30 @@ quarantine directory, hashes it in a non-canonical manifest, creates a fresh
 store, and reconciles from identified external sources. The original bytes are
 not deleted. `DurableStateService` exposes snapshot, plan, apply, reconcile,
 transaction, health, readiness, and clean/aborted close operations through the
-client-neutral controller facade. CLI commands and structured lifecycle events
-remain later P16A contracts.
+client-neutral controller facade. CLI commands remain a later P16A contract.
+
+## Structured lifecycle events, progress, and ETA
+
+Significant environment, cache-cleanup, and transfer operations can publish
+strict `lifecycle-event.v1` records through one provider-neutral interface. The
+records carry physical-attempt identity, per-stream sequence, global offset,
+phase, status, typed progress coordinates, causation/correlation IDs, safe
+attributes, and explicit terminal state. They reject credential-bearing
+attributes and cannot claim canonical or evidence authority.
+
+`EventJournal` persists those records in an access-controlled SQLite WAL with
+full synchronous commits, exact schema/column validation, chained record
+digests, per-stream durable heads, exclusive process locking, and bounded
+retention. Readers use journal-bound cursors; a cursor older than the retained
+window fails with an explicit gap instead of silently skipping events. Polling
+subscriptions isolate consumers from producers, and journal close wakes blocked
+readers. Corruption, incompatible retention policy, stream identity changes,
+backward progress, non-contiguous retries, invalid resume coordinates, or
+post-terminal publication all fail closed.
+
+`ProgressAggregator` derives status, current/total, integer percentage basis
+points, attempt-local rate, and ceiling ETA solely from retained events. A new
+attempt must begin at the last durable coordinate, so restart cannot double-count
+work. A projection explicitly declares when bounded retention removed its early
+history. The controller exposes publish, cursor reads, subscriptions, progress
+inspection, and health without making the local journal a scientific authority.

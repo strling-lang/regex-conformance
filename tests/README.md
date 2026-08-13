@@ -53,3 +53,13 @@ credential persistence refusal, explicit corruption quarantine, full state-loss
 rebuild, wire-schema authority boundaries, and controller-service integration.
 The Windows symlink test skips only when the host denies unprivileged symlink
 creation; the same case remains required on capable/Linux hosts.
+
+Lifecycle-event tests prove deterministic canonical digests, secret refusal,
+global and per-stream ordering, exact idempotent replay, terminal immutability,
+bounded retention with explicit cursor gaps, restart-safe retry coordinates,
+attempt-local rate and ETA, subscription wakeup, controller integration, and
+environment/cache/transfer producer coverage. Adversarial cases tamper event
+bytes, database columns, stream heads, cursor identity, retention policy,
+progress order, resume status, schema authority, and transfer interruption; the
+journal must fail closed while infrastructure outcomes remain operational rather
+than becoming regex observations.

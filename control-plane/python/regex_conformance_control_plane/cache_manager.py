@@ -16,6 +16,7 @@ from typing import Protocol
 
 import rfc8785
 
+from .event_models import EventDraft, EventPublisher
 from .cache_models import (
     OPID_PATTERN,
     SAFE_INTEGER_MAX,
@@ -162,9 +163,11 @@ class CacheManager:
         *,
         clock: Clock | None = None,
         id_generator: OperationIdGenerator | None = None,
+        event_publisher: EventPublisher | None = None,
     ) -> None:
         self._clock = clock or UtcClock()
         self._ids = id_generator or Uuid7OperationIds()
+        self._event_publisher = event_publisher
 
     def inventory(self, entries: tuple[CacheEntry, ...], *, observed_at: str | None = None) -> CacheInventory:
         stamp = observed_at or _rfc3339(_now(self._clock))
@@ -291,7 +294,7 @@ class CacheManager:
             if total > SAFE_INTEGER_MAX:
                 raise OverflowError("cleanup reclaim plan exceeds the safe-integer domain")
             selected.append(EvictionCandidate(entry.cache_key, score, entry.reclaimable_bytes, len(selected) + 1))
-        return CleanupPlan(
+        plan = CleanupPlan(
             cleanup_id=self._ids.new_cleanup_id(),
             inventory_digest=inventory.inventory_digest,
             created_at=_rfc3339(now),
@@ -302,6 +305,27 @@ class CacheManager:
             selected=tuple(selected),
             exclusions=tuple(exclusions),
         )
+        if self._event_publisher is not None:
+            refused = plan.outcome == "refused"
+            self._event_publisher.publish(
+                EventDraft(
+                    stream_id=plan.cleanup_id,
+                    operation_kind="cache-cleanup",
+                    event_type="progress",
+                    phase="planning",
+                    status="refused" if refused else "planned",
+                    current=0,
+                    total=len(plan.selected),
+                    unit="items",
+                    message="cache cleanup plan refused" if refused else "cache cleanup plan ready",
+                    attributes={
+                        "expected_reclaim_bytes": plan.expected_reclaim_bytes,
+                        "target_reclaim_bytes": plan.target_reclaim_bytes,
+                    },
+                    terminal=refused,
+                )
+            )
+        return plan
 
     def execute_cleanup(
         self,
@@ -326,6 +350,21 @@ class CacheManager:
             raise ValueError("cleanup plan or inventory is stale; fresh reconciliation is required")
         if plan.outcome == "refused":
             return CleanupReport(plan, "refused", start, _rfc3339(_now(self._clock)), 0, ())
+        if self._event_publisher is not None:
+            self._event_publisher.publish(
+                EventDraft(
+                    stream_id=plan.cleanup_id,
+                    operation_kind="cache-cleanup",
+                    event_type="progress",
+                    phase="cleanup",
+                    status="running",
+                    current=0,
+                    total=len(plan.selected),
+                    unit="items",
+                    message="cache cleanup execution started",
+                    attributes={"expected_reclaim_bytes": plan.expected_reclaim_bytes},
+                )
+            )
         cancellation = cancellation or NeverCancel()
         entries = {item.cache_key: item for item in inventory.entries}
         selected_keys = tuple(item.cache_key for item in plan.selected)
@@ -334,6 +373,25 @@ class CacheManager:
         protected_dependencies = {dependency for item in inventory.entries for dependency in item.dependencies}
         mutations: list[CleanupMutation] = []
         state = "completed"
+
+        def publish_accounted_candidate() -> None:
+            if self._event_publisher is None:
+                return
+            self._event_publisher.publish(
+                EventDraft(
+                    stream_id=plan.cleanup_id,
+                    operation_kind="cache-cleanup",
+                    event_type="progress",
+                    phase="cleanup",
+                    status="running",
+                    current=len(mutations),
+                    total=len(plan.selected),
+                    unit="items",
+                    message="cache cleanup candidate accounted",
+                    attributes={"actual_reclaim_bytes": sum(item.actual_reclaim_bytes for item in mutations)},
+                )
+            )
+
         for candidate in plan.selected:
             entry = entries[candidate.cache_key]
             if candidate.expected_reclaim_bytes != entry.reclaimable_bytes:
@@ -343,6 +401,7 @@ class CacheManager:
                     CleanupMutation(entry.cache_key, candidate.expected_reclaim_bytes, 0, "skipped", "cancelled", "cleanup cancelled before mutation")
                 )
                 state = "cancelled"
+                publish_accounted_candidate()
                 break
             reasons = list(entry.hard_protection_reasons)
             if entry.cache_key in protected_dependencies:
@@ -359,6 +418,7 @@ class CacheManager:
                     )
                 )
                 state = "partial"
+                publish_accounted_candidate()
                 continue
             try:
                 reality = provider.inspect(entry)
@@ -374,6 +434,7 @@ class CacheManager:
                     )
                 )
                 state = "partial"
+                publish_accounted_candidate()
                 continue
             reality_age = (execution_now - _parse_timestamp(reality.observed_at)).total_seconds()
             if (
@@ -398,6 +459,7 @@ class CacheManager:
                     )
                 )
                 state = "partial"
+                publish_accounted_candidate()
                 continue
             try:
                 result = provider.delete_verified(entry, plan.cleanup_id)
@@ -429,12 +491,13 @@ class CacheManager:
             )
             if not result.succeeded:
                 state = "partial"
+            publish_accounted_candidate()
         if len(mutations) < len(plan.selected) and state != "cancelled":
             state = "partial"
         actual = sum(item.actual_reclaim_bytes for item in mutations)
         if actual > SAFE_INTEGER_MAX:
             raise OverflowError("actual cleanup reconciliation exceeds the safe-integer domain")
-        return CleanupReport(
+        report = CleanupReport(
             plan,
             state,
             start,
@@ -442,6 +505,23 @@ class CacheManager:
             actual,
             tuple(mutations),
         )
+        if self._event_publisher is not None:
+            self._event_publisher.publish(
+                EventDraft(
+                    stream_id=plan.cleanup_id,
+                    operation_kind="cache-cleanup",
+                    event_type="progress",
+                    phase="cleanup",
+                    status=state,
+                    current=len(mutations),
+                    total=len(plan.selected),
+                    unit="items",
+                    message=f"cache cleanup {state}",
+                    attributes={"actual_reclaim_bytes": actual, "outcome": state},
+                    terminal=True,
+                )
+            )
+        return report
 
 
 class FilesystemCacheProvider:
@@ -643,11 +723,13 @@ class TransferManager:
         *,
         clock: Clock | None = None,
         id_generator: OperationIdGenerator | None = None,
+        event_publisher: EventPublisher | None = None,
     ) -> None:
         root.mkdir(parents=True, exist_ok=True)
         self._root = root.resolve(strict=True)
         self._clock = clock or UtcClock()
         self._ids = id_generator or Uuid7OperationIds()
+        self._event_publisher = event_publisher
 
     def plan(
         self,
@@ -668,7 +750,9 @@ class TransferManager:
             relative_path,
             cache_key,
         )
-        return TransferRecord(requirement, "planned", 0, self.EMPTY_SHA256, (), None, None)
+        record = TransferRecord(requirement, "planned", 0, self.EMPTY_SHA256, (), None, None)
+        self._emit_transfer(record, status="planned", phase="planning", attempt=1, message="transfer planned")
+        return record
 
     def record_external_attempt(
         self,
@@ -680,8 +764,8 @@ class TransferManager:
         code: str,
         detail: str,
     ) -> TransferRecord:
-        if record.state == "completed":
-            raise ValueError("completed transfers are immutable")
+        if record.state in {"completed", "failed"}:
+            raise ValueError("completed or failed transfers are immutable")
         if bytes_completed < record.bytes_completed or bytes_completed > record.requirement.expected_size_bytes:
             raise ValueError("transfer progress must be monotonic and bounded")
         start = _rfc3339(_now(self._clock))
@@ -702,7 +786,7 @@ class TransferManager:
             checkpoint_sha256, record.requirement.expected_sha256
         ):
             raise ValueError("completed attempts must prove the immutable expected digest")
-        return TransferRecord(
+        updated = TransferRecord(
             record.requirement,
             "completed" if completed else outcome,
             bytes_completed,
@@ -712,6 +796,23 @@ class TransferManager:
             record.requirement.expected_size_bytes if completed else None,
             record.resumable,
         )
+        if attempt.sequence > 1:
+            self._emit_transfer(
+                record,
+                status="resumed",
+                phase="transfer",
+                attempt=attempt.sequence,
+                message="external transfer attempt resumed",
+            )
+        self._emit_transfer(
+            updated,
+            status="completed" if completed else outcome,
+            phase="transfer",
+            attempt=attempt.sequence,
+            message=f"external transfer attempt {outcome}",
+            terminal=completed or outcome == "failed",
+        )
+        return updated
 
     def _destination(self, requirement: TransferRequirement, *, partial: bool) -> Path:
         path = self._root.joinpath(*PurePosixPath(requirement.relative_path).parts)
@@ -797,6 +898,14 @@ class TransferManager:
         started = _rfc3339(_now(self._clock))
         offset = record.bytes_completed
         chunks = 0
+        attempt_number = len(record.attempts) + 1
+        self._emit_transfer(
+            record,
+            status="resumed" if record.attempts else "running",
+            phase="transfer",
+            attempt=attempt_number,
+            message="transfer attempt resumed" if record.attempts else "transfer attempt started",
+        )
         outcome = "interrupted"
         code = "chunk-budget-reached"
         detail = "transfer paused at the configured chunk budget"
@@ -826,6 +935,14 @@ class TransferManager:
                     os.fsync(destination.fileno())
                     offset += len(block)
                     chunks += 1
+                    self._emit_transfer(
+                        record,
+                        status="running",
+                        phase="transfer",
+                        attempt=attempt_number,
+                        message="transfer checkpoint persisted",
+                        current=offset,
+                    )
                 if offset == record.requirement.expected_size_bytes:
                     outcome = "completed"
                     code = "verified"
@@ -883,7 +1000,7 @@ class TransferManager:
             code,
             detail,
         )
-        return TransferRecord(
+        updated = TransferRecord(
             record.requirement,
             outcome,
             offset,
@@ -892,4 +1009,43 @@ class TransferManager:
             record.requirement.expected_sha256 if outcome == "completed" else None,
             record.requirement.expected_size_bytes if outcome == "completed" else None,
             record.resumable,
+        )
+        self._emit_transfer(
+            updated,
+            status=outcome,
+            phase="transfer",
+            attempt=attempt_number,
+            message=f"transfer attempt {outcome}",
+            terminal=outcome in {"completed", "failed"},
+        )
+        return updated
+
+    def _emit_transfer(
+        self,
+        record: TransferRecord,
+        *,
+        status: str,
+        phase: str,
+        attempt: int,
+        message: str,
+        terminal: bool = False,
+        current: int | None = None,
+    ) -> None:
+        if self._event_publisher is None:
+            return
+        self._event_publisher.publish(
+            EventDraft(
+                stream_id=record.requirement.transfer_id,
+                operation_kind="transfer",
+                event_type="progress",
+                phase=phase,
+                status=status,
+                attempt=attempt,
+                current=record.bytes_completed if current is None else current,
+                total=record.requirement.expected_size_bytes,
+                unit="bytes",
+                message=message,
+                attributes={"operation": record.requirement.operation, "resumable": record.resumable},
+                terminal=terminal,
+            )
         )

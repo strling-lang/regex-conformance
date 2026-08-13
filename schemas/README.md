@@ -58,6 +58,16 @@ add JCS integrity, secret rejection, migration/history verification, freshness,
 source-authority, and cross-source conflict semantics that JSON Schema alone
 cannot express.
 
+`json/lifecycle-event.schema.json` defines the strict machine interface for
+individual lifecycle events, durable journal cursors and batches, and derived
+progress projections. Events preserve logical stream identity separately from
+physical attempt number, require safe integer coordinates, expose explicit
+terminal state, and permanently set `canonical_authority` to false. Typed model
+and journal checks add RFC 8785 attribute/event digests, secret rejection,
+global hash-chain integrity, contiguous stream/attempt rules, exact resume
+coordinates, bounded-retention gap detection, and restart-aware rate/ETA
+semantics that cannot be expressed as independent JSON fields.
+
 `identity-profiles/environment-fingerprint.v1.json` defines the scientific
 identity projection for verified realized environments. It excludes physical
 transaction IDs, cache paths, provider handles, and timestamps while binding the

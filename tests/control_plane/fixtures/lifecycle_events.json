@@ -1,0 +1,12 @@
+{
+  "expected_event_types": ["checkpoint", "diagnostic", "lifecycle", "metric", "progress"],
+  "expected_progress_units": ["bytes", "environments", "executions", "items", "shards", "steps"],
+  "expected_terminal_statuses": ["cancelled", "completed", "failed", "partial", "refused"],
+  "retention_semantics": {
+    "bounded": true,
+    "cursor_gaps_are_explicit": true,
+    "local_events_are_canonical_evidence": false,
+    "provider_output_is_an_automation_protocol": false
+  },
+  "schema_version": "lifecycle-event-fixture.v1"
+}

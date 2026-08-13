@@ -22,6 +22,8 @@ if TYPE_CHECKING:
         TransferRecord,
     )
     from .environment_models import AdmissionDecision, EnvironmentDiagnosis, EnvironmentLifecycleRecord, EnvironmentRecipe
+    from .event_models import EventBatch, EventCursor, EventDraft, LifecycleEvent, ProgressProjection
+    from .event_store import EventSubscription
     from .resource_models import (
         AdmissionContext,
         ResourceAdmissionReport,
@@ -203,6 +205,20 @@ class LocalStateService(Protocol):
     def close(self, *, clean: bool = True) -> None: ...
 
 
+class EventJournalService(Protocol):
+    def publish(self, draft: "EventDraft", *, event_id: str | None = None) -> object: ...
+
+    def read(self, cursor: "EventCursor | None" = None, *, maximum_events: int = 100) -> "EventBatch": ...
+
+    def read_stream(self, stream_id: str) -> tuple["LifecycleEvent", ...]: ...
+
+    def subscribe(self, cursor: "EventCursor | None" = None) -> "EventSubscription": ...
+
+    def health_check(self) -> dict[str, object]: ...
+
+    def close(self) -> None: ...
+
+
 @dataclass(frozen=True)
 class ControlPlaneServices:
     machine_doctor: MachineDoctorService
@@ -211,6 +227,7 @@ class ControlPlaneServices:
     cache_manager: CacheManagerService | None = None
     transfer_manager: TransferManagerService | None = None
     local_state: LocalStateService | None = None
+    event_journal: EventJournalService | None = None
 
 
 class ControlPlaneController:
@@ -447,6 +464,31 @@ class ControlPlaneController:
     def close_local_state(self, *, clean: bool = True) -> None:
         self._local_state().close(clean=clean)
 
+    def publish_lifecycle_event(self, draft: "EventDraft", *, event_id: str | None = None) -> object:
+        return self._event_journal().publish(draft, event_id=event_id)
+
+    def read_lifecycle_events(
+        self,
+        cursor: "EventCursor | None" = None,
+        *,
+        maximum_events: int = 100,
+    ) -> "EventBatch":
+        return self._event_journal().read(cursor, maximum_events=maximum_events)
+
+    def subscribe_lifecycle_events(self, cursor: "EventCursor | None" = None) -> "EventSubscription":
+        return self._event_journal().subscribe(cursor)
+
+    def inspect_progress(self, stream_id: str) -> "ProgressProjection":
+        from .event_models import ProgressAggregator
+
+        return ProgressAggregator.project(self._event_journal().read_stream(stream_id))
+
+    def inspect_event_journal_health(self) -> dict[str, object]:
+        return self._event_journal().health_check()
+
+    def close_event_journal(self) -> None:
+        self._event_journal().close()
+
     def _environment_manager(self) -> EnvironmentManagerService:
         if self._services.environment_manager is None:
             raise RuntimeError("environment manager service is not configured")
@@ -471,6 +513,11 @@ class ControlPlaneController:
         if self._services.local_state is None:
             raise RuntimeError("local state service is not configured")
         return self._services.local_state
+
+    def _event_journal(self) -> EventJournalService:
+        if self._services.event_journal is None:
+            raise RuntimeError("event journal service is not configured")
+        return self._services.event_journal
 
 
 def build_default_controller() -> ControlPlaneController:
