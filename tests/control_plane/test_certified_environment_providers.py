@@ -159,6 +159,14 @@ class CertifiedEnvironmentProviderTests(unittest.TestCase):
             with self.assertRaisesRegex(ProviderOperationError, "outside the install root"):
                 Pcre2SourceProvider._library(install)
 
+    def test_mysql_recipe_pins_global_regex_time_limit(self) -> None:
+        definition = next(item for item in load_certified_recipes(ROOT) if item.selection_key == "mysql-regex")
+        configuration = {item.name: item.value for item in definition.lifecycle.expected_configuration}
+        self.assertEqual(definition.parameters["regexp-time-limit-ms"], "1000")
+        self.assertEqual(configuration["regexp-time-limit-ms"], "1000")
+        self.assertIn("mysql-regexp-time-limit", definition.lifecycle.smoke_probe_ids)
+
+
     def test_planning_is_nonmutating_and_binds_provider_implementation(self) -> None:
         definition = load_certified_recipes(ROOT)[0]
         with tempfile.TemporaryDirectory() as temporary:

@@ -40,7 +40,9 @@ The container runs with no network, two CPUs, a 1 GiB memory/swap ceiling, a
 256-process ceiling, bounded output/time, and an isolated temporary filesystem.
 The graph binds MySQL 8.4.10 to ICU 77.1 using the corresponding MySQL source
 provenance. The runtime verifier confirms the exact MySQL image/config/platform,
-container limits, and SQL behavior; it does not claim independent binary-level
+container limits, the daemon-pinned global regex time limit, and SQL behavior.
+Adapters validate requests against that certified global value and never mutate
+shared server behavior. The verifier does not claim independent binary-level
 introspection of the embedded ICU build.
 
 Artifact downloads use an exact HTTPS host allowlist and a bounded redirect

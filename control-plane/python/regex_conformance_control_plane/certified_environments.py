@@ -744,6 +744,7 @@ class MysqlOciProvider(CertifiedEnvironmentProvider):
             "--tmpfs", "/tmp:rw,noexec,nosuid,size=67108864",
             "--env", "MYSQL_ALLOW_EMPTY_PASSWORD=yes", "--env", "LANG=C.UTF-8", "--env", "TZ=UTC",
             image, "--skip-log-bin", "--character-set-server=utf8mb4", "--collation-server=utf8mb4_0900_ai_ci",
+            "--regexp-time-limit=1000",
         )
         self._run(command, limits=self._cli_limits())
         deadline = time.monotonic() + 180
@@ -815,9 +816,9 @@ class MysqlOciProvider(CertifiedEnvironmentProvider):
             raise ProviderOperationError("runtime-containment-mismatch", "MySQL daemon-side resource or network limits differed", handle)
         if set(tmpfs) != {"/tmp", "/var/lib/mysql"} or any("noexec" not in value or "nosuid" not in value or "size=" not in value for value in tmpfs.values()):
             raise ProviderOperationError("runtime-containment-mismatch", "MySQL tmpfs containment differed", handle)
-        query = self._sql(transaction_id, "SELECT VERSION(), @@character_set_server, @@collation_server")
+        query = self._sql(transaction_id, "SELECT VERSION(), @@character_set_server, @@collation_server, @@GLOBAL.regexp_time_limit")
         fields = query.split("\t")
-        if fields != ["8.4.10", "utf8mb4", "utf8mb4_0900_ai_ci"]:
+        if fields != ["8.4.10", "utf8mb4", "utf8mb4_0900_ai_ci", "1000"]:
             raise ProviderOperationError("runtime-version-mismatch", "MySQL runtime identity or configuration differed", handle)
         image_env = inspection.get("Config", {}).get("Env", [])
         container_env = container_inspection.get("Config", {}).get("Env", [])
@@ -843,6 +844,7 @@ class MysqlOciProvider(CertifiedEnvironmentProvider):
             NamedValue("container-platform", f"{inspection['Os']}-{inspection['Architecture']}"),
             NamedValue("icu-identity-basis", "verified mysql-8.4.10 bundled source dependency graph"),
             NamedValue("icu-linkage", "bundled"), NamedValue("locale", env_by_name.get("LANG", "")),
+            NamedValue("regexp-time-limit-ms", fields[3]),
             NamedValue("timezone", env_by_name.get("TZ", "")),
         ]
         return self._runtime_identity(recipe, self.descriptor, facts, configuration)
@@ -851,6 +853,7 @@ class MysqlOciProvider(CertifiedEnvironmentProvider):
         root = self._handle_root(handle, transaction_id)
         statements = {
             "mysql-version": ("SELECT VERSION()", "8.4.10"),
+            "mysql-regexp-time-limit": ("SELECT @@GLOBAL.regexp_time_limit", "1000"),
             "mysql-regexp-like": ("SELECT REGEXP_LIKE('baaac','a+')", "1"),
             "mysql-regexp-replace": ("SELECT REGEXP_REPLACE('baaac','a+','X')", "bXc"),
             "mysql-icu-boundary": ("SELECT REGEXP_LIKE(_utf8mb4'é', _utf8mb4'[[:alpha:]]')", "1"),

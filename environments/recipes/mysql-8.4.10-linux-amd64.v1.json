@@ -2,7 +2,7 @@
   "schema_version":"certified-environment-recipe.v1",
   "recipe_schema_family_id":"rcid:v1:schema-family:u7:019ff984-a52e-74e2-bc5c-82fcc3e2134a",
   "environment_recipe_id":"rcid:v1:environment-recipe:u7:019ff984-a52e-7450-9f57-8933ed04af6f",
-  "recipe_revision_id":"rcid:v1:environment-recipe-revision:h:jcs-sha256-v1:78404cef4f911e8cc6e0e4a4ca7e93a41de5167de5dc098a6a5c13908d2a7342",
+  "recipe_revision_id":"rcid:v1:environment-recipe-revision:h:jcs-sha256-v1:daf19b0fd9c1c0d1febb1252037be2bf6a20e8b5f5958cc879cd8adfa7a1cb12",
   "selection_key":"mysql-regex",
   "target_profile_id":"rcid:v1:profile:u7:019ff984-a52e-711e-82d2-03b77a6192e7",
   "target_release_id":"rcid:v1:release:u7:019ff984-a52e-7487-8f0d-5046164b1b61",
@@ -14,10 +14,10 @@
     {"name":"mysql-manifest","sha256":"870634c634aae968ea1a93e5c094a14e00c692da2ee9bed956b3dfcc7bd08cb0","size_bytes":2857,"media_type":"oci-manifest","locators":["https://registry-1.docker.io/v2/library/mysql/manifests/sha256:870634c634aae968ea1a93e5c094a14e00c692da2ee9bed956b3dfcc7bd08cb0"]}
   ],
   "expected_runtime_facts":[{"name":"architecture","value":"amd64"},{"name":"icu-version","value":"77.1"},{"name":"image-config-digest","value":"sha256:9cffaceb9b62d4280247acdb2324b380d2b36208ae34dfe9f0afb62eeaf70f08"},{"name":"mysql-package-version","value":"8.4.10-1.el9"},{"name":"mysql-version","value":"8.4.10"}],
-  "expected_configuration":[{"name":"character-set-server","value":"utf8mb4"},{"name":"collation-server","value":"utf8mb4_0900_ai_ci"},{"name":"container-platform","value":"linux-amd64"},{"name":"icu-linkage","value":"bundled"},{"name":"locale","value":"C.UTF-8"},{"name":"timezone","value":"UTC"}],
+  "expected_configuration":[{"name":"character-set-server","value":"utf8mb4"},{"name":"collation-server","value":"utf8mb4_0900_ai_ci"},{"name":"container-platform","value":"linux-amd64"},{"name":"icu-linkage","value":"bundled"},{"name":"locale","value":"C.UTF-8"},{"name":"regexp-time-limit-ms","value":"1000"},{"name":"timezone","value":"UTC"}],
   "required_capabilities":["oci-digest-pull","offline-runtime","service-lifecycle"],
-  "smoke_probe_ids":["mysql-icu-boundary","mysql-regexp-like","mysql-regexp-replace","mysql-version"],
+  "smoke_probe_ids":["mysql-icu-boundary","mysql-regexp-like","mysql-regexp-replace","mysql-regexp-time-limit","mysql-version"],
   "isolation_policy":{"digest":"5e9e13913ac22fbcb29995a51998794b7e578bd48334bf8aa487adafa2a9ad03","policy_version":"1.0.0","acquisition_network":"https-allowlisted","build_network":"not-applicable","runtime_network":"none","process_tree":"contained","filesystem":"oci-tmpfs","resource_limits":{"wall_time_ms":600000,"stdout_bytes":1048576,"stderr_bytes":1048576,"memory_bytes":1073741824,"cpu_time_seconds":null}},
-  "construction":{"platform":{"os":"linux","architecture":"amd64","distribution":"oci-image","distribution_version":"oracle-linux-9"},"hermeticity":"immutable-oci-manifest","download_upper_bound_bytes":239000000,"expanded_upper_bound_bytes":600000000,"scratch_upper_bound_bytes":1073741824,"parameters":[{"name":"image-index-digest","value":"sha256:8dbcf531a03aade657e181b9cf2f1d1803ce621a1d55610cb44cb531ab7d7db6"},{"name":"image-reference","value":"mysql@sha256:870634c634aae968ea1a93e5c094a14e00c692da2ee9bed956b3dfcc7bd08cb0"},{"name":"pids-limit","value":"256"},{"name":"runtime-data","value":"tmpfs"}]},
+  "construction":{"platform":{"os":"linux","architecture":"amd64","distribution":"oci-image","distribution_version":"oracle-linux-9"},"hermeticity":"immutable-oci-manifest","download_upper_bound_bytes":239000000,"expanded_upper_bound_bytes":600000000,"scratch_upper_bound_bytes":1073741824,"parameters":[{"name":"image-index-digest","value":"sha256:8dbcf531a03aade657e181b9cf2f1d1803ce621a1d55610cb44cb531ab7d7db6"},{"name":"image-reference","value":"mysql@sha256:870634c634aae968ea1a93e5c094a14e00c692da2ee9bed956b3dfcc7bd08cb0"},{"name":"pids-limit","value":"256"},{"name":"regexp-time-limit-ms","value":"1000"},{"name":"runtime-data","value":"tmpfs"}]},
   "provenance":[{"authority":"oracle-mysql","url":"https://dev.mysql.com/doc/relnotes/mysql/8.4/en/news-8-4-10.html","claim":"release-identity"},{"authority":"oracle-mysql","url":"https://github.com/mysql/mysql-server/blob/mysql-8.4.10/cmake/icu.cmake","claim":"bundled-icu-version"},{"authority":"docker-official-images","url":"https://hub.docker.com/_/mysql","claim":"oci-artifact"}]
 }
