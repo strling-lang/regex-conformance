@@ -19,7 +19,7 @@ class WarehouseIntegrityError(RuntimeError):
 SCHEMA = (
     "CREATE TABLE campaign (campaign_manifest_id TEXT PRIMARY KEY, evidence_manifest_id TEXT NOT NULL, logical_count INTEGER NOT NULL)",
     "CREATE TABLE logical_execution (logical_execution_id TEXT PRIMARY KEY, selection_key TEXT NOT NULL, vector_revision_id TEXT NOT NULL)",
-    "CREATE TABLE observation (observation_content_id TEXT PRIMARY KEY, observation_id TEXT NOT NULL UNIQUE, logical_execution_id TEXT NOT NULL UNIQUE REFERENCES logical_execution(logical_execution_id), physical_run_id TEXT NOT NULL UNIQUE, response_status TEXT NOT NULL, match_state TEXT NOT NULL)",
+    "CREATE TABLE observation (observation_content_id TEXT PRIMARY KEY, observation_id TEXT NOT NULL UNIQUE, logical_execution_id TEXT NOT NULL UNIQUE REFERENCES logical_execution(logical_execution_id), physical_run_id TEXT NOT NULL UNIQUE, response_status TEXT NOT NULL, match_state TEXT)",
     "CREATE TABLE result_shard (result_shard_id TEXT PRIMARY KEY, shard_id TEXT NOT NULL UNIQUE, artifact_sha256 TEXT NOT NULL)",
 )
 SCHEMA_SHA256 = hashlib.sha256("\n".join(SCHEMA).encode()).hexdigest()
@@ -36,7 +36,13 @@ def build_warehouse(
     evidence_manifest: dict[str, Any],
     evidence_store: Any,
 ) -> dict[str, Any]:
-    evidence_store.verify_manifest(compiled, evidence_manifest)
+    assessment = evidence_store.qualify_manifest(compiled, evidence_manifest)
+    if not assessment["analytical_admissible"]:
+        finding_codes = ",".join(item["code"] for item in assessment["findings"])
+        suffix = f": {finding_codes}" if finding_codes else ""
+        raise WarehouseIntegrityError(
+            f"evidence disposition {assessment['disposition']} is excluded from the trusted analytical dataset{suffix}"
+        )
     if not evidence_manifest.get("complete"):
         raise WarehouseIntegrityError("incomplete evidence cannot produce a qualifying warehouse")
     logicals = compiled["logical_executions"]
@@ -103,7 +109,11 @@ def build_warehouse(
                     reference["logical_execution_id"],
                     payload["physical_run_id"],
                     response["status"],
-                    response["observation"]["match_state"],
+                    (
+                        None
+                        if response["observation"] is None
+                        else response["observation"]["match_state"]
+                    ),
                 ),
             )
         for reference in sorted(evidence_manifest["result_shards"], key=lambda item: item["shard_id"]):

@@ -18,11 +18,12 @@ for source in (
     if str(source) not in sys.path:
         sys.path.insert(0, str(source))
 
+from evidence_support import completed_response
 from regex_conformance_campaign import compile_vertical_slice
 from regex_conformance_control_plane.campaign_manager import CampaignCoordinator
 from regex_conformance_schema.identity import NamespaceRegistry
-from regex_conformance_verifier import EvidenceIntegrityError, ImmutableEvidenceStore
-from regex_conformance_warehouse import build_warehouse
+from regex_conformance_verifier import ImmutableEvidenceStore
+from regex_conformance_warehouse import WarehouseIntegrityError, build_warehouse
 
 
 class SuccessfulWorker:
@@ -31,13 +32,7 @@ class SuccessfulWorker:
             {
                 "logical_execution_id": item["logical_execution_id"],
                 "provenance": {"selection_key": selection_key},
-                "response": {
-                    "canonical_authority": False,
-                    "correlation_id": item["logical_execution_id"],
-                    "observation": {"match_state": "match"},
-                    "semantic_authority": False,
-                    "status": "completed",
-                },
+                "response": completed_response(item),
             }
             for item in logical_executions
         ]
@@ -56,7 +51,7 @@ class EvidenceReconciliationTests(unittest.TestCase):
             reference = manifest["result_shards"][0]
             artifact = base / "evidence" / reference["relative_path"]
             artifact.write_bytes(artifact.read_bytes() + b" ")
-            with self.assertRaises(EvidenceIntegrityError):
+            with self.assertRaisesRegex(WarehouseIntegrityError, "artifact-size-mismatch"):
                 build_warehouse(ROOT, base / "warehouse", compiled, manifest, store)
 
     def test_supplied_manifest_substitution_blocks_warehouse_derivation(self) -> None:
@@ -69,7 +64,7 @@ class EvidenceReconciliationTests(unittest.TestCase):
             store = ImmutableEvidenceStore(ROOT, base / "evidence")
             manifest = coordinator.execute(compiled, SuccessfulWorker(), store)
             manifest["root_digest"] = "0" * 64
-            with self.assertRaises(EvidenceIntegrityError):
+            with self.assertRaisesRegex(WarehouseIntegrityError, "manifest-substitution"):
                 build_warehouse(ROOT, base / "warehouse", compiled, manifest, store)
 
 

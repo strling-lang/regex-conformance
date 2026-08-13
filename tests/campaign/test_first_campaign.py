@@ -19,6 +19,7 @@ for source in (
     if str(source) not in sys.path:
         sys.path.insert(0, str(source))
 
+from evidence_support import completed_response
 from regex_conformance_campaign import CampaignCompileError, compile_vertical_slice, verify_compiled_campaign
 from regex_conformance_control_plane.campaign_manager import CampaignCoordinator, CampaignExecutionError
 from regex_conformance_schema.identity import NamespaceRegistry
@@ -45,13 +46,7 @@ class FakeWorker:
             {
                 "logical_execution_id": item["logical_execution_id"],
                 "provenance": {"selection_key": selection_key},
-                "response": {
-                    "canonical_authority": False,
-                    "correlation_id": item["logical_execution_id"],
-                    "observation": {"match_state": "match"},
-                    "semantic_authority": False,
-                    "status": "completed",
-                },
+                "response": completed_response(item),
             }
             for item in logical_executions
         ]

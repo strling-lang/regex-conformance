@@ -136,6 +136,7 @@ def compile_vertical_slice(root: Path, *, _verify: bool = True) -> dict[str, Any
         root / "scheduler" / "python" / "regex_conformance_scheduler" / "sharding.py",
         root / "tools" / "campaigns" / "run_vertical_slice.py",
         root / "verifier" / "python" / "regex_conformance_verifier" / "evidence.py",
+        root / "verifier" / "python" / "regex_conformance_verifier" / "result_verifier.py",
         root / "warehouse" / "python" / "regex_conformance_warehouse" / "builder.py",
     )
     contract_paths = (
@@ -144,6 +145,11 @@ def compile_vertical_slice(root: Path, *, _verify: bool = True) -> dict[str, Any
         root / "schemas" / "json" / "adapter-request.schema.json",
         root / "schemas" / "json" / "adapter-response.schema.json",
         root / "schemas" / "json" / "compiled-campaign.schema.json",
+        root / "schemas" / "json" / "evidence-manifest.schema.json",
+        root / "schemas" / "json" / "observation-content.schema.json",
+        root / "schemas" / "json" / "physical-attempt-evidence.schema.json",
+        root / "schemas" / "json" / "result-shard.schema.json",
+        root / "schemas" / "json" / "trust-assessment.schema.json",
     )
     source_paths = [
         definition_path, coordinates_path, vector_path, applicability_path,

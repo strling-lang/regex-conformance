@@ -1,0 +1,196 @@
+{
+  "cases": [
+    {
+      "analytical_admissible": false,
+      "case_key": "artifact-digest-substitution",
+      "certification_admissible": false,
+      "corruption_class": "integrity",
+      "expected_code": "artifact-digest-mismatch",
+      "immutable_source_preserved": true,
+      "quarantine_disposition": "quarantined",
+      "warehouse_excluded": true
+    },
+    {
+      "analytical_admissible": false,
+      "case_key": "artifact-reference-category",
+      "certification_admissible": false,
+      "corruption_class": "reference",
+      "expected_code": "artifact-reference-invalid",
+      "immutable_source_preserved": true,
+      "quarantine_disposition": "quarantined",
+      "warehouse_excluded": true
+    },
+    {
+      "analytical_admissible": false,
+      "case_key": "artifact-size-truncation",
+      "certification_admissible": false,
+      "corruption_class": "truncation",
+      "expected_code": "artifact-size-mismatch",
+      "immutable_source_preserved": true,
+      "quarantine_disposition": "quarantined",
+      "warehouse_excluded": true
+    },
+    {
+      "analytical_admissible": false,
+      "case_key": "artifact-symlink-indirection",
+      "certification_admissible": false,
+      "corruption_class": "reference",
+      "expected_code": "artifact-path-indirect",
+      "immutable_source_preserved": true,
+      "quarantine_disposition": "quarantined",
+      "warehouse_excluded": true
+    },
+    {
+      "analytical_admissible": false,
+      "case_key": "attempt-timestamp-naive",
+      "certification_admissible": false,
+      "corruption_class": "malformed",
+      "expected_code": "attempt-timestamp-invalid",
+      "immutable_source_preserved": true,
+      "quarantine_disposition": "quarantined",
+      "warehouse_excluded": true
+    },
+    {
+      "analytical_admissible": false,
+      "case_key": "duplicate-json-member",
+      "certification_admissible": false,
+      "corruption_class": "malformed",
+      "expected_code": "duplicate-json-key",
+      "immutable_source_preserved": true,
+      "quarantine_disposition": "quarantined",
+      "warehouse_excluded": true
+    },
+    {
+      "analytical_admissible": false,
+      "case_key": "invalid-json-truncation",
+      "certification_admissible": false,
+      "corruption_class": "truncation",
+      "expected_code": "invalid-json",
+      "immutable_source_preserved": true,
+      "quarantine_disposition": "quarantined",
+      "warehouse_excluded": true
+    },
+    {
+      "analytical_admissible": false,
+      "case_key": "manifest-root-substitution",
+      "certification_admissible": false,
+      "corruption_class": "integrity",
+      "expected_code": "manifest-root-digest-mismatch",
+      "immutable_source_preserved": true,
+      "quarantine_disposition": "quarantined",
+      "warehouse_excluded": true
+    },
+    {
+      "analytical_admissible": false,
+      "case_key": "match-state-empty",
+      "certification_admissible": false,
+      "corruption_class": "semantic",
+      "expected_code": "match-state-without-match",
+      "immutable_source_preserved": true,
+      "quarantine_disposition": "quarantined",
+      "warehouse_excluded": true
+    },
+    {
+      "analytical_admissible": false,
+      "case_key": "noncanonical-json",
+      "certification_admissible": false,
+      "corruption_class": "canonicalization",
+      "expected_code": "artifact-not-canonical",
+      "immutable_source_preserved": true,
+      "quarantine_disposition": "quarantined",
+      "warehouse_excluded": true
+    },
+    {
+      "analytical_admissible": false,
+      "case_key": "nonmatch-with-matches",
+      "certification_admissible": false,
+      "corruption_class": "semantic",
+      "expected_code": "nonmatch-state-with-matches",
+      "immutable_source_preserved": true,
+      "quarantine_disposition": "quarantined",
+      "warehouse_excluded": true
+    },
+    {
+      "analytical_admissible": false,
+      "case_key": "observation-attempt-substitution",
+      "certification_admissible": false,
+      "corruption_class": "reconciliation",
+      "expected_code": "observation-reconciliation-inconsistent",
+      "immutable_source_preserved": true,
+      "quarantine_disposition": "quarantined",
+      "warehouse_excluded": true
+    },
+    {
+      "analytical_admissible": false,
+      "case_key": "response-correlation-substitution",
+      "certification_admissible": false,
+      "corruption_class": "semantic",
+      "expected_code": "response-correlation-mismatch",
+      "immutable_source_preserved": true,
+      "quarantine_disposition": "quarantined",
+      "warehouse_excluded": true
+    },
+    {
+      "analytical_admissible": false,
+      "case_key": "response-plan-substitution",
+      "certification_admissible": false,
+      "corruption_class": "semantic",
+      "expected_code": "response-plan-mismatch",
+      "immutable_source_preserved": true,
+      "quarantine_disposition": "quarantined",
+      "warehouse_excluded": true
+    },
+    {
+      "analytical_admissible": false,
+      "case_key": "response-schema-violation",
+      "certification_admissible": false,
+      "corruption_class": "malformed",
+      "expected_code": "response-schema-invalid",
+      "immutable_source_preserved": true,
+      "quarantine_disposition": "quarantined",
+      "warehouse_excluded": true
+    },
+    {
+      "analytical_admissible": false,
+      "case_key": "shard-membership-substitution",
+      "certification_admissible": false,
+      "corruption_class": "reconciliation",
+      "expected_code": "shard-membership-inconsistent",
+      "immutable_source_preserved": true,
+      "quarantine_disposition": "quarantined",
+      "warehouse_excluded": true
+    },
+    {
+      "analytical_admissible": false,
+      "case_key": "span-order-impossible",
+      "certification_admissible": false,
+      "corruption_class": "semantic",
+      "expected_code": "span-order-impossible",
+      "immutable_source_preserved": true,
+      "quarantine_disposition": "quarantined",
+      "warehouse_excluded": true
+    },
+    {
+      "analytical_admissible": false,
+      "case_key": "unknown-artifact-field",
+      "certification_admissible": false,
+      "corruption_class": "malformed",
+      "expected_code": "artifact-schema-invalid",
+      "immutable_source_preserved": true,
+      "quarantine_disposition": "quarantined",
+      "warehouse_excluded": true
+    }
+  ],
+  "classification": {
+    "canonical_authority": false,
+    "normative_authority": false,
+    "operational_qualification_only": true,
+    "semantic_authority": false
+  },
+  "schema_version": "evidence-verification-qualification.v1",
+  "summary": {
+    "case_count": 18,
+    "quarantined_count": 18,
+    "warehouse_excluded_count": 18
+  }
+}

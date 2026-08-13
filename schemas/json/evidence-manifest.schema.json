@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/evidence-manifest.schema.json",
+  "title": "Immutable Evidence Manifest v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "accepted_observation_count", "attempts", "campaign_manifest_id", "complete",
+    "evidence_manifest_id", "infrastructure_failure_count", "logical_execution_count",
+    "observations", "result_shards", "root_digest", "schema_version"
+  ],
+  "properties": {
+    "accepted_observation_count": {"type": "integer", "minimum": 0},
+    "attempts": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/attempt-reference"}},
+    "campaign_manifest_id": {"$ref": "#/$defs/campaign"},
+    "complete": {"type": "boolean"},
+    "evidence_manifest_id": {"$ref": "#/$defs/evidence-manifest"},
+    "infrastructure_failure_count": {"type": "integer", "minimum": 0},
+    "logical_execution_count": {"type": "integer", "minimum": 1},
+    "observations": {"type": "array", "items": {"$ref": "#/$defs/observation-reference"}},
+    "result_shards": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/shard-reference"}},
+    "root_digest": {"$ref": "#/$defs/digest"},
+    "schema_version": {"const": "evidence-manifest.v2"}
+  },
+  "$defs": {
+    "base-reference": {
+      "type": "object",
+      "required": ["category", "relative_path", "sha256", "size_bytes"],
+      "properties": {
+        "relative_path": {"type": "string", "minLength": 1, "maxLength": 512},
+        "sha256": {"$ref": "#/$defs/digest"},
+        "size_bytes": {"type": "integer", "minimum": 1}
+      }
+    },
+    "attempt-reference": {
+      "allOf": [
+        {"$ref": "#/$defs/base-reference"},
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["category", "logical_execution_id", "physical_run_id", "relative_path", "sha256", "size_bytes"],
+          "properties": {
+            "category": {"const": "attempts"},
+            "logical_execution_id": {"$ref": "#/$defs/logical"},
+            "physical_run_id": {"$ref": "#/$defs/physical"},
+            "relative_path": true, "sha256": true, "size_bytes": true
+          }
+        }
+      ]
+    },
+    "campaign": {"type": "string", "pattern": "^rcid:v1:campaign-manifest:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "evidence-manifest": {"type": "string", "pattern": "^rcid:v1:evidence-manifest:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "logical": {"type": "string", "pattern": "^rcid:v1:logical-execution:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "observation": {"type": "string", "pattern": "^rcid:v1:observation:u7:[0-9a-f-]{36}$"},
+    "observation-content": {"type": "string", "pattern": "^rcid:v1:observation-content:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "observation-reference": {
+      "allOf": [
+        {"$ref": "#/$defs/base-reference"},
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["category", "logical_execution_id", "observation_content_id", "observation_id", "relative_path", "sha256", "size_bytes"],
+          "properties": {
+            "category": {"const": "observations"},
+            "logical_execution_id": {"$ref": "#/$defs/logical"},
+            "observation_content_id": {"$ref": "#/$defs/observation-content"},
+            "observation_id": {"$ref": "#/$defs/observation"},
+            "relative_path": true, "sha256": true, "size_bytes": true
+          }
+        }
+      ]
+    },
+    "physical": {"type": "string", "pattern": "^rcid:v1:physical-run:u7:[0-9a-f-]{36}$"},
+    "result-shard": {"type": "string", "pattern": "^rcid:v1:result-shard:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "shard": {"type": "string", "pattern": "^rcid:v1:shard:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "shard-reference": {
+      "allOf": [
+        {"$ref": "#/$defs/base-reference"},
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["category", "relative_path", "result_shard_id", "sha256", "shard_id", "size_bytes"],
+          "properties": {
+            "category": {"const": "result-shards"},
+            "relative_path": true,
+            "result_shard_id": {"$ref": "#/$defs/result-shard"},
+            "sha256": true,
+            "shard_id": {"$ref": "#/$defs/shard"},
+            "size_bytes": true
+          }
+        }
+      ]
+    }
+  }
+}

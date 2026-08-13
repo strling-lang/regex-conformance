@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/physical-attempt-evidence.schema.json",
+  "title": "Immutable Physical Attempt Evidence v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "attempt_number", "campaign_manifest_id", "infrastructure_failure",
+    "logical_execution_id", "observed_at", "physical_run_id", "provenance",
+    "response", "schema_version"
+  ],
+  "properties": {
+    "attempt_number": {"type": "integer", "minimum": 1},
+    "campaign_manifest_id": {"$ref": "#/$defs/campaign"},
+    "infrastructure_failure": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["code", "message"],
+          "properties": {
+            "code": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$", "maxLength": 128},
+            "message": {"type": "string", "minLength": 1, "maxLength": 2048}
+          }
+        },
+        {"type": "null"}
+      ]
+    },
+    "logical_execution_id": {"$ref": "#/$defs/logical"},
+    "observed_at": {"type": "string", "format": "date-time", "maxLength": 64},
+    "physical_run_id": {"$ref": "#/$defs/physical"},
+    "provenance": {"type": "object"},
+    "response": {"oneOf": [{"type": "object"}, {"type": "null"}]},
+    "schema_version": {"const": "physical-attempt-evidence.v1"}
+  },
+  "oneOf": [
+    {
+      "properties": {
+        "infrastructure_failure": {"type": "object"},
+        "response": {"type": "null"}
+      }
+    },
+    {
+      "properties": {
+        "infrastructure_failure": {"type": "null"},
+        "response": {"type": "object"}
+      }
+    }
+  ],
+  "$defs": {
+    "campaign": {"type": "string", "pattern": "^rcid:v1:campaign-manifest:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "logical": {"type": "string", "pattern": "^rcid:v1:logical-execution:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "physical": {"type": "string", "pattern": "^rcid:v1:physical-run:u7:[0-9a-f-]{36}$"}
+  }
+}

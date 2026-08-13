@@ -56,6 +56,7 @@
       "schema-revision",
       "shard",
       "system-revision",
+      "trust-assessment",
       "trust-policy-revision",
       "universe-delta",
       "universe-snapshot",

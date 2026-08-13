@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/evidence-verification-qualification.schema.json",
+  "title": "Seeded Evidence Verification Qualification v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["cases", "classification", "schema_version", "summary"],
+  "properties": {
+    "cases": {
+      "type": "array", "minItems": 18, "maxItems": 18, "uniqueItems": true,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": [
+          "analytical_admissible", "case_key", "certification_admissible", "corruption_class", "expected_code",
+          "immutable_source_preserved", "quarantine_disposition", "warehouse_excluded"
+        ],
+        "properties": {
+          "analytical_admissible": {"const": false},
+          "case_key": {"$ref": "#/$defs/token"},
+          "certification_admissible": {"const": false},
+          "corruption_class": {"enum": ["canonicalization", "integrity", "malformed", "reconciliation", "reference", "semantic", "truncation"]},
+          "expected_code": {"$ref": "#/$defs/token"},
+          "immutable_source_preserved": {"const": true},
+          "quarantine_disposition": {"const": "quarantined"},
+          "warehouse_excluded": {"const": true}
+        }
+      }
+    },
+    "classification": {"$ref": "#/$defs/classification"},
+    "schema_version": {"const": "evidence-verification-qualification.v1"},
+    "summary": {
+      "type": "object", "additionalProperties": false,
+      "required": ["case_count", "quarantined_count", "warehouse_excluded_count"],
+      "properties": {
+        "case_count": {"const": 18},
+        "quarantined_count": {"const": 18},
+        "warehouse_excluded_count": {"const": 18}
+      }
+    }
+  },
+  "$defs": {
+    "classification": {
+      "type": "object", "additionalProperties": false,
+      "required": ["canonical_authority", "normative_authority", "operational_qualification_only", "semantic_authority"],
+      "properties": {
+        "canonical_authority": {"const": false},
+        "normative_authority": {"const": false},
+        "operational_qualification_only": {"const": true},
+        "semantic_authority": {"const": false}
+      }
+    },
+    "token": {"type": "string", "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$", "maxLength": 128}
+  }
+}

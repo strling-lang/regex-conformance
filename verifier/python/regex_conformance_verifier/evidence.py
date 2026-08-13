@@ -5,15 +5,14 @@ from __future__ import annotations
 import hashlib
 import os
 from pathlib import Path
+import stat
 from typing import Any
 
 from regex_conformance_campaign.compiler import _content_id
 from regex_conformance_schema.identity import NamespaceRegistry, generate_assigned_id
 from regex_conformance_schema.jsonio import canonical_bytes
 
-
-class EvidenceIntegrityError(RuntimeError):
-    """Evidence conflicts with immutable content or the planned denominator."""
+from .diagnostics import EvidenceIntegrityError
 
 
 class ImmutableEvidenceStore:
@@ -31,13 +30,45 @@ class ImmutableEvidenceStore:
             self.repository_root / "registries" / "identity" / "namespaces.v1.json"
         )
 
+    def _direct_directory(self, path: Path, category: str) -> None:
+        try:
+            path.mkdir()
+        except FileExistsError:
+            pass
+        try:
+            resolved_directory = path.resolve(strict=True)
+            resolved_directory.relative_to(self.evidence_root)
+        except (OSError, ValueError) as error:
+            raise EvidenceIntegrityError(
+                "artifact-directory-invalid",
+                "evidence category directory is not contained in the evidence root",
+                artifact_category=category,
+            ) from error
+        if path.absolute() != resolved_directory or not resolved_directory.is_dir():
+            raise EvidenceIntegrityError(
+                "artifact-directory-indirect",
+                "evidence category directories must be direct directories, not links",
+                artifact_category=category,
+            )
+
     def _write(self, category: str, payload: dict[str, Any]) -> dict[str, Any]:
+        if not category or any(not (part.isalpha() and part.islower()) for part in category.split("-")):
+            raise EvidenceIntegrityError("artifact-category-invalid", "evidence category is invalid")
         encoded = canonical_bytes(payload) + b"\n"
         digest = hashlib.sha256(encoded).hexdigest()
-        directory = self.evidence_root / category / "sha256"
-        directory.mkdir(parents=True, exist_ok=True)
+        category_directory = self.evidence_root / category
+        self._direct_directory(category_directory, category)
+        directory = category_directory / "sha256"
+        self._direct_directory(directory, category)
         path = directory / f"{digest}.json"
         if path.exists():
+            if path.absolute() != path.resolve(strict=True) or not stat.S_ISREG(path.stat().st_mode):
+                raise EvidenceIntegrityError(
+                    "artifact-path-indirect",
+                    "existing content-addressed evidence must be a direct regular file",
+                    artifact_category=category,
+                    artifact_sha256=digest,
+                )
             if path.read_bytes() != encoded:
                 raise EvidenceIntegrityError("content-addressed evidence path contains conflicting bytes")
         else:
@@ -47,6 +78,12 @@ class ImmutableEvidenceStore:
                 stream.flush()
                 os.fsync(stream.fileno())
             os.replace(temporary, path)
+            if os.name != "nt":
+                directory_descriptor = os.open(directory, os.O_RDONLY)
+                try:
+                    os.fsync(directory_descriptor)
+                finally:
+                    os.close(directory_descriptor)
         if path.read_bytes() != encoded:
             raise EvidenceIntegrityError("evidence failed read-after-write verification")
         return {
@@ -57,144 +94,161 @@ class ImmutableEvidenceStore:
         }
 
     def read_artifact(self, reference: dict[str, Any]) -> dict[str, Any]:
-        path = (self.evidence_root / reference["relative_path"]).resolve(strict=True)
-        path.relative_to(self.evidence_root)
-        encoded = path.read_bytes()
-        if hashlib.sha256(encoded).hexdigest() != reference["sha256"]:
-            raise EvidenceIntegrityError("evidence artifact digest mismatch")
+        from regex_conformance_schema.errors import ConformanceDataError
         from regex_conformance_schema.jsonio import loads_strict
 
-        return loads_strict(encoded.decode("utf-8"))
+        try:
+            relative = reference["relative_path"]
+            expected_digest = reference["sha256"]
+            expected_size = reference["size_bytes"]
+            category = reference.get("category")
+            candidate = self.evidence_root / relative
+            path = candidate.resolve(strict=True)
+            path.relative_to(self.evidence_root)
+        except (KeyError, OSError, TypeError, ValueError) as error:
+            raise EvidenceIntegrityError(
+                "artifact-path-invalid",
+                "evidence reference does not resolve to a contained artifact",
+                artifact_category=reference.get("category") if isinstance(reference, dict) else None,
+                artifact_sha256=reference.get("sha256") if isinstance(reference, dict) else None,
+            ) from error
+        if candidate.absolute() != path or not stat.S_ISREG(path.stat().st_mode):
+            raise EvidenceIntegrityError(
+                "artifact-path-indirect",
+                "evidence artifacts must be direct regular files, not links",
+                artifact_category=category,
+                artifact_sha256=expected_digest,
+            )
+        encoded = path.read_bytes()
+        if len(encoded) != expected_size:
+            raise EvidenceIntegrityError(
+                "artifact-size-mismatch",
+                "evidence artifact size differs from its immutable reference",
+                artifact_category=category,
+                artifact_sha256=expected_digest,
+            )
+        if hashlib.sha256(encoded).hexdigest() != expected_digest:
+            raise EvidenceIntegrityError(
+                "artifact-digest-mismatch",
+                "evidence artifact digest differs from its immutable reference",
+                artifact_category=category,
+                artifact_sha256=expected_digest,
+            )
+        try:
+            payload = loads_strict(encoded.decode("utf-8"))
+        except (ConformanceDataError, UnicodeError) as error:
+            code = getattr(error, "code", "artifact-json-invalid")
+            if code not in {
+                "duplicate-json-key", "invalid-json", "invalid-json-number", "invalid-unicode"
+            }:
+                code = "artifact-json-invalid"
+            raise EvidenceIntegrityError(
+                code,
+                "evidence artifact is not strict UTF-8 JSON",
+                artifact_category=category,
+                artifact_sha256=expected_digest,
+            ) from error
+        if not isinstance(payload, dict):
+            raise EvidenceIntegrityError(
+                "artifact-not-object",
+                "evidence artifact top level must be an object",
+                artifact_category=category,
+                artifact_sha256=expected_digest,
+            )
+        if canonical_bytes(payload) + b"\n" != encoded:
+            raise EvidenceIntegrityError(
+                "artifact-not-canonical",
+                "evidence artifact bytes are not canonical JSON plus one newline",
+                artifact_category=category,
+                artifact_sha256=expected_digest,
+            )
+        return payload
 
     def verify_manifest(
         self,
         compiled: dict[str, Any],
         evidence_manifest: dict[str, Any],
     ) -> None:
-        reference = evidence_manifest.get("manifest_reference")
-        if not isinstance(reference, dict):
-            raise EvidenceIntegrityError("evidence manifest reference is missing")
-        stored_manifest = self.read_artifact(reference)
-        supplied_manifest = {
-            key: value for key, value in evidence_manifest.items() if key != "manifest_reference"
-        }
-        if canonical_bytes(stored_manifest) != canonical_bytes(supplied_manifest):
-            raise EvidenceIntegrityError("stored and supplied evidence manifests differ")
-        if stored_manifest.get("schema_version") != "evidence-manifest.v2":
-            raise EvidenceIntegrityError("unsupported evidence manifest schema")
-        manifest_body = {
-            key: value
-            for key, value in stored_manifest.items()
-            if key not in {"schema_version", "evidence_manifest_id"}
-        }
-        expected_manifest_id = _content_id(
-            self.repository_root, "evidence-manifest", "evidence-manifest-v2", manifest_body
+        from .result_verifier import ResultVerifier
+
+        ResultVerifier(self.repository_root, self).verify(compiled, evidence_manifest)
+
+    def qualify_manifest(
+        self,
+        compiled: dict[str, Any],
+        evidence_manifest: dict[str, Any],
+    ) -> dict[str, Any]:
+        """Persist an immutable admission or quarantine assessment."""
+
+        finding = None
+        try:
+            self.verify_manifest(compiled, evidence_manifest)
+        except EvidenceIntegrityError as error:
+            finding = error.as_finding()
+        manifest_reference = (
+            evidence_manifest.get("manifest_reference")
+            if isinstance(evidence_manifest, dict)
+            else None
         )
-        if stored_manifest.get("evidence_manifest_id") != expected_manifest_id:
-            raise EvidenceIntegrityError("evidence manifest content identity does not match")
-        if stored_manifest.get("campaign_manifest_id") != compiled["campaign_manifest_id"]:
-            raise EvidenceIntegrityError("evidence manifest references the wrong campaign")
-
-        planned = {item["logical_execution_id"] for item in compiled["logical_executions"]}
-        attempt_logicals: set[str] = set()
-        physical_logicals: dict[str, str] = {}
-        physical_runs: set[str] = set()
-        observation_logicals: set[str] = set()
-        observation_logical_by_content: dict[str, str] = {}
-        observation_contents: set[str] = set()
-        artifact_digests: list[str] = []
-        for attempt_reference in stored_manifest["attempts"]:
-            attempt = self.read_artifact(attempt_reference)
-            if (
-                attempt.get("logical_execution_id") != attempt_reference.get("logical_execution_id")
-                or attempt.get("physical_run_id") != attempt_reference.get("physical_run_id")
-                or attempt["logical_execution_id"] not in planned
-                or attempt["physical_run_id"] in physical_runs
-            ):
-                raise EvidenceIntegrityError("attempt reference or identity reconciliation failed")
-            attempt_logicals.add(attempt["logical_execution_id"])
-            physical_runs.add(attempt["physical_run_id"])
-            physical_logicals[attempt["physical_run_id"]] = attempt["logical_execution_id"]
-            artifact_digests.append(attempt_reference["sha256"])
-        if attempt_logicals != planned:
-            raise EvidenceIntegrityError("attempts do not cover the planned logical denominator")
-
-        for observation_reference in stored_manifest["observations"]:
-            observation = self.read_artifact(observation_reference)
-            logical_id = observation_reference.get("logical_execution_id")
-            content_id = observation_reference.get("observation_content_id")
-            if (
-                observation.get("logical_execution_id") != logical_id
-                or observation.get("observation_content_id") != content_id
-                or observation.get("observation_id") != observation_reference.get("observation_id")
-                or logical_id in observation_logicals
-                or content_id in observation_contents
-                or observation.get("physical_run_id") not in physical_runs
-            ):
-                raise EvidenceIntegrityError("observation reference or identity reconciliation failed")
-            body = {key: value for key, value in observation.items() if key != "observation_content_id"}
-            if content_id != _content_id(
-                self.repository_root, "observation-content", "observation-content-v1", body
-            ):
-                raise EvidenceIntegrityError("observation content identity does not match")
-            observation_logicals.add(logical_id)
-            observation_contents.add(content_id)
-            observation_logical_by_content[content_id] = logical_id
-            artifact_digests.append(observation_reference["sha256"])
-
-        planned_by_shard = {
-            item["shard_id"]: set(item["logical_execution_ids"]) for item in compiled["shards"]
+        evidence_manifest_id = (
+            evidence_manifest.get("evidence_manifest_id")
+            if isinstance(evidence_manifest, dict)
+            and isinstance(evidence_manifest.get("evidence_manifest_id"), str)
+            else None
+        )
+        complete = bool(
+            finding is None
+            and isinstance(evidence_manifest, dict)
+            and evidence_manifest.get("complete") is True
+        )
+        disposition = "quarantined" if finding else ("admitted" if complete else "retained-incomplete")
+        body = {
+            "assessed_manifest_sha256": (
+                manifest_reference.get("sha256")
+                if isinstance(manifest_reference, dict)
+                and isinstance(manifest_reference.get("sha256"), str)
+                else None
+            ),
+            "analytical_admissible": complete,
+            "campaign_manifest_id": compiled["campaign_manifest_id"],
+            "certification_admissible": False,
+            "classification": {
+                "canonical_authority": False,
+                "normative_authority": False,
+                "operational_qualification_only": True,
+                "semantic_authority": False,
+            },
+            "disposition": disposition,
+            "evidence_manifest_id": evidence_manifest_id,
+            "findings": [] if finding is None else [finding],
+            "integrity_qualification": "failed" if finding else "passed",
+            "policy_revision": "result-integrity-v1",
+            "summary": {
+                "error_count": 0 if finding is None else 1,
+                "finding_count": 0 if finding is None else 1,
+            },
+            "trust_qualification": "not-assessed",
         }
-        shard_ids = set(planned_by_shard)
-        observed_shards: set[str] = set()
-        sharded_observations: set[str] = set()
-        for shard_reference in stored_manifest["result_shards"]:
-            shard = self.read_artifact(shard_reference)
-            if (
-                shard.get("shard_id") != shard_reference.get("shard_id")
-                or shard.get("result_shard_id") != shard_reference.get("result_shard_id")
-                or shard["shard_id"] not in shard_ids
-                or shard["shard_id"] in observed_shards
-            ):
-                raise EvidenceIntegrityError("result shard reference or completeness failed")
-            body = {
-                key: value for key, value in shard.items() if key not in {"schema_version", "result_shard_id"}
-            }
-            if shard["result_shard_id"] != _content_id(
-                self.repository_root, "result-shard", "result-shard-v1", body
-            ):
-                raise EvidenceIntegrityError("result shard content identity does not match")
-            try:
-                shard_observation_logicals = {
-                    observation_logical_by_content[item] for item in shard["observation_content_ids"]
-                }
-                shard_physical_logicals = {
-                    physical_logicals[item] for item in shard["physical_run_ids"]
-                }
-            except KeyError as error:
-                raise EvidenceIntegrityError("result shard references an unknown artifact identity") from error
-            planned_logicals = planned_by_shard[shard["shard_id"]]
-            if (
-                set(shard["planned_logical_execution_ids"]) != planned_logicals
-                or shard_physical_logicals != planned_logicals
-                or not shard_observation_logicals.issubset(planned_logicals)
-                or shard.get("complete") != (shard_observation_logicals == planned_logicals)
-            ):
-                raise EvidenceIntegrityError("result shard membership does not reconcile its plan")
-            observed_shards.add(shard["shard_id"])
-            sharded_observations.update(shard["observation_content_ids"])
-            artifact_digests.append(shard_reference["sha256"])
-        if observed_shards != shard_ids or sharded_observations != observation_contents:
-            raise EvidenceIntegrityError("result shards do not reconcile the observation set")
-        if hashlib.sha256(canonical_bytes(sorted(artifact_digests))).hexdigest() != stored_manifest["root_digest"]:
-            raise EvidenceIntegrityError("evidence root digest does not match its artifacts")
-        if (
-            stored_manifest["logical_execution_count"] != len(planned)
-            or stored_manifest["accepted_observation_count"] != len(observation_contents)
-            or stored_manifest["infrastructure_failure_count"] != len(planned - observation_logicals)
-            or stored_manifest["complete"] != (observation_logicals == planned)
-        ):
-            raise EvidenceIntegrityError("evidence manifest counts or completion state do not reconcile")
+        trust_assessment_id = _content_id(
+            self.repository_root, "trust-assessment", "trust-assessment-v1", body
+        )
+        payload = {
+            "schema_version": "trust-assessment.v1",
+            "trust_assessment_id": trust_assessment_id,
+            **body,
+        }
+        from regex_conformance_schema.jsonio import load_strict
+        from regex_conformance_schema.schema import validate_instance
+
+        validate_instance(
+            payload,
+            load_strict(
+                self.repository_root / "schemas" / "json" / "trust-assessment.schema.json"
+            ),
+            source="trust assessment",
+        )
+        assessment_reference = self._write("trust-assessments", payload)
+        return {**payload, "assessment_reference": assessment_reference}
 
     def publish(
         self,
@@ -235,15 +289,13 @@ class ImmutableEvidenceStore:
                     infrastructure_failures += 1
                     continue
                 response = attempt["response"]
-                if (
-                    response.get("correlation_id") != logical_id
-                    or response.get("status") != "completed"
-                    or not isinstance(response.get("observation"), dict)
-                    or response["observation"].get("match_state") != "match"
-                    or response.get("canonical_authority")
-                    or response.get("semantic_authority")
-                ):
-                    raise EvidenceIntegrityError("target response is not an accepted probe observation")
+                from .result_verifier import validate_target_response
+
+                validate_target_response(
+                    self.repository_root,
+                    response,
+                    logical_id,
+                )
                 observation_id = generate_assigned_id(self.registry, "rcid", "observation")
                 observation_body = {
                     "schema_version": "observation-content.v1",

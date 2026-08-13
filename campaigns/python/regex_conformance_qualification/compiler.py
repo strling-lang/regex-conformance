@@ -289,6 +289,9 @@ def compile_qualification(root: Path, *, _verify: bool = True) -> dict[str, Any]
         root / "campaigns" / "python" / "regex_conformance_qualification" / "compiler.py",
         root / "matrix" / "python" / "regex_conformance_matrix" / "applicability.py",
         root / "scheduler" / "python" / "regex_conformance_scheduler" / "sharding.py",
+        root / "verifier" / "python" / "regex_conformance_verifier" / "evidence.py",
+        root / "verifier" / "python" / "regex_conformance_verifier" / "result_verifier.py",
+        root / "warehouse" / "python" / "regex_conformance_warehouse" / "builder.py",
     )
     source_paths = [
         definition_path,
@@ -302,6 +305,10 @@ def compile_qualification(root: Path, *, _verify: bool = True) -> dict[str, Any]
         root / "schemas" / "json" / "adapter-request.schema.json",
         root / "schemas" / "json" / "adapter-response.schema.json",
         root / "schemas" / "json" / "compiled-campaign.schema.json",
+        root / "schemas" / "json" / "evidence-manifest.schema.json",
+        root / "schemas" / "json" / "observation-content.schema.json",
+        root / "schemas" / "json" / "physical-attempt-evidence.schema.json",
+        root / "schemas" / "json" / "result-shard.schema.json",
     ]
     source_digests = {
         path.relative_to(root).as_posix(): _file_digest(path) for path in sorted(source_paths)

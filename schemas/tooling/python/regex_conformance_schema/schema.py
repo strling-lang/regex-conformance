@@ -9,6 +9,7 @@ from jsonschema import ValidationError, validators
 
 from .adapters import load_and_validate_adapter_records
 from .campaigns import load_and_validate_campaign_records
+from .evidence import load_and_validate_evidence_records
 from .errors import ConformanceDataError
 from .environments import load_and_validate_environment_records
 from .faults import load_and_validate_fault_records
@@ -73,6 +74,9 @@ def validate_repository(root: Path) -> dict[str, int]:
     campaign_counts = load_and_validate_campaign_records(root, validate_instance=validate_instance)
     fault_counts = load_and_validate_fault_records(root, validate_instance=validate_instance)
     recovery_counts = load_and_validate_recovery_records(root, validate_instance=validate_instance)
+    evidence_counts = load_and_validate_evidence_records(
+        root, validate_instance=validate_instance
+    )
     return {
         "schemas": len(list(schemas.glob("*.schema.json"))),
         "profiles": len(profiles),
@@ -84,4 +88,5 @@ def validate_repository(root: Path) -> dict[str, int]:
         **campaign_counts,
         **fault_counts,
         **recovery_counts,
+        **evidence_counts,
     }
