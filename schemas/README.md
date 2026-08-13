@@ -45,6 +45,19 @@ planning explicitly non-mutating. Cross-field identity, ordering, and exact
 expected/actual reconciliation are additionally enforced by the typed Control
 Plane models before serialization.
 
+`json/operational-state.schema.json` defines disjoint non-canonical wire
+records for local snapshots, external reconciliation observations,
+deterministic reconciliation plans, and applied reports. Snapshots carry the
+database schema version, stable store ID, epoch, startup/admission status,
+typed generation-bearing records, payload digests, and provenance sources.
+Plans bind the exact stable snapshot and observation-set digests; reports bind
+the before/after state plus every applied action and unresolved issue. The
+schema forbids canonical-authority claims, constrains tombstones and quarantine
+states, and keeps safe-integer and UUIDv7 domains explicit. Model/store checks
+add JCS integrity, secret rejection, migration/history verification, freshness,
+source-authority, and cross-source conflict semantics that JSON Schema alone
+cannot express.
+
 `identity-profiles/environment-fingerprint.v1.json` defines the scientific
 identity projection for verified realized environments. It excludes physical
 transaction IDs, cache paths, provider handles, and timestamps while binding the

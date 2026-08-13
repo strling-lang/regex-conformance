@@ -79,9 +79,9 @@ enter scientific identity.
 P16A-T02 certifies the common contract through materially different native-like
 and OCI-like deterministic providers. It does not claim those fixtures are
 certified ecosystem environments. Concrete runtime archetypes and minimal
-certified environments enter in P17. Resource admission policy, durable state,
-global lifecycle events, CLI environment commands, cache mutation, and hard
-workload containment remain in their separately gated P16A tasks.
+certified environments enter in P17. Global lifecycle events, CLI environment
+commands, and hard workload containment remain in their separately gated P16A
+tasks.
 
 Local Control Plane state remains operational and non-canonical.
 
@@ -135,5 +135,44 @@ downloads verify the durable partial-file checkpoint before continuing, fsync
 each chunk, retain interrupted and failed attempts, and publish with a
 non-overwriting atomic link only after exact final verification. A corrupted
 checkpoint, destination race, or digest mismatch never becomes a completed
-transfer. Structured lifecycle events, durable state persistence, CLI commands,
-and progress rendering remain owned by their later P16A contracts.
+transfer. Structured lifecycle events, CLI commands, and progress rendering
+remain owned by their later P16A contracts.
+
+## Durable local state and restart reconciliation
+
+The durable-state service stores only local operational projections in a
+single-controller SQLite database. It uses WAL journaling, full synchronous
+commits, immutable checksummed migrations, compare-and-swap record generations,
+idempotent command IDs, one epoch per atomic batch, and append-only transition
+history. Persisted payloads use RFC 8785 bytes plus SHA-256 integrity and reject
+credential-bearing keys, locators, authorization values, private keys,
+non-finite values, unsafe integers, invalid Unicode, and non-JSON objects.
+
+Every process start creates a supervised session and closes admission until
+restart reconciliation passes—even after a clean shutdown. A live process lock
+prevents two controllers from claiming one database. An orphaned active session
+is recorded as an interrupted shutdown; partial SQL transactions remain rolled
+back. Unsupported future schemas, migration checksum changes, unexpected schema
+objects, malformed metadata, broken transition chains, tampered payloads,
+inconsistent reconciliation reports, and SQLite integrity failures all fail
+closed before a new session can operate.
+
+Reconciliation compares the stable snapshot digest with fresh, explicitly
+identified repository-manifest, immutable-evidence, and provider-reality facts.
+Source authority is constrained by record kind. Missing, stale, future,
+unverified, wrong-authority, or contradictory facts quarantine affected local
+records and keep admission blocked; they never become provider success or
+scientific evidence. Verified absence produces a traceable tombstone. Matching
+facts verify state, changed facts supersede the local generation, and missing
+state is reconstructed from the supplied sources. The plan is deterministic and
+non-mutating; execution rechecks its input snapshot and commits all actions and
+the readiness decision atomically.
+
+Corrupt or lost state is never repaired by pretending it was authoritative.
+Explicit recovery moves every surviving SQLite file into an access-restricted
+quarantine directory, hashes it in a non-canonical manifest, creates a fresh
+store, and reconciles from identified external sources. The original bytes are
+not deleted. `DurableStateService` exposes snapshot, plan, apply, reconcile,
+transaction, health, readiness, and clean/aborted close operations through the
+client-neutral controller facade. CLI commands and structured lifecycle events
+remain later P16A contracts.

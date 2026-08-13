@@ -1,0 +1,30 @@
+{
+  "observed_at": "2026-08-13T01:30:00Z",
+  "maximum_observation_age_seconds": 300,
+  "verified_environment": {
+    "record_kind": "environment-instance",
+    "record_id": "environment/demo",
+    "lifecycle_state": "ready",
+    "payload": {
+      "environment_fingerprint_id": "rcid:v1:environment-fingerprint:h:jcs-sha256-v1:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "provider_handle": "fixture:demo"
+    },
+    "source_kind": "provider-reality",
+    "source_id": "provider://fixture/environment/demo"
+  },
+  "expected_restart_actions": {
+    "missing_local_record": "create",
+    "matching_local_record": "verify",
+    "changed_local_record": "replace",
+    "verified_absence": "tombstone",
+    "missing_or_unsafe_reality": "quarantine"
+  },
+  "expected_blocking_codes": [
+    "future-reality",
+    "missing-reality",
+    "source-conflict",
+    "stale-reality",
+    "unverified-reality",
+    "wrong-source-authority"
+  ]
+}

@@ -29,6 +29,13 @@ if TYPE_CHECKING:
         TransferForecast,
         WorkloadResourcePlan,
     )
+    from .state_models import (
+        ReconciliationObservation,
+        ReconciliationPlan,
+        ReconciliationReport,
+        StateMutation,
+        StateSnapshot,
+    )
 
 
 class MachineDoctorService(Protocol):
@@ -165,6 +172,37 @@ class TransferManagerService(Protocol):
     ) -> "TransferRecord": ...
 
 
+class LocalStateService(Protocol):
+    def snapshot(self) -> "StateSnapshot": ...
+
+    def plan_reconciliation(
+        self,
+        observations: tuple["ReconciliationObservation", ...],
+    ) -> "ReconciliationPlan": ...
+
+    def apply_reconciliation(self, plan: "ReconciliationPlan") -> "ReconciliationReport": ...
+
+    def reconcile(
+        self,
+        observations: tuple["ReconciliationObservation", ...],
+    ) -> "ReconciliationReport": ...
+
+    def apply_batch(
+        self,
+        mutations: tuple["StateMutation", ...],
+        *,
+        command_id: str,
+        reason_code: str,
+        expected_epoch: int,
+    ) -> "StateSnapshot": ...
+
+    def require_ready(self) -> None: ...
+
+    def health_check(self) -> dict[str, object]: ...
+
+    def close(self, *, clean: bool = True) -> None: ...
+
+
 @dataclass(frozen=True)
 class ControlPlaneServices:
     machine_doctor: MachineDoctorService
@@ -172,6 +210,7 @@ class ControlPlaneServices:
     resource_planner: ResourcePlannerService | None = None
     cache_manager: CacheManagerService | None = None
     transfer_manager: TransferManagerService | None = None
+    local_state: LocalStateService | None = None
 
 
 class ControlPlaneController:
@@ -366,6 +405,48 @@ class ControlPlaneController:
             cancellation=cancellation,
         )
 
+    def inspect_local_state(self) -> "StateSnapshot":
+        return self._local_state().snapshot()
+
+    def plan_restart_reconciliation(
+        self,
+        observations: tuple["ReconciliationObservation", ...],
+    ) -> "ReconciliationPlan":
+        return self._local_state().plan_reconciliation(observations)
+
+    def apply_restart_reconciliation(self, plan: "ReconciliationPlan") -> "ReconciliationReport":
+        return self._local_state().apply_reconciliation(plan)
+
+    def reconcile_restart_state(
+        self,
+        observations: tuple["ReconciliationObservation", ...],
+    ) -> "ReconciliationReport":
+        return self._local_state().reconcile(observations)
+
+    def commit_local_state(
+        self,
+        mutations: tuple["StateMutation", ...],
+        *,
+        command_id: str,
+        reason_code: str,
+        expected_epoch: int,
+    ) -> "StateSnapshot":
+        return self._local_state().apply_batch(
+            mutations,
+            command_id=command_id,
+            reason_code=reason_code,
+            expected_epoch=expected_epoch,
+        )
+
+    def require_local_state_ready(self) -> None:
+        self._local_state().require_ready()
+
+    def inspect_local_state_health(self) -> dict[str, object]:
+        return self._local_state().health_check()
+
+    def close_local_state(self, *, clean: bool = True) -> None:
+        self._local_state().close(clean=clean)
+
     def _environment_manager(self) -> EnvironmentManagerService:
         if self._services.environment_manager is None:
             raise RuntimeError("environment manager service is not configured")
@@ -385,6 +466,11 @@ class ControlPlaneController:
         if self._services.transfer_manager is None:
             raise RuntimeError("transfer manager service is not configured")
         return self._services.transfer_manager
+
+    def _local_state(self) -> LocalStateService:
+        if self._services.local_state is None:
+            raise RuntimeError("local state service is not configured")
+        return self._services.local_state
 
 
 def build_default_controller() -> ControlPlaneController:

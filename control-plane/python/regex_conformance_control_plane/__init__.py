@@ -16,6 +16,25 @@ from .environment_models import AdmissionDecision, EnvironmentLifecycleRecord, E
 from .environment_providers import ProviderRegistry
 from .models import DoctorReport
 from .resource_models import AdmissionContext, AdmissionPolicy, ResourceAdmissionReport, ResourceEstimate
+from .state_models import (
+    ReconciliationObservation,
+    ReconciliationPlan,
+    ReconciliationReport,
+    StateMutation,
+    StateSnapshot,
+    StateSourceReference,
+)
+from .state_store import (
+    DurableStateService,
+    IncompatibleStateVersionError,
+    LocalStateStore,
+    StateAdmissionError,
+    StateConflictError,
+    StateCorruptionError,
+    StateReconciler,
+    StateRecovery,
+    StateStoreBusyError,
+)
 
 __all__ = [
     "CacheEntry",
@@ -31,13 +50,28 @@ __all__ = [
     "AdmissionPolicy",
     "DoctorConfiguration",
     "DoctorReport",
+    "DurableStateService",
     "EnvironmentLifecycleRecord",
     "EnvironmentRecipe",
     "EvictionPolicy",
     "FilesystemCacheProvider",
+    "IncompatibleStateVersionError",
+    "LocalStateStore",
     "ProviderRegistry",
     "ResourceAdmissionReport",
     "ResourceEstimate",
+    "ReconciliationObservation",
+    "ReconciliationPlan",
+    "ReconciliationReport",
+    "StateAdmissionError",
+    "StateConflictError",
+    "StateCorruptionError",
+    "StateMutation",
+    "StateReconciler",
+    "StateRecovery",
+    "StateSnapshot",
+    "StateSourceReference",
+    "StateStoreBusyError",
     "TransferManager",
     "TransferRecord",
     "build_default_controller",

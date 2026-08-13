@@ -41,3 +41,15 @@ root confinement, symlink rejection, post-plan substitution defense, corrupted
 checkpoint refusal, resumable interrupted downloads, append-only upload
 attempts, final digest enforcement, schema authority boundaries, and controller
 integration.
+
+Durable-state tests exercise the SQLite store and restart boundary as an
+operational safety contract. They cover clean restart and abrupt process exit,
+exclusive controller locking, full-batch rollback after an injected partial
+write, optimistic generation and epoch conflicts, idempotent command replay,
+stale reconciliation plans, missing/stale/future/unverified/wrong-authority and
+contradictory source facts, quarantine and recovery, verified tombstones,
+payload and migration tampering, future-schema refusal without mutation,
+credential persistence refusal, explicit corruption quarantine, full state-loss
+rebuild, wire-schema authority boundaries, and controller-service integration.
+The Windows symlink test skips only when the host denies unprivileged symlink
+creation; the same case remains required on capable/Linux hosts.
