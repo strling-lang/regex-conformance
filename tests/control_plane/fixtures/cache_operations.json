@@ -1,0 +1,21 @@
+{
+  "policy": {
+    "bytes_weight": 100,
+    "age_weight": 10,
+    "reacquisition_time_penalty": 5,
+    "reacquisition_cost_penalty": 3,
+    "reconstruction_penalty": 20,
+    "fragility_penalty": 30,
+    "expensive_reconstruction_penalty": 10000,
+    "maximum_inventory_age_seconds": 300
+  },
+  "expected_weighted_order": ["modern-cache", "expensive-cache"],
+  "expected_protected_reasons": {
+    "active-cache": "active-lease",
+    "dependency-cache": "dependency-protected",
+    "future-cache": "future-dependency",
+    "pinned-cache": "pinned",
+    "rare-cache": "rare-fragile",
+    "spool-cache": "protected-spool"
+  }
+}

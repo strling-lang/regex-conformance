@@ -32,3 +32,12 @@ margins, unknown forecasts, stale/future inventory, wrong units, missing backing
 identity, shared-store double spending, active usage, provider/capability/trust
 gaps, concurrency pressure, forged reports, cross-policy reuse, and explicit
 backpressure or drain outcomes.
+
+Cache and transfer tests prove permutation-stable inventory identity,
+deterministic weighted eviction, lease/pin/dependency/spool/rare-artifact
+protection, stale and contradictory reality refusal, exact planned-versus-actual
+reclamation, cancellation, partial deletion failure, allocated-size accounting,
+root confinement, symlink rejection, post-plan substitution defense, corrupted
+checkpoint refusal, resumable interrupted downloads, append-only upload
+attempts, final digest enforcement, schema authority boundaries, and controller
+integration.

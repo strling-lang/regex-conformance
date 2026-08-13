@@ -1,0 +1,393 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://strling.dev/regex-conformance/schemas/cache-operations.v1.schema.json",
+  "title": "Cache and Transfer Operations v1",
+  "description": "Operational, non-canonical cache inventory, cleanup reconciliation, and resumable transfer records.",
+  "oneOf": [
+    { "$ref": "#/$defs/cache_inventory" },
+    { "$ref": "#/$defs/cleanup_report" },
+    { "$ref": "#/$defs/transfer_record" }
+  ],
+  "$defs": {
+    "safe_integer": { "type": "integer", "minimum": 0, "maximum": 9007199254740991 },
+    "positive_safe_integer": { "type": "integer", "minimum": 1, "maximum": 9007199254740991 },
+    "signed_safe_integer": {
+      "type": "integer",
+      "minimum": -9007199254740991,
+      "maximum": 9007199254740991
+    },
+    "token": { "type": "string", "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$" },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "relative_path": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.?(?:/|$))(?!.*//)(?!.*\\\\)[^\\r\\n\\u0000/](?:[^\\r\\n\\u0000]*[^\\r\\n\\u0000/])?$"
+    },
+    "nullable_rcid": {
+      "oneOf": [
+        {
+          "type": "string",
+          "pattern": "^rcid:v1:[a-z][a-z0-9]*(?:-[a-z0-9]+)*:(?:u7:[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|h:[a-z][a-z0-9]*(?:-[a-z0-9]+)*:[0-9a-f]{64})$"
+        },
+        { "type": "null" }
+      ]
+    },
+    "cache_entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "accounting_basis",
+        "active_leases",
+        "cache_key",
+        "content_id",
+        "dependencies",
+        "future_dependencies",
+        "kind",
+        "last_used_at",
+        "observed_at",
+        "pinned",
+        "provider_name",
+        "reacquisition_cost_microunits",
+        "reacquisition_time_seconds",
+        "reclaimable_bytes",
+        "reconstruction_difficulty",
+        "registry_authority",
+        "relative_path",
+        "retention_class",
+        "sha256",
+        "size_bytes",
+        "source",
+        "staleness_seconds",
+        "upstream_fragility",
+        "verification_status",
+        "verified_at"
+      ],
+      "properties": {
+        "accounting_basis": { "enum": ["logical", "allocated"] },
+        "active_leases": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/token" } },
+        "cache_key": { "$ref": "#/$defs/token" },
+        "content_id": { "$ref": "#/$defs/nullable_rcid" },
+        "dependencies": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/token" } },
+        "future_dependencies": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/token" } },
+        "kind": {
+          "enum": ["artifact", "environment", "toolchain", "provider-cache", "analysis-cache", "protected-spool"]
+        },
+        "last_used_at": { "type": "string", "format": "date-time" },
+        "observed_at": { "type": "string", "format": "date-time" },
+        "pinned": { "type": "boolean" },
+        "provider_name": { "$ref": "#/$defs/token" },
+        "reacquisition_cost_microunits": { "$ref": "#/$defs/safe_integer" },
+        "reacquisition_time_seconds": { "$ref": "#/$defs/safe_integer" },
+        "reclaimable_bytes": { "$ref": "#/$defs/safe_integer" },
+        "reconstruction_difficulty": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "registry_authority": { "const": false },
+        "relative_path": { "$ref": "#/$defs/relative_path" },
+        "retention_class": {
+          "enum": ["reacquirable", "expensive-reconstruction", "rare-fragile", "registry-authority", "protected-spool"]
+        },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "size_bytes": { "$ref": "#/$defs/safe_integer" },
+        "source": { "type": "string", "minLength": 1 },
+        "staleness_seconds": { "$ref": "#/$defs/safe_integer" },
+        "upstream_fragility": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "verification_status": { "enum": ["verified", "provisional", "missing", "mismatch", "unsafe"] },
+        "verified_at": { "type": ["string", "null"], "format": "date-time" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "verification_status": { "const": "verified" } }, "required": ["verification_status"] },
+          "then": { "properties": { "verified_at": { "type": "string", "format": "date-time" } } },
+          "else": { "properties": { "verified_at": { "type": "null" } } }
+        }
+      ]
+    },
+    "cache_inventory": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["canonical_authority", "entries", "inventory_digest", "observed_at", "schema_version"],
+      "properties": {
+        "canonical_authority": { "const": false },
+        "entries": { "type": "array", "items": { "$ref": "#/$defs/cache_entry" } },
+        "inventory_digest": { "$ref": "#/$defs/sha256" },
+        "observed_at": { "type": "string", "format": "date-time" },
+        "schema_version": { "const": "cache-inventory.v1" }
+      }
+    },
+    "eviction_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "age_weight",
+        "bytes_weight",
+        "expensive_reconstruction_penalty",
+        "fragility_penalty",
+        "maximum_inventory_age_seconds",
+        "reacquisition_cost_penalty",
+        "reacquisition_time_penalty",
+        "reconstruction_penalty"
+      ],
+      "properties": {
+        "age_weight": { "$ref": "#/$defs/positive_safe_integer" },
+        "bytes_weight": { "$ref": "#/$defs/positive_safe_integer" },
+        "expensive_reconstruction_penalty": { "$ref": "#/$defs/positive_safe_integer" },
+        "fragility_penalty": { "$ref": "#/$defs/positive_safe_integer" },
+        "maximum_inventory_age_seconds": { "$ref": "#/$defs/positive_safe_integer" },
+        "reacquisition_cost_penalty": { "$ref": "#/$defs/positive_safe_integer" },
+        "reacquisition_time_penalty": { "$ref": "#/$defs/positive_safe_integer" },
+        "reconstruction_penalty": { "$ref": "#/$defs/positive_safe_integer" }
+      }
+    },
+    "eviction_candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cache_key", "expected_reclaim_bytes", "rank", "score"],
+      "properties": {
+        "cache_key": { "$ref": "#/$defs/token" },
+        "expected_reclaim_bytes": { "$ref": "#/$defs/positive_safe_integer" },
+        "rank": { "$ref": "#/$defs/positive_safe_integer" },
+        "score": { "$ref": "#/$defs/signed_safe_integer" }
+      }
+    },
+    "eviction_exclusion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cache_key", "reasons"],
+      "properties": {
+        "cache_key": { "$ref": "#/$defs/token" },
+        "reasons": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/token" }
+        }
+      }
+    },
+    "cleanup_plan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "cleanup_id",
+        "created_at",
+        "exclusions",
+        "expected_reclaim_bytes",
+        "inventory_digest",
+        "mutation_permitted",
+        "outcome",
+        "policy",
+        "selected",
+        "target_reclaim_bytes"
+      ],
+      "properties": {
+        "cleanup_id": {
+          "type": "string",
+          "pattern": "^opid:v1:cache-cleanup:u7:[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        "created_at": { "type": "string", "format": "date-time" },
+        "exclusions": { "type": "array", "items": { "$ref": "#/$defs/eviction_exclusion" } },
+        "expected_reclaim_bytes": { "$ref": "#/$defs/safe_integer" },
+        "inventory_digest": { "$ref": "#/$defs/sha256" },
+        "mutation_permitted": { "const": false },
+        "outcome": { "enum": ["ready", "refused"] },
+        "policy": { "$ref": "#/$defs/eviction_policy" },
+        "selected": { "type": "array", "items": { "$ref": "#/$defs/eviction_candidate" } },
+        "target_reclaim_bytes": { "$ref": "#/$defs/positive_safe_integer" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "outcome": { "const": "ready" } }, "required": ["outcome"] },
+          "then": { "properties": { "selected": { "minItems": 1 } } }
+        }
+      ]
+    },
+    "cleanup_mutation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "actual_reclaim_bytes",
+        "cache_key",
+        "code",
+        "detail",
+        "expected_reclaim_bytes",
+        "outcome"
+      ],
+      "properties": {
+        "actual_reclaim_bytes": { "$ref": "#/$defs/safe_integer" },
+        "cache_key": { "$ref": "#/$defs/token" },
+        "code": { "$ref": "#/$defs/token" },
+        "detail": { "type": "string", "minLength": 1 },
+        "expected_reclaim_bytes": { "$ref": "#/$defs/safe_integer" },
+        "outcome": { "enum": ["deleted", "skipped", "failed"] }
+      },
+      "allOf": [
+        {
+          "if": { "not": { "properties": { "outcome": { "const": "deleted" } }, "required": ["outcome"] } },
+          "then": { "properties": { "actual_reclaim_bytes": { "const": 0 } } }
+        }
+      ]
+    },
+    "cleanup_report": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "actual_reclaim_bytes",
+        "completed_at",
+        "mutations",
+        "plan",
+        "registry_authority_mutated",
+        "schema_version",
+        "started_at",
+        "state"
+      ],
+      "properties": {
+        "actual_reclaim_bytes": { "$ref": "#/$defs/safe_integer" },
+        "completed_at": { "type": "string", "format": "date-time" },
+        "mutations": { "type": "array", "items": { "$ref": "#/$defs/cleanup_mutation" } },
+        "plan": { "$ref": "#/$defs/cleanup_plan" },
+        "registry_authority_mutated": { "const": false },
+        "schema_version": { "const": "cache-cleanup.v1" },
+        "started_at": { "type": "string", "format": "date-time" },
+        "state": { "enum": ["completed", "partial", "refused", "cancelled"] }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "state": { "const": "refused" } }, "required": ["state"] },
+          "then": {
+            "properties": {
+              "actual_reclaim_bytes": { "const": 0 },
+              "mutations": { "maxItems": 0 },
+              "plan": { "properties": { "outcome": { "const": "refused" } } }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "state": { "const": "completed" } }, "required": ["state"] },
+          "then": {
+            "properties": {
+              "mutations": {
+                "items": {
+                  "allOf": [
+                    { "$ref": "#/$defs/cleanup_mutation" },
+                    { "properties": { "outcome": { "const": "deleted" } } }
+                  ]
+                }
+              },
+              "plan": { "properties": { "outcome": { "const": "ready" } } }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "state": { "enum": ["partial", "cancelled"] } }, "required": ["state"] },
+          "then": { "properties": { "mutations": { "minItems": 1 } } }
+        }
+      ]
+    },
+    "transfer_requirement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "cache_key",
+        "expected_sha256",
+        "expected_size_bytes",
+        "locator",
+        "operation",
+        "relative_path",
+        "transfer_id"
+      ],
+      "properties": {
+        "cache_key": { "oneOf": [{ "$ref": "#/$defs/token" }, { "type": "null" }] },
+        "expected_sha256": { "$ref": "#/$defs/sha256" },
+        "expected_size_bytes": { "$ref": "#/$defs/safe_integer" },
+        "locator": {
+          "type": "string",
+          "minLength": 1,
+          "allOf": [
+            { "pattern": "^[^\\r\\n\\u0000]+$" },
+            { "not": { "pattern": "://[^/?#]*@" } },
+            {
+              "not": {
+                "pattern": "[?&](?:access[_-]?token|api[_-]?key|credential|password|secret|token)="
+              }
+            }
+          ]
+        },
+        "operation": { "enum": ["acquire", "download", "upload"] },
+        "relative_path": { "$ref": "#/$defs/relative_path" },
+        "transfer_id": {
+          "type": "string",
+          "pattern": "^opid:v1:transfer:u7:[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        }
+      }
+    },
+    "transfer_attempt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "completed_at", "detail", "offset_end", "offset_start", "outcome", "sequence", "started_at"],
+      "properties": {
+        "code": { "$ref": "#/$defs/token" },
+        "completed_at": { "type": "string", "format": "date-time" },
+        "detail": { "type": "string", "minLength": 1 },
+        "offset_end": { "$ref": "#/$defs/safe_integer" },
+        "offset_start": { "$ref": "#/$defs/safe_integer" },
+        "outcome": { "enum": ["interrupted", "failed", "completed"] },
+        "sequence": { "$ref": "#/$defs/positive_safe_integer" },
+        "started_at": { "type": "string", "format": "date-time" }
+      }
+    },
+    "transfer_record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "attempts",
+        "bytes_completed",
+        "checkpoint_sha256",
+        "requirement",
+        "resumable",
+        "schema_version",
+        "state",
+        "verified_sha256",
+        "verified_size_bytes"
+      ],
+      "properties": {
+        "attempts": { "type": "array", "items": { "$ref": "#/$defs/transfer_attempt" } },
+        "bytes_completed": { "$ref": "#/$defs/safe_integer" },
+        "checkpoint_sha256": { "$ref": "#/$defs/sha256" },
+        "requirement": { "$ref": "#/$defs/transfer_requirement" },
+        "resumable": { "type": "boolean" },
+        "schema_version": { "const": "transfer-record.v1" },
+        "state": { "enum": ["planned", "interrupted", "failed", "completed"] },
+        "verified_sha256": { "oneOf": [{ "$ref": "#/$defs/sha256" }, { "type": "null" }] },
+        "verified_size_bytes": { "oneOf": [{ "$ref": "#/$defs/safe_integer" }, { "type": "null" }] }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "state": { "const": "planned" } }, "required": ["state"] },
+          "then": {
+            "properties": {
+              "attempts": { "maxItems": 0 },
+              "bytes_completed": { "const": 0 },
+              "checkpoint_sha256": { "const": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855" },
+              "verified_sha256": { "type": "null" },
+              "verified_size_bytes": { "type": "null" }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "state": { "const": "completed" } }, "required": ["state"] },
+          "then": {
+            "properties": {
+              "attempts": { "minItems": 1 },
+              "verified_sha256": { "$ref": "#/$defs/sha256" },
+              "verified_size_bytes": { "$ref": "#/$defs/safe_integer" }
+            }
+          },
+          "else": {
+            "properties": {
+              "verified_sha256": { "type": "null" },
+              "verified_size_bytes": { "type": "null" }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

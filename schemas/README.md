@@ -36,6 +36,15 @@ accounts for typed pools and shared physical stores, and forbids an admitted
 report from carrying a blocking issue or failed/unknown evaluation. These are
 operational plans and decisions, not canonical observations or evidence.
 
+`json/cache-operations.schema.json` defines three disjoint operational wire
+records: non-canonical cache inventories, planned-and-reconciled cleanup
+reports, and append-only resumable transfer histories. It forbids local cache
+or cleanup state from claiming registry authority, binds every transfer to an
+exact digest and size, requires safe integer accounting, and keeps cleanup
+planning explicitly non-mutating. Cross-field identity, ordering, and exact
+expected/actual reconciliation are additionally enforced by the typed Control
+Plane models before serialization.
+
 `identity-profiles/environment-fingerprint.v1.json` defines the scientific
 identity projection for verified realized environments. It excludes physical
 transaction IDs, cache paths, provider handles, and timestamps while binding the

@@ -107,3 +107,33 @@ Environment admission accepts only the exact preflight report produced under
 the active policy for the same planned transaction. Admission consumes inventory
 without changing it; containment, measured telemetry feedback, and automatic
 forecast calibration remain later P16A contracts.
+
+## Cache, cleanup, and transfer management
+
+The cache manager builds a deterministic provider-neutral inventory containing
+immutable content digests, realized logical and reclaimable sizes, backing
+provider, dependency edges, active and future leases, pins, last use,
+reacquisition time and cost, reconstruction difficulty, upstream fragility,
+retention class, and verification provenance. This inventory is local
+operational state and explicitly cannot claim registry authority.
+
+Cleanup is a two-stage transaction. Planning first reconciles every inventory
+entry with provider reality, excludes stale, missing, mismatched, unsafe,
+unverified, pinned, leased, dependency-required, protected-spool, and rare
+fragile entries, then applies a deterministic weighted score to the remaining
+candidates. A refused plan is non-mutating. Execution rechecks protection,
+digest, identity, size, accounting basis, and reclaimable bytes immediately
+before each deletion; it is cancellable and reports expected versus actual
+reclaimed bytes using a bounded observed filesystem free-space delta without
+hiding partial failures. The filesystem provider is
+root-confined, rejects symlinks and non-regular files, uses no-follow reads, and
+rechecks device/inode identity before unlink.
+
+Transfer records bind an immutable expected digest and size to acquire,
+download, or upload intent. Every physical attempt is append-only. Resumable
+downloads verify the durable partial-file checkpoint before continuing, fsync
+each chunk, retain interrupted and failed attempts, and publish with a
+non-overwriting atomic link only after exact final verification. A corrupted
+checkpoint, destination race, or digest mismatch never becomes a completed
+transfer. Structured lifecycle events, durable state persistence, CLI commands,
+and progress rendering remain owned by their later P16A contracts.
