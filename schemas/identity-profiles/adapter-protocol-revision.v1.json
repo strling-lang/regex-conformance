@@ -1,0 +1,29 @@
+{
+  "profile_version": "1.0.0",
+  "root": {
+    "additional_properties": false,
+    "kind": "object",
+    "properties": {
+      "framing": { "kind": "token" },
+      "handshake_schema_sha256": { "kind": "digest" },
+      "maximum_frame_bytes": { "kind": "safe_integer" },
+      "maximum_list_items": { "kind": "safe_integer" },
+      "maximum_message_count": { "kind": "safe_integer" },
+      "maximum_nesting_depth": { "kind": "safe_integer" },
+      "protocol_version": { "kind": "semver" },
+      "request_schema_sha256": { "kind": "digest" },
+      "response_schema_sha256": { "kind": "digest" }
+    },
+    "required": [
+      "protocol_version",
+      "framing",
+      "handshake_schema_sha256",
+      "request_schema_sha256",
+      "response_schema_sha256",
+      "maximum_frame_bytes",
+      "maximum_message_count",
+      "maximum_nesting_depth",
+      "maximum_list_items"
+    ]
+  }
+}

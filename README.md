@@ -133,6 +133,26 @@ whether certification ran from a clean worktree. See the [minimal certified
 environment architecture](docs/architecture/minimal-certified-environments.md)
 for provenance, containment, commands, trust boundaries, and known limits.
 
+## Minimal thin adapters
+
+The protocol-compliant P17 adapter packages exercise PCRE2's shared C ABI,
+CPython's native `re` API, and MySQL's contained SQL regex surface without
+performing conformance judgment:
+
+```sh
+.venv/bin/python -m unittest discover -s tests/adapters -v
+.venv/bin/python tools/adapters/certify_minimal.py \
+  --state-root /var/tmp/strling-regex-adapter-state \
+  --evidence-dir /var/tmp/strling-regex-adapter-evidence \
+  --trust-class development \
+  --compact-report reports/vertical-slice/minimal-adapter-certification.json
+```
+
+Raw evidence and realized state remain outside Git. The compact report binds the
+exact protocol, adapter source, recipe, realized environment, transcript,
+response, and process-execution digests. See the [minimal thin adapter
+architecture](docs/architecture/minimal-thin-adapters.md).
+
 ## Public validation and promotion
 
 Every external pull request and `main` push runs the public-validation check on

@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/adapter-protocol-revision.schema.json",
+  "title": "STRling Regex Conformance Adapter Protocol Revision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "authority", "identity", "identity_schema_family_id", "identity_schema_version",
+    "protocol_revision_id", "schema_version"
+  ],
+  "properties": {
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["adapter_side_verdicts", "canonical_authority", "normative_authority", "semantic_authority"],
+      "properties": {
+        "adapter_side_verdicts": { "const": false },
+        "canonical_authority": { "const": false },
+        "normative_authority": { "const": false },
+        "semantic_authority": { "const": false }
+      }
+    },
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "framing", "handshake_schema_sha256", "maximum_frame_bytes", "maximum_list_items",
+        "maximum_message_count", "maximum_nesting_depth", "protocol_version",
+        "request_schema_sha256", "response_schema_sha256"
+      ],
+      "properties": {
+        "framing": { "const": "uint32-be-json" },
+        "handshake_schema_sha256": { "$ref": "#/$defs/digest" },
+        "maximum_frame_bytes": { "type": "integer", "minimum": 1024, "maximum": 16777216 },
+        "maximum_list_items": { "type": "integer", "minimum": 1, "maximum": 65536 },
+        "maximum_message_count": { "type": "integer", "minimum": 1, "maximum": 1000000 },
+        "maximum_nesting_depth": { "type": "integer", "minimum": 1, "maximum": 64 },
+        "protocol_version": { "const": "1.0.0" },
+        "request_schema_sha256": { "$ref": "#/$defs/digest" },
+        "response_schema_sha256": { "$ref": "#/$defs/digest" }
+      }
+    },
+    "identity_schema_family_id": {
+      "const": "rcid:v1:schema-family:u7:019ffb61-653a-7ca1-a185-5544b82ce17b"
+    },
+    "identity_schema_version": { "const": "1.0.0" },
+    "protocol_revision_id": {
+      "type": "string",
+      "pattern": "^rcid:v1:adapter-protocol-revision:h:jcs-sha256-v1:[0-9a-f]{64}$"
+    },
+    "schema_version": { "const": "adapter-protocol-revision.v1" }
+  },
+  "$defs": {
+    "digest": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+  }
+}

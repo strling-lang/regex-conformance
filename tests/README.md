@@ -7,6 +7,15 @@ fixtures are not published empirical evidence.
 The bootstrap identity/schema suite is under `schema/`; its immutable inputs and
 published expected bytes/IDs are under `fixtures/identity/`.
 
+The adapter suite under `adapters/` exercises strict framed JSON, negotiation,
+manifest/source self-verification, exact request bindings, typed octet/scalar/
+code-unit materialization, native index preservation, captures, replacements,
+splits, native compile failures, unsupported surfaces, process/service failures,
+timeouts, output and enumeration limits, malicious SQL text, source symlinks,
+and AST-enforced thinness. Provider-aware certification tests independently
+prove native adapter memory/CPU containment and the intentionally daemon-side
+MySQL resource boundary.
+
 The public-CI trust-boundary suite lives under `ci/`. It deliberately mutates
 workflow text to prove that self-hosted runners, dangerous triggers, write
 permissions, secret references, and floating action tags fail closed.

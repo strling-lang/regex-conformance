@@ -1,0 +1,67 @@
+{
+  "adapter_release_manifest_id": "rcid:v1:adapter-release-manifest:h:jcs-sha256-v1:e0aa11e13c2a5097dbac81ec9fdf516ab476de431ca3005da2d339dbee61fd6a",
+  "build": {
+    "artifact_kind": "source-package",
+    "dependencies": ["pcre2-8-shared-library", "python-ctypes", "python-standard-library"],
+    "source_revision_policy": "containing-git-commit-plus-source-digest",
+    "toolchain": "CPython 3.12+ source package"
+  },
+  "certification": { "case_count": 42, "status": "certified", "suite": "tests/adapters" },
+  "identity": {
+    "adapter": "rcid:v1:adapter:u7:019ffb61-6ada-7e98-a046-3ee1f6cbbbd5",
+    "adapter_release": "rcid:v1:adapter-release:u7:019ffb61-61fa-72db-b410-87742803ad0d",
+    "capabilities": [
+      "datum-octets",
+      "framing-uint32-be-json",
+      "native-errors",
+      "native-index-octet",
+      "observation-captures",
+      "observation-compile-diagnostics",
+      "observation-cursor",
+      "observation-match-state",
+      "observation-runtime-identity",
+      "observation-spans",
+      "operation-capture-extraction",
+      "operation-compile",
+      "operation-find-all",
+      "operation-full-match",
+      "operation-next-match",
+      "operation-search",
+      "operation-test"
+    ],
+    "entrypoint": "adapters/python/run.py",
+    "profile": "rcid:v1:profile:u7:019ff984-a52e-7cff-8789-6bbe35540702",
+    "protocol_revision": "rcid:v1:adapter-protocol-revision:h:jcs-sha256-v1:c9dd4b0a7e0c7fc6ae43586392e402b0036c03e9f2b1d5e0a43828d11945eda1",
+    "selection_key": "pcre2-ordinary",
+    "source_digest": "4be09e59ea1b980c0580f28c4b5e79c83ab4a8d4fd0143ceb4398db44ed4e8a1",
+    "target_release": "rcid:v1:release:u7:019ff984-a52e-737a-8353-17af9584dc6f"
+  },
+  "identity_schema_family_id": "rcid:v1:schema-family:u7:019ffb61-586b-7d24-aa51-33d64636d741",
+  "identity_schema_version": "1.0.0",
+  "license": "MPL-2.0",
+  "protocol": {
+    "major": 1,
+    "maximum_minor": 0,
+    "minimum_minor": 0,
+    "schema_versions": [
+      "adapter-handshake-offer.v1",
+      "adapter-handshake-result.v1",
+      "adapter-request.v1",
+      "adapter-response.v1"
+    ]
+  },
+  "runtime_constraints": [{ "name": "engine-version", "value": "10.47" }],
+  "schema_version": "adapter-release-manifest.v1",
+  "source_files": [
+    { "path": "adapters/python/regex_conformance_adapters/__init__.py", "sha256": "4e86ae623ce844160e65da3fe8285856ff61c872d74887d38ad5d7df381b8537" },
+    { "path": "adapters/python/regex_conformance_adapters/backend.py", "sha256": "451c6a6c77e6e630bc7ff0958e1009c75dee2739f288a446571f83e10d5a4949" },
+    { "path": "adapters/python/regex_conformance_adapters/errors.py", "sha256": "2c42695c40c1a9eb429fe3eadf6f92977751adfe193291c4b3112cb16006d70f" },
+    { "path": "adapters/python/regex_conformance_adapters/jsonio.py", "sha256": "efac8092526efc608593b7d64e5d5f1626d0888a5806a0965dacbd3e12b814ba" },
+    { "path": "adapters/python/regex_conformance_adapters/manifest.py", "sha256": "ef85aa9503a0129f54f7b031b9a0e18811f3520c70915a99fc7079c326cef2f4" },
+    { "path": "adapters/python/regex_conformance_adapters/model.py", "sha256": "6f5f0bc846e09a969f17f55be83f919aa32030575c0c71ac408bcf1f9dc22b26" },
+    { "path": "adapters/python/regex_conformance_adapters/pcre2.py", "sha256": "8c8c33462fb509e3fc4d0da62529bd2f64b67708096e59889531557de2cdac49" },
+    { "path": "adapters/python/regex_conformance_adapters/server.py", "sha256": "8182958f3e40827a4be96077ad99fb2b19253fabd23444aecb099b410283b318" },
+    { "path": "adapters/python/run.py", "sha256": "0613f96b7b903c5107a7b3b7d9beb4fa757cf3c0bfb9f8906f130df3bfc2c72b" }
+  ],
+  "supersedes": null
+}

@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://strling.org/regex-conformance/schemas/minimal-adapter-certification.v1.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version","repository_state","observed_at","evidence_sha256","evidence_filename","trust_class","protocol_revision_id","all_ready_exercised_and_released","results"],
+  "properties": {
+    "schema_version": {"const":"minimal-adapter-certification.v1"},
+    "repository_state": {
+      "type":"object",
+      "additionalProperties":false,
+      "required":["head_commit","worktree_clean"],
+      "properties": {
+        "head_commit":{"type":"string","pattern":"^[0-9a-f]{40}$"},
+        "worktree_clean":{"type":"boolean"}
+      }
+    },
+    "observed_at": {"type":"string","format":"date-time"},
+    "evidence_sha256": {"type":"string","pattern":"^[0-9a-f]{64}$"},
+    "evidence_filename": {"type":"string","pattern":"^minimal-adapter-certification-sha256-[0-9a-f]{64}\\.json$"},
+    "trust_class": {"enum":["development","trusted_executioner","untrusted_public"]},
+    "protocol_revision_id": {"type":"string","pattern":"^rcid:v1:adapter-protocol-revision:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "all_ready_exercised_and_released": {"const":true},
+    "results": {
+      "type":"array","minItems":3,"maxItems":3,
+      "items": {
+        "type":"object","additionalProperties":false,
+        "required":["selection_key","adapter_release_manifest_id","adapter_source_digest","recipe_revision_id","target_profile_id","target_release_id","environment_fingerprint_id","environment_verification_digest","provider_implementation_digest","handshake_transcript_sha256","response_set_sha256","process_execution_sha256","certified_case_count","case_statuses"],
+        "properties": {
+          "selection_key":{"enum":["pcre2-ordinary","python-re","mysql-regex"]},
+          "adapter_release_manifest_id":{"type":"string","pattern":"^rcid:v1:adapter-release-manifest:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+          "adapter_source_digest":{"type":"string","pattern":"^[0-9a-f]{64}$"},
+          "recipe_revision_id":{"type":"string","pattern":"^rcid:v1:environment-recipe-revision:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+          "target_profile_id":{"type":"string","pattern":"^rcid:v1:profile:u7:"},
+          "target_release_id":{"type":"string","pattern":"^rcid:v1:release:u7:"},
+          "environment_fingerprint_id":{"type":"string","pattern":"^rcid:v1:environment-fingerprint:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+          "environment_verification_digest":{"type":"string","pattern":"^[0-9a-f]{64}$"},
+          "provider_implementation_digest":{"type":"string","pattern":"^[0-9a-f]{64}$"},
+          "handshake_transcript_sha256":{"type":"string","pattern":"^[0-9a-f]{64}$"},
+          "response_set_sha256":{"type":"string","pattern":"^[0-9a-f]{64}$"},
+          "process_execution_sha256":{"type":"string","pattern":"^[0-9a-f]{64}$"},
+          "certified_case_count":{"const":3},
+          "case_statuses":{
+            "type":"array","minItems":3,"maxItems":3,
+            "prefixItems":[{"const":"completed"},{"const":"completed"},{"const":"unsupported"}],
+            "items":false
+          }
+        }
+      }
+    }
+  }
+}

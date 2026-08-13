@@ -1,0 +1,296 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/adapter-response.schema.json",
+  "title": "STRling Regex Conformance Native-Preserving Adapter Response",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "adapter_release_manifest_id", "canonical_authority", "correlation_id", "failure", "message_type",
+    "observation", "profile_id", "schema_version", "semantic_authority", "status", "target_release_id",
+    "trace_reference"
+  ],
+  "properties": {
+    "adapter_release_manifest_id": { "$ref": "#/$defs/manifest_id" },
+    "canonical_authority": { "const": false },
+    "correlation_id": { "$ref": "#/$defs/correlation" },
+    "failure": { "oneOf": [{ "$ref": "#/$defs/failure" }, { "type": "null" }] },
+    "message_type": { "const": "execute-result" },
+    "observation": { "oneOf": [{ "$ref": "#/$defs/observation" }, { "type": "null" }] },
+    "profile_id": { "type": "string", "pattern": "^rcid:v1:profile:u7:[0-9a-f-]{36}$" },
+    "schema_version": { "const": "adapter-response.v1" },
+    "semantic_authority": { "const": false },
+    "status": { "enum": ["completed", "failed", "rejected", "unsupported"] },
+    "target_release_id": { "type": "string", "pattern": "^rcid:v1:release:u7:[0-9a-f-]{36}$" },
+    "trace_reference": {
+      "oneOf": [
+        { "type": "null" },
+        { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,255}$" }
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "status": { "const": "completed" } }, "required": ["status"] },
+      "then": {
+        "properties": {
+          "failure": { "type": "null" },
+          "observation": { "$ref": "#/$defs/observation" }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "status": { "enum": ["failed", "rejected", "unsupported"] } }, "required": ["status"] },
+      "then": {
+        "properties": {
+          "failure": { "$ref": "#/$defs/failure" },
+          "observation": { "type": "null" }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "absence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["field", "reason"],
+      "properties": {
+        "field": { "type": "string", "pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)*$", "maxLength": 128 },
+        "reason": {
+          "enum": [
+            "indeterminate", "not-applicable", "not-exposed", "not-requested", "prior-layer-failure",
+            "redacted", "truncated", "unsupported"
+          ]
+        }
+      }
+    },
+    "base64url": { "type": "string", "pattern": "^[A-Za-z0-9_-]*$" },
+    "capture": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["history", "index", "name", "participation", "span", "value"],
+      "properties": {
+        "history": {
+          "type": "array",
+          "maxItems": 1000000,
+          "items": { "$ref": "#/$defs/capture_occurrence" }
+        },
+        "index": { "type": "integer", "minimum": 0, "maximum": 1000000 },
+        "name": { "oneOf": [{ "type": "null" }, { "type": "string", "minLength": 1, "maxLength": 1024 }] },
+        "participation": { "enum": ["matched", "unmatched"] },
+        "span": { "oneOf": [{ "$ref": "#/$defs/span" }, { "type": "null" }] },
+        "value": { "oneOf": [{ "$ref": "#/$defs/datum" }, { "type": "null" }] }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "participation": { "const": "unmatched" } }, "required": ["participation"] },
+          "then": { "properties": { "span": { "type": "null" }, "value": { "type": "null" } } }
+        },
+        {
+          "if": { "properties": { "participation": { "const": "matched" } }, "required": ["participation"] },
+          "then": { "properties": { "span": { "$ref": "#/$defs/span" }, "value": { "$ref": "#/$defs/datum" } } }
+        }
+      ]
+    },
+    "capture_occurrence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ordinal", "span", "value"],
+      "properties": {
+        "ordinal": { "type": "integer", "minimum": 0, "maximum": 1000000 },
+        "span": { "$ref": "#/$defs/span" },
+        "value": { "$ref": "#/$defs/datum" }
+      }
+    },
+    "correlation": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$" },
+    "datum": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["data", "domain", "encoding", "endianness", "unit_width_bits"],
+          "properties": {
+            "data": { "$ref": "#/$defs/base64url" },
+            "domain": { "const": "octets" },
+            "encoding": { "type": "null" },
+            "endianness": { "type": "null" },
+            "unit_width_bits": { "const": 8 }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["domain", "encoding", "endianness", "text", "unit_width_bits"],
+          "properties": {
+            "domain": { "const": "unicode-scalars" },
+            "encoding": { "const": "unicode-scalar-values" },
+            "endianness": { "type": "null" },
+            "text": { "type": "string", "maxLength": 4194304 },
+            "unit_width_bits": { "type": "null" }
+          }
+        }
+      ]
+    },
+    "diagnostic": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["captured_bytes", "content", "original_bytes", "sha256", "truncated"],
+      "properties": {
+        "captured_bytes": { "type": "integer", "minimum": 0, "maximum": 1048576 },
+        "content": { "type": "string", "maxLength": 1048576 },
+        "original_bytes": { "type": "integer", "minimum": 0, "maximum": 9007199254740991 },
+        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "truncated": { "type": "boolean" }
+      }
+    },
+    "failure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "diagnostic", "kind", "layer", "message"],
+      "properties": {
+        "code": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$", "maxLength": 128 },
+        "diagnostic": { "oneOf": [{ "$ref": "#/$defs/diagnostic" }, { "type": "null" }] },
+        "kind": { "enum": ["adapter-invocation", "request-validation", "serialization", "unsupported"] },
+        "layer": { "enum": ["invocation", "materialization", "protocol", "serialization"] },
+        "message": { "type": "string", "minLength": 1, "maxLength": 1024 }
+      }
+    },
+    "manifest_id": {
+      "type": "string",
+      "pattern": "^rcid:v1:adapter-release-manifest:h:jcs-sha256-v1:[0-9a-f]{64}$"
+    },
+    "match": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["captures", "ordinal", "span"],
+      "properties": {
+        "captures": { "type": "array", "maxItems": 1000000, "items": { "$ref": "#/$defs/capture" } },
+        "ordinal": { "type": "integer", "minimum": 0, "maximum": 1000000 },
+        "span": { "$ref": "#/$defs/span" }
+      }
+    },
+    "native_error": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["class", "code", "diagnostic", "message", "phase", "position"],
+      "properties": {
+        "class": { "type": "string", "minLength": 1, "maxLength": 512 },
+        "code": { "oneOf": [{ "type": "integer" }, { "type": "string", "maxLength": 256 }, { "type": "null" }] },
+        "diagnostic": { "oneOf": [{ "$ref": "#/$defs/diagnostic" }, { "type": "null" }] },
+        "message": { "type": "string", "minLength": 1, "maxLength": 4096 },
+        "phase": { "enum": ["compile", "execution"] },
+        "position": { "oneOf": [{ "type": "integer", "minimum": 0 }, { "type": "null" }] }
+      }
+    },
+    "observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "absences", "compile_status", "cursor", "execution_status", "materialization", "match_state",
+        "matches", "native_error", "operation", "outputs", "runtime_identity"
+      ],
+      "properties": {
+        "absences": { "type": "array", "maxItems": 128, "uniqueItems": true, "items": { "$ref": "#/$defs/absence" } },
+        "compile_status": { "enum": ["accepted", "not-requested", "rejected"] },
+        "cursor": {
+          "oneOf": [
+            { "type": "null" },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["exhausted", "initial_offset", "next_offset"],
+              "properties": {
+                "exhausted": { "type": "boolean" },
+                "initial_offset": { "type": "integer", "minimum": 0 },
+                "next_offset": { "type": "integer", "minimum": 0 }
+              }
+            }
+          ]
+        },
+        "execution_status": { "enum": ["completed", "not-requested", "rejected"] },
+        "materialization": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["pattern_domain", "subject_domains"],
+          "properties": {
+            "pattern_domain": { "enum": ["octets", "unicode-scalars"] },
+            "subject_domains": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 16,
+              "items": { "enum": ["octets", "unicode-scalars"] }
+            }
+          }
+        },
+        "match_state": { "enum": ["match", "no-match", "not-applicable", "not-requested"] },
+        "matches": { "type": "array", "maxItems": 1000000, "items": { "$ref": "#/$defs/match" } },
+        "native_error": { "oneOf": [{ "$ref": "#/$defs/native_error" }, { "type": "null" }] },
+        "operation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["name", "version"],
+          "properties": {
+            "name": {
+              "enum": [
+                "callback-replacement", "capture-extraction", "compile", "find-all", "full-match",
+                "next-match", "replace-all", "replace-once", "search", "split", "test"
+              ]
+            },
+            "version": { "const": "1.0.0" }
+          }
+        },
+        "outputs": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "values"],
+          "properties": {
+            "kind": { "enum": ["none", "replacement", "split"] },
+            "values": { "type": "array", "maxItems": 1000000, "items": { "$ref": "#/$defs/datum" } }
+          }
+        },
+        "runtime_identity": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["facts"],
+          "properties": {
+            "facts": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 64,
+              "uniqueItems": true,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["name", "value"],
+                "properties": {
+                  "name": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+                  "value": { "type": "string", "minLength": 1, "maxLength": 1024 }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "span": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "api_provenance", "base_origin", "basis", "encoding", "end", "endianness", "interval",
+        "origin_subject", "sentinel", "start", "unit_width_bits"
+      ],
+      "properties": {
+        "api_provenance": { "type": "string", "minLength": 1, "maxLength": 1024 },
+        "base_origin": { "const": 0 },
+        "basis": { "enum": ["code-unit", "native-other", "octet", "unicode-scalar"] },
+        "encoding": { "oneOf": [{ "type": "null" }, { "type": "string", "minLength": 1, "maxLength": 64 }] },
+        "end": { "type": "integer", "minimum": 0, "maximum": 9007199254740991 },
+        "endianness": { "oneOf": [{ "type": "null" }, { "enum": ["big", "little"] }] },
+        "interval": { "enum": ["closed", "half-open", "length-based"] },
+        "origin_subject": { "type": "integer", "minimum": 0, "maximum": 15 },
+        "sentinel": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "start": { "type": "integer", "minimum": 0, "maximum": 9007199254740991 },
+        "unit_width_bits": { "oneOf": [{ "type": "null" }, { "enum": [8, 16, 32, 64] }] }
+      }
+    }
+  }
+}

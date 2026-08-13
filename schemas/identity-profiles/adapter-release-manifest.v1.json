@@ -1,0 +1,32 @@
+{
+  "profile_version": "1.0.0",
+  "root": {
+    "additional_properties": false,
+    "kind": "object",
+    "properties": {
+      "adapter": { "kind": "rcid" },
+      "adapter_release": { "kind": "rcid" },
+      "capabilities": {
+        "items": { "kind": "token" },
+        "kind": "set"
+      },
+      "entrypoint": { "kind": "canonical_text" },
+      "profile": { "kind": "rcid" },
+      "protocol_revision": { "kind": "rcid" },
+      "selection_key": { "kind": "token" },
+      "source_digest": { "kind": "digest" },
+      "target_release": { "kind": "rcid" }
+    },
+    "required": [
+      "adapter",
+      "adapter_release",
+      "selection_key",
+      "profile",
+      "target_release",
+      "protocol_revision",
+      "entrypoint",
+      "source_digest",
+      "capabilities"
+    ]
+  }
+}

@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/adapter-handshake.schema.json",
+  "title": "STRling Regex Conformance Adapter Handshake",
+  "$defs": {
+    "capability": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "maxLength": 96
+    },
+    "correlation": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+    },
+    "digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["maximum_frame_bytes", "maximum_list_items", "maximum_message_count", "maximum_nesting_depth"],
+      "properties": {
+        "maximum_frame_bytes": { "type": "integer", "minimum": 1024, "maximum": 16777216 },
+        "maximum_list_items": { "type": "integer", "minimum": 1, "maximum": 65536 },
+        "maximum_message_count": { "type": "integer", "minimum": 1, "maximum": 1000000 },
+        "maximum_nesting_depth": { "type": "integer", "minimum": 1, "maximum": 64 }
+      }
+    },
+    "manifest_id": {
+      "type": "string",
+      "pattern": "^rcid:v1:adapter-release-manifest:h:jcs-sha256-v1:[0-9a-f]{64}$"
+    },
+    "protocol_selection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["major", "minor"],
+      "properties": {
+        "major": { "const": 1 },
+        "minor": { "type": "integer", "minimum": 0, "maximum": 65535 }
+      }
+    },
+    "runtime_identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["facts", "profile_id", "target_release_id"],
+      "properties": {
+        "facts": {
+          "type": "array",
+          "maxItems": 64,
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "value"],
+            "properties": {
+              "name": { "$ref": "#/$defs/capability" },
+              "value": { "type": "string", "minLength": 1, "maxLength": 1024 }
+            }
+          }
+        },
+        "profile_id": { "type": "string", "pattern": "^rcid:v1:profile:u7:[0-9a-f-]{36}$" },
+        "target_release_id": { "type": "string", "pattern": "^rcid:v1:release:u7:[0-9a-f-]{36}$" }
+      }
+    },
+    "failure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "message"],
+      "properties": {
+        "code": { "$ref": "#/$defs/capability" },
+        "message": { "type": "string", "minLength": 1, "maxLength": 1024 }
+      }
+    },
+    "offer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "correlation_id", "limits", "message_type", "offered_schema_versions",
+        "optional_capabilities", "protocol", "required_capabilities", "schema_version"
+      ],
+      "properties": {
+        "correlation_id": { "$ref": "#/$defs/correlation" },
+        "limits": { "$ref": "#/$defs/limits" },
+        "message_type": { "const": "handshake-offer" },
+        "offered_schema_versions": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 16,
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*\\.v[1-9][0-9]*$" }
+        },
+        "optional_capabilities": {
+          "type": "array",
+          "maxItems": 128,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/capability" }
+        },
+        "protocol": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["major", "maximum_minor", "minimum_minor"],
+          "properties": {
+            "major": { "type": "integer", "minimum": 0, "maximum": 65535 },
+            "maximum_minor": { "type": "integer", "minimum": 0, "maximum": 65535 },
+            "minimum_minor": { "type": "integer", "minimum": 0, "maximum": 65535 }
+          }
+        },
+        "required_capabilities": {
+          "type": "array",
+          "maxItems": 128,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/capability" }
+        },
+        "schema_version": { "const": "adapter-handshake-offer.v1" }
+      }
+    },
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "adapter_release_manifest_id", "canonical_authority", "capabilities", "correlation_id",
+        "failure", "limits", "message_type", "outcome", "runtime_identity", "schema_version",
+        "selected_protocol", "semantic_authority", "transcript_sha256"
+      ],
+      "properties": {
+        "adapter_release_manifest_id": { "oneOf": [{ "$ref": "#/$defs/manifest_id" }, { "type": "null" }] },
+        "canonical_authority": { "const": false },
+        "capabilities": {
+          "type": "array",
+          "maxItems": 128,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/capability" }
+        },
+        "correlation_id": { "$ref": "#/$defs/correlation" },
+        "failure": { "oneOf": [{ "$ref": "#/$defs/failure" }, { "type": "null" }] },
+        "limits": { "$ref": "#/$defs/limits" },
+        "message_type": { "const": "handshake-result" },
+        "outcome": { "enum": ["accepted", "rejected"] },
+        "runtime_identity": { "oneOf": [{ "$ref": "#/$defs/runtime_identity" }, { "type": "null" }] },
+        "schema_version": { "const": "adapter-handshake-result.v1" },
+        "selected_protocol": { "oneOf": [{ "$ref": "#/$defs/protocol_selection" }, { "type": "null" }] },
+        "semantic_authority": { "const": false },
+        "transcript_sha256": { "$ref": "#/$defs/digest" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "outcome": { "const": "accepted" } }, "required": ["outcome"] },
+          "then": {
+            "properties": {
+              "adapter_release_manifest_id": { "$ref": "#/$defs/manifest_id" },
+              "failure": { "type": "null" },
+              "runtime_identity": { "$ref": "#/$defs/runtime_identity" },
+              "selected_protocol": { "$ref": "#/$defs/protocol_selection" }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "outcome": { "const": "rejected" } }, "required": ["outcome"] },
+          "then": {
+            "properties": {
+              "adapter_release_manifest_id": { "type": "null" },
+              "capabilities": { "maxItems": 0 },
+              "failure": { "$ref": "#/$defs/failure" },
+              "runtime_identity": { "type": "null" },
+              "selected_protocol": { "type": "null" }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "oneOf": [
+    { "$ref": "#/$defs/offer" },
+    { "$ref": "#/$defs/result" }
+  ]
+}

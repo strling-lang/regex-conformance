@@ -7,6 +7,7 @@ from typing import Any
 
 from jsonschema import ValidationError, validators
 
+from .adapters import load_and_validate_adapter_records
 from .errors import ConformanceDataError
 from .environments import load_and_validate_environment_records
 from .jsonio import load_strict
@@ -61,10 +62,12 @@ def validate_repository(root: Path) -> dict[str, int]:
         validate_instance(record, selection_schema, source=str(source))
         validate_vertical_slice_selection(record, source=str(source))
     environment_counts = load_and_validate_environment_records(root, validate_instance=validate_instance)
+    adapter_counts = load_and_validate_adapter_records(root, validate_instance=validate_instance)
     return {
         "schemas": len(list(schemas.glob("*.schema.json"))),
         "profiles": len(profiles),
         "manifests": len(manifests),
         "vertical_slice_selections": len(selections),
         **environment_counts,
+        **adapter_counts,
     }

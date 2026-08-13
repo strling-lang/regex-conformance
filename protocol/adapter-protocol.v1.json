@@ -1,0 +1,23 @@
+{
+  "authority": {
+    "adapter_side_verdicts": false,
+    "canonical_authority": false,
+    "normative_authority": false,
+    "semantic_authority": false
+  },
+  "identity": {
+    "framing": "uint32-be-json",
+    "handshake_schema_sha256": "beb7711a4d6746c0d09d134fa310ed29eecb10a1f4c6b7f717cb5457473c730b",
+    "maximum_frame_bytes": 1048576,
+    "maximum_list_items": 65536,
+    "maximum_message_count": 1000000,
+    "maximum_nesting_depth": 32,
+    "protocol_version": "1.0.0",
+    "request_schema_sha256": "e146692ed9449030d062becf55757dfe049db99baf0e4c12ccb1f7aef95ae2d0",
+    "response_schema_sha256": "e52b6cd9349472a030a0cca95f45b4d099f5912a1601bf8b4ed7fe7c82b7c4e0"
+  },
+  "identity_schema_family_id": "rcid:v1:schema-family:u7:019ffb61-653a-7ca1-a185-5544b82ce17b",
+  "identity_schema_version": "1.0.0",
+  "protocol_revision_id": "rcid:v1:adapter-protocol-revision:h:jcs-sha256-v1:c9dd4b0a7e0c7fc6ae43586392e402b0036c03e9f2b1d5e0a43828d11945eda1",
+  "schema_version": "adapter-protocol-revision.v1"
+}

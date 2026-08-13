@@ -75,6 +75,7 @@ def evaluate(root: Path) -> list[Violation]:
         "validate-repository",
         "verify-fixtures",
         "unittest discover -s tests/schema",
+        "unittest discover -s tests/adapters",
         "python -m unittest discover -s tests/control_plane -v",
         "unittest discover -s tests/ci",
         "materialize-fixtures",
@@ -82,11 +83,27 @@ def evaluate(root: Path) -> list[Violation]:
         "minimal-environment-certification:",
         "if: github.event_name != 'pull_request'",
         "timeout-minutes: 45",
-        "certify_minimal.py",
-        "--trust-class untrusted_public",
+        (
+            "python tools/environments/certify_minimal.py "
+            '--state-root "$RUNNER_TEMP/strling-regex-state" '
+            '--evidence-dir "$RUNNER_TEMP/strling-regex-evidence" '
+            "--trust-class untrusted_public "
+            '--compact-report "$RUNNER_TEMP/minimal-environment-certification.json"'
+        ),
         "minimal-environment-certification.schema.json",
         "docker ps --all --quiet --filter name=strling-rc-",
         "git diff --exit-code",
+        "minimal-adapter-certification:",
+        "needs: minimal-environment-certification",
+        (
+            "python tools/adapters/certify_minimal.py "
+            '--state-root "$RUNNER_TEMP/strling-regex-adapter-state" '
+            '--evidence-dir "$RUNNER_TEMP/strling-regex-adapter-evidence" '
+            "--trust-class untrusted_public "
+            '--compact-report "$RUNNER_TEMP/minimal-adapter-certification.json"'
+        ),
+        "minimal-adapter-certification.schema.json",
+        "strling-regex-adapter-state",
     ]:
         _require(command in workflow, violations, "missing-validation", f"workflow omits required command {command!r}")
 

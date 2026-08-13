@@ -15,6 +15,8 @@ class RepositoryValidationTests(unittest.TestCase):
         self.assertGreaterEqual(counts["schemas"], 4)
         self.assertGreaterEqual(counts["profiles"], 7)
         self.assertEqual(counts["manifests"], 1)
+        self.assertEqual(counts["adapter_protocol_revisions"], 1)
+        self.assertEqual(counts["adapter_release_manifests"], 3)
 
     def test_identity_profile_unknown_field_is_rejected(self) -> None:
         schema = load_strict(ROOT / "schemas" / "json" / "identity-profile.schema.json")
