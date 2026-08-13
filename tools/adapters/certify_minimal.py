@@ -14,7 +14,7 @@ import json
 import os
 from pathlib import Path
 import sys
-from typing import Any
+from typing import Any, Callable
 
 import rfc8785
 
@@ -50,6 +50,10 @@ from regex_conformance_schema.schema import validate_instance, validate_reposito
 
 ORDER = {"pcre2-ordinary": 0, "python-re": 1, "mysql-regex": 2}
 CASE_COUNT = 3
+MAXIMUM_PROCESS_ATTEMPTS = 2
+RETRYABLE_INFRASTRUCTURE_FAILURES = {
+    "mysql-regex": frozenset({"runtime-identity-failed"}),
+}
 
 
 def _outside_repository(path: Path, label: str) -> Path:
@@ -314,23 +318,65 @@ def _adapter_process_limits(selection_key: str) -> ExecutionLimits:
     )
 
 
+def _adapter_failure_code(stderr: bytes) -> str | None:
+    try:
+        lines = [line for line in stderr.decode("utf-8", "strict").splitlines() if line]
+        value = json.loads(lines[-1]) if lines else None
+    except (UnicodeDecodeError, json.JSONDecodeError):
+        return None
+    if not isinstance(value, dict) or value.get("ok") is not False:
+        return None
+    error = value.get("error")
+    code = error.get("code") if isinstance(error, dict) else None
+    return code if isinstance(code, str) else None
+
+
+def _run_adapter_process_attempts(
+    selection_key: str,
+    run_attempt: Callable[[], Any],
+) -> tuple[Any, list[dict[str, Any]]]:
+    attempts: list[dict[str, Any]] = []
+    retryable = RETRYABLE_INFRASTRUCTURE_FAILURES.get(selection_key, frozenset())
+    for attempt_number in range(1, MAXIMUM_PROCESS_ATTEMPTS + 1):
+        execution = run_attempt()
+        succeeded = execution.outcome == "completed" and execution.exit_code == 0
+        failure_code = None if succeeded else _adapter_failure_code(execution.stderr)
+        attempts.append(
+            {
+                "attempt_number": attempt_number,
+                "execution": execution.to_dict(),
+                "failure_code": failure_code,
+                "selected": succeeded,
+            }
+        )
+        if succeeded:
+            return execution, attempts
+        if attempt_number < MAXIMUM_PROCESS_ATTEMPTS and failure_code in retryable:
+            continue
+        diagnostic = execution.stderr.decode("utf-8", "replace")[:1024]
+        raise RuntimeError(
+            f"adapter process failed for {selection_key}: "
+            f"{execution.outcome}/{execution.exit_code}: {diagnostic}"
+        )
+    raise AssertionError("bounded adapter attempt loop terminated without a result")
+
+
 def _invoke_adapter(selection_key: str, ready: Any, package: AdapterManifest) -> dict[str, Any]:
     requests = _requests(package)
     stdin = b"".join(encode_frame(item) for item in [_offer(package), *requests])
     command, environment, binding = _adapter_command(selection_key, ready)
     limits = _adapter_process_limits(selection_key)
-    execution = ContainedProcessSupervisor(maximum_concurrency=1).run(
-        command,
-        limits=limits,
-        cwd=ROOT,
-        environment=environment,
-        stdin=stdin,
+    supervisor = ContainedProcessSupervisor(maximum_concurrency=1)
+    execution, process_attempts = _run_adapter_process_attempts(
+        selection_key,
+        lambda: supervisor.run(
+            command,
+            limits=limits,
+            cwd=ROOT,
+            environment=environment,
+            stdin=stdin,
+        ),
     )
-    if execution.outcome != "completed" or execution.exit_code != 0:
-        diagnostic = execution.stderr.decode("utf-8", "replace")[:1024]
-        raise RuntimeError(
-            f"adapter process failed for {selection_key}: {execution.outcome}/{execution.exit_code}: {diagnostic}"
-        )
     frames = _decode_frames(execution.stdout)
     if len(frames) != CASE_COUNT + 1:
         raise RuntimeError(f"adapter emitted {len(frames)} frames; expected {CASE_COUNT + 1}")
@@ -387,6 +433,7 @@ def _invoke_adapter(selection_key: str, ready: Any, package: AdapterManifest) ->
         "handshake": handshake,
         "responses": responses,
         "process_execution": execution.to_dict(),
+        "process_attempts": process_attempts,
     }
 
 
@@ -494,6 +541,7 @@ def certify(state_root: Path, evidence_dir: Path, trust_class: str, compact_repo
         assert adapter_result is not None
         response_hash = hashlib.sha256(rfc8785.dumps(adapter_result["responses"])).hexdigest()
         process_hash = hashlib.sha256(rfc8785.dumps(adapter_result["process_execution"])).hexdigest()
+        process_attempts_hash = hashlib.sha256(rfc8785.dumps(adapter_result["process_attempts"])).hexdigest()
         results.append(
             {
                 "selection_key": definition.selection_key,
@@ -512,6 +560,10 @@ def certify(state_root: Path, evidence_dir: Path, trust_class: str, compact_repo
                 "response_set_sha256": response_hash,
                 "process_execution_sha256": process_hash,
                 "process_execution": adapter_result["process_execution"],
+                "process_attempts_sha256": process_attempts_hash,
+                "process_attempt_count": len(adapter_result["process_attempts"]),
+                "infrastructure_retry_count": len(adapter_result["process_attempts"]) - 1,
+                "process_attempts": adapter_result["process_attempts"],
                 "certified_case_count": CASE_COUNT,
                 "case_statuses": [item["status"] for item in adapter_result["responses"]],
                 "release_state": released.state,
@@ -558,6 +610,9 @@ def certify(state_root: Path, evidence_dir: Path, trust_class: str, compact_repo
                     "handshake_transcript_sha256",
                     "response_set_sha256",
                     "process_execution_sha256",
+                    "process_attempts_sha256",
+                    "process_attempt_count",
+                    "infrastructure_retry_count",
                     "certified_case_count",
                     "case_statuses",
                 )
