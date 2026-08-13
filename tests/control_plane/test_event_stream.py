@@ -506,7 +506,7 @@ class EventStreamTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             selected_case = json.loads(ENVIRONMENT_FIXTURE.read_text(encoding="utf-8"))[0]
-            journal = self.open_journal(root / "events.sqlite3", seconds=tuple(range(200)))
+            journal = self.open_journal(root / "events.sqlite3", maximum=100, seconds=tuple(range(200)))
             provider = FixtureProvider(selected_case, root / "provider")
             manager = EnvironmentManager(
                 ProviderRegistry((provider,)),
