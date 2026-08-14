@@ -13,6 +13,10 @@ a standards guarantee.
 
 ## Program status
 
+This section describes the latest committed repository certification state.
+Revalidate it whenever a certification or campaign boundary changes; live
+planning and approval status remains in the canonical program hub.
+
 Repository bootstrap and the portable Control Plane foundation are certified.
 The P17 architectural vertical slice is active. Its exact PCRE2, CPython, and
 MySQL release/profile coordinates and minimal reproducible environments are
@@ -185,11 +189,15 @@ and report that specific restriction.
 See [GOVERNANCE.md](GOVERNANCE.md) for authority and change control,
 [CONTRIBUTING.md](CONTRIBUTING.md) for contribution requirements, and
 [SECURITY.md](SECURITY.md) for private vulnerability reporting and execution
-trust boundaries.
+trust boundaries. Organization-wide community participation follows the
+[Code of Conduct](https://github.com/strling-lang/.github/blob/main/CODE_OF_CONDUCT.md),
+and the shared [support guide](https://github.com/strling-lang/.github/blob/main/SUPPORT.md)
+routes questions that belong elsewhere in the STRling ecosystem.
 
 ## License
 
-Repository source and documentation are available under the [MIT License](LICENSE).
+Repository source and documentation are available under the
+[Apache License 2.0](LICENSE). Copyright 2026 STRling Team.
 Licensing for empirical datasets, third-party runtime artifacts, and derived
 public evidence is governed separately by artifact class and is not implied by
 the repository source license.

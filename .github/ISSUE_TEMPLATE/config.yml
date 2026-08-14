@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security or evidence-integrity vulnerability
+    url: https://github.com/strling-lang/regex-conformance/security/policy
+    about: Report vulnerabilities, credential exposure, or sensitive integrity incidents privately.
+  - name: STRling support and issue routing
+    url: https://github.com/strling-lang/.github/blob/main/SUPPORT.md
+    about: Route compiler, research, website, and general organization questions correctly.

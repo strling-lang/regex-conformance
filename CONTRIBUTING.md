@@ -2,6 +2,9 @@
 
 Thank you for helping build a reproducible empirical regex corpus. Contributions
 are welcome when they preserve the program's scientific and security boundaries.
+The organization-wide
+[contribution principles](https://github.com/strling-lang/.github/blob/main/CONTRIBUTING.md)
+apply alongside this specialized policy.
 
 ## Before proposing a change
 
@@ -69,3 +72,8 @@ final verification, rerun the affected checks before committing.
 The repository is still in bootstrap; exact commands will be documented as the
 validation toolchain is introduced. Until then, reviewers must at minimum verify
 links, ownership, licensing, repository cleanliness, and the complete diff.
+
+All participation follows the organization
+[Code of Conduct](https://github.com/strling-lang/.github/blob/main/CODE_OF_CONDUCT.md).
+Use the shared [support guide](https://github.com/strling-lang/.github/blob/main/SUPPORT.md)
+for questions outside this repository's empirical-conformance scope.

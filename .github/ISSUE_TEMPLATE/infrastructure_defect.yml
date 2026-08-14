@@ -1,0 +1,47 @@
+name: Infrastructure or Control Plane defect
+description: Report a reproducible environment, adapter, scheduler, verifier, warehouse, or Control Plane defect
+title: "[Infrastructure]: "
+body:
+  - type: dropdown
+    id: component
+    attributes:
+      label: Component
+      options:
+        - Control Plane
+        - Environment acquisition or realization
+        - Adapter or protocol
+        - Campaign compiler or scheduler
+        - Verifier or evidence publication
+        - Warehouse or derived report
+        - Schema tooling or public CI
+        - Other or unsure
+    validations:
+      required: true
+  - type: textarea
+    id: identity
+    attributes:
+      label: Revision and environment identity
+      description: Include the commit, profile/release/recipe IDs, operating environment, trust class, and exact command.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Provide steps and redacted diagnostics that distinguish target behavior from infrastructure or containment failure.
+    validations:
+      required: true
+  - type: textarea
+    id: expected_actual
+    attributes:
+      label: Expected and actual classification
+      description: State the expected status/failure class and what was recorded instead.
+    validations:
+      required: true
+  - type: checkboxes
+    id: security
+    attributes:
+      label: Public-reporting check
+      options:
+        - label: I have not included credentials, private machine configuration, sensitive evidence, or a suspected undisclosed vulnerability.
+          required: true

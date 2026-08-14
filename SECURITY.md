@@ -4,8 +4,8 @@
 
 Do not open a public issue for a suspected vulnerability or evidence-integrity
 incident. Use a private [GitHub Security Advisory][advisory] for this repository.
-If that is unavailable, contact the Program Owner through the contact information
-on the `@TheCyberLocal` GitHub profile before public disclosure.
+If that is unavailable, email
+[strlinglang@gmail.com](mailto:strlinglang@gmail.com) before public disclosure.
 
 Include the affected revision, component, reproduction conditions, expected
 security boundary, observed behavior, and whether credentials, trusted runners,

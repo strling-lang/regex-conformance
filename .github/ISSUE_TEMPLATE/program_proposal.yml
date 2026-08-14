@@ -1,0 +1,49 @@
+name: Profile, vector, schema, campaign, or certification proposal
+description: Propose a scoped change to repository-owned conformance definitions or methods
+title: "[Proposal]: "
+body:
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Proposed surface
+      multiple: true
+      options:
+        - Profile, release, or environment identity
+        - Feature ontology reference or applicability
+        - Vector or operation coverage
+        - Schema or protocol
+        - Campaign or scheduling
+        - Evidence, correction, or provenance policy
+        - Derived analysis or reporting
+        - Certification or trust boundary
+        - Documentation or tooling
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem and authority boundary
+      description: Explain the need and whether it is normative knowledge, repository-owned execution definition, empirical evidence, or derived analysis.
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Proposed outcome
+      description: Describe the durable result, identity/versioning impact, and non-goals.
+    validations:
+      required: true
+  - type: textarea
+    id: consequences
+    attributes:
+      label: Consequences and approval class
+      description: Address completeness, applicability, immutability, provenance, reproducibility, certification, and trusted-execution implications.
+    validations:
+      required: true
+  - type: textarea
+    id: validation
+    attributes:
+      label: Acceptance evidence
+      description: State the positive, negative, boundary, fault, reproducibility, and certification evidence required.
+    validations:
+      required: true

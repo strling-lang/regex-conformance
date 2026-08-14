@@ -1,0 +1,50 @@
+name: Evidence, methodology, or certification concern
+description: Report a problem with an observation, finding, method, evidence object, correction, or certification claim
+title: "[Evidence]: "
+body:
+  - type: dropdown
+    id: fact_class
+    attributes:
+      label: Affected fact class
+      options:
+        - Normative expectation or knowledge reference
+        - Profile, vector, or applicability definition
+        - Logical execution or physical attempt
+        - Observation or immutable evidence object
+        - Derived finding or warehouse projection
+        - Correction, invalidation, supersession, or replacement
+        - Certification claim or gate
+        - Methodology or documentation
+        - Unsure
+    validations:
+      required: true
+  - type: textarea
+    id: identity
+    attributes:
+      label: Exact identity and provenance
+      description: Provide stable IDs, revisions, profiles, releases, vectors, attempts, evidence digests, reports, or certification records.
+    validations:
+      required: true
+  - type: textarea
+    id: concern
+    attributes:
+      label: Concern
+      description: Explain the defect without collapsing normative expectation, observation, infrastructure failure, and inference.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected treatment
+      description: Identify the controlling schema, method, decision, or correction rule when known.
+    validations:
+      required: true
+  - type: checkboxes
+    id: integrity
+    attributes:
+      label: Integrity check
+      options:
+        - label: I am not asking to overwrite or silently rewrite published evidence.
+          required: true
+        - label: I have not included credentials, sensitive personal data, or a suspected undisclosed vulnerability.
+          required: true
