@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/scale-evidence-manifest.schema.json",
+  "title": "Immutable Scale Evidence Manifest v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "accepted_observation_count", "attempt_count", "campaign_manifest_id",
+    "complete", "evidence_manifest_id", "infrastructure_failure_attempt_count",
+    "interruptions", "logical_execution_count", "result_shard_count",
+    "root_digest", "schema_version", "segments"
+  ],
+  "properties": {
+    "accepted_observation_count": {"type": "integer", "minimum": 1},
+    "attempt_count": {"type": "integer", "minimum": 1},
+    "campaign_manifest_id": {"$ref": "#/$defs/campaign"},
+    "complete": {"const": true},
+    "evidence_manifest_id": {"$ref": "#/$defs/manifest"},
+    "infrastructure_failure_attempt_count": {"type": "integer", "minimum": 1},
+    "interruptions": {
+      "type": "array", "minItems": 3, "maxItems": 3, "uniqueItems": true,
+      "items": {"$ref": "#/$defs/interruption"}
+    },
+    "logical_execution_count": {"type": "integer", "minimum": 1},
+    "result_shard_count": {"type": "integer", "minimum": 1},
+    "root_digest": {"$ref": "#/$defs/digest"},
+    "schema_version": {"const": "scale-evidence-manifest.v1"},
+    "segments": {
+      "type": "array", "minItems": 1, "uniqueItems": true,
+      "items": {"$ref": "#/$defs/reference"}
+    }
+  },
+  "$defs": {
+    "campaign": {"type": "string", "pattern": "^rcid:v1:campaign-manifest:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "interruption": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "action", "after_committed_shards", "controller_session_id",
+        "event_sha256", "interruption_key", "observed_at", "schema_version",
+        "worker_process"
+      ],
+      "properties": {
+        "action": {"enum": ["controller-restart", "worker-process-kill"]},
+        "after_committed_shards": {"type": "integer", "minimum": 1, "maximum": 401},
+        "controller_session_id": {"type": "string", "pattern": "^[0-9a-f-]{36}$"},
+        "event_sha256": {"$ref": "#/$defs/digest"},
+        "interruption_key": {"$ref": "#/$defs/token"},
+        "observed_at": {"type": "string", "format": "date-time", "maxLength": 64},
+        "schema_version": {"const": "scale-interruption-event.v1"},
+        "worker_process": {
+          "oneOf": [
+            {
+              "type": "object", "additionalProperties": false,
+              "required": ["exit_code", "forced", "selection_key"],
+              "properties": {
+                "exit_code": {"type": "integer"},
+                "forced": {"const": true},
+                "selection_key": {"$ref": "#/$defs/token"}
+              }
+            },
+            {"type": "null"}
+          ]
+        }
+      }
+    },
+    "manifest": {"type": "string", "pattern": "^rcid:v1:evidence-manifest:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "reference": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "attempt_count", "attempt_number", "category", "logical_execution_count",
+        "observation_count", "relative_path", "result_segment_id", "segment_kind",
+        "sha256", "shard_id", "size_bytes"
+      ],
+      "properties": {
+        "attempt_count": {"type": "integer", "minimum": 1, "maximum": 250},
+        "attempt_number": {"type": "integer", "minimum": 1, "maximum": 3},
+        "category": {"const": "scale-result-segments"},
+        "logical_execution_count": {"type": "integer", "minimum": 1, "maximum": 250},
+        "observation_count": {"type": "integer", "minimum": 0, "maximum": 250},
+        "relative_path": {"type": "string", "pattern": "^scale-result-segments/sha256/[0-9a-f]{64}\\.json$"},
+        "result_segment_id": {"type": "string", "pattern": "^rcid:v1:result-segment:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+        "segment_kind": {"enum": ["attempt", "result"]},
+        "sha256": {"$ref": "#/$defs/digest"},
+        "shard_id": {"type": "string", "pattern": "^rcid:v1:shard:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+        "size_bytes": {"type": "integer", "minimum": 1}
+      }
+    },
+    "token": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$", "maxLength": 128}
+  }
+}

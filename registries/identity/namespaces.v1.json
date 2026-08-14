@@ -51,6 +51,7 @@
       "profile-revision",
       "reconciliation-set",
       "release-revision",
+      "result-segment",
       "result-shard",
       "scan-plan-revision",
       "schema-revision",

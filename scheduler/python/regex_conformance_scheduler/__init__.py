@@ -11,6 +11,12 @@ from .recovery import (
     build_restart_resume_reference_report,
     recovery_action_for_stage,
 )
+from .scale_recovery import (
+    CommittedSegment,
+    ScaleRecoveryError,
+    ScaleRecoveryLedger,
+    utc_now,
+)
 from .sharding import shard_by_selection_locality
 
 __all__ = [
@@ -23,5 +29,9 @@ __all__ = [
     "RecoveryJournal",
     "build_restart_resume_reference_report",
     "recovery_action_for_stage",
+    "CommittedSegment",
+    "ScaleRecoveryError",
+    "ScaleRecoveryLedger",
+    "utc_now",
     "shard_by_selection_locality",
 ]

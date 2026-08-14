@@ -120,6 +120,7 @@ def _source_digests(
         _safe_source(root, definition["base_coverage"]["path"]),
         _safe_source(root, definition["base_vectors"]["path"]),
         root / "campaigns" / "python" / "regex_conformance_scale" / "compiler.py",
+        root / "campaigns" / "python" / "regex_conformance_scale" / "execution.py",
         root
         / "campaigns"
         / "python"
@@ -131,7 +132,11 @@ def _source_digests(
         root / "schemas" / "json" / "logical-execution-segment.schema.json",
         root / "schemas" / "json" / "scale-campaign-definition.schema.json",
         root / "schemas" / "json" / "scale-campaign-plan.schema.json",
+        root / "schemas" / "json" / "scale-evidence-manifest.schema.json",
+        root / "schemas" / "json" / "scale-execution-report.schema.json",
         root / "schemas" / "json" / "scale-qualification-design-report.schema.json",
+        root / "schemas" / "json" / "scale-result-segment.schema.json",
+        root / "schemas" / "json" / "scale-target-timeout.schema.json",
         root
         / "schemas"
         / "tooling"
@@ -156,7 +161,26 @@ def _source_digests(
         / "python"
         / "regex_conformance_schema"
         / "profile.py",
+        root
+        / "schemas"
+        / "tooling"
+        / "python"
+        / "regex_conformance_schema"
+        / "schema.py",
         root / "tools" / "campaigns" / "compile_100k_qualification.py",
+        root / "tools" / "campaigns" / "run_100k_qualification.py",
+        root / "tools" / "campaigns" / "run_isolated_python_target.py",
+        root
+        / "scheduler"
+        / "python"
+        / "regex_conformance_scheduler"
+        / "scale_recovery.py",
+        root / "tools" / "adapters" / "certify_minimal.py",
+        root
+        / "verifier"
+        / "python"
+        / "regex_conformance_verifier"
+        / "scale_evidence.py",
     }
     return {
         path.relative_to(root).as_posix(): _file_digest(path) for path in sorted(paths)
@@ -223,11 +247,12 @@ def _write_segment(
         stream.flush()
         os.fsync(stream.fileno())
     os.replace(temporary, path)
-    directory_descriptor = os.open(directory, os.O_RDONLY)
-    try:
-        os.fsync(directory_descriptor)
-    finally:
-        os.close(directory_descriptor)
+    if os.name != "nt":
+        directory_descriptor = os.open(directory, os.O_RDONLY)
+        try:
+            os.fsync(directory_descriptor)
+        finally:
+            os.close(directory_descriptor)
     if path.read_bytes() != encoded:
         raise ScaleCompileError("scale segment failed read-after-write verification")
 

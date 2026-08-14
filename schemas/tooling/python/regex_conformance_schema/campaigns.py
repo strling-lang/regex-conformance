@@ -15,9 +15,15 @@ def load_and_validate_campaign_records(
     *,
     validate_instance: Callable[..., None],
 ) -> dict[str, int]:
-    definition_schema = load_strict(root / "schemas" / "json" / "vertical-slice-campaign-definition.schema.json")
-    report_schema = load_strict(root / "schemas" / "json" / "first-campaign-report.schema.json")
-    compiled_schema = load_strict(root / "schemas" / "json" / "compiled-campaign.schema.json")
+    definition_schema = load_strict(
+        root / "schemas" / "json" / "vertical-slice-campaign-definition.schema.json"
+    )
+    report_schema = load_strict(
+        root / "schemas" / "json" / "first-campaign-report.schema.json"
+    )
+    compiled_schema = load_strict(
+        root / "schemas" / "json" / "compiled-campaign.schema.json"
+    )
     definitions = sorted((root / "campaigns" / "definitions").glob("*.json"))
     compiled = sorted((root / "campaigns" / "compiled").glob("*.json"))
     vector_sets = sorted((root / "vectors" / "definitions").glob("*.json"))
@@ -53,11 +59,19 @@ def load_and_validate_campaign_records(
             path="vectors/definitions",
         )
     for source in definitions:
-        validate_instance(load_strict(source), definition_schemas[source.name], source=str(source))
+        validate_instance(
+            load_strict(source), definition_schemas[source.name], source=str(source)
+        )
     for source in vector_sets:
-        validate_instance(load_strict(source), vector_schemas[source.name], source=str(source))
+        validate_instance(
+            load_strict(source), vector_schemas[source.name], source=str(source)
+        )
     for source in policies:
-        validate_instance(load_strict(source), load_strict(root / "schemas" / "json" / "applicability-policy.schema.json"), source=str(source))
+        validate_instance(
+            load_strict(source),
+            load_strict(root / "schemas" / "json" / "applicability-policy.schema.json"),
+            source=str(source),
+        )
     if compiled:
         for source_root in (
             root / "campaigns" / "python",
@@ -72,6 +86,7 @@ def load_and_validate_campaign_records(
             verify_coverage_report,
         )
         from regex_conformance_scale import verify_scale_plan
+
         scale_plan_schema = load_strict(
             root / "schemas" / "json" / "scale-campaign-plan.schema.json"
         )
@@ -101,7 +116,11 @@ def load_and_validate_campaign_records(
         report = load_strict(source)
         validate_instance(report, report_schema, source=str(source))
         if report["campaign_manifest_id"] not in compiled_by_id:
-            raise ConformanceDataError("campaign-report-drift", "compact report references an unknown campaign manifest", path=str(source))
+            raise ConformanceDataError(
+                "campaign-report-drift",
+                "compact report references an unknown campaign manifest",
+                path=str(source),
+            )
     coverage_reports = sorted(
         (root / "reports" / "small-scale").glob("qualification-coverage*.json")
     )
@@ -122,7 +141,11 @@ def load_and_validate_campaign_records(
     scale_reports = sorted(
         (root / "reports" / "scale").glob("100k-qualification-design*.json")
     )
-    if compiled and any(item.name == "100k-qualification.v1.json" for item in compiled) and len(scale_reports) != 1:
+    if (
+        compiled
+        and any(item.name == "100k-qualification.v1.json" for item in compiled)
+        and len(scale_reports) != 1
+    ):
         raise ConformanceDataError(
             "scale-report-accounting",
             "the 100K compiled campaign requires exactly one design report",
@@ -130,14 +153,54 @@ def load_and_validate_campaign_records(
         )
     if scale_reports:
         from regex_conformance_scale import verify_design_report
-        scale_schema = load_strict(root / "schemas" / "json" / "scale-qualification-design-report.schema.json")
+
+        scale_schema = load_strict(
+            root / "schemas" / "json" / "scale-qualification-design-report.schema.json"
+        )
         for source in scale_reports:
             report = load_strict(source)
             validate_instance(report, scale_schema, source=str(source))
             plan = compiled_by_id.get(report["campaign_manifest_id"])
             if plan is None or plan.get("schema_version") != "scale-campaign-plan.v1":
-                raise ConformanceDataError("campaign-report-drift", "100K design report references an unknown scale plan", path=str(source))
+                raise ConformanceDataError(
+                    "campaign-report-drift",
+                    "100K design report references an unknown scale plan",
+                    path=str(source),
+                )
             verify_design_report(root, plan, report)
+    execution_reports = sorted(
+        (root / "reports" / "scale").glob("100k-execution*.json")
+    )
+    if len(execution_reports) > 1:
+        raise ConformanceDataError(
+            "scale-execution-report-accounting",
+            "the 100K campaign permits one canonical compact execution report",
+            path="reports/scale",
+        )
+    for source in execution_reports:
+        report = load_strict(source)
+        validate_instance(
+            report,
+            load_strict(
+                root / "schemas" / "json" / "scale-execution-report.schema.json"
+            ),
+            source=str(source),
+        )
+        plan = compiled_by_id.get(report["campaign_manifest_id"])
+        if plan is None or plan.get("schema_version") != "scale-campaign-plan.v1":
+            raise ConformanceDataError(
+                "campaign-report-drift",
+                "100K execution report references an unknown scale plan",
+                path=str(source),
+            )
+        if report["logical_execution_count"] != plan["denominator"][
+            "included_count"
+        ] or report["result_shard_count"] != len(plan["shards"]):
+            raise ConformanceDataError(
+                "scale-execution-report-drift",
+                "100K execution report counts differ from its frozen plan",
+                path=str(source),
+            )
     return {
         "applicability_policies": len(policies),
         "campaign_definitions": len(definitions),
@@ -146,4 +209,5 @@ def load_and_validate_campaign_records(
         "probe_vector_sets": len(vector_sets),
         "qualification_coverage_reports": len(coverage_reports),
         "scale_qualification_reports": len(scale_reports),
+        "scale_execution_reports": len(execution_reports),
     }

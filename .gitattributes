@@ -1,0 +1,5 @@
+# Canonical repository text is byte-stable across development hosts.
+* text=auto eol=lf
+
+# Preserve Windows command entry points as CRLF when one is introduced.
+*.bat text eol=crlf

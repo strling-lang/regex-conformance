@@ -14,6 +14,7 @@ for source in (
     ROOT / "matrix" / "python",
     ROOT / "scheduler" / "python",
     ROOT / "schemas" / "tooling" / "python",
+    ROOT / "verifier" / "python",
 ):
     if str(source) not in sys.path:
         sys.path.insert(0, str(source))
@@ -27,6 +28,7 @@ from regex_conformance_scale import (
     verify_materialized_segments,
     verify_scale_plan,
 )
+from regex_conformance_scale.execution import ScaleLogicalStore
 from regex_conformance_schema.jsonio import canonical_bytes, load_strict
 from regex_conformance_schema.schema import validate_instance
 
@@ -110,6 +112,13 @@ class ScaleQualificationDesignTests(unittest.TestCase):
         self,
     ) -> None:
         verify_materialized_segments(ROOT, self.plan, self.external)
+        logicals = ScaleLogicalStore(ROOT, self.plan, self.external).load(
+            self.plan["shards"][0]
+        )
+        self.assertEqual(
+            len(logicals), self.plan["shards"][0]["logical_execution_count"]
+        )
+        self.assertTrue(all("request" in item for item in logicals))
         files = sorted(
             (self.external / "logical-execution-segments" / "sha256").glob("*.json")
         )
@@ -151,10 +160,17 @@ class ScaleQualificationDesignTests(unittest.TestCase):
             target = base / "indirect"
             target.mkdir()
             path.unlink()
-            path.symlink_to(target / path.name)
-            (target / path.name).write_bytes(original)
+            target_path = target / path.name
+            try:
+                path.symlink_to(target_path)
+                target_path.write_bytes(original)
+            except OSError as error:
+                if getattr(error, "winerror", None) != 1314:
+                    raise
+                target_path.write_bytes(original)
+                os.link(target_path, path)
             with self.assertRaisesRegex(
-                ScaleCompileError, "escapes its root|direct regular file"
+                ScaleCompileError, "escapes its root|direct regular file|hard-linked"
             ):
                 verify_materialized_segments(ROOT, self.plan, external)
 

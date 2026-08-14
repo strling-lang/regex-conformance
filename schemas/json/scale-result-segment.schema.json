@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/scale-result-segment.schema.json",
+  "title": "Immutable Scale Result Segment v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "attempt_number", "campaign_manifest_id", "logical_execution_ids",
+    "observations", "physical_attempts", "provenance", "result_segment_id",
+    "schema_version", "segment_kind", "selection_key", "shard_id"
+  ],
+  "properties": {
+    "attempt_number": {"type": "integer", "minimum": 1, "maximum": 3},
+    "campaign_manifest_id": {"$ref": "#/$defs/campaign"},
+    "logical_execution_ids": {
+      "type": "array", "minItems": 1, "maxItems": 250,
+      "uniqueItems": true, "items": {"$ref": "#/$defs/logical"}
+    },
+    "observations": {
+      "type": "array", "maxItems": 250,
+      "items": {"$ref": "#/$defs/observation"}
+    },
+    "physical_attempts": {
+      "type": "array", "minItems": 1, "maxItems": 250,
+      "items": {"$ref": "#/$defs/attempt"}
+    },
+    "provenance": {"type": "object"},
+    "result_segment_id": {"$ref": "#/$defs/segment"},
+    "schema_version": {"const": "scale-result-segment.v1"},
+    "segment_kind": {"enum": ["attempt", "result"]},
+    "selection_key": {"$ref": "#/$defs/token"},
+    "shard_id": {"$ref": "#/$defs/shard"}
+  },
+  "$defs": {
+    "attempt": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "attempt_number", "ended_at", "infrastructure_failure",
+        "logical_execution_id", "outcome", "physical_run_id", "started_at"
+      ],
+      "properties": {
+        "attempt_number": {"type": "integer", "minimum": 1, "maximum": 3},
+        "ended_at": {"type": "string", "format": "date-time", "maxLength": 64},
+        "infrastructure_failure": {
+          "oneOf": [
+            {
+              "type": "object", "additionalProperties": false,
+              "required": ["code", "message"],
+              "properties": {
+                "code": {"$ref": "#/$defs/token"},
+                "message": {"type": "string", "minLength": 1, "maxLength": 2048}
+              }
+            },
+            {"type": "null"}
+          ]
+        },
+        "logical_execution_id": {"$ref": "#/$defs/logical"},
+        "outcome": {"enum": ["infrastructure-failure", "target-observation"]},
+        "physical_run_id": {"$ref": "#/$defs/physical"},
+        "started_at": {"type": "string", "format": "date-time", "maxLength": 64}
+      }
+    },
+    "campaign": {"type": "string", "pattern": "^rcid:v1:campaign-manifest:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "logical": {"type": "string", "pattern": "^rcid:v1:logical-execution:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "observation": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "campaign_manifest_id", "logical_execution_id", "observation_content_id",
+        "observation_id", "physical_run_id", "result"
+      ],
+      "properties": {
+        "campaign_manifest_id": {"$ref": "#/$defs/campaign"},
+        "logical_execution_id": {"$ref": "#/$defs/logical"},
+        "observation_content_id": {"$ref": "#/$defs/observationContent"},
+        "observation_id": {"$ref": "#/$defs/observationId"},
+        "physical_run_id": {"$ref": "#/$defs/physical"},
+        "result": {"type": "object"}
+      }
+    },
+    "observationContent": {"type": "string", "pattern": "^rcid:v1:observation-content:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "observationId": {"type": "string", "pattern": "^rcid:v1:observation:u7:[0-9a-f-]{36}$"},
+    "physical": {"type": "string", "pattern": "^rcid:v1:physical-run:u7:[0-9a-f-]{36}$"},
+    "segment": {"type": "string", "pattern": "^rcid:v1:result-segment:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "shard": {"type": "string", "pattern": "^rcid:v1:shard:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "token": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$", "maxLength": 128}
+  }
+}
