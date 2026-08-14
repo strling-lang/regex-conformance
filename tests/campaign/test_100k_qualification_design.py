@@ -107,6 +107,17 @@ class ScaleQualificationDesignTests(unittest.TestCase):
         )
         self.assertFalse(self.plan["classification"]["normative_authority"])
         self.assertFalse(self.plan["classification"]["semantic_authority"])
+        self.assertTrue(
+            {
+                "tools/environments/certify_minimal.py",
+                "control-plane/python/regex_conformance_control_plane/certified_environments.py",
+                "control-plane/python/regex_conformance_control_plane/containment.py",
+                "control-plane/python/regex_conformance_control_plane/environment_manager.py",
+                "control-plane/python/regex_conformance_control_plane/environment_providers.py",
+                "control-plane/python/regex_conformance_control_plane/resource_models.py",
+                "control-plane/python/regex_conformance_control_plane/resource_planner.py",
+            }.issubset(self.plan["source_digests"])
+        )
 
     def test_materialized_segments_are_exact_external_and_reconstruct_requests(
         self,

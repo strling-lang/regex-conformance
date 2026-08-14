@@ -286,31 +286,69 @@ def _repository_state() -> dict[str, Any]:
 @contextmanager
 def _exclusive_certification_lock(state_root: Path):
     """Prevent concurrent certification against the same operational state root."""
-    import fcntl
     import stat
 
     state_root.parent.mkdir(parents=True, exist_ok=True)
     lock_path = state_root.parent / f".{state_root.name}.minimal-certification.lock"
-    flags = os.O_CREAT | os.O_RDWR | os.O_CLOEXEC
+    if lock_path.is_symlink():
+        raise RuntimeError("certification lock path cannot be a symbolic link")
+    flags = os.O_CREAT | os.O_RDWR
+    if hasattr(os, "O_CLOEXEC"):
+        flags |= os.O_CLOEXEC
     if hasattr(os, "O_NOFOLLOW"):
         flags |= os.O_NOFOLLOW
     descriptor = os.open(lock_path, flags, 0o600)
+    locked = False
     try:
-        if not stat.S_ISREG(os.fstat(descriptor).st_mode):
-            raise RuntimeError("certification lock path is not a regular file")
-        os.fchmod(descriptor, 0o600)
-        try:
-            fcntl.flock(descriptor, fcntl.LOCK_EX | fcntl.LOCK_NB)
-        except BlockingIOError as error:
-            raise RuntimeError(f"certification is already active for state root {state_root}") from error
+        details = os.fstat(descriptor)
+        if (
+            not stat.S_ISREG(details.st_mode)
+            or getattr(details, "st_nlink", 1) != 1
+        ):
+            raise RuntimeError(
+                "certification lock path must be a singly linked regular file"
+            )
+        if os.name != "nt":
+            os.fchmod(descriptor, 0o600)
+        if details.st_size == 0:
+            os.write(descriptor, b"0")
+            os.fsync(descriptor)
+        os.lseek(descriptor, 0, os.SEEK_SET)
+        if os.name == "nt":
+            import msvcrt
+
+            try:
+                msvcrt.locking(descriptor, msvcrt.LK_NBLCK, 1)
+            except OSError as error:
+                raise RuntimeError(
+                    f"certification is already active for state root {state_root}"
+                ) from error
+        else:
+            import fcntl
+
+            try:
+                fcntl.flock(descriptor, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            except OSError as error:
+                raise RuntimeError(
+                    f"certification is already active for state root {state_root}"
+                ) from error
+        locked = True
         os.ftruncate(descriptor, 0)
-        os.write(descriptor, f"pid={os.getpid()}\n".encode("ascii"))
+        os.lseek(descriptor, 0, os.SEEK_SET)
+        os.write(descriptor, (f"pid={os.getpid()}" + chr(10)).encode("ascii"))
         os.fsync(descriptor)
-        try:
-            yield
-        finally:
-            fcntl.flock(descriptor, fcntl.LOCK_UN)
+        yield
     finally:
+        if locked:
+            os.lseek(descriptor, 0, os.SEEK_SET)
+            if os.name == "nt":
+                import msvcrt
+
+                msvcrt.locking(descriptor, msvcrt.LK_UNLCK, 1)
+            else:
+                import fcntl
+
+                fcntl.flock(descriptor, fcntl.LOCK_UN)
         os.close(descriptor)
 
 

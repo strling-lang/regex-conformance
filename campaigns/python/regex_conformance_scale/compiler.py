@@ -170,6 +170,47 @@ def _source_digests(
         root / "tools" / "campaigns" / "compile_100k_qualification.py",
         root / "tools" / "campaigns" / "run_100k_qualification.py",
         root / "tools" / "campaigns" / "run_isolated_python_target.py",
+        root / "tools" / "environments" / "certify_minimal.py",
+        root
+        / "control-plane"
+        / "python"
+        / "regex_conformance_control_plane"
+        / "certified_environments.py",
+        root
+        / "control-plane"
+        / "python"
+        / "regex_conformance_control_plane"
+        / "containment.py",
+        root
+        / "control-plane"
+        / "python"
+        / "regex_conformance_control_plane"
+        / "discovery.py",
+        root
+        / "control-plane"
+        / "python"
+        / "regex_conformance_control_plane"
+        / "doctor.py",
+        root
+        / "control-plane"
+        / "python"
+        / "regex_conformance_control_plane"
+        / "environment_manager.py",
+        root
+        / "control-plane"
+        / "python"
+        / "regex_conformance_control_plane"
+        / "environment_providers.py",
+        root
+        / "control-plane"
+        / "python"
+        / "regex_conformance_control_plane"
+        / "resource_models.py",
+        root
+        / "control-plane"
+        / "python"
+        / "regex_conformance_control_plane"
+        / "resource_planner.py",
         root
         / "scheduler"
         / "python"

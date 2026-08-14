@@ -4,6 +4,7 @@ import os
 from pathlib import Path
 import runpy
 import stat
+import subprocess
 import tempfile
 import unittest
 
@@ -26,7 +27,9 @@ class MinimalEnvironmentCertificationTests(unittest.TestCase):
             with exclusive_certification_lock(state_root):
                 pass
             lock_path = state_root.parent / f".{state_root.name}.minimal-certification.lock"
-            self.assertEqual(stat.S_IMODE(lock_path.stat().st_mode), 0o600)
+            self.assertTrue(stat.S_ISREG(lock_path.stat().st_mode))
+            if os.name != "nt":
+                self.assertEqual(stat.S_IMODE(lock_path.stat().st_mode), 0o600)
 
     @unittest.skipUnless(hasattr(os, "O_NOFOLLOW"), "requires no-follow open support")
     def test_symbolic_lock_path_fails_closed(self) -> None:
@@ -45,7 +48,25 @@ class MinimalEnvironmentCertificationTests(unittest.TestCase):
     def test_external_symbolic_path_into_repository_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             link = Path(temporary) / "repository-reports"
-            link.symlink_to(ROOT / "reports", target_is_directory=True)
+            try:
+                link.symlink_to(ROOT / "reports", target_is_directory=True)
+            except OSError as error:
+                if getattr(error, "winerror", None) != 1314:
+                    raise
+                subprocess.run(
+                    (
+                        "cmd",
+                        "/d",
+                        "/c",
+                        "mklink",
+                        "/J",
+                        str(link),
+                        str(ROOT / "reports"),
+                    ),
+                    check=True,
+                    capture_output=True,
+                    text=True,
+                )
             with self.assertRaisesRegex(ValueError, "outside the Git repository"):
                 outside_repository(link / "state", "state root")
 
@@ -66,7 +87,13 @@ class MinimalEnvironmentCertificationTests(unittest.TestCase):
             destination = reports / "compact.json"
             target = temporary_root / "do-not-overwrite"
             target.write_text("preserve", encoding="utf-8")
-            destination.with_suffix(".json.tmp").symlink_to(target)
+            temporary_report = destination.with_suffix(".json.tmp")
+            try:
+                temporary_report.symlink_to(target)
+            except OSError as error:
+                if getattr(error, "winerror", None) != 1314:
+                    raise
+                os.link(target, temporary_report)
             function_globals["ROOT"] = isolated_root
             try:
                 with self.assertRaises(FileExistsError):
