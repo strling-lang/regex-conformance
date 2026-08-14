@@ -725,6 +725,9 @@ class CpythonArchiveProvider(CertifiedEnvironmentProvider):
 class MysqlOciProvider(CertifiedEnvironmentProvider):
     machine_provider_name = "docker"
     _STABLE_READINESS_OBSERVATIONS = 5
+    _IMAGE_CONFIG_DIGEST = "sha256:9cffaceb9b62d4280247acdb2324b380d2b36208ae34dfe9f0afb62eeaf70f08"
+    _IMAGE_MANIFEST_DIGEST = "sha256:870634c634aae968ea1a93e5c094a14e00c692da2ee9bed956b3dfcc7bd08cb0"
+    _IMAGE_REFERENCE = f"mysql@{_IMAGE_MANIFEST_DIGEST}"
 
     def _cli_limits(self, wall_time_ms: int | None = None) -> ExecutionLimits:
         values = self.definition.limits
@@ -773,12 +776,11 @@ class MysqlOciProvider(CertifiedEnvironmentProvider):
         self._require_recipe(recipe)
         root = self._handle_root(acquisition.handle, transaction_id)
         image = self.definition.parameters["image-reference"]
-        if image != "mysql@sha256:870634c634aae968ea1a93e5c094a14e00c692da2ee9bed956b3dfcc7bd08cb0":
+        if image != self._IMAGE_REFERENCE:
             raise ProviderOperationError("oci-reference-mismatch", "MySQL recipe did not name the certified platform manifest", str(root))
         self._run(("docker", "pull", image), limits=self._cli_limits())
         inspection = self._image_inspection(image)
-        if inspection.get("Id") != "sha256:9cffaceb9b62d4280247acdb2324b380d2b36208ae34dfe9f0afb62eeaf70f08":
-            raise ProviderOperationError("oci-config-substitution", "pulled image config digest did not match the recipe", str(root))
+        self._verify_image_identity(inspection, str(root))
         if (inspection.get("Os"), inspection.get("Architecture")) != ("linux", "amd64"):
             raise ProviderOperationError("oci-platform-mismatch", "pulled image was not linux/amd64", str(root))
         container = self._container_name(transaction_id)
@@ -796,6 +798,42 @@ class MysqlOciProvider(CertifiedEnvironmentProvider):
         self._wait_for_stable_service(container, str(root))
         self._write_metadata(root, {"state": "constructed"})
         return str(root)
+
+    def _verify_image_identity(self, inspection: dict[str, Any], handle: str) -> str:
+        """Accept only the two Docker representations of the same pinned image.
+
+        Classic image stores expose the OCI config digest as ``Id``.  Newer
+        containerd image stores expose the pulled manifest digest as ``Id`` and
+        repeat it in ``Descriptor.digest``.  The environment manager has already
+        independently verified the pinned manifest and config artifact bytes
+        before construction reaches this check.
+        """
+        image_id = inspection.get("Id")
+        descriptor = inspection.get("Descriptor")
+        descriptor_digest = descriptor.get("digest") if isinstance(descriptor, dict) else None
+        repo_digests = inspection.get("RepoDigests")
+        manifest_references = (
+            isinstance(repo_digests, list)
+            and any(
+                isinstance(item, str) and item.rpartition("@")[2] == self._IMAGE_MANIFEST_DIGEST
+                for item in repo_digests
+            )
+        )
+        classic_identity = image_id == self._IMAGE_CONFIG_DIGEST and descriptor_digest in {
+            None,
+            self._IMAGE_MANIFEST_DIGEST,
+        }
+        containerd_identity = (
+            image_id == self._IMAGE_MANIFEST_DIGEST
+            and descriptor_digest == self._IMAGE_MANIFEST_DIGEST
+        )
+        if not manifest_references or not (classic_identity or containerd_identity):
+            raise ProviderOperationError(
+                "oci-config-substitution",
+                "pulled image identity did not prove the pinned manifest/config pair",
+                handle,
+            )
+        return self._IMAGE_CONFIG_DIGEST
 
     def _image_inspection(self, image: str) -> dict[str, Any]:
         raw = _safe_value(self._run(("docker", "image", "inspect", image, "--format", "{{json .}}"), limits=ExecutionLimits(30_000, 262_144, 65_536)).stdout, "image inspection")
@@ -839,6 +877,7 @@ class MysqlOciProvider(CertifiedEnvironmentProvider):
         if self._metadata(root) != expected_metadata:
             raise ProviderOperationError("provider-state-mismatch", "MySQL provider metadata did not match the transaction", handle)
         inspection = self._image_inspection(image)
+        image_config_digest = self._verify_image_identity(inspection, handle)
         container_inspection = self._container_inspection(container)
         host = container_inspection.get("HostConfig", {})
         tmpfs = host.get("Tmpfs", {})
@@ -873,7 +912,7 @@ class MysqlOciProvider(CertifiedEnvironmentProvider):
             raise ProviderOperationError("runtime-provenance-mismatch", "MySQL ICU provenance binding was absent", handle)
         facts = [
             NamedValue("architecture", str(inspection["Architecture"])), NamedValue("icu-version", "77.1"),
-            NamedValue("image-config-digest", str(inspection["Id"])), NamedValue("mysql-package-version", mysql_package),
+            NamedValue("image-config-digest", image_config_digest), NamedValue("mysql-package-version", mysql_package),
             NamedValue("mysql-version", fields[0]),
         ]
         configuration = [

@@ -280,7 +280,12 @@ class CertifiedEnvironmentProviderTests(unittest.TestCase):
     def test_oci_provider_rejects_noncertified_manifest_before_docker_execution(self) -> None:
         definition = tiny_definition(b"manifest", selection="mysql-regex", image="mysql:latest")
         with tempfile.TemporaryDirectory() as temporary:
-            provider = MysqlOciProvider(definition, Path(temporary), fetcher=StaticFetcher(b"manifest"))
+            provider = MysqlOciProvider(
+                definition,
+                Path(temporary),
+                fetcher=StaticFetcher(b"manifest"),
+                supervisor=ScriptedSupervisor(process_result(stdout=b"")),
+            )
             transaction = "opid:v1:environment:u7:019ff999-0000-7000-8000-000000000004"
             acquisition = provider.acquire(definition.lifecycle, provider.plan(definition.lifecycle), transaction)
             with self.assertRaisesRegex(ProviderOperationError, "certified platform manifest"):
@@ -295,6 +300,49 @@ class CertifiedEnvironmentProviderTests(unittest.TestCase):
             self.assertIsNone(provider._cli_limits().memory_bytes)
             self.assertIsNone(provider._cli_limits().cpu_time_seconds)
             self.assertEqual(provider._cli_limits().wall_time_ms, definition.limits.wall_time_ms)
+
+    def test_oci_image_identity_accepts_classic_and_containerd_inspection_shapes(self) -> None:
+        definition = next(item for item in load_certified_recipes(ROOT) if item.selection_key == "mysql-regex")
+        with tempfile.TemporaryDirectory() as temporary:
+            provider = MysqlOciProvider(definition, Path(temporary))
+            common = {
+                "RepoDigests": [f"mysql@{provider._IMAGE_MANIFEST_DIGEST}"],
+                "Os": "linux",
+                "Architecture": "amd64",
+            }
+            self.assertEqual(
+                provider._verify_image_identity(
+                    {**common, "Id": provider._IMAGE_CONFIG_DIGEST},
+                    "classic-handle",
+                ),
+                provider._IMAGE_CONFIG_DIGEST,
+            )
+            self.assertEqual(
+                provider._verify_image_identity(
+                    {
+                        **common,
+                        "Id": provider._IMAGE_MANIFEST_DIGEST,
+                        "Descriptor": {"digest": provider._IMAGE_MANIFEST_DIGEST},
+                    },
+                    "containerd-handle",
+                ),
+                provider._IMAGE_CONFIG_DIGEST,
+            )
+            for inspection in (
+                {**common, "Id": "sha256:" + "0" * 64},
+                {**common, "Id": provider._IMAGE_MANIFEST_DIGEST},
+                {
+                    **common,
+                    "Id": provider._IMAGE_CONFIG_DIGEST,
+                    "Descriptor": {"digest": "sha256:" + "0" * 64},
+                },
+                {"Id": provider._IMAGE_CONFIG_DIGEST, "RepoDigests": []},
+            ):
+                with self.subTest(inspection=inspection), self.assertRaisesRegex(
+                    ProviderOperationError,
+                    "pinned manifest/config pair",
+                ):
+                    provider._verify_image_identity(inspection, "rejected-handle")
 
     def test_mysql_readiness_must_survive_temporary_initialization_server_handoff(self) -> None:
         definition = next(item for item in load_certified_recipes(ROOT) if item.selection_key == "mysql-regex")
