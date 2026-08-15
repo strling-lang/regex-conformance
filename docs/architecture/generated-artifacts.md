@@ -53,6 +53,7 @@ diff. Fixtures are not production observations or published evidence.
 | Closed deliberate-fault matrix | `tools/campaigns/compile_fault_classification.py` | `reports/small-scale/fault-classification.json` | schema validation and deterministic rebuild |
 | Closed restart/resume matrix | `tools/campaigns/compile_restart_resume_qualification.py` | `reports/small-scale/restart-resume-qualification.json` | schema validation and deterministic rebuild |
 | Seeded evidence-corruption matrix | `tools/campaigns/compile_evidence_verification_qualification.py` | `reports/small-scale/evidence-verification-qualification.json` | verifier/schema validation and focused campaign tests |
+| Cache and disk-pressure qualification | `tools/control_plane/compile_cache_disk_pressure_qualification.py` | `reports/scale/cache-disk-pressure-qualification.json` | schema validation, deterministic rebuild, source bindings, and focused Control Plane tests |
 
 Edit the source and run the listed producer; do not hand-maintain these outputs.
 A compact report is a traceable projection, not raw evidence or independent

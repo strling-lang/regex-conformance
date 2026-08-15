@@ -139,6 +139,13 @@ non-overwriting atomic link only after exact final verification. A corrupted
 checkpoint, destination race, or digest mismatch never becomes a completed
 transfer.
 
+The deterministic P19 cache/disk-pressure qualification composes these cache
+contracts with dynamic resource admission under shared-store pressure. It
+proves weighted protection, refusal, backpressure, drain, expected-versus-
+actual reclamation, interrupted/partial recovery, and committed-evidence
+separation without using Docker or executing a regex target. See the
+[qualification procedure and boundaries](../docs/campaigns/cache-disk-pressure-qualification.md).
+
 ## Durable local state and restart reconciliation
 
 The durable-state service stores only local operational projections in a

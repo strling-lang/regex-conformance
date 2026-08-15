@@ -1,0 +1,206 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://strling.dev/regex-conformance/schemas/cache-disk-pressure-qualification.v1.schema.json",
+  "title": "Cache and Disk-Pressure Qualification v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "cache_churn",
+    "cases",
+    "classification",
+    "decisions",
+    "invariants",
+    "qualification_digest_sha256",
+    "schema_version",
+    "source_bindings",
+    "summary"
+  ],
+  "properties": {
+    "cache_churn": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "cancelled_candidate_count",
+        "cancelled_cleanup_count",
+        "cleanup_report_count",
+        "completed_cleanup_count",
+        "executed_plan_actual_reclaim_bytes",
+        "executed_plan_expected_reclaim_bytes",
+        "failed_deletion_count",
+        "partial_cleanup_count",
+        "protected_exclusion_count",
+        "provider_divergence_exclusion_count",
+        "refused_cleanup_count",
+        "successful_deletion_count"
+      ],
+      "properties": {
+        "cancelled_candidate_count": { "const": 1 },
+        "cancelled_cleanup_count": { "const": 1 },
+        "cleanup_report_count": { "const": 7 },
+        "completed_cleanup_count": { "const": 4 },
+        "executed_plan_actual_reclaim_bytes": { "const": 24576 },
+        "executed_plan_expected_reclaim_bytes": { "const": 32768 },
+        "failed_deletion_count": { "const": 1 },
+        "partial_cleanup_count": { "const": 1 },
+        "protected_exclusion_count": { "const": 3 },
+        "provider_divergence_exclusion_count": { "const": 1 },
+        "refused_cleanup_count": { "const": 1 },
+        "successful_deletion_count": { "const": 6 }
+      }
+    },
+    "cases": {
+      "type": "array",
+      "minItems": 10,
+      "maxItems": 10,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/case" }
+    },
+    "classification": { "$ref": "#/$defs/classification" },
+    "decisions": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["contract", "decision_id"],
+        "properties": {
+          "contract": { "type": "string", "minLength": 1 },
+          "decision_id": { "pattern": "^D[0-9]{3}$", "type": "string" }
+        }
+      }
+    },
+    "invariants": {
+      "type": "array",
+      "minItems": 9,
+      "maxItems": 9,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/invariant" }
+    },
+    "qualification_digest_sha256": { "$ref": "#/$defs/sha256" },
+    "schema_version": { "const": "cache-disk-pressure-qualification.v1" },
+    "source_bindings": {
+      "type": "array",
+      "minItems": 9,
+      "maxItems": 9,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "sha256"],
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\).+$"
+          },
+          "sha256": { "$ref": "#/$defs/sha256" }
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "case_count",
+        "failed_case_count",
+        "invariant_count",
+        "passed_case_count",
+        "qualification_outcome"
+      ],
+      "properties": {
+        "case_count": { "const": 10 },
+        "failed_case_count": { "const": 0 },
+        "invariant_count": { "const": 9 },
+        "passed_case_count": { "const": 10 },
+        "qualification_outcome": { "const": "passed" }
+      }
+    }
+  },
+  "$defs": {
+    "case": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["case_key", "checks", "metrics", "mode", "requirement", "status"],
+      "properties": {
+        "case_key": { "$ref": "#/$defs/token" },
+        "checks": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["check_key", "detail", "passed"],
+            "properties": {
+              "check_key": { "$ref": "#/$defs/token" },
+              "detail": { "type": "string", "minLength": 1 },
+              "passed": { "const": true }
+            }
+          }
+        },
+        "metrics": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["metric_key", "unit", "value"],
+            "properties": {
+              "metric_key": { "$ref": "#/$defs/token" },
+              "unit": { "enum": ["bytes", "entries", "count", "outcome"] },
+              "value": {
+                "oneOf": [
+                  { "type": "integer", "minimum": 0, "maximum": 9007199254740991 },
+                  { "type": "string", "minLength": 1 }
+                ]
+              }
+            }
+          }
+        },
+        "mode": { "const": "deterministic-simulation" },
+        "requirement": { "type": "string", "minLength": 1 },
+        "status": { "const": "passed" }
+      }
+    },
+    "classification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "canonical_authority",
+        "docker_used",
+        "external_evidence_mutated",
+        "normative_authority",
+        "operational_qualification_only",
+        "simulated_disk_pressure",
+        "target_behavior"
+      ],
+      "properties": {
+        "canonical_authority": { "const": false },
+        "docker_used": { "const": false },
+        "external_evidence_mutated": { "const": false },
+        "normative_authority": { "const": false },
+        "operational_qualification_only": { "const": true },
+        "simulated_disk_pressure": { "const": true },
+        "target_behavior": { "const": false }
+      }
+    },
+    "invariant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["case_keys", "description", "invariant_key", "status"],
+      "properties": {
+        "case_keys": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/token" }
+        },
+        "description": { "type": "string", "minLength": 1 },
+        "invariant_key": { "$ref": "#/$defs/token" },
+        "status": { "const": "passed" }
+      }
+    },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "token": { "type": "string", "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$" }
+  }
+}

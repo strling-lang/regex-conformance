@@ -53,6 +53,12 @@ planning explicitly non-mutating. Cross-field identity, ordering, and exact
 expected/actual reconciliation are additionally enforced by the typed Control
 Plane models before serialization.
 
+`json/cache-disk-pressure-qualification.schema.json` defines the compact P19
+stress-certification report. It fixes the ten deterministic simulated cases,
+nine safety invariants, accepted-decision references, exact source bindings,
+and permanent non-authority declarations. The report cannot claim Docker use,
+target behavior, canonical authority, or mutation of external evidence.
+
 `json/operational-state.schema.json` defines disjoint non-canonical wire
 records for local snapshots, external reconciliation observations,
 deterministic reconciliation plans, and applied reports. Snapshots carry the
