@@ -7,6 +7,10 @@ repetition is a distinct logical execution with its own content identity;
 retries of that logical execution remain separate append-only physical
 attempts.
 
+The completed P19-T02 execution, exact evidence anchors, retry disposition,
+and final accounting are recorded in
+[100K qualification results](100k-qualification-results.md).
+
 The resulting denominator is exactly 100,000 logical executions. The first
 four base logical IDs in code-point order receive 3,847 repetitions and the
 other 22 receive 3,846. This difference of at most one prevents workload

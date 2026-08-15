@@ -3,3 +3,15 @@
 
 # Preserve Windows command entry points as CRLF when one is introduced.
 *.bat text eol=crlf
+
+# P19-T02's frozen plan captured these exact pre-normalization Windows bytes.
+# Keep them unfiltered in the closure commit so the certified SHA reproduces the
+# campaign source digests; later source changes must bind a new campaign plan.
+campaigns/python/regex_conformance_scale/execution.py -text whitespace=cr-at-eol
+scheduler/python/regex_conformance_scheduler/scale_recovery.py -text whitespace=cr-at-eol
+schemas/json/scale-evidence-manifest.schema.json -text whitespace=cr-at-eol
+schemas/json/scale-execution-report.schema.json -text whitespace=cr-at-eol
+schemas/json/scale-result-segment.schema.json -text whitespace=cr-at-eol
+schemas/json/scale-target-timeout.schema.json -text whitespace=cr-at-eol
+tools/campaigns/run_100k_qualification.py -text whitespace=cr-at-eol
+tools/campaigns/run_isolated_python_target.py -text whitespace=cr-at-eol
