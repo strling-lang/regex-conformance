@@ -56,6 +56,7 @@ diff. Fixtures are not production observations or published evidence.
 | Cache and disk-pressure qualification | `tools/control_plane/compile_cache_disk_pressure_qualification.py` | `reports/scale/cache-disk-pressure-qualification.json` | schema validation, deterministic rebuild, source bindings, and focused Control Plane tests |
 | 100K warehouse reconciliation | `tools/campaigns/reconcile_100k_warehouse.py` | `reports/scale/100k-warehouse-reconciliation.json` | read-only evidence/ledger reconciliation, immutable warehouse row commitments, schema validation, and focused campaign tests |
 | 1M capacity and cost plan | `tools/campaigns/compile_million_scale_capacity_plan.py` | `reports/scale/million-scale-capacity-plan.json` | schema validation, deterministic rebuild, P19 source bindings, budget arithmetic, and focused campaign tests |
+| Full known-universe planning index, P19 measured raw corpus, and storage policy | `tools/campaigns/compile_full_known_universe_forecast.py` | `reports/scale/full-known-universe-corpus-forecast.json` | index/report schema validation, deterministic rebuild, D101 profile bounds, lossless-compression measurements, source bindings, budget arithmetic, and focused campaign tests |
 
 Edit the source and run the listed producer; do not hand-maintain these outputs.
 A compact report is a traceable projection, not raw evidence or independent

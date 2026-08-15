@@ -1,0 +1,392 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://strling.org/regex-conformance/schemas/full-known-universe-forecast.schema.json",
+  "title": "Full Known Universe Raw Corpus Forecast",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "classification", "cutoff_date", "source_bindings", "index_summary", "contributor_analysis", "measured_basis", "denominators", "raw_corpus_forecast", "service_envelope", "decision_gate", "report_digest_sha256"],
+  "properties": {
+    "schema_version": {"const": "full-known-universe-forecast.v1"},
+    "classification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["canonical_registry_authority", "docker_authorized", "external_evidence_mutated", "normative_authority", "p20_t02_authorized", "planning_only", "production_publication_performed", "r2_accessed", "semantic_authority", "permitted_remote_classes", "forbidden_remote_classes"],
+      "properties": {
+        "canonical_registry_authority": {"const": false},
+        "docker_authorized": {"const": false},
+        "external_evidence_mutated": {"const": false},
+        "normative_authority": {"const": false},
+        "p20_t02_authorized": {"const": false},
+        "planning_only": {"const": true},
+        "production_publication_performed": {"const": false},
+        "r2_accessed": {"const": false},
+        "semantic_authority": {"const": false},
+        "permitted_remote_classes": {"const": ["canonical-logical-input", "raw-result-and-attempt-evidence", "required-raw-diagnostics", "minimal-manifest-and-integrity", "lossless-raw-record-pack"]},
+        "forbidden_remote_classes": {"const": ["analytical-cache", "compatibility-dataset", "derived-index", "normalized-observation", "parquet", "public-site-artifact", "report", "summary", "warehouse"]}
+      }
+    },
+    "cutoff_date": {"const": "2026-08-15"},
+    "source_bindings": {
+      "type": "array",
+      "minItems": 8,
+      "maxItems": 8,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/sourceBinding"}
+    },
+    "index_summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["facility_count", "other_candidate_count", "total_candidate_count", "disposition_counts", "current_profile_count", "historical_profile_count", "current_representative_count", "exact_literal_current_representative_count", "governed_selector_current_representative_count", "release_history_status", "canonical_c1_c2_status"],
+      "properties": {
+        "facility_count": {"$ref": "#/$defs/safeInteger"},
+        "other_candidate_count": {"$ref": "#/$defs/safeInteger"},
+        "total_candidate_count": {"$ref": "#/$defs/safeInteger"},
+        "disposition_counts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["in-scope", "alias-to-facility", "normative-only", "not-a-regex-facility", "out-of-scope-no-implementation"],
+          "properties": {
+            "in-scope": {"$ref": "#/$defs/safeInteger"},
+            "alias-to-facility": {"$ref": "#/$defs/safeInteger"},
+            "normative-only": {"$ref": "#/$defs/safeInteger"},
+            "not-a-regex-facility": {"$ref": "#/$defs/safeInteger"},
+            "out-of-scope-no-implementation": {"$ref": "#/$defs/safeInteger"}
+          }
+        },
+        "current_profile_count": {"$ref": "#/$defs/safeInteger"},
+        "historical_profile_count": {"$ref": "#/$defs/band"},
+        "current_representative_count": {"$ref": "#/$defs/safeInteger"},
+        "exact_literal_current_representative_count": {"$ref": "#/$defs/safeInteger"},
+        "governed_selector_current_representative_count": {"$ref": "#/$defs/safeInteger"},
+        "release_history_status": {"const": "exact-where-primary-history-is-complete-otherwise-bounded"},
+        "canonical_c1_c2_status": {"const": "provisional-until-p21-registry-and-scanners"}
+      }
+    },
+    "contributor_analysis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["largest_expected_historical_facility_contributors", "expected_historical_archetype_contributors", "d101", "expected_effects"],
+      "properties": {
+        "largest_expected_historical_facility_contributors": {
+          "type": "array",
+          "minItems": 10,
+          "maxItems": 10,
+          "items": {"$ref": "#/$defs/facilityContributor"}
+        },
+        "expected_historical_archetype_contributors": {
+          "type": "array",
+          "minItems": 6,
+          "maxItems": 6,
+          "items": {"$ref": "#/$defs/archetypeContributor"}
+        },
+        "d101": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["active_current_release_line_representatives", "active_unit", "superseded_patch_execution_credit", "avoided_servicing_patch_executions"],
+          "properties": {
+            "active_current_release_line_representatives": {"$ref": "#/$defs/safeInteger"},
+            "active_unit": {"const": "latest stable patch or update per governed release line"},
+            "superseded_patch_execution_credit": {"const": 0},
+            "avoided_servicing_patch_executions": {"type": "string", "minLength": 1}
+          }
+        },
+        "expected_effects": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["current_profile_multiplicity_increment_over_one_profile_per_current_representative", "historical_stable_increment_before_platform_expansion", "platform_architecture_increment"],
+          "properties": {
+            "current_profile_multiplicity_increment_over_one_profile_per_current_representative": {"$ref": "#/$defs/safeInteger"},
+            "historical_stable_increment_before_platform_expansion": {"$ref": "#/$defs/safeInteger"},
+            "platform_architecture_increment": {"$ref": "#/$defs/safeInteger"}
+          }
+        }
+      }
+    },
+    "measured_basis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["campaign", "logical_executions", "physical_attempts", "retry_rate", "raw_classes", "uncompressed_raw_only_bytes", "independent_gzip9_bytes", "deterministic_tar_gzip9", "compression_ratios"],
+      "properties": {
+        "campaign": {"const": "P19 Session 05 100K qualification"},
+        "logical_executions": {"const": 100000},
+        "physical_attempts": {"const": 100500},
+        "retry_rate": {"const": "0.005"},
+        "raw_classes": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["canonical_logical_input", "raw_result_and_attempt", "minimal_manifest_integrity"],
+          "properties": {
+            "canonical_logical_input": {"$ref": "#/$defs/measuredRawClass"},
+            "raw_result_and_attempt": {"$ref": "#/$defs/measuredRawClass"},
+            "minimal_manifest_integrity": {"$ref": "#/$defs/measuredRawClass"}
+          }
+        },
+        "uncompressed_raw_only_bytes": {"const": 386855397},
+        "independent_gzip9_bytes": {"const": 31926001},
+        "deterministic_tar_gzip9": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["member_count", "packed_bytes", "reconstruction_verified", "tar_metadata"],
+          "properties": {
+            "member_count": {"const": 807},
+            "packed_bytes": {"const": 31742126},
+            "reconstruction_verified": {"const": true},
+            "tar_metadata": {"const": "sorted paths; mtime=0; uid=gid=0; empty owner names; mode=0644"}
+          }
+        },
+        "compression_ratios": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["independent_gzip9_over_raw", "packed_gzip9_over_raw"],
+          "properties": {
+            "independent_gzip9_over_raw": {"$ref": "#/$defs/decimalString"},
+            "packed_gzip9_over_raw": {"$ref": "#/$defs/decimalString"}
+          }
+        }
+      }
+    },
+    "denominators": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["current_stable", "full_historical_stable", "material_platform_architecture_increment", "final_stable_certification", "optional_prerelease_separate"],
+      "properties": {
+        "current_stable": {"$ref": "#/$defs/denominatorWithAttempts"},
+        "full_historical_stable": {"$ref": "#/$defs/denominatorWithAttempts"},
+        "material_platform_architecture_increment": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["logical_executions"],
+          "properties": {"logical_executions": {"$ref": "#/$defs/band"}}
+        },
+        "final_stable_certification": {"$ref": "#/$defs/denominatorWithAttempts"},
+        "optional_prerelease_separate": {"$ref": "#/$defs/denominatorWithAttempts"}
+      }
+    },
+    "raw_corpus_forecast": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["current_stable", "full_historical_stable", "final_stable_certification", "optional_prerelease_separate"],
+      "properties": {
+        "current_stable": {"$ref": "#/$defs/corpusProjection"},
+        "full_historical_stable": {"$ref": "#/$defs/corpusProjection"},
+        "final_stable_certification": {"$ref": "#/$defs/corpusProjection"},
+        "optional_prerelease_separate": {"$ref": "#/$defs/corpusProjection"}
+      }
+    },
+    "service_envelope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provider", "official_limits_retrieved_on", "provider_bucket_storage_limit", "provider_object_count_limit", "provider_single_part_upload_limit", "free_tier", "program_limits", "sources"],
+      "properties": {
+        "provider": {"const": "Cloudflare R2 Standard"},
+        "official_limits_retrieved_on": {"const": "2026-08-15"},
+        "provider_bucket_storage_limit": {"const": "unlimited"},
+        "provider_object_count_limit": {"const": "unlimited"},
+        "provider_single_part_upload_limit": {"const": "4.995 GiB"},
+        "free_tier": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["storage_gb_month_decimal", "class_a_requests_per_month", "class_b_requests_per_month", "applies_to_standard_storage_only"],
+          "properties": {
+            "storage_gb_month_decimal": {"const": 10},
+            "class_a_requests_per_month": {"const": 1000000},
+            "class_b_requests_per_month": {"const": 10000000},
+            "applies_to_standard_storage_only": {"const": true}
+          }
+        },
+        "program_limits": {"const": {"soft_bytes": 8000000000, "hard_bytes": 10000000000}},
+        "sources": {"const": ["https://developers.cloudflare.com/r2/pricing/", "https://developers.cloudflare.com/r2/platform/limits/"]}
+      }
+    },
+    "decision_gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["decision_required", "outcome", "lower_bound_final_packed_bytes_without_reserves", "lower_bound_exceeds_hard_by_bytes", "expected_final_packed_bytes", "conservative_final_packed_bytes", "expected_exceeds_soft_by_bytes", "conservative_exceeds_hard_by_bytes", "expected_class_a_requests", "conservative_class_a_requests", "scope_reduction_permitted", "retention_weakening_permitted", "paid_storage_authorized", "p20_t02_must_remain_planned"],
+      "properties": {
+        "decision_required": {"const": true},
+        "outcome": {"const": "stop-and-request-program-owner-decision"},
+        "lower_bound_final_packed_bytes_without_reserves": {"$ref": "#/$defs/safeInteger"},
+        "lower_bound_exceeds_hard_by_bytes": {"$ref": "#/$defs/safeInteger"},
+        "expected_final_packed_bytes": {"$ref": "#/$defs/safeInteger"},
+        "conservative_final_packed_bytes": {"$ref": "#/$defs/safeInteger"},
+        "expected_exceeds_soft_by_bytes": {"$ref": "#/$defs/safeInteger"},
+        "conservative_exceeds_hard_by_bytes": {"$ref": "#/$defs/safeInteger"},
+        "expected_class_a_requests": {"$ref": "#/$defs/safeInteger"},
+        "conservative_class_a_requests": {"$ref": "#/$defs/safeInteger"},
+        "scope_reduction_permitted": {"const": false},
+        "retention_weakening_permitted": {"const": false},
+        "paid_storage_authorized": {"const": false},
+        "p20_t02_must_remain_planned": {"const": true}
+      }
+    },
+    "report_digest_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "safeInteger": {"type": "integer", "minimum": 0, "maximum": 9007199254740991},
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "decimalString": {"type": "string", "pattern": "^(?:0|[1-9][0-9]*)(?:\\.[0-9]+)?$"},
+    "band": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["lower", "expected", "upper"],
+      "properties": {
+        "lower": {"$ref": "#/$defs/safeInteger"},
+        "expected": {"$ref": "#/$defs/safeInteger"},
+        "upper": {"$ref": "#/$defs/safeInteger"}
+      }
+    },
+    "sourceBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1, "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\).+$"},
+        "sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "facilityContributor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["facility_key", "expected_historical_logical_executions"],
+      "properties": {
+        "facility_key": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$"},
+        "expected_historical_logical_executions": {"$ref": "#/$defs/safeInteger"}
+      }
+    },
+    "archetypeContributor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["archetype", "expected_historical_logical_executions"],
+      "properties": {
+        "archetype": {"type": "string", "minLength": 1},
+        "expected_historical_logical_executions": {"$ref": "#/$defs/safeInteger"}
+      }
+    },
+    "measuredRawClass": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["files", "raw_bytes", "gzip9_bytes"],
+      "properties": {
+        "files": {"$ref": "#/$defs/safeInteger"},
+        "raw_bytes": {"$ref": "#/$defs/safeInteger"},
+        "gzip9_bytes": {"$ref": "#/$defs/safeInteger"}
+      }
+    },
+    "denominatorWithAttempts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["logical_executions", "physical_attempts"],
+      "properties": {
+        "logical_executions": {"$ref": "#/$defs/band"},
+        "physical_attempts": {"$ref": "#/$defs/band"}
+      }
+    },
+    "rawClassBytes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["canonical_logical_input", "raw_result_and_attempt", "minimal_manifest_integrity"],
+      "properties": {
+        "canonical_logical_input": {"$ref": "#/$defs/safeInteger"},
+        "raw_result_and_attempt": {"$ref": "#/$defs/safeInteger"},
+        "minimal_manifest_integrity": {"$ref": "#/$defs/safeInteger"}
+      }
+    },
+    "retryOverhead": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["additional_physical_attempts", "packed_raw_result_and_attempt_bytes"],
+      "properties": {
+        "additional_physical_attempts": {"$ref": "#/$defs/safeInteger"},
+        "packed_raw_result_and_attempt_bytes": {"$ref": "#/$defs/safeInteger"}
+      }
+    },
+    "byteProjection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["lower", "expected", "conservative"],
+      "properties": {
+        "lower": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["packed_gzip9_raw_only_bytes_without_reserves", "physical_attempts"],
+          "properties": {
+            "packed_gzip9_raw_only_bytes_without_reserves": {"$ref": "#/$defs/safeInteger"},
+            "physical_attempts": {"$ref": "#/$defs/safeInteger"}
+          }
+        },
+        "expected": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["physical_attempts", "uncompressed_raw_class_projection_bytes_before_diagnostics", "uncompressed_required_raw_diagnostics_reserve_bytes", "uncompressed_raw_only_bytes_with_diagnostics_reserve", "independent_gzip9_raw_class_projection_bytes_before_diagnostics", "independent_gzip9_required_raw_diagnostics_reserve_bytes", "independent_gzip9_raw_only_bytes_with_diagnostics_reserve", "packed_gzip9_raw_class_projection_bytes_before_diagnostics", "packed_gzip9_required_raw_diagnostics_reserve_bytes", "packed_gzip9_raw_only_bytes_with_diagnostics_reserve", "retry_overhead"],
+          "properties": {
+            "physical_attempts": {"$ref": "#/$defs/safeInteger"},
+            "uncompressed_raw_class_projection_bytes_before_diagnostics": {"$ref": "#/$defs/rawClassBytes"},
+            "uncompressed_required_raw_diagnostics_reserve_bytes": {"$ref": "#/$defs/safeInteger"},
+            "uncompressed_raw_only_bytes_with_diagnostics_reserve": {"$ref": "#/$defs/safeInteger"},
+            "independent_gzip9_raw_class_projection_bytes_before_diagnostics": {"$ref": "#/$defs/rawClassBytes"},
+            "independent_gzip9_required_raw_diagnostics_reserve_bytes": {"$ref": "#/$defs/safeInteger"},
+            "independent_gzip9_raw_only_bytes_with_diagnostics_reserve": {"$ref": "#/$defs/safeInteger"},
+            "packed_gzip9_raw_class_projection_bytes_before_diagnostics": {"$ref": "#/$defs/rawClassBytes"},
+            "packed_gzip9_required_raw_diagnostics_reserve_bytes": {"$ref": "#/$defs/safeInteger"},
+            "packed_gzip9_raw_only_bytes_with_diagnostics_reserve": {"$ref": "#/$defs/safeInteger"},
+            "retry_overhead": {"$ref": "#/$defs/retryOverhead"}
+          }
+        },
+        "conservative": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["physical_attempts", "uncompressed_raw_class_projection_bytes_before_reserves", "uncompressed_required_raw_diagnostics_reserve_bytes", "uncompressed_raw_only_bytes_with_reserves", "independent_gzip9_raw_class_projection_bytes_before_reserves", "independent_gzip9_required_raw_diagnostics_reserve_bytes", "independent_gzip9_raw_only_bytes_with_reserves", "packed_gzip9_raw_class_projection_bytes_before_reserves", "packed_gzip9_required_raw_diagnostics_reserve_bytes", "packed_gzip9_raw_only_bytes_with_reserves", "fixed_reserve_bytes", "retry_overhead"],
+          "properties": {
+            "physical_attempts": {"$ref": "#/$defs/safeInteger"},
+            "uncompressed_raw_class_projection_bytes_before_reserves": {"$ref": "#/$defs/rawClassBytes"},
+            "uncompressed_required_raw_diagnostics_reserve_bytes": {"$ref": "#/$defs/safeInteger"},
+            "uncompressed_raw_only_bytes_with_reserves": {"$ref": "#/$defs/safeInteger"},
+            "independent_gzip9_raw_class_projection_bytes_before_reserves": {"$ref": "#/$defs/rawClassBytes"},
+            "independent_gzip9_required_raw_diagnostics_reserve_bytes": {"$ref": "#/$defs/safeInteger"},
+            "independent_gzip9_raw_only_bytes_with_reserves": {"$ref": "#/$defs/safeInteger"},
+            "packed_gzip9_raw_class_projection_bytes_before_reserves": {"$ref": "#/$defs/rawClassBytes"},
+            "packed_gzip9_required_raw_diagnostics_reserve_bytes": {"$ref": "#/$defs/safeInteger"},
+            "packed_gzip9_raw_only_bytes_with_reserves": {"$ref": "#/$defs/safeInteger"},
+            "fixed_reserve_bytes": {"$ref": "#/$defs/safeInteger"},
+            "retry_overhead": {"$ref": "#/$defs/retryOverhead"}
+          }
+        }
+      }
+    },
+    "objectCounts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["logical_segment_objects", "result_segment_objects", "attempt_only_objects", "minimal_control_objects", "unpacked_raw_objects", "lossless_pack_objects_including_manifest", "class_a_puts", "class_b_readbacks"],
+      "properties": {
+        "logical_segment_objects": {"$ref": "#/$defs/safeInteger"},
+        "result_segment_objects": {"$ref": "#/$defs/safeInteger"},
+        "attempt_only_objects": {"$ref": "#/$defs/safeInteger"},
+        "minimal_control_objects": {"$ref": "#/$defs/safeInteger"},
+        "unpacked_raw_objects": {"$ref": "#/$defs/safeInteger"},
+        "lossless_pack_objects_including_manifest": {"$ref": "#/$defs/safeInteger"},
+        "class_a_puts": {"$ref": "#/$defs/safeInteger"},
+        "class_b_readbacks": {"$ref": "#/$defs/safeInteger"}
+      }
+    },
+    "objectEnvelope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["expected", "conservative", "raw_members_per_pack", "normal_list_requests"],
+      "properties": {
+        "expected": {"$ref": "#/$defs/objectCounts"},
+        "conservative": {"$ref": "#/$defs/objectCounts"},
+        "raw_members_per_pack": {"const": 1000},
+        "normal_list_requests": {"const": 0}
+      }
+    },
+    "corpusProjection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["bytes", "objects_and_requests"],
+      "properties": {
+        "bytes": {"$ref": "#/$defs/byteProjection"},
+        "objects_and_requests": {"$ref": "#/$defs/objectEnvelope"}
+      }
+    }
+  }
+}

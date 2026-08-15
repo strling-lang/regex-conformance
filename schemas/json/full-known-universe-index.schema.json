@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://strling.org/regex-conformance/schemas/full-known-universe-index.schema.json",
+  "title": "Full Known Universe Planning Index",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "snapshot", "classification", "governance", "discovery_coverage", "obligation_archetypes", "facilities", "other_candidates", "forecast_policy"],
+  "properties": {
+    "schema_version": {"const": "full-known-universe-index.v1"},
+    "snapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cutoff_date", "status", "canonical_registry_authority", "discovery_exhaustion_claimed", "purpose"],
+      "properties": {
+        "cutoff_date": {"const": "2026-08-15"},
+        "status": {"const": "planning-index"},
+        "canonical_registry_authority": {"const": false},
+        "discovery_exhaustion_claimed": {"const": false},
+        "purpose": {"type": "string", "minLength": 1}
+      }
+    },
+    "classification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["docker_authorized", "external_evidence_mutated", "normative_authority", "r2_accessed", "regex_execution_authorized", "semantic_authority"],
+      "properties": {
+        "docker_authorized": {"const": false},
+        "external_evidence_mutated": {"const": false},
+        "normative_authority": {"const": false},
+        "r2_accessed": {"const": false},
+        "regex_execution_authorized": {"const": false},
+        "semantic_authority": {"const": false}
+      }
+    },
+    "governance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["completeness_contract_url", "d101_url", "discovery_methodology_url", "profile_derivation_url", "raw_storage_contract_url", "release_line_rule", "superseded_patch_rule"],
+      "properties": {
+        "completeness_contract_url": {"$ref": "#/$defs/httpsUri"},
+        "d101_url": {"$ref": "#/$defs/httpsUri"},
+        "discovery_methodology_url": {"$ref": "#/$defs/httpsUri"},
+        "profile_derivation_url": {"$ref": "#/$defs/httpsUri"},
+        "raw_storage_contract_url": {"$ref": "#/$defs/httpsUri"},
+        "release_line_rule": {"type": "string", "minLength": 1},
+        "superseded_patch_rule": {"type": "string", "minLength": 1}
+      }
+    },
+    "discovery_coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["applied_source_classes", "method", "limitations"],
+      "properties": {
+        "applied_source_classes": {"type": "array", "minItems": 13, "maxItems": 13, "uniqueItems": true, "items": {"type": "string"}},
+        "method": {"type": "string", "minLength": 1},
+        "limitations": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}
+      }
+    },
+    "obligation_archetypes": {
+      "type": "object",
+      "minProperties": 6,
+      "additionalProperties": {"$ref": "#/$defs/band"}
+    },
+    "facilities": {
+      "type": "array",
+      "minItems": 60,
+      "items": {"$ref": "#/$defs/facility"}
+    },
+    "other_candidates": {
+      "type": "array",
+      "minItems": 12,
+      "items": {"$ref": "#/$defs/candidate"}
+    },
+    "forecast_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["final_platform_architecture_multiplier", "optional_prerelease_profile_count", "expected_retry_rate", "conservative_retry_rate", "expected_diagnostics_reserve_rate", "conservative_diagnostics_reserve_rate", "conservative_fixed_reserve_bytes", "result_shard_size", "raw_members_per_lossless_pack", "soft_limit_bytes", "hard_limit_bytes"],
+      "properties": {
+        "final_platform_architecture_multiplier": {"$ref": "#/$defs/decimalBand"},
+        "optional_prerelease_profile_count": {"$ref": "#/$defs/band"},
+        "expected_retry_rate": {"type": "string", "pattern": "^0\\.[0-9]+$"},
+        "conservative_retry_rate": {"type": "string", "pattern": "^0\\.[0-9]+$"},
+        "expected_diagnostics_reserve_rate": {"type": "string", "pattern": "^0\\.[0-9]+$"},
+        "conservative_diagnostics_reserve_rate": {"type": "string", "pattern": "^0\\.[0-9]+$"},
+        "conservative_fixed_reserve_bytes": {"type": "integer", "minimum": 0},
+        "result_shard_size": {"type": "integer", "minimum": 1},
+        "raw_members_per_lossless_pack": {"type": "integer", "minimum": 1},
+        "soft_limit_bytes": {"const": 8000000000},
+        "hard_limit_bytes": {"const": 10000000000}
+      }
+    }
+  },
+  "$defs": {
+    "band": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["lower", "expected", "upper"],
+      "properties": {
+        "lower": {"type": "integer", "minimum": 0},
+        "expected": {"type": "integer", "minimum": 0},
+        "upper": {"type": "integer", "minimum": 0}
+      }
+    },
+    "decimalBand": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["lower", "expected", "upper"],
+      "properties": {
+        "lower": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+$"},
+        "expected": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+$"},
+        "upper": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+$"}
+      }
+    },
+    "facility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["key", "name", "category", "archetype", "current_profiles", "historical_profiles", "current_representatives", "release_line_model", "source"],
+      "properties": {
+        "key": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$"},
+        "name": {"type": "string", "minLength": 1},
+        "category": {"enum": ["application", "c-runtime", "cli-tool", "cpp-runtime", "data-runtime", "database", "ecmascript-host", "ecmascript-runtime", "language-library", "language-runtime", "managed-service", "server", "standalone-engine", "standalone-library"]},
+        "archetype": {"enum": ["cli-surface", "database-service-surface", "host-runtime-surface", "linear-or-dfa-surface", "posix-library-surface", "standalone-library-surface"]},
+        "current_profiles": {"type": "integer", "minimum": 0},
+        "historical_profiles": {"$ref": "#/$defs/band"},
+        "current_representatives": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "release_line_model": {"type": "string", "minLength": 1},
+        "source": {"$ref": "#/$defs/httpsUri"}
+      }
+    },
+    "candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["key", "name", "disposition", "source"],
+      "properties": {
+        "key": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$"},
+        "name": {"type": "string", "minLength": 1},
+        "disposition": {"enum": ["alias-to-facility", "normative-only", "not-a-regex-facility", "out-of-scope-no-implementation"]},
+        "target": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$"},
+        "source": {"$ref": "#/$defs/httpsUri"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"disposition": {"const": "alias-to-facility"}}},
+          "then": {"required": ["target"]},
+          "else": {"not": {"required": ["target"]}}
+        }
+      ]
+    },
+    "httpsUri": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://"
+    }
+  }
+}
