@@ -449,13 +449,95 @@ def build_full_known_universe_forecast(root: Path) -> dict[str, Any]:
         for stage, value in denominators.items()
         if stage in {"current_stable", "full_historical_stable", "final_stable_certification", "optional_prerelease_separate"}
     }
+    qualification_retention = {
+        "campaign": "P19 Session 05 100K qualification",
+        "logical_executions": _P19_LOGICAL_EXECUTIONS,
+        "physical_attempts": _P19_PHYSICAL_ATTEMPTS,
+        "raw_member_count": _P19_PACKED_MEMBERS,
+        "uncompressed_raw_only_bytes": sum(
+            item["raw_bytes"] for item in _P19_RAW.values()
+        ),
+        "packed_gzip9_raw_only_bytes": _P19_PACKED_BYTES,
+        "lossless_pack_objects_including_manifest": 2,
+        "class_a_puts": 2,
+        "class_b_readbacks": 2,
+        "normal_list_requests": 0,
+    }
     final_bytes = raw_corpus["final_stable_certification"]["bytes"]
-    final_requests = raw_corpus["final_stable_certification"]["objects_and_requests"]
-    lower_packed = final_bytes["lower"]["packed_gzip9_raw_only_bytes_without_reserves"]
-    expected_packed = final_bytes["expected"]["packed_gzip9_raw_only_bytes_with_diagnostics_reserve"]
-    conservative_packed = final_bytes["conservative"]["packed_gzip9_raw_only_bytes_with_reserves"]
-    expected_a = final_requests["expected"]["class_a_puts"]
-    conservative_a = final_requests["conservative"]["class_a_puts"]
+    final_requests = raw_corpus["final_stable_certification"][
+        "objects_and_requests"
+    ]
+    lower_production_packed = final_bytes["lower"][
+        "packed_gzip9_raw_only_bytes_without_reserves"
+    ]
+    expected_production_packed = final_bytes["expected"][
+        "packed_gzip9_raw_only_bytes_with_diagnostics_reserve"
+    ]
+    conservative_production_packed = final_bytes["conservative"][
+        "packed_gzip9_raw_only_bytes_with_reserves"
+    ]
+    lower_packed = lower_production_packed + _P19_PACKED_BYTES
+    expected_packed = expected_production_packed + _P19_PACKED_BYTES
+    conservative_packed = conservative_production_packed + _P19_PACKED_BYTES
+    expected_a = (
+        final_requests["expected"]["class_a_puts"]
+        + qualification_retention["class_a_puts"]
+    )
+    conservative_a = (
+        final_requests["conservative"]["class_a_puts"]
+        + qualification_retention["class_a_puts"]
+    )
+    retained_totals = {
+        "lower": {
+            "packed_gzip9_raw_only_bytes_without_reserves": lower_packed,
+        },
+        "expected": {
+            "uncompressed_raw_only_bytes_with_diagnostics_reserve": (
+                final_bytes["expected"][
+                    "uncompressed_raw_only_bytes_with_diagnostics_reserve"
+                ]
+                + qualification_retention["uncompressed_raw_only_bytes"]
+            ),
+            "packed_gzip9_raw_only_bytes_with_diagnostics_reserve": expected_packed,
+            "lossless_pack_objects_including_manifests": (
+                final_requests["expected"][
+                    "lossless_pack_objects_including_manifest"
+                ]
+                + qualification_retention[
+                    "lossless_pack_objects_including_manifest"
+                ]
+            ),
+            "class_a_puts": expected_a,
+            "class_b_readbacks": (
+                final_requests["expected"]["class_b_readbacks"]
+                + qualification_retention["class_b_readbacks"]
+            ),
+        },
+        "conservative": {
+            "uncompressed_raw_only_bytes_with_reserves": (
+                final_bytes["conservative"][
+                    "uncompressed_raw_only_bytes_with_reserves"
+                ]
+                + qualification_retention["uncompressed_raw_only_bytes"]
+            ),
+            "packed_gzip9_raw_only_bytes_with_reserves": conservative_packed,
+            "lossless_pack_objects_including_manifests": (
+                final_requests["conservative"][
+                    "lossless_pack_objects_including_manifest"
+                ]
+                + qualification_retention[
+                    "lossless_pack_objects_including_manifest"
+                ]
+            ),
+            "class_a_puts": conservative_a,
+            "class_b_readbacks": (
+                final_requests["conservative"]["class_b_readbacks"]
+                + qualification_retention["class_b_readbacks"]
+            ),
+        },
+    }
+    raw_corpus["qualification_campaign_evidence_separate"] = qualification_retention
+    raw_corpus["final_retained_totals"] = retained_totals
     soft = int(policy["soft_limit_bytes"])
     hard = int(policy["hard_limit_bytes"])
     decision_required = (
@@ -580,11 +662,20 @@ def build_full_known_universe_forecast(root: Path) -> dict[str, Any]:
             "decision_required": decision_required,
             "outcome": "stop-and-request-program-owner-decision" if decision_required else "safe-to-continue",
             "lower_bound_final_packed_bytes_without_reserves": lower_packed,
+            "lower_bound_production_packed_bytes_without_reserves": lower_production_packed,
+            "qualification_campaign_packed_bytes": _P19_PACKED_BYTES,
             "lower_bound_exceeds_hard_by_bytes": max(0, lower_packed - hard),
+            "lower_bound_remaining_hard_reserve_bytes": max(0, hard - lower_packed),
             "expected_final_packed_bytes": expected_packed,
+            "expected_production_packed_bytes": expected_production_packed,
             "conservative_final_packed_bytes": conservative_packed,
+            "conservative_production_packed_bytes": conservative_production_packed,
             "expected_exceeds_soft_by_bytes": max(0, expected_packed - soft),
+            "expected_remaining_soft_reserve_bytes": max(0, soft - expected_packed),
             "conservative_exceeds_hard_by_bytes": max(0, conservative_packed - hard),
+            "conservative_remaining_hard_reserve_bytes": max(
+                0, hard - conservative_packed
+            ),
             "expected_class_a_requests": expected_a,
             "conservative_class_a_requests": conservative_a,
             "scope_reduction_permitted": False,
@@ -625,6 +716,64 @@ def verify_full_known_universe_forecast(root: Path, report: dict[str, Any]) -> N
             and logical["upper"] <= attempts["upper"]
         ):
             raise FullUniverseForecastError("physical attempts do not cover logical executions")
+    raw_corpus = report["raw_corpus_forecast"]
+    qualification = raw_corpus["qualification_campaign_evidence_separate"]
+    retained = raw_corpus["final_retained_totals"]
+    final_bytes = raw_corpus["final_stable_certification"]["bytes"]
+    final_requests = raw_corpus["final_stable_certification"][
+        "objects_and_requests"
+    ]
+    if qualification["uncompressed_raw_only_bytes"] != sum(
+        item["raw_bytes"] for item in _P19_RAW.values()
+    ) or qualification["packed_gzip9_raw_only_bytes"] != _P19_PACKED_BYTES:
+        raise FullUniverseForecastError("qualification retention differs from measured basis")
+    retained_byte_keys = {
+        "expected": (
+            "uncompressed_raw_only_bytes_with_diagnostics_reserve",
+            "packed_gzip9_raw_only_bytes_with_diagnostics_reserve",
+        ),
+        "conservative": (
+            "uncompressed_raw_only_bytes_with_reserves",
+            "packed_gzip9_raw_only_bytes_with_reserves",
+        ),
+    }
+    for case, (uncompressed_key, packed_key) in retained_byte_keys.items():
+        if retained[case][uncompressed_key] != (
+            final_bytes[case][uncompressed_key]
+            + qualification["uncompressed_raw_only_bytes"]
+        ) or retained[case][packed_key] != (
+            final_bytes[case][packed_key]
+            + qualification["packed_gzip9_raw_only_bytes"]
+        ):
+            raise FullUniverseForecastError("retained storage does not reconcile")
+        if retained[case]["lossless_pack_objects_including_manifests"] != (
+            final_requests[case]["lossless_pack_objects_including_manifest"]
+            + qualification["lossless_pack_objects_including_manifest"]
+        ):
+            raise FullUniverseForecastError("retained object forecast does not reconcile")
+        if retained[case]["class_a_puts"] != (
+            final_requests[case]["class_a_puts"] + qualification["class_a_puts"]
+        ) or retained[case]["class_b_readbacks"] != (
+            final_requests[case]["class_b_readbacks"]
+            + qualification["class_b_readbacks"]
+        ):
+            raise FullUniverseForecastError("retained request forecast does not reconcile")
+    gate = report["decision_gate"]
+    if (
+        gate["lower_bound_final_packed_bytes_without_reserves"]
+        != retained["lower"]["packed_gzip9_raw_only_bytes_without_reserves"]
+        or gate["expected_final_packed_bytes"]
+        != retained["expected"][
+            "packed_gzip9_raw_only_bytes_with_diagnostics_reserve"
+        ]
+        or gate["conservative_final_packed_bytes"]
+        != retained["conservative"]["packed_gzip9_raw_only_bytes_with_reserves"]
+        or gate["expected_class_a_requests"]
+        != retained["expected"]["class_a_puts"]
+        or gate["conservative_class_a_requests"]
+        != retained["conservative"]["class_a_puts"]
+    ):
+        raise FullUniverseForecastError("decision gate omits retained evidence")
     if report["decision_gate"]["decision_required"] is not True:
         raise FullUniverseForecastError("current forecast must stop at the owner decision gate")
     if report["decision_gate"]["p20_t02_must_remain_planned"] is not True:

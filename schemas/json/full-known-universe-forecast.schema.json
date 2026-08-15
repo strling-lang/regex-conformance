@@ -165,12 +165,14 @@
     "raw_corpus_forecast": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["current_stable", "full_historical_stable", "final_stable_certification", "optional_prerelease_separate"],
+      "required": ["current_stable", "full_historical_stable", "final_stable_certification", "optional_prerelease_separate", "qualification_campaign_evidence_separate", "final_retained_totals"],
       "properties": {
         "current_stable": {"$ref": "#/$defs/corpusProjection"},
         "full_historical_stable": {"$ref": "#/$defs/corpusProjection"},
         "final_stable_certification": {"$ref": "#/$defs/corpusProjection"},
-        "optional_prerelease_separate": {"$ref": "#/$defs/corpusProjection"}
+        "optional_prerelease_separate": {"$ref": "#/$defs/corpusProjection"},
+        "qualification_campaign_evidence_separate": {"$ref": "#/$defs/qualificationRetention"},
+        "final_retained_totals": {"$ref": "#/$defs/retainedTotals"}
       }
     },
     "service_envelope": {
@@ -201,16 +203,23 @@
     "decision_gate": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["decision_required", "outcome", "lower_bound_final_packed_bytes_without_reserves", "lower_bound_exceeds_hard_by_bytes", "expected_final_packed_bytes", "conservative_final_packed_bytes", "expected_exceeds_soft_by_bytes", "conservative_exceeds_hard_by_bytes", "expected_class_a_requests", "conservative_class_a_requests", "scope_reduction_permitted", "retention_weakening_permitted", "paid_storage_authorized", "p20_t02_must_remain_planned"],
+      "required": ["decision_required", "outcome", "lower_bound_final_packed_bytes_without_reserves", "lower_bound_production_packed_bytes_without_reserves", "qualification_campaign_packed_bytes", "lower_bound_exceeds_hard_by_bytes", "lower_bound_remaining_hard_reserve_bytes", "expected_final_packed_bytes", "expected_production_packed_bytes", "conservative_final_packed_bytes", "conservative_production_packed_bytes", "expected_exceeds_soft_by_bytes", "expected_remaining_soft_reserve_bytes", "conservative_exceeds_hard_by_bytes", "conservative_remaining_hard_reserve_bytes", "expected_class_a_requests", "conservative_class_a_requests", "scope_reduction_permitted", "retention_weakening_permitted", "paid_storage_authorized", "p20_t02_must_remain_planned"],
       "properties": {
         "decision_required": {"const": true},
         "outcome": {"const": "stop-and-request-program-owner-decision"},
         "lower_bound_final_packed_bytes_without_reserves": {"$ref": "#/$defs/safeInteger"},
+        "lower_bound_production_packed_bytes_without_reserves": {"$ref": "#/$defs/safeInteger"},
+        "qualification_campaign_packed_bytes": {"const": 31742126},
         "lower_bound_exceeds_hard_by_bytes": {"$ref": "#/$defs/safeInteger"},
+        "lower_bound_remaining_hard_reserve_bytes": {"$ref": "#/$defs/safeInteger"},
         "expected_final_packed_bytes": {"$ref": "#/$defs/safeInteger"},
+        "expected_production_packed_bytes": {"$ref": "#/$defs/safeInteger"},
         "conservative_final_packed_bytes": {"$ref": "#/$defs/safeInteger"},
+        "conservative_production_packed_bytes": {"$ref": "#/$defs/safeInteger"},
         "expected_exceeds_soft_by_bytes": {"$ref": "#/$defs/safeInteger"},
+        "expected_remaining_soft_reserve_bytes": {"$ref": "#/$defs/safeInteger"},
         "conservative_exceeds_hard_by_bytes": {"$ref": "#/$defs/safeInteger"},
+        "conservative_remaining_hard_reserve_bytes": {"$ref": "#/$defs/safeInteger"},
         "expected_class_a_requests": {"$ref": "#/$defs/safeInteger"},
         "conservative_class_a_requests": {"$ref": "#/$defs/safeInteger"},
         "scope_reduction_permitted": {"const": false},
@@ -386,6 +395,64 @@
       "properties": {
         "bytes": {"$ref": "#/$defs/byteProjection"},
         "objects_and_requests": {"$ref": "#/$defs/objectEnvelope"}
+      }
+    },
+    "qualificationRetention": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["campaign", "logical_executions", "physical_attempts", "raw_member_count", "uncompressed_raw_only_bytes", "packed_gzip9_raw_only_bytes", "lossless_pack_objects_including_manifest", "class_a_puts", "class_b_readbacks", "normal_list_requests"],
+      "properties": {
+        "campaign": {"const": "P19 Session 05 100K qualification"},
+        "logical_executions": {"const": 100000},
+        "physical_attempts": {"const": 100500},
+        "raw_member_count": {"const": 807},
+        "uncompressed_raw_only_bytes": {"const": 386855397},
+        "packed_gzip9_raw_only_bytes": {"const": 31742126},
+        "lossless_pack_objects_including_manifest": {"const": 2},
+        "class_a_puts": {"const": 2},
+        "class_b_readbacks": {"const": 2},
+        "normal_list_requests": {"const": 0}
+      }
+    },
+    "retainedTotals": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["lower", "expected", "conservative"],
+      "properties": {
+        "lower": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["packed_gzip9_raw_only_bytes_without_reserves"],
+          "properties": {
+            "packed_gzip9_raw_only_bytes_without_reserves": {"$ref": "#/$defs/safeInteger"}
+          }
+        },
+        "expected": {"$ref": "#/$defs/retainedExpected"},
+        "conservative": {"$ref": "#/$defs/retainedConservative"}
+      }
+    },
+    "retainedExpected": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["uncompressed_raw_only_bytes_with_diagnostics_reserve", "packed_gzip9_raw_only_bytes_with_diagnostics_reserve", "lossless_pack_objects_including_manifests", "class_a_puts", "class_b_readbacks"],
+      "properties": {
+        "uncompressed_raw_only_bytes_with_diagnostics_reserve": {"$ref": "#/$defs/safeInteger"},
+        "packed_gzip9_raw_only_bytes_with_diagnostics_reserve": {"$ref": "#/$defs/safeInteger"},
+        "lossless_pack_objects_including_manifests": {"$ref": "#/$defs/safeInteger"},
+        "class_a_puts": {"$ref": "#/$defs/safeInteger"},
+        "class_b_readbacks": {"$ref": "#/$defs/safeInteger"}
+      }
+    },
+    "retainedConservative": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["uncompressed_raw_only_bytes_with_reserves", "packed_gzip9_raw_only_bytes_with_reserves", "lossless_pack_objects_including_manifests", "class_a_puts", "class_b_readbacks"],
+      "properties": {
+        "uncompressed_raw_only_bytes_with_reserves": {"$ref": "#/$defs/safeInteger"},
+        "packed_gzip9_raw_only_bytes_with_reserves": {"$ref": "#/$defs/safeInteger"},
+        "lossless_pack_objects_including_manifests": {"$ref": "#/$defs/safeInteger"},
+        "class_a_puts": {"$ref": "#/$defs/safeInteger"},
+        "class_b_readbacks": {"$ref": "#/$defs/safeInteger"}
       }
     }
   }

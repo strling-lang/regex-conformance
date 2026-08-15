@@ -18,11 +18,13 @@ external-evidence mutation. P20-T02 remains Planned.
 Even the lower-bound final stable corpus is 34,399,590 logical executions. At
 the lossless packing ratio independently measured from the immutable P19 raw
 corpus, that lower bound is 10,874,439,012 bytes before diagnostics or reserve:
-874,439,012 bytes above the 10,000,000,000-byte hard cap. The expected final
-stable corpus is 129,715,224 logical executions and 43,233,088,579 packed bytes;
-the conservative case is 360,702,963 logical executions and 137,522,561,770
-packed bytes. Scope, retention, the cap, and paid storage are all outside this
-task's authority, so work stops for a Program Owner decision.
+10,906,181,138 bytes after retaining the separate P19 qualification corpus,
+906,181,138 bytes above the 10,000,000,000-byte hard cap. The expected final
+stable corpus is 129,715,224 logical executions and 43,264,830,705 total retained
+packed bytes; the conservative case is 360,702,963 logical executions and
+137,554,303,896 total retained packed bytes. Scope, retention, the cap, and paid
+storage are all outside this task's authority, so work stops for a Program Owner
+decision.
 
 ## Governing interpretation
 
@@ -157,12 +159,15 @@ reserve, and a fixed 1,000,000,000-byte contingency.
 | --- | ---: | ---: | ---: |
 | Current stable | 2,535,567,566 | 5,547,090,895 | 63 / 100 |
 | Full historical stable | 21,616,544,426 | 46,507,520,792 | 522 / 987 |
-| **Final stable certification** | **43,233,088,579** | **137,522,561,770** | **1,042 / 2,959** |
+| Final stable production evidence | 43,233,088,579 | 137,522,561,770 | 1,042 / 2,959 |
+| Retained P19 qualification evidence | 31,742,126 | 31,742,126 | 2 / 2 |
+| **Final retained total** | **43,264,830,705** | **137,554,303,896** | **1,044 / 2,961** |
 | Optional prerelease, separate | 133,316,931 | 1,726,701,320 | 5 / 17 |
 
-Without compression, expected final raw-only storage is 526,900,864,929 bytes
-including the 5% diagnostics reserve; the conservative raw case is
-1,664,570,540,347 bytes including 15% diagnostics and the fixed reserve.
+Without compression, expected final retained raw-only storage is 527,287,720,326
+bytes including qualification evidence and the 5% production diagnostics
+reserve; the conservative retained raw case is 1,664,957,395,744 bytes including
+qualification evidence, 15% production diagnostics, and the fixed reserve.
 Packing is therefore necessary but not sufficient.
 
 Raw result and physical-attempt evidence is the dominant expected packed class
@@ -173,7 +178,7 @@ attempts and 168,640,298 packed bytes; the conservative retry boundary adds
 18,035,149 attempts and 4,689,424,531 packed bytes.
 
 Normal publication still needs zero `ListObjects` calls. One conditional write
-and one exact read-back per pack produce only 1,042 expected or 2,959
+and one exact read-back per pack produce only 1,044 expected or 2,961
 conservative Class A and Class B operations. Requests are safely inside the
 free envelope; storage is the binding constraint.
 
@@ -189,9 +194,9 @@ and [R2 limits](https://developers.cloudflare.com/r2/platform/limits/).
 
 | Gate | Forecast | Limit | Difference |
 | --- | ---: | ---: | ---: |
-| Lower bound, no reserve | 10,874,439,012 | 10,000,000,000 hard | +874,439,012 |
-| Expected final | 43,233,088,579 | 8,000,000,000 soft | +35,233,088,579 |
-| Conservative final | 137,522,561,770 | 10,000,000,000 hard | +127,522,561,770 |
+| Lower retained bound, no reserve | 10,906,181,138 | 10,000,000,000 hard | +906,181,138 |
+| Expected retained final | 43,264,830,705 | 8,000,000,000 soft | +35,264,830,705 |
+| Conservative retained final | 137,554,303,896 | 10,000,000,000 hard | +127,554,303,896 |
 
 ## Program Owner decision required
 
@@ -205,11 +210,12 @@ consequential path before P20-T01A can complete:
    final corpus coexist in R2.
 3. Commission a separately governed storage architecture change with a proven
    reconstruction contract and new capacity evidence. A merely different
-   lossless compressor would need a verified ratio at or below 0.018979 to fit
-   the expected case under the hard cap, or 0.015183 to retain the 2 GB soft-stop
-   reserve—respectively more than 4.32 and 5.40 times better than the measured
+   lossless compressor would need a verified production ratio at or below
+   0.018919 to fit the expected retained case under the hard cap, or 0.015123 to
+   retain the 2 GB soft-stop reserve—respectively more than 4.33 and 5.42 times
+   better than the measured
    0.082052 ratio. The conservative hard-cap case, after its fixed 1 GB reserve,
-   would require approximately 0.005410 and still must satisfy reconstruction
+   would require approximately 0.005391 and still must satisfy reconstruction
    and provenance requirements.
 
 Until that decision is recorded, do not weaken scope or retention, raise the

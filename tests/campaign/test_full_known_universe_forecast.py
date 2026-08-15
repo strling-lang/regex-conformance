@@ -137,8 +137,21 @@ class FullKnownUniverseForecastTests(unittest.TestCase):
         self.assertFalse(classification["production_publication_performed"])
 
         final_bytes = report["raw_corpus_forecast"]["final_stable_certification"]["bytes"]
+        final_requests = report["raw_corpus_forecast"]["final_stable_certification"][
+            "objects_and_requests"
+        ]
+        qualification = report["raw_corpus_forecast"][
+            "qualification_campaign_evidence_separate"
+        ]
+        retained = report["raw_corpus_forecast"]["final_retained_totals"]
         expected = final_bytes["expected"]
         conservative = final_bytes["conservative"]
+        self.assertEqual(qualification["uncompressed_raw_only_bytes"], 386_855_397)
+        self.assertEqual(qualification["packed_gzip9_raw_only_bytes"], 31_742_126)
+        self.assertEqual(qualification["raw_member_count"], 807)
+        self.assertEqual(qualification["lossless_pack_objects_including_manifest"], 2)
+        self.assertEqual(qualification["class_a_puts"], 2)
+        self.assertEqual(qualification["class_b_readbacks"], 2)
         self.assertEqual(expected["physical_attempts"], 130_363_801)
         self.assertEqual(conservative["physical_attempts"], 378_738_112)
         self.assertEqual(
@@ -161,6 +174,59 @@ class FullKnownUniverseForecastTests(unittest.TestCase):
             conservative["retry_overhead"]["packed_raw_result_and_attempt_bytes"],
             expected["retry_overhead"]["packed_raw_result_and_attempt_bytes"],
         )
+        self.assertEqual(
+            retained["lower"]["packed_gzip9_raw_only_bytes_without_reserves"],
+            final_bytes["lower"]["packed_gzip9_raw_only_bytes_without_reserves"]
+            + qualification["packed_gzip9_raw_only_bytes"],
+        )
+        for case, retained_byte_key, uncompressed_byte_key in (
+            (
+                "expected",
+                "packed_gzip9_raw_only_bytes_with_diagnostics_reserve",
+                "uncompressed_raw_only_bytes_with_diagnostics_reserve",
+            ),
+            (
+                "conservative",
+                "packed_gzip9_raw_only_bytes_with_reserves",
+                "uncompressed_raw_only_bytes_with_reserves",
+            ),
+        ):
+            self.assertEqual(
+                retained[case][retained_byte_key],
+                final_bytes[case][retained_byte_key]
+                + qualification["packed_gzip9_raw_only_bytes"],
+            )
+            self.assertEqual(
+                retained[case][uncompressed_byte_key],
+                final_bytes[case][uncompressed_byte_key]
+                + qualification["uncompressed_raw_only_bytes"],
+            )
+            self.assertEqual(
+                retained[case]["lossless_pack_objects_including_manifests"],
+                final_requests[case]["lossless_pack_objects_including_manifest"]
+                + qualification["lossless_pack_objects_including_manifest"],
+            )
+            self.assertEqual(
+                retained[case]["class_a_puts"],
+                final_requests[case]["class_a_puts"] + qualification["class_a_puts"],
+            )
+            self.assertEqual(
+                retained[case]["class_b_readbacks"],
+                final_requests[case]["class_b_readbacks"]
+                + qualification["class_b_readbacks"],
+            )
+        self.assertEqual(
+            gate["expected_final_packed_bytes"],
+            retained["expected"][
+                "packed_gzip9_raw_only_bytes_with_diagnostics_reserve"
+            ],
+        )
+        self.assertEqual(
+            gate["conservative_final_packed_bytes"],
+            retained["conservative"]["packed_gzip9_raw_only_bytes_with_reserves"],
+        )
+        self.assertEqual(gate["expected_remaining_soft_reserve_bytes"], 0)
+        self.assertEqual(gate["conservative_remaining_hard_reserve_bytes"], 0)
 
     def test_contributor_effects_reconcile(self) -> None:
         report = load(REPORT)
