@@ -59,6 +59,12 @@ nine safety invariants, accepted-decision references, exact source bindings,
 and permanent non-authority declarations. The report cannot claim Docker use,
 target behavior, canonical authority, or mutation of external evidence.
 
+`json/scale-warehouse-reconciliation.schema.json` defines the compact P19-T04
+reconciliation report. It binds the certified campaign, evidence manifest,
+execution report, recovery hash chain, both non-crediting infrastructure
+segments, full-row commitments, immutable derived warehouse identity, and
+permanent no-Docker/no-execution/no-authority declarations.
+
 `json/operational-state.schema.json` defines disjoint non-canonical wire
 records for local snapshots, external reconciliation observations,
 deterministic reconciliation plans, and applied reports. Snapshots carry the
