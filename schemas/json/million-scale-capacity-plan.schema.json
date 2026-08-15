@@ -1,0 +1,395 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://strling.dev/regex-conformance/schemas/million-scale-capacity-plan.v1.schema.json",
+  "title": "Million-Scale Capacity and Cost Plan v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "acceptance_gates",
+    "classification",
+    "cost_envelope",
+    "execution_capacity",
+    "p19_measured_basis",
+    "plan_digest_sha256",
+    "publication_plan",
+    "research_sources",
+    "schema_version",
+    "source_bindings",
+    "workload_plan"
+  ],
+  "properties": {
+    "acceptance_gates": {
+      "const": {
+        "p20_t02_must_remain_planned": true,
+        "program_owner_configuration_confirmation_required": true,
+        "publication_integration_must_be_implemented_and_verified": true,
+        "research_and_operator_handoff_required": true,
+        "stop_before_execution": true
+      }
+    },
+    "classification": {
+      "const": {
+        "canonical_authority": false,
+        "credentials_established": false,
+        "docker_authorized": false,
+        "external_evidence_mutated": false,
+        "million_scale_execution_authorized": false,
+        "normative_authority": false,
+        "planning_only": true,
+        "production_publication_performed": false,
+        "semantic_authority": false
+      }
+    },
+    "cost_envelope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "billing_assumptions",
+        "hard_monthly_upper_micro_usd",
+        "planned_monthly_micro_usd",
+        "storage_billing_unit"
+      ],
+      "properties": {
+        "billing_assumptions": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "class_a_usd_per_million_requests",
+            "class_b_usd_per_million_requests",
+            "free_tier_credit_assumed",
+            "standard_storage_usd_per_gb_month"
+          ],
+          "properties": {
+            "class_a_usd_per_million_requests": { "const": "4.50" },
+            "class_b_usd_per_million_requests": { "const": "0.36" },
+            "free_tier_credit_assumed": { "const": false },
+            "standard_storage_usd_per_gb_month": { "const": "0.015" }
+          }
+        },
+        "hard_monthly_upper_micro_usd": { "$ref": "#/$defs/cost" },
+        "planned_monthly_micro_usd": { "$ref": "#/$defs/cost" },
+        "storage_billing_unit": { "const": "decimal-gb-month" }
+      }
+    },
+    "execution_capacity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["compute", "deployment_split", "disk", "memory", "runtime"],
+      "properties": {
+        "compute": { "$ref": "#/$defs/scalar_map" },
+        "deployment_split": { "$ref": "#/$defs/scalar_map" },
+        "disk": { "$ref": "#/$defs/integer_map" },
+        "memory": { "$ref": "#/$defs/integer_map" },
+        "runtime": { "$ref": "#/$defs/scalar_map" }
+      }
+    },
+    "p19_measured_basis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "artifact_bytes",
+        "attempts",
+        "elapsed",
+        "identities",
+        "object_counts",
+        "throughput_logical_executions_per_second"
+      ],
+      "properties": {
+        "artifact_bytes": { "$ref": "#/$defs/integer_map" },
+        "attempts": { "$ref": "#/$defs/integer_map" },
+        "elapsed": { "$ref": "#/$defs/decimal_map" },
+        "identities": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "campaign_manifest_id",
+            "evidence_manifest_id",
+            "evidence_manifest_sha256",
+            "warehouse_reconciliation_digest"
+          ],
+          "properties": {
+            "campaign_manifest_id": { "$ref": "#/$defs/rcid" },
+            "evidence_manifest_id": { "$ref": "#/$defs/rcid" },
+            "evidence_manifest_sha256": { "$ref": "#/$defs/sha256" },
+            "warehouse_reconciliation_digest": { "$ref": "#/$defs/sha256" }
+          }
+        },
+        "object_counts": { "$ref": "#/$defs/integer_map" },
+        "throughput_logical_executions_per_second": { "$ref": "#/$defs/decimal_map" }
+      }
+    },
+    "plan_digest_sha256": { "$ref": "#/$defs/sha256" },
+    "publication_plan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "configuration_contract",
+        "integrity_and_recovery",
+        "object_budget",
+        "provider",
+        "request_budget",
+        "storage_budget",
+        "upload_strategy"
+      ],
+      "properties": {
+        "configuration_contract": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "account_token_type",
+            "bucket_access",
+            "bucket_private",
+            "github_repository_secrets",
+            "github_repository_variables",
+            "local_secret_injection",
+            "public_access_enabled",
+            "region",
+            "secret_values_permitted_in_repository"
+          ],
+          "properties": {
+            "account_token_type": { "const": "account-api-token" },
+            "bucket_access": { "const": "object-read-write-specific-bucket" },
+            "bucket_private": { "const": true },
+            "github_repository_secrets": {
+              "const": [
+                "STRLING_R2_ACCESS_KEY_ID",
+                "STRLING_R2_SECRET_ACCESS_KEY"
+              ]
+            },
+            "github_repository_variables": {
+              "const": [
+                "STRLING_R2_ACCOUNT_ID",
+                "STRLING_R2_BUCKET_NAME",
+                "STRLING_R2_ENDPOINT",
+                "STRLING_R2_REGION"
+              ]
+            },
+            "local_secret_injection": { "const": "os-credential-store-to-process-environment" },
+            "public_access_enabled": { "const": false },
+            "region": { "const": "auto" },
+            "secret_values_permitted_in_repository": { "const": false }
+          }
+        },
+        "integrity_and_recovery": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "conditional_put_if_none_match",
+            "content_addressed_object_keys",
+            "durable_local_publication_journal",
+            "etag_is_scientific_identity",
+            "final_manifest_published_last",
+            "get_and_sha256_verify_each_new_object",
+            "list_required_in_normal_path",
+            "no_duplicate_logical_credit",
+            "resume_from_verified_receipts"
+          ],
+          "properties": {
+            "conditional_put_if_none_match": { "const": "*" },
+            "content_addressed_object_keys": { "const": true },
+            "durable_local_publication_journal": { "const": true },
+            "etag_is_scientific_identity": { "const": false },
+            "final_manifest_published_last": { "const": true },
+            "get_and_sha256_verify_each_new_object": { "const": true },
+            "list_required_in_normal_path": { "const": false },
+            "no_duplicate_logical_credit": { "const": true },
+            "resume_from_verified_receipts": { "const": true }
+          }
+        },
+        "object_budget": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "control_objects",
+            "expected_attempt_only_segments",
+            "expected_total_objects",
+            "hard_attempt_only_segment_ceiling",
+            "hard_total_object_ceiling",
+            "logical_segment_objects",
+            "result_segment_objects"
+          ],
+          "properties": {
+            "control_objects": { "const": 3 },
+            "expected_attempt_only_segments": { "const": 20 },
+            "expected_total_objects": { "const": 8029 },
+            "hard_attempt_only_segment_ceiling": { "const": 200 },
+            "hard_total_object_ceiling": { "const": 8209 },
+            "logical_segment_objects": { "const": 4003 },
+            "result_segment_objects": { "const": 4003 }
+          }
+        },
+        "provider": {
+          "const": {
+            "api": "s3-compatible",
+            "name": "cloudflare-r2",
+            "standard_storage_class": "STANDARD"
+          }
+        },
+        "request_budget": {
+          "const": {
+            "class_a_expected": 8029,
+            "class_a_hard_ceiling": 10000,
+            "class_b_expected": 8029,
+            "class_b_hard_ceiling": 10000,
+            "normal_list_requests": 0,
+            "repeated_full_bucket_scans_permitted": false
+          }
+        },
+        "storage_budget": {
+          "const": {
+            "compression_credit_assumed": false,
+            "conservative_remote_bytes": 6802830955,
+            "expected_local_evidence_logical_warehouse_bytes": 6123524850,
+            "expected_remote_bytes": 3868553970,
+            "hard_remote_bytes": 10000000000,
+            "soft_stop_remote_bytes": 8000000000,
+            "warehouse_publication_permitted": false
+          }
+        },
+        "upload_strategy": {
+          "const": {
+            "content_md5_on_put": true,
+            "maximum_measured_result_object_bytes": 873889,
+            "multipart_threshold_bytes": 104857600,
+            "pause_before_unplanned_multipart": true,
+            "single_part_put": true
+          }
+        }
+      }
+    },
+    "research_sources": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["claim", "retrieved_on", "title", "url"],
+        "properties": {
+          "claim": { "type": "string", "minLength": 1 },
+          "retrieved_on": { "const": "2026-08-15" },
+          "title": { "type": "string", "minLength": 1 },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https://(?:developers\\.cloudflare\\.com/r2/|docs\\.github\\.com/en/actions/)"
+          }
+        }
+      }
+    },
+    "schema_version": { "const": "million-scale-capacity-plan.v1" },
+    "source_bindings": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/source_binding" }
+    },
+    "workload_plan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "attempt_policy",
+        "logical_execution_count",
+        "maximum_result_shard_size",
+        "profiles",
+        "result_shard_count"
+      ],
+      "properties": {
+        "attempt_policy": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "expected_physical_attempts",
+            "hard_pause_physical_attempts",
+            "maximum_attempts_per_logical_execution",
+            "planning_upper_physical_attempts"
+          ],
+          "properties": {
+            "expected_physical_attempts": { "const": 1005000 },
+            "hard_pause_physical_attempts": { "const": 1050000 },
+            "maximum_attempts_per_logical_execution": { "const": 3 },
+            "planning_upper_physical_attempts": { "const": 1020000 }
+          }
+        },
+        "logical_execution_count": { "const": 1000000 },
+        "maximum_result_shard_size": { "const": 250 },
+        "profiles": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["logical_execution_count", "result_shard_count", "selection_key"],
+            "properties": {
+              "logical_execution_count": { "$ref": "#/$defs/safe_integer" },
+              "result_shard_count": { "$ref": "#/$defs/safe_integer" },
+              "selection_key": {
+                "enum": ["mysql-regex", "pcre2-dfa", "pcre2-ordinary", "python-re"]
+              }
+            }
+          }
+        },
+        "result_shard_count": { "const": 4003 }
+      }
+    }
+  },
+  "$defs": {
+    "cost": {
+      "type": "object",
+      "minProperties": 4,
+      "additionalProperties": { "$ref": "#/$defs/safe_integer" }
+    },
+    "decimal_map": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": { "$ref": "#/$defs/decimal_string" }
+    },
+    "decimal_string": {
+      "type": "string",
+      "pattern": "^(?:0|[1-9][0-9]*)(?:\\.[0-9]+)?$"
+    },
+    "integer_map": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": { "$ref": "#/$defs/safe_integer" }
+    },
+    "rcid": {
+      "type": "string",
+      "pattern": "^rcid:v1:[a-z][a-z0-9-]*:h:jcs-sha256-v1:[0-9a-f]{64}$"
+    },
+    "safe_integer": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+    },
+    "scalar_map": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "oneOf": [
+          { "type": "boolean" },
+          { "$ref": "#/$defs/safe_integer" },
+          { "type": "string", "minLength": 1 }
+        ]
+      }
+    },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "source_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\).+$"
+        },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      }
+    }
+  }
+}

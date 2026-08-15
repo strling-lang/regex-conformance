@@ -59,6 +59,14 @@ nine safety invariants, accepted-decision references, exact source bindings,
 and permanent non-authority declarations. The report cannot claim Docker use,
 target behavior, canonical authority, or mutation of external evidence.
 
+`json/million-scale-capacity-plan.schema.json` defines the compact P20-T01
+technical plan for a possible 1M campaign. It fixes the exact denominator and
+shard ceiling, P19 measurement bindings, compute/memory/disk budgets, the
+8 GB soft and 10 GB hard R2 storage boundaries, request/cost envelopes, exact
+secret and variable interface names, official research provenance, and the
+mandatory stop-before-execution gates. It cannot authorize Docker, execution,
+credential establishment, or production publication.
+
 `json/scale-warehouse-reconciliation.schema.json` defines the compact P19-T04
 reconciliation report. It binds the certified campaign, evidence manifest,
 execution report, recovery hash chain, both non-crediting infrastructure
