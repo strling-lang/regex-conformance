@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from concurrent.futures import ThreadPoolExecutor
+import importlib.util
 import os
 from pathlib import Path
 import sys
@@ -23,6 +24,15 @@ from regex_conformance_scale.local_artifacts import (
     stage_publication_items,
 )
 from regex_conformance_scale.r2_publication import PublicationItem
+
+
+_RUNNER_SPEC = importlib.util.spec_from_file_location(
+    "million_local_campaign_runner", ROOT / "tools/campaigns/run_million_local_campaign.py"
+)
+if _RUNNER_SPEC is None or _RUNNER_SPEC.loader is None:
+    raise RuntimeError("cannot load local campaign runner")
+runner_module = importlib.util.module_from_spec(_RUNNER_SPEC)
+_RUNNER_SPEC.loader.exec_module(runner_module)
 
 
 def _object(data: bytes, evidence_class: str = "semantic_results") -> PublicationItem:
@@ -49,6 +59,12 @@ def _manifest(data: bytes) -> PublicationItem:
 
 
 class LocalArtifactTests(unittest.TestCase):
+    @unittest.skipUnless(sys.platform.startswith("linux"), "Linux mode contract")
+    def test_private_state_directory_requires_exact_posix_mode(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            state_root = runner_module._private_directory(Path(temporary) / "state")
+            self.assertEqual(state_root.stat().st_mode & 0o777, 0o700)
+
     def test_stages_exact_bytes_and_reuses_identical_content(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary) / "staging"

@@ -8,6 +8,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import os
 from pathlib import Path
 import shutil
+import stat
 import subprocess
 import sys
 import time
@@ -40,6 +41,32 @@ def _external(path: Path, label: str) -> Path:
     return environment_certification._outside_repository(path, label)
 
 
+def _private_directory(path: Path) -> Path:
+    path.mkdir(parents=True, exist_ok=True, mode=0o700)
+    os.chmod(path, 0o700)
+    details = path.stat()
+    if (
+        path.is_symlink()
+        or not stat.S_ISDIR(details.st_mode)
+        or stat.S_IMODE(details.st_mode) != 0o700
+    ):
+        raise RuntimeError(
+            "local recovery state requires a native filesystem with POSIX 0700 modes"
+        )
+    return path
+
+
+def _state_root(path: Path) -> Path:
+    result = _external(path, "local million state root")
+    for temporary_root in (Path("/tmp"), Path("/var/tmp")):
+        try:
+            result.relative_to(temporary_root.resolve(strict=False))
+        except ValueError:
+            continue
+        raise RuntimeError("local recovery state must use durable storage")
+    return _private_directory(result)
+
+
 def _available_memory_bytes() -> int:
     try:
         values = (Path("/proc/meminfo").read_text(encoding="ascii")).splitlines()
@@ -61,7 +88,9 @@ def _tree_bytes(root: Path) -> int:
     return total
 
 
-def _preflight(campaign_root: Path, concurrency: int) -> dict[str, int]:
+def _preflight(
+    campaign_root: Path, state_root: Path, concurrency: int
+) -> dict[str, int]:
     if not sys.platform.startswith("linux"):
         raise RuntimeError("local million-scale execution requires a governed Linux host")
     missing = [name for name in ("cmake", "cc", "docker") if shutil.which(name) is None]
@@ -77,6 +106,12 @@ def _preflight(campaign_root: Path, concurrency: int) -> dict[str, int]:
     if free_space < PROTECTED_FREE_SPACE_BYTES:
         raise RuntimeError(
             f"local disk admission failed: {free_space} < {PROTECTED_FREE_SPACE_BYTES}"
+        )
+    state_free_space = shutil.disk_usage(state_root).free
+    if state_free_space < PROTECTED_FREE_SPACE_BYTES:
+        raise RuntimeError(
+            "local state-disk admission failed: "
+            f"{state_free_space} < {PROTECTED_FREE_SPACE_BYTES}"
         )
     checked = subprocess.run(
         ("docker", "version", "--format", "{{.Server.Version}}"),
@@ -98,7 +133,11 @@ def _preflight(campaign_root: Path, concurrency: int) -> dict[str, int]:
     )
     if existing.returncode != 0 or existing.stdout.strip():
         raise RuntimeError("program target containers are not initially clean")
-    return {"available_memory_bytes": available_memory, "free_space_bytes": free_space}
+    return {
+        "available_memory_bytes": available_memory,
+        "free_space_bytes": free_space,
+        "state_free_space_bytes": state_free_space,
+    }
 
 
 def _program_containers() -> bytes:
@@ -132,6 +171,7 @@ def _run_logged(command: list[str], log_path: Path) -> int:
 def _partition(
     index: int,
     campaign_root: Path,
+    state_base: Path,
     inputs_root: Path,
     handoffs_root: Path,
     staging_root: Path,
@@ -139,7 +179,7 @@ def _partition(
     partition = f"{index:03d}"
     input_root = inputs_root / f"partition-{partition}"
     handoff = handoffs_root / f"partition-{partition}"
-    state_root = campaign_root / "state" / f"partition-{partition}"
+    state_root = state_base / f"partition-{partition}"
     report = handoff / "execution-report.json"
     preparation = handoff / "partition-preparation.json"
     log = campaign_root / "logs" / f"partition-{partition}.log"
@@ -198,11 +238,13 @@ def _partition(
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--campaign-root", type=Path, required=True)
+    parser.add_argument("--state-root", type=Path, required=True)
     parser.add_argument("--concurrency", type=int, default=4, choices=range(1, 5))
     arguments = parser.parse_args()
     campaign_root = _external(arguments.campaign_root, "local million campaign root")
     campaign_root.mkdir(parents=True, exist_ok=True)
-    preflight = _preflight(campaign_root, arguments.concurrency)
+    state_root = _state_root(arguments.state_root)
+    preflight = _preflight(campaign_root, state_root, arguments.concurrency)
     inputs_root = campaign_root / "inputs"
     handoffs_root = campaign_root / "handoffs"
     staging_root = campaign_root / "publication-staging"
@@ -216,6 +258,7 @@ def main() -> int:
                 _partition,
                 index,
                 campaign_root,
+                state_root,
                 inputs_root,
                 handoffs_root,
                 staging_root,
@@ -257,6 +300,7 @@ def main() -> int:
         "partition_count": len(results),
         "preflight": preflight,
         "schema_version": "million-scale-local-campaign-run.v1",
+        "state_root": str(state_root),
     }
     sys.stdout.buffer.write(canonical_bytes(output) + b"\n")
     return 0

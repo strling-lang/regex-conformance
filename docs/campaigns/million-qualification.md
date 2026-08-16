@@ -105,6 +105,13 @@ publication. A ready local corpus can therefore be reviewed before any
 credentialed request, and a later uploader can read the already certified
 bytes rather than recomputing empirical evidence.
 
+The local orchestrator requires its recovery-state root separately from the
+evidence root. Recovery state must be durable native Linux storage that
+enforces POSIX `0700` directory and `0600` SQLite-file modes; a Windows-mounted
+directory that reports permissive synthetic modes is rejected before target
+execution. Raw evidence, exact pack bytes, handoffs, and the final readiness
+report remain in the declared durable external evidence root.
+
 ## Reproduction boundaries
 
 Plan compilation and source validation are non-executing:
