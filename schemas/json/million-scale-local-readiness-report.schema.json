@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/million-scale-local-readiness-report.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["accepted_observation_count", "attempt_count", "campaign_manifest_id", "capacity", "cloud_publication_performed", "cloud_requests", "content_addressed_object_count", "deferred_cloud_control_objects", "infrastructure_failure_attempt_count", "interruption_count", "logical_execution_count", "pack_manifest_count", "partition_count", "ready_for_cloudflare_integrity_check", "result_shard_count", "schema_version", "verification"],
+  "properties": {
+    "accepted_observation_count": {"const": 1000000},
+    "attempt_count": {"type": "integer", "minimum": 1000000, "maximum": 3000000},
+    "campaign_manifest_id": {"$ref": "#/$defs/rcid"},
+    "capacity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["canary_bytes", "hard_cap_bytes", "local_unique_content_bytes", "projected_remote_upper_bound_bytes", "publication_control_reserve_bytes", "soft_stop_bytes", "sum_of_partition_pack_bytes"],
+      "properties": {
+        "canary_bytes": {"const": 461},
+        "hard_cap_bytes": {"const": 10000000000},
+        "local_unique_content_bytes": {"type": "integer", "minimum": 1, "exclusiveMaximum": 8000000000},
+        "projected_remote_upper_bound_bytes": {"type": "integer", "minimum": 1, "exclusiveMaximum": 8000000000},
+        "publication_control_reserve_bytes": {"const": 1000000},
+        "soft_stop_bytes": {"const": 8000000000},
+        "sum_of_partition_pack_bytes": {"type": "integer", "minimum": 1, "exclusiveMaximum": 8000000000}
+      }
+    },
+    "cloud_publication_performed": {"const": false},
+    "cloud_requests": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["class_a", "class_b", "list"],
+      "properties": {"class_a": {"const": 0}, "class_b": {"const": 0}, "list": {"const": 0}}
+    },
+    "content_addressed_object_count": {"type": "integer", "minimum": 2, "maximum": 20000},
+    "deferred_cloud_control_objects": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["aggregate_manifest", "partition_coordinate_receipts"],
+      "properties": {"aggregate_manifest": {"const": 1}, "partition_coordinate_receipts": {"const": 64}}
+    },
+    "infrastructure_failure_attempt_count": {"type": "integer", "minimum": 16000, "maximum": 2000000},
+    "interruption_count": {"const": 192},
+    "logical_execution_count": {"const": 1000000},
+    "pack_manifest_count": {"const": 64},
+    "partition_count": {"const": 64},
+    "ready_for_cloudflare_integrity_check": {"const": true},
+    "result_shard_count": {"type": "integer", "minimum": 4000, "maximum": 4005},
+    "schema_version": {"const": "million-scale-local-readiness-report.v1"},
+    "verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["all_planned_interruptions_match", "capacity_admitted", "deterministic_partition_plan_matches", "exact_source_reconstruction", "infrastructure_attempts_non_crediting", "no_duplicate_logical_completion", "pack_structures", "partition_indexes_exact", "staged_object_identities"],
+      "properties": {
+        "all_planned_interruptions_match": {"const": true},
+        "capacity_admitted": {"const": true},
+        "deterministic_partition_plan_matches": {"const": true},
+        "exact_source_reconstruction": {"const": true},
+        "infrastructure_attempts_non_crediting": {"const": true},
+        "no_duplicate_logical_completion": {"const": true},
+        "pack_structures": {"const": 64},
+        "partition_indexes_exact": {"const": true},
+        "staged_object_identities": {"const": true}
+      }
+    }
+  },
+  "$defs": {"rcid": {"type": "string", "pattern": "^rcid:v1:[a-z0-9]+(?:-[a-z0-9]+)*:h:jcs-sha256-v1:[0-9a-f]{64}$"}}
+}

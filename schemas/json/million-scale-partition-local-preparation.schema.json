@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/million-scale-partition-local-preparation.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["attempt_count", "campaign_manifest_id", "cloud_publication_performed", "evidence_manifest_sha256", "execution_report_sha256", "infrastructure_failure_attempt_count", "logical_execution_count", "manifest_key", "manifest_sha256", "object_count", "object_descriptors_sha256", "pack_digest_sha256", "parent_campaign_manifest_id", "partition_count", "partition_index", "physical_attempt_count", "retained_bytes", "schema_version", "source_member_count", "staging", "verification"],
+  "properties": {
+    "attempt_count": {"type": "integer", "minimum": 1, "maximum": 60000},
+    "campaign_manifest_id": {"$ref": "#/$defs/rcid"},
+    "cloud_publication_performed": {"const": false},
+    "evidence_manifest_sha256": {"$ref": "#/$defs/digest"},
+    "execution_report_sha256": {"$ref": "#/$defs/digest"},
+    "infrastructure_failure_attempt_count": {"type": "integer", "minimum": 1, "maximum": 40000},
+    "logical_execution_count": {"type": "integer", "minimum": 1, "maximum": 20000},
+    "manifest_key": {"type": "string", "pattern": "^regex-conformance/evidence-pack-v2/manifests/sha256/[0-9a-f]{64}\\.json$"},
+    "manifest_sha256": {"$ref": "#/$defs/digest"},
+    "object_count": {"type": "integer", "minimum": 2, "maximum": 512},
+    "object_descriptors_sha256": {"$ref": "#/$defs/digest"},
+    "pack_digest_sha256": {"$ref": "#/$defs/digest"},
+    "parent_campaign_manifest_id": {"$ref": "#/$defs/rcid"},
+    "partition_count": {"const": 64},
+    "partition_index": {"type": "integer", "minimum": 0, "maximum": 63},
+    "physical_attempt_count": {"type": "integer", "minimum": 1, "maximum": 60000},
+    "retained_bytes": {"type": "integer", "minimum": 1, "exclusiveMaximum": 8000000},
+    "schema_version": {"const": "million-scale-partition-local-preparation.v1"},
+    "source_member_count": {"type": "integer", "minimum": 3, "maximum": 1000},
+    "staging": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["created_local_objects", "reused_local_objects", "verified_object_count"],
+      "properties": {
+        "created_local_objects": {"type": "integer", "minimum": 0, "maximum": 512},
+        "reused_local_objects": {"type": "integer", "minimum": 0, "maximum": 512},
+        "verified_object_count": {"type": "integer", "minimum": 2, "maximum": 512}
+      }
+    },
+    "verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["corruption_detected", "deterministic", "exact_reconstruction", "independent_attempts", "independent_observations", "manifest_last", "staged_readback"],
+      "properties": {
+        "corruption_detected": {"const": true},
+        "deterministic": {"const": true},
+        "exact_reconstruction": {"const": true},
+        "independent_attempts": {"const": true},
+        "independent_observations": {"const": true},
+        "manifest_last": {"const": true},
+        "staged_readback": {"const": true}
+      }
+    }
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "rcid": {"type": "string", "pattern": "^rcid:v1:[a-z0-9]+(?:-[a-z0-9]+)*:h:jcs-sha256-v1:[0-9a-f]{64}$"}
+  }
+}

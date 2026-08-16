@@ -85,6 +85,26 @@ B requests, enforces the capacity policy, and conditionally publishes a final
 content-addressed aggregate manifest last. The resulting compact execution
 report is safe to retain as a workflow artifact; raw evidence remains in R2.
 
+## Local-first preparation boundary
+
+The campaign may instead execute all partitions against one governed local
+Linux host and stop before object-store access. Each completed partition is
+encoded twice, reconstructed exactly, corruption-tested, and written into an
+immutable local tree using the same content-addressed keys planned for R2.
+`prepare_million_partition.py` records the exact pack identity without claiming
+that a cloud request occurred. `finalize_million_local_artifacts.py` then
+requires all 64 preparations and execution reports, verifies every staged
+object and pack structure, reconciles the million logical executions and all
+192 planned interruptions, and performs the 8 GB/10 GB capacity admission.
+
+The resulting local readiness report deliberately records zero cloud requests
+and defers partition-coordinate receipts and the aggregate publication
+manifest. Those objects depend on the later exact-key R2 integrity check and
+must not be manufactured as if local filesystem writes were cloud
+publication. A ready local corpus can therefore be reviewed before any
+credentialed request, and a later uploader can read the already certified
+bytes rather than recomputing empirical evidence.
+
 ## Reproduction boundaries
 
 Plan compilation and source validation are non-executing:
