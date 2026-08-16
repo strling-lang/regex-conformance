@@ -40,7 +40,10 @@ class MinimalEnvironmentCertificationTests(unittest.TestCase):
             target.write_text("do not modify", encoding="utf-8")
             lock_path = root / ".state.minimal-certification.lock"
             lock_path.symlink_to(target)
-            with self.assertRaises(OSError):
+            with self.assertRaisesRegex(
+                RuntimeError,
+                "certification lock path cannot be a symbolic link",
+            ):
                 with exclusive_certification_lock(state_root):
                     self.fail("a symbolic lock path unexpectedly succeeded")
             self.assertEqual(target.read_text(encoding="utf-8"), "do not modify")
