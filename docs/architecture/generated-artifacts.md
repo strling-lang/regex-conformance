@@ -58,6 +58,7 @@ diff. Fixtures are not production observations or published evidence.
 | 1M capacity and cost plan | `tools/campaigns/compile_million_scale_capacity_plan.py` | `reports/scale/million-scale-capacity-plan.json` | schema validation, deterministic rebuild, P19 source bindings, budget arithmetic, and focused campaign tests |
 | Full known-universe planning index, P19 measured raw corpus, and storage policy | `tools/campaigns/compile_full_known_universe_forecast.py` | `reports/scale/full-known-universe-corpus-forecast.json` | index/report schema validation, deterministic rebuild, D101 profile bounds, lossless-compression measurements, source bindings, budget arithmetic, and focused campaign tests |
 | P19 factorized raw-evidence model and unchanged-denominator capacity gate | `tools/campaigns/compile_factorized_evidence_forecast.py` | `reports/scale/factorized-raw-evidence-forecast.json` | exact 807-member reconstruction, deterministic binary rebuild, identity/hash recomputation, corruption injection, bounded random lookup, schema validation, unchanged P20-T01A denominator arithmetic, and focused campaign tests |
+| D103 production Evidence Pack v2 and enriched capacity gate | `tools/campaigns/compile_evidence_pack_v2.py` | `reports/scale/evidence-pack-v2-certification.json` | exact 807-member reconstruction, two identical encodings, legacy identity/hash recomputation, corruption injection, bounded lookup, attempt/observation independence, expanded diagnostic/performance contracts, D103 canary forecast, schema validation, and focused publisher tests |
 
 Edit the source and run the listed producer; do not hand-maintain these outputs.
 A compact report is a traceable projection, not raw evidence or independent
@@ -80,6 +81,10 @@ target execution.
 - Raw observations and evidence objects are immutable and content-addressed.
   Infrastructure failures stay distinct from target timeout, crash, rejection,
   match, or no-match observations.
+- Evidence Pack v2 is the authoritative physical representation for new raw
+  evidence. Shared immutable values may be stored once, but every independently
+  executed observation and every physical attempt remains independently
+  identifiable. See [Evidence Pack v2](../campaigns/evidence-pack-v2.md).
 - `run_vertical_slice.py`, environment/adapter certification, fault exercises,
   restart exercises, and `run_100k_qualification.py` require explicit execution
   authorization and external roots. Their presence is not authorization.

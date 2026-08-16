@@ -1,0 +1,199 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/evidence-pack-v2-certification.schema.json",
+  "title": "P20-T01C Evidence Pack v2 Certification",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "certification", "classification", "decision_gate",
+    "diagnostic_and_performance_contract", "forecast", "pack_measurement",
+    "platform_policy", "publication_contract", "report_digest_sha256",
+    "schema_version", "source_binding"
+  ],
+  "properties": {
+    "schema_version": {"const": "evidence-pack-v2-certification.v1"},
+    "report_digest_sha256": {"$ref": "#/$defs/digest"},
+    "classification": {
+      "type": "object", "additionalProperties": false,
+      "required": ["authoritative_format", "derived_analytics_authoritative", "docker_accessed", "material_r2_publication_performed", "paid_capacity_authorized", "source_corpus_read_only", "warehouse_or_parquet_authoritative"],
+      "properties": {
+        "authoritative_format": {"const": true},
+        "derived_analytics_authoritative": {"const": false},
+        "docker_accessed": {"const": false},
+        "material_r2_publication_performed": {"const": false},
+        "paid_capacity_authorized": {"const": false},
+        "source_corpus_read_only": {"const": true},
+        "warehouse_or_parquet_authoritative": {"const": false}
+      }
+    },
+    "source_binding": {
+      "type": "object", "additionalProperties": false,
+      "required": ["authoritative_member_count", "authoritative_raw_bytes", "campaign", "evidence_manifest_sha256", "logical_execution_count", "physical_attempt_count"],
+      "properties": {
+        "authoritative_member_count": {"const": 807},
+        "authoritative_raw_bytes": {"const": 386855397},
+        "campaign": {"const": "P19 Session 05 100K qualification"},
+        "evidence_manifest_sha256": {"const": "a2d8d1c460d7822bc2212df41d41842e02202961caad7bc17ca1b68204ae07fa"},
+        "logical_execution_count": {"const": 100000},
+        "physical_attempt_count": {"const": 100500}
+      }
+    },
+    "pack_measurement": {
+      "type": "object", "additionalProperties": false,
+      "required": ["bytes_by_evidence_class", "bytes_per_logical_execution", "bytes_per_physical_attempt", "manifest_sha256", "object_count_including_manifest", "pack_digest_sha256", "retained_bytes"],
+      "properties": {
+        "bytes_by_evidence_class": {"$ref": "#/$defs/evidenceClasses"},
+        "bytes_per_logical_execution": {"type": "string", "pattern": "^[0-9]+\\.[0-9]{9}$"},
+        "bytes_per_physical_attempt": {"type": "string", "pattern": "^[0-9]+\\.[0-9]{9}$"},
+        "manifest_sha256": {"$ref": "#/$defs/digest"},
+        "object_count_including_manifest": {"type": "integer", "minimum": 2},
+        "pack_digest_sha256": {"$ref": "#/$defs/digest"},
+        "retained_bytes": {"type": "integer", "minimum": 1}
+      }
+    },
+    "diagnostic_and_performance_contract": {
+      "type": "object", "additionalProperties": false,
+      "required": ["availability_counts", "availability_field_count", "availability_representation", "content_addressed_diagnostic_payloads", "derived_statistics_authoritative", "empty_success_diagnostic_is_compact", "raw_integer_sample_arrays_supported", "raw_p19_process_wall_time_sample_count"],
+      "properties": {
+        "availability_counts": {
+          "type": "object", "minProperties": 35, "maxProperties": 35,
+          "additionalProperties": {
+            "type": "object", "additionalProperties": false,
+            "required": ["derived", "observed", "observed-absence-or-not-applicable", "unavailable"],
+            "properties": {
+              "derived": {"type": "integer", "minimum": 0},
+              "observed": {"type": "integer", "minimum": 0},
+              "observed-absence-or-not-applicable": {"type": "integer", "minimum": 0},
+              "unavailable": {"type": "integer", "minimum": 0}
+            }
+          }
+        },
+        "availability_field_count": {"const": 35},
+        "availability_representation": {"const": "two-bit-row-major-v1"},
+        "content_addressed_diagnostic_payloads": {"const": true},
+        "derived_statistics_authoritative": {"const": false},
+        "empty_success_diagnostic_is_compact": {"const": true},
+        "raw_integer_sample_arrays_supported": {"const": true},
+        "raw_p19_process_wall_time_sample_count": {"const": 4249}
+      }
+    },
+    "certification": {
+      "type": "object", "additionalProperties": false,
+      "required": ["all_source_member_sha256_values_recomputed", "byte_complete_legacy_reconstruction", "corruption_injection_detected", "deterministic_second_encoding_identical", "independent_observation_count", "independent_physical_attempt_count", "legacy_identity_recomputation_preserved", "maximum_objects_per_random_lookup", "random_lookup_samples_verified", "source_member_count", "two_non_crediting_attempt_segments_preserved"],
+      "properties": {
+        "all_source_member_sha256_values_recomputed": {"const": true},
+        "byte_complete_legacy_reconstruction": {"const": true},
+        "corruption_injection_detected": {"const": true},
+        "deterministic_second_encoding_identical": {"const": true},
+        "independent_observation_count": {"const": 100000},
+        "independent_physical_attempt_count": {"const": 100500},
+        "legacy_identity_recomputation_preserved": {"const": true},
+        "maximum_objects_per_random_lookup": {"type": "integer", "minimum": 1, "maximum": 64},
+        "random_lookup_samples_verified": {"const": 3},
+        "source_member_count": {"const": 807},
+        "two_non_crediting_attempt_segments_preserved": {"const": true}
+      }
+    },
+    "platform_policy": {
+      "type": "object", "additionalProperties": false,
+      "required": ["canary_classes", "canary_required_for_every_materially_plausible_dimension", "full_expansion_requires_material_semantic_divergence", "unrelated_scope_expansion_forbidden"],
+      "properties": {
+        "canary_classes": {"const": ["semantic", "diagnostic", "infrastructure-noise", "performance-only"]},
+        "canary_required_for_every_materially_plausible_dimension": {"const": true},
+        "full_expansion_requires_material_semantic_divergence": {"const": true},
+        "unrelated_scope_expansion_forbidden": {"const": true}
+      }
+    },
+    "publication_contract": {
+      "type": "object", "additionalProperties": false,
+      "required": ["conditional_create", "content_addressed_immutable_keys", "durable_local_receipts", "exact_read_back_sha256", "hard_cap_pre_upload_admission", "incremental_upload", "manifest_last", "normal_list_requests", "retries_only_after_failure_or_indeterminate_result", "soft_stop_pre_upload_admission"],
+      "properties": {
+        "conditional_create": {"const": true},
+        "content_addressed_immutable_keys": {"const": true},
+        "durable_local_receipts": {"const": true},
+        "exact_read_back_sha256": {"const": true},
+        "hard_cap_pre_upload_admission": {"const": true},
+        "incremental_upload": {"const": true},
+        "manifest_last": {"const": true},
+        "normal_list_requests": {"const": 0},
+        "retries_only_after_failure_or_indeterminate_result": {"const": true},
+        "soft_stop_pre_upload_admission": {"const": true}
+      }
+    },
+    "forecast": {
+      "type": "object", "additionalProperties": false,
+      "required": ["canary_multiplier", "cases", "conservative_operating_reserve_below_soft_stop_bytes", "hard_cap_bytes", "measured_manifest_bytes", "object_count_per_100k_pack_including_manifest", "soft_stop_bytes", "source_denominators", "zero_normal_list_requests"],
+      "properties": {
+        "canary_multiplier": {"const": "1.25"},
+        "cases": {
+          "type": "object", "additionalProperties": false,
+          "required": ["conservative", "expected", "lower"],
+          "properties": {
+            "conservative": {"$ref": "#/$defs/forecastCase"},
+            "expected": {"$ref": "#/$defs/forecastCase"},
+            "lower": {"$ref": "#/$defs/forecastCase"}
+          }
+        },
+        "conservative_operating_reserve_below_soft_stop_bytes": {"type": "integer", "minimum": 0},
+        "hard_cap_bytes": {"const": 10000000000},
+        "measured_manifest_bytes": {"type": "integer", "minimum": 1},
+        "object_count_per_100k_pack_including_manifest": {"type": "integer", "minimum": 2},
+        "soft_stop_bytes": {"const": 8000000000},
+        "source_denominators": {"type": "object", "minProperties": 3},
+        "zero_normal_list_requests": {"const": true}
+      }
+    },
+    "decision_gate": {
+      "type": "object", "additionalProperties": false,
+      "required": ["conservative_below_hard_cap", "conservative_below_soft_stop", "material_r2_publication_authorized_by_report", "p20_t02_entry_capacity_gate_passed", "program_owner_review_required"],
+      "properties": {
+        "conservative_below_hard_cap": {"type": "boolean"},
+        "conservative_below_soft_stop": {"type": "boolean"},
+        "material_r2_publication_authorized_by_report": {"const": false},
+        "p20_t02_entry_capacity_gate_passed": {"type": "boolean"},
+        "program_owner_review_required": {"type": "boolean"}
+      }
+    }
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "evidenceClasses": {
+      "type": "object", "additionalProperties": false,
+      "required": ["canonical_inputs", "diagnostics", "manifests_integrity", "performance_resource_samples", "physical_attempt_facts", "semantic_results", "shared_dictionary_cas"],
+      "properties": {
+        "canonical_inputs": {"type": "integer", "minimum": 0},
+        "diagnostics": {"type": "integer", "minimum": 0},
+        "manifests_integrity": {"type": "integer", "minimum": 0},
+        "performance_resource_samples": {"type": "integer", "minimum": 0},
+        "physical_attempt_facts": {"type": "integer", "minimum": 0},
+        "semantic_results": {"type": "integer", "minimum": 0},
+        "shared_dictionary_cas": {"type": "integer", "minimum": 0}
+      }
+    },
+    "forecastCase": {
+      "type": "object", "additionalProperties": false,
+      "required": ["base_historical_logical_executions", "bytes_by_evidence_class", "bytes_before_growth_allowances", "canary_platform_logical_executions", "class_a_requests", "class_b_requests", "diagnostic_growth_allowance_bytes", "exceeds_hard_cap", "exceeds_soft_stop", "general_growth_reserve_bytes", "logical_executions", "object_count", "performance_growth_allowance_bytes", "physical_attempts", "qualification_corpus_bytes", "retry_overhead_attempts", "retry_overhead_bytes", "targeted_expansion_allowance_bytes", "total_retained_bytes"],
+      "properties": {
+        "base_historical_logical_executions": {"type": "integer", "minimum": 1},
+        "bytes_by_evidence_class": {"$ref": "#/$defs/evidenceClasses"},
+        "bytes_before_growth_allowances": {"type": "integer", "minimum": 1},
+        "canary_platform_logical_executions": {"type": "integer", "minimum": 0},
+        "class_a_requests": {"type": "integer", "minimum": 1},
+        "class_b_requests": {"type": "integer", "minimum": 1},
+        "diagnostic_growth_allowance_bytes": {"type": "integer", "minimum": 0},
+        "exceeds_hard_cap": {"type": "boolean"},
+        "exceeds_soft_stop": {"type": "boolean"},
+        "general_growth_reserve_bytes": {"type": "integer", "minimum": 0},
+        "logical_executions": {"type": "integer", "minimum": 1},
+        "object_count": {"type": "integer", "minimum": 1},
+        "performance_growth_allowance_bytes": {"type": "integer", "minimum": 0},
+        "physical_attempts": {"type": "integer", "minimum": 1},
+        "qualification_corpus_bytes": {"type": "integer", "minimum": 1},
+        "retry_overhead_attempts": {"type": "integer", "minimum": 0},
+        "retry_overhead_bytes": {"type": "integer", "minimum": 0},
+        "targeted_expansion_allowance_bytes": {"type": "integer", "minimum": 0},
+        "total_retained_bytes": {"type": "integer", "minimum": 1}
+      }
+    }
+  }
+}

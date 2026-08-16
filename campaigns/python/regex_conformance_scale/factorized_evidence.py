@@ -420,6 +420,9 @@ class TokenTables:
                     output.extend(_uvarint(self.string_indexes[item]))
                 except KeyError as error:
                     raise _fail("value references an absent token") from error
+            elif isinstance(item, bytes):
+                output.append(7)
+                output.extend(_pack_bytes(item))
             elif isinstance(item, list):
                 output.append(5)
                 output.extend(_uvarint(len(item)))
@@ -477,6 +480,8 @@ class TokenTables:
                     value, position = visit(position)
                     result[key] = value
                 return result, position
+            if tag == 7:
+                return _read_bytes(data, position)
             raise _fail("unknown factorized value tag")
 
         return visit(offset)

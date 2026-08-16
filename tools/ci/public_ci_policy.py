@@ -39,11 +39,18 @@ def evaluate(root: Path) -> list[Violation]:
     violations: list[Violation] = []
     workflows = sorted((root / ".github" / "workflows").glob("*.y*ml"))
     expected_workflow = root / ".github" / "workflows" / "public-validation.yml"
-    _require(workflows == [expected_workflow], violations, "workflow-scope", "bootstrap permits exactly one public workflow")
-    if not expected_workflow.is_file():
+    trusted_workflow = root / ".github" / "workflows" / "trusted-r2-publication-canary.yml"
+    _require(
+        workflows == sorted([expected_workflow, trusted_workflow]),
+        violations,
+        "workflow-scope",
+        "repository permits exactly the public validation and trusted manual R2 canary workflows",
+    )
+    if not expected_workflow.is_file() or not trusted_workflow.is_file():
         return violations
 
     workflow = expected_workflow.read_text(encoding="utf-8")
+    trusted = trusted_workflow.read_text(encoding="utf-8")
     folded = workflow.casefold()
     forbidden = {
         "forbidden-trigger": ["pull_request_target:", "repository_dispatch:", "workflow_run:", "workflow_call:"],
@@ -121,6 +128,38 @@ def evaluate(root: Path) -> list[Violation]:
     ]:
         _require(command in workflow, violations, "missing-validation", f"workflow omits required command {command!r}")
 
+    trusted_folded = trusted.casefold()
+    for marker in ["pull_request:", "pull_request_target:", "push:", "schedule:", "repository_dispatch:", "workflow_run:", "workflow_call:"]:
+        _require(marker not in trusted_folded, violations, "trusted-trigger", f"trusted R2 canary contains forbidden trigger {marker!r}")
+    _require("\n  workflow_dispatch:\n" in trusted, violations, "trusted-trigger", "trusted R2 canary must be manual-only")
+    _require("\npermissions:\n  contents: read\n" in trusted, violations, "trusted-permissions", "trusted R2 canary must retain read-only repository permissions")
+    _require(re.search(r"^\s+[a-z-]+:\s+write\s*$", trusted, re.MULTILINE) is None, violations, "trusted-write-permission", "trusted R2 canary may not request repository write permission")
+    _require("self-hosted" not in trusted_folded, violations, "trusted-runner", "R2 canary must use a bounded hosted runner")
+    _require("runs-on: ubuntu-24.04" in trusted, violations, "trusted-runner", "R2 canary must use the audited hosted image")
+    trusted_checkout_count = len(re.findall(r"^\s*uses:\s*actions/checkout@", trusted, re.MULTILINE))
+    _require(
+        trusted_checkout_count == 1
+        and trusted.count("persist-credentials: false") == trusted_checkout_count,
+        violations,
+        "trusted-checkout-credentials",
+        "trusted R2 canary checkout must disable persisted credentials",
+    )
+    _require("if: github.ref == 'refs/heads/main'" in trusted, violations, "trusted-main-only", "R2 canary must reject non-main dispatches")
+    _require("timeout-minutes: 10" in trusted, violations, "trusted-timeout", "R2 canary must have the ten-minute bound")
+    _require("actions/upload-artifact" not in trusted_folded and "actions/download-artifact" not in trusted_folded, violations, "trusted-artifact-handoff", "R2 canary may not hand credentials or receipts through artifacts")
+    expected_secrets = {"STRLING_R2_ACCESS_KEY_ID", "STRLING_R2_SECRET_ACCESS_KEY"}
+    expected_variables = {"STRLING_R2_ACCOUNT_ID", "STRLING_R2_BUCKET_NAME", "STRLING_R2_ENDPOINT", "STRLING_R2_REGION"}
+    _require(set(re.findall(r"secrets\.([A-Z0-9_]+)", trusted)) == expected_secrets, violations, "trusted-secret-interface", "R2 canary must consume exactly the two approved secret names")
+    _require(set(re.findall(r"vars\.([A-Z0-9_]+)", trusted)) == expected_variables, violations, "trusted-variable-interface", "R2 canary must consume exactly the four approved variable names")
+    _require("secrets[" not in trusted_folded and "vars[" not in trusted_folded, violations, "trusted-indirect-configuration", "R2 canary may not use indirect secret or variable lookups")
+    for command in [
+        "persist-credentials: false",
+        "--only-binary=:all: --require-hashes --requirement requirements.ci.lock",
+        "python tools/campaigns/run_r2_publication_canary.py --check-configuration",
+        'python tools/campaigns/run_r2_publication_canary.py --state-root "$RUNNER_TEMP/strling-r2-canary-state"',
+    ]:
+        _require(command in trusted, violations, "trusted-canary-contract", f"trusted R2 canary omits required command {command!r}")
+
     policy_path = root / ".github" / "policies" / "main-protection.json"
     try:
         policy = json.loads(policy_path.read_text(encoding="utf-8"))
@@ -129,7 +168,7 @@ def evaluate(root: Path) -> list[Violation]:
         return violations
 
     allowed = policy.get("actions", {}).get("allowed_actions", {})
-    observed_actions = USE_PATTERN.findall(workflow)
+    observed_actions = USE_PATTERN.findall(workflow + "\n" + trusted)
     _require(bool(observed_actions), violations, "missing-action", "workflow must contain its audited setup actions")
     for action, revision in observed_actions:
         _require(re.fullmatch(SHA, revision) is not None, violations, "floating-action", f"{action} is not pinned to a full commit SHA")

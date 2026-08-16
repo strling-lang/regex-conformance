@@ -24,3 +24,10 @@ Git retains the compact manifest, ordered-ID commitment, exact segment hashes,
 distribution proof, and design report; the 100,000 logical records materialize
 as immutable content-addressed segments outside Git. See
 `docs/campaigns/100k-qualification-design.md`.
+
+D103 adopts Evidence Pack v2 for production raw evidence. The representation
+factors shared canonical inputs, exact results, diagnostics, provenance, and
+typed dictionaries while retaining independent observation and physical-
+attempt facts. It also defines compact expanded diagnostic and raw performance
+records plus canary-triggered platform expansion. See
+`docs/campaigns/evidence-pack-v2.md`.

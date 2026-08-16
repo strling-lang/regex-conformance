@@ -1,0 +1,45 @@
+name: Trusted R2 publication canary
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  r2-publication-canary:
+    name: r2-publication-canary
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      PIP_DISABLE_PIP_VERSION_CHECK: "1"
+      PIP_NO_INPUT: "1"
+      PYTHONDONTWRITEBYTECODE: "1"
+      PYTHONHASHSEED: "0"
+      STRLING_R2_ACCESS_KEY_ID: ${{ secrets.STRLING_R2_ACCESS_KEY_ID }}
+      STRLING_R2_SECRET_ACCESS_KEY: ${{ secrets.STRLING_R2_SECRET_ACCESS_KEY }}
+      STRLING_R2_ACCOUNT_ID: ${{ vars.STRLING_R2_ACCOUNT_ID }}
+      STRLING_R2_BUCKET_NAME: ${{ vars.STRLING_R2_BUCKET_NAME }}
+      STRLING_R2_ENDPOINT: ${{ vars.STRLING_R2_ENDPOINT }}
+      STRLING_R2_REGION: ${{ vars.STRLING_R2_REGION }}
+    steps:
+      - name: Check out the exact protected revision without retained credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Select exact Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12.10"
+          cache: ""
+
+      - name: Install hash-locked runtime dependencies
+        run: "python -m pip install --only-binary=:all: --require-hashes --requirement requirements.ci.lock"
+
+      - name: Verify the exact repository configuration interface without printing values
+        run: python tools/campaigns/run_r2_publication_canary.py --check-configuration
+
+      - name: Verify immutable write, read-back, idempotence, and zero-LIST recovery
+        run: python tools/campaigns/run_r2_publication_canary.py --state-root "$RUNNER_TEMP/strling-r2-canary-state"

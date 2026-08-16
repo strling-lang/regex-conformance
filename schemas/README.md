@@ -75,6 +75,17 @@ evidence class, and owner-only second-stage trimming menu. It cannot claim an
 evidence mutation, derived-data authority, Docker or credential use, paid
 capacity, material R2 publication, or an implemented scope/retention change.
 
+`json/evidence-pack-v2-manifest.schema.json` defines the D103 production pack's
+immutable manifest and independent content-addressed object catalog.
+`json/attempt-diagnostic-envelope-v2.schema.json` defines the complete ordered
+attempt diagnostic availability envelope, and
+`json/raw-performance-samples-v2.schema.json` keeps benchmark/resource samples
+as raw typed arrays rather than derived summaries.
+`json/evidence-pack-v2-certification.schema.json` binds the measured P19
+reconstruction proof, exact pack/report identities, enriched evidence classes,
+D103 canary-only platform forecast, 8 GB/10 GB admission gates, and permanent
+no-paid-capacity/no-material-publication classification.
+
 `json/scale-warehouse-reconciliation.schema.json` defines the compact P19-T04
 reconciliation report. It binds the certified campaign, evidence manifest,
 execution report, recovery hash chain, both non-crediting infrastructure

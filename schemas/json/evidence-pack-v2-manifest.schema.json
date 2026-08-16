@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/evidence-pack-v2-manifest.schema.json",
+  "title": "Evidence Pack v2 Immutable Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["authority", "format", "objects", "pack_digest_sha256", "schema_version", "source_binding"],
+  "properties": {
+    "schema_version": {"const": "evidence-pack-manifest.v2"},
+    "pack_digest_sha256": {"$ref": "#/$defs/digest"},
+    "authority": {
+      "type": "object", "additionalProperties": false,
+      "required": ["analytics_authoritative", "independent_observations_preserved", "independent_physical_attempts_preserved", "raw_empirical_evidence"],
+      "properties": {
+        "analytics_authoritative": {"const": false},
+        "independent_observations_preserved": {"const": true},
+        "independent_physical_attempts_preserved": {"const": true},
+        "raw_empirical_evidence": {"const": true}
+      }
+    },
+    "format": {
+      "type": "object", "additionalProperties": false,
+      "required": ["compression", "content_addressed_objects", "deterministic", "manifest_published_last", "normal_list_requests", "version"],
+      "properties": {
+        "compression": {"const": "xz-crc64-sha256-preset9"},
+        "content_addressed_objects": {"const": true},
+        "deterministic": {"const": true},
+        "manifest_published_last": {"const": true},
+        "normal_list_requests": {"const": 0},
+        "version": {"const": 2}
+      }
+    },
+    "objects": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["evidence_class", "key", "member_paths", "ordinal", "raw_sha256", "raw_size_bytes", "role", "stored_sha256", "stored_size_bytes"],
+        "properties": {
+          "evidence_class": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+          "key": {"type": "string", "pattern": "^regex-conformance/evidence-pack-v2/objects/sha256/[0-9a-f]{64}\\.xz$"},
+          "member_paths": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+          "ordinal": {"type": "integer", "minimum": 0},
+          "raw_sha256": {"$ref": "#/$defs/digest"},
+          "raw_size_bytes": {"type": "integer", "minimum": 1},
+          "role": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+          "stored_sha256": {"$ref": "#/$defs/digest"},
+          "stored_size_bytes": {"type": "integer", "minimum": 1}
+        }
+      }
+    },
+    "source_binding": {
+      "type": "object", "additionalProperties": false,
+      "required": ["evidence_manifest_sha256", "logical_execution_count", "member_count", "physical_attempt_count", "source_raw_bytes"],
+      "properties": {
+        "evidence_manifest_sha256": {"$ref": "#/$defs/digest"},
+        "logical_execution_count": {"type": "integer", "minimum": 1},
+        "member_count": {"type": "integer", "minimum": 1},
+        "physical_attempt_count": {"type": "integer", "minimum": 1},
+        "source_raw_bytes": {"type": "integer", "minimum": 1}
+      }
+    }
+  },
+  "$defs": {"digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+}

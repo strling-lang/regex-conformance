@@ -1,9 +1,10 @@
 # Cloudflare R2 operator handoff
 
-This is the P20-T01 research handoff for a future trusted regex-conformance
-publisher. Following it establishes configuration; it does not authorize
-P20-T02 or upload data. Do not paste any credential value into Git, Notion, an
-issue, a pull request, a terminal transcript, or this task.
+This handoff defines the configuration boundary for the D103 Evidence Pack v2
+publisher. It authorizes only the smallest manual non-corpus integration
+canary after local gates pass; it does not authorize a material corpus upload.
+Do not paste any credential value into Git, Notion, an issue, a pull request, a
+terminal transcript, or this task.
 
 ## Official provider contract
 
@@ -73,7 +74,7 @@ GitHub documents that secrets must be explicitly mapped into a workflow and
 that non-sensitive configuration belongs in variables. See
 [GitHub Actions secrets](https://docs.github.com/en/actions/concepts/security/secrets)
 and [GitHub Actions variables](https://docs.github.com/en/actions/concepts/workflows-and-actions/variables).
-Future workflows must map only the two secrets into the protected publication
+The trusted manual canary maps only the two secrets into its protected job,
 job, mask derived sensitive values, and run only from trusted protected
 revisions. Public-contributor code and untrusted pull requests receive neither
 the secrets nor a credential-bearing execution path.
@@ -86,7 +87,7 @@ or persist secrets in shell profiles. If the local credential store cannot
 inject directly, stop and design a reviewed ACL-restricted adapter outside the
 repository; do not improvise a plaintext file.
 
-The future integration must verify that `STRLING_R2_ENDPOINT` contains the
+The publication integration verifies that `STRLING_R2_ENDPOINT` contains the
 configured account ID, uses HTTPS, and matches any selected jurisdiction before
 making a request. It must never log the access key, secret, authorization
 header, signed URL, or full exception object if that object can retain request
@@ -99,8 +100,9 @@ headers.
 - Standard storage is mandatory. Infrequent Access and retrieval/minimum
   duration charges are outside this plan.
 - The bucket remains private and dedicated, with no independent writers.
-- No warehouse, cache, diagnostics, credentials, or public-contributor output
-  is uploaded.
+- No warehouse, cache, credentials, execution scratch, or public-contributor
+  output is uploaded. Exact diagnostics and raw governed performance samples
+  required by Evidence Pack v2 are authoritative evidence and remain eligible.
 - Normal recovery uses the durable local manifest and exact keys: no repeated
   `LIST`, polling, redundant `HEAD`/`GET`, or broad read-back scan.
 - Content-addressed `PutObject` uses `If-None-Match: *`; every new object gets
@@ -110,17 +112,16 @@ headers.
   workaround.
 - D102 was P19-T02-specific and expired. This setup does not grant Docker
   authority.
-- Configuration and secrets do not authorize P20-T02. Publication integration
-  must still be implemented and verified, and 1M execution requires its own
-  explicit authority.
+- Configuration and secrets authorize only the bounded manual canary. Material
+  publication remains gated by the certified task/campaign workflow and the
+  publisher's byte/request admission controls.
 
-## Confirmation to return
+## Integration confirmation
 
-Confirm only that the dedicated private Standard bucket exists; the exact
-account/bucket/endpoint/region variables are present; the bucket-scoped Account
-API token was placed in the two repository secret slots and local OS credential
-store; and the 8 GB soft/10 GB hard limits are accepted. Do not include any
-secret value in the confirmation.
-
-After that confirmation, P20-T02 may be considered for a separate implementation
-and authorization cycle. Until then it remains Planned and blocked.
+Before dispatch, verify only the six configuration names in the
+`strling-lang/regex-conformance` repository; never retrieve their values. The
+manual workflow must run from `main`, retain read-only repository permissions,
+use a hosted runner, and emit only safe object/report digests and request
+counts. Success requires two exact immutable objects, immediate read-back,
+receipt idempotence, fresh-ledger recovery, and zero LIST requests. Those two
+stable canary objects are retained and reused; no cleanup request is necessary.

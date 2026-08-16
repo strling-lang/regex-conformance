@@ -1,5 +1,11 @@
 # Million-scale capacity and cost plan
 
+> This P20-T01A plan records the pre-D103 planning basis. Its repetitive raw
+> object layout and unconditional platform multiplication are superseded by the
+> P20-T01C [Evidence Pack v2](evidence-pack-v2.md) certification. D103 preserves
+> full historical semantics, adopts governed canaries with targeted semantic
+> expansion, and retains the same 8 GB soft stop and 10 GB hard cap.
+
 P20-T01 is a technical planning artifact for a possible 1,000,000-logical-
 execution campaign. It does not authorize P20-T02, execute a target, use
 Docker, establish credentials, publish to Cloudflare R2, or mutate external

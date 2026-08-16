@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/raw-performance-samples-v2.schema.json",
+  "title": "Evidence Pack v2 Raw Performance Samples",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["claim_scope", "methodology_id", "physical_run_id", "samples", "schema_version"],
+  "properties": {
+    "schema_version": {"const": "raw-performance-samples.v2"},
+    "physical_run_id": {"type": "string", "pattern": "^rcid:v1:physical-run:u7:[0-9a-f-]{36}$"},
+    "claim_scope": {"enum": ["governed-benchmark", "operational-timing-only"]},
+    "methodology_id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "samples": {
+      "type": "object", "minProperties": 1,
+      "propertyNames": {"pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+      "additionalProperties": {
+        "type": "object", "additionalProperties": false,
+        "required": ["unit", "values"],
+        "properties": {
+          "unit": {"enum": ["bytes", "count", "nanoseconds"]},
+          "values": {
+            "type": "array", "minItems": 1,
+            "items": {"type": "integer", "minimum": 0, "maximum": 9007199254740991}
+          }
+        }
+      }
+    }
+  }
+}

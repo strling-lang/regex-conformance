@@ -22,6 +22,7 @@ class PublicCiPolicyTests(unittest.TestCase):
             ".github/CODEOWNERS",
             ".github/policies/main-protection.json",
             ".github/workflows/public-validation.yml",
+            ".github/workflows/trusted-r2-publication-canary.yml",
             "requirements.lock",
             "requirements.ci.lock",
             "tools/ci/promote_verified.py",
@@ -39,6 +40,12 @@ class PublicCiPolicyTests(unittest.TestCase):
 
     def mutate_workflow(self, old: str, new: str) -> None:
         path = self.root / ".github" / "workflows" / "public-validation.yml"
+        text = path.read_text(encoding="utf-8")
+        self.assertIn(old, text)
+        path.write_text(text.replace(old, new, 1), encoding="utf-8")
+
+    def mutate_trusted_workflow(self, old: str, new: str) -> None:
+        path = self.root / ".github" / "workflows" / "trusted-r2-publication-canary.yml"
         text = path.read_text(encoding="utf-8")
         self.assertIn(old, text)
         path.write_text(text.replace(old, new, 1), encoding="utf-8")
@@ -94,6 +101,24 @@ class PublicCiPolicyTests(unittest.TestCase):
     def test_secret_reference_is_rejected(self) -> None:
         self.mutate_workflow('PYTHONHASHSEED: "0"', "TOKEN: secrets.PUBLICATION_TOKEN")
         self.assertIn("secret-reference", self.codes())
+
+    def test_trusted_r2_canary_is_manual_main_only(self) -> None:
+        self.mutate_trusted_workflow("  workflow_dispatch:", "  pull_request_target:")
+        self.assertIn("trusted-trigger", self.codes())
+
+    def test_trusted_r2_canary_rejects_an_extra_secret(self) -> None:
+        self.mutate_trusted_workflow(
+            '      PIP_NO_INPUT: "1"',
+            '      PIP_NO_INPUT: "1"\n      EXTRA: ${{ secrets.EXTRA_SECRET }}',
+        )
+        self.assertIn("trusted-secret-interface", self.codes())
+
+    def test_trusted_r2_canary_cannot_dispatch_a_non_main_ref(self) -> None:
+        self.mutate_trusted_workflow(
+            "if: github.ref == 'refs/heads/main'",
+            "if: github.ref != ''",
+        )
+        self.assertIn("trusted-main-only", self.codes())
 
     def test_floating_action_tag_is_rejected(self) -> None:
         self.mutate_workflow(

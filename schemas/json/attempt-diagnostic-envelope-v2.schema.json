@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/attempt-diagnostic-envelope-v2.schema.json",
+  "title": "Evidence Pack v2 Attempt Diagnostic Envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["facts", "physical_run_id", "schema_version"],
+  "properties": {
+    "schema_version": {"const": "attempt-diagnostic-envelope.v2"},
+    "physical_run_id": {"type": "string", "pattern": "^rcid:v1:physical-run:u7:[0-9a-f-]{36}$"},
+    "facts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "native-error-category", "native-error-code", "native-error-message",
+        "native-error-position", "native-error-position-basis", "failure-stage",
+        "operation", "process-exit-status", "signal-or-termination", "timeout-source",
+        "configured-timeout", "triggered-timeout-or-limit", "containment-event",
+        "failure-attribution", "stdout", "stderr", "native-diagnostic",
+        "truncation-metadata", "redaction-metadata", "wall-duration",
+        "monotonic-duration", "cpu-time", "compile-duration", "execution-duration",
+        "peak-rss-or-memory-delta", "configured-resource-limits",
+        "resource-limit-violation", "runtime-backend-jit", "warm-up-state",
+        "adapter-protocol-environment", "anomaly-classification",
+        "replication-relationship", "discrepancy-relationship",
+        "retry-predecessor-relationship", "release-transition-relationship"
+      ],
+      "properties": {
+        "native-error-category": {"$ref": "#/$defs/fact"},
+        "native-error-code": {"$ref": "#/$defs/fact"},
+        "native-error-message": {"$ref": "#/$defs/fact"},
+        "native-error-position": {"$ref": "#/$defs/fact"},
+        "native-error-position-basis": {"$ref": "#/$defs/fact"},
+        "failure-stage": {"$ref": "#/$defs/fact"},
+        "operation": {"$ref": "#/$defs/fact"},
+        "process-exit-status": {"$ref": "#/$defs/fact"},
+        "signal-or-termination": {"$ref": "#/$defs/fact"},
+        "timeout-source": {"$ref": "#/$defs/fact"},
+        "configured-timeout": {"$ref": "#/$defs/fact"},
+        "triggered-timeout-or-limit": {"$ref": "#/$defs/fact"},
+        "containment-event": {"$ref": "#/$defs/fact"},
+        "failure-attribution": {"$ref": "#/$defs/fact"},
+        "stdout": {"$ref": "#/$defs/fact"},
+        "stderr": {"$ref": "#/$defs/fact"},
+        "native-diagnostic": {"$ref": "#/$defs/fact"},
+        "truncation-metadata": {"$ref": "#/$defs/fact"},
+        "redaction-metadata": {"$ref": "#/$defs/fact"},
+        "wall-duration": {"$ref": "#/$defs/fact"},
+        "monotonic-duration": {"$ref": "#/$defs/fact"},
+        "cpu-time": {"$ref": "#/$defs/fact"},
+        "compile-duration": {"$ref": "#/$defs/fact"},
+        "execution-duration": {"$ref": "#/$defs/fact"},
+        "peak-rss-or-memory-delta": {"$ref": "#/$defs/fact"},
+        "configured-resource-limits": {"$ref": "#/$defs/fact"},
+        "resource-limit-violation": {"$ref": "#/$defs/fact"},
+        "runtime-backend-jit": {"$ref": "#/$defs/fact"},
+        "warm-up-state": {"$ref": "#/$defs/fact"},
+        "adapter-protocol-environment": {"$ref": "#/$defs/fact"},
+        "anomaly-classification": {"$ref": "#/$defs/fact"},
+        "replication-relationship": {"$ref": "#/$defs/fact"},
+        "discrepancy-relationship": {"$ref": "#/$defs/fact"},
+        "retry-predecessor-relationship": {"$ref": "#/$defs/fact"},
+        "release-transition-relationship": {"$ref": "#/$defs/fact"}
+      }
+    }
+  },
+  "$defs": {
+    "fact": {
+      "oneOf": [
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["availability"],
+          "properties": {"availability": {"enum": ["unavailable", "observed-absence-or-not-applicable"]}}
+        },
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["availability", "value"],
+          "properties": {
+            "availability": {"enum": ["observed", "derived"]},
+            "value": {}
+          }
+        }
+      ]
+    }
+  }
+}

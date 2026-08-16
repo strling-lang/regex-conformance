@@ -22,6 +22,7 @@ class CampaignCiPolicyTests(unittest.TestCase):
             ".github/CODEOWNERS",
             ".github/policies/main-protection.json",
             ".github/workflows/public-validation.yml",
+            ".github/workflows/trusted-r2-publication-canary.yml",
             "requirements.lock",
             "requirements.ci.lock",
             "tools/ci/promote_verified.py",
