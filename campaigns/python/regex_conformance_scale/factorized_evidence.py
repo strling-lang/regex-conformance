@@ -138,7 +138,9 @@ class SourceCorpus:
         return self.logical + self.results + (self.manifest,)
 
 
-def discover_p19_corpus(campaign_root: Path, *, enforce_certified_p19: bool = True) -> SourceCorpus:
+def discover_scale_corpus(
+    campaign_root: Path, *, enforce_certified_p19: bool = False
+) -> SourceCorpus:
     root = campaign_root.expanduser().resolve(strict=True)
     if not root.is_dir():
         raise _fail("P19 corpus root is not a directory")
@@ -182,6 +184,16 @@ def discover_p19_corpus(campaign_root: Path, *, enforce_certified_p19: bool = Tr
         if dict(totals) != EXPECTED_SOURCE_BYTES:
             raise _fail("certified P19 source byte totals differ")
     return corpus
+
+
+def discover_p19_corpus(
+    campaign_root: Path, *, enforce_certified_p19: bool = True
+) -> SourceCorpus:
+    """Compatibility entrypoint for the frozen P19 certification corpus."""
+
+    return discover_scale_corpus(
+        campaign_root, enforce_certified_p19=enforce_certified_p19
+    )
 
 
 def _uvarint(value: int) -> bytes:
@@ -531,14 +543,27 @@ class _Interner:
         return len(self._values)
 
 
-def _logical_identity_context(repository_root: Path) -> dict[str, str]:
-    compiled = load_strict(repository_root / "campaigns/compiled/100k-qualification.v1.json")
+def _logical_identity_context(
+    repository_root: Path, plan: dict[str, Any] | None = None
+) -> dict[str, str]:
+    compiled = (
+        load_strict(
+            repository_root / "campaigns/compiled/100k-qualification.v1.json"
+        )
+        if plan is None
+        else plan
+    )
+    purpose = (
+        "operational-million-qualification-v1"
+        if compiled.get("schema_version") == "million-scale-partition-plan.v1"
+        else "operational-scale-qualification-v1"
+    )
     return {
         "base_campaign_manifest_id": compiled["base_campaign"]["campaign_manifest_id"],
         "campaign_definition_revision_id": compiled["campaign_definition_revision_id"],
         "campaign_id": compiled["campaign_id"],
         "campaign_manifest_id": compiled["campaign_manifest"]["campaign_manifest_id"],
-        "purpose": "operational-scale-qualification-v1",
+        "purpose": purpose,
     }
 
 
@@ -638,9 +663,14 @@ class SemanticCorpus:
     statistics: dict[str, Any]
 
 
-def build_semantic_corpus(repository_root: Path, source: SourceCorpus) -> SemanticCorpus:
+def build_semantic_corpus(
+    repository_root: Path,
+    source: SourceCorpus,
+    *,
+    plan: dict[str, Any] | None = None,
+) -> SemanticCorpus:
     root = repository_root.resolve(strict=True)
-    context = _logical_identity_context(root)
+    context = _logical_identity_context(root, plan)
     ids = _ContentIds(root)
     logical_templates = _Interner()
     result_templates = _Interner()

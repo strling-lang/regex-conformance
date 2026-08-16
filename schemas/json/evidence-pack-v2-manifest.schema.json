@@ -48,6 +48,20 @@
         }
       }
     },
+    "fact_aliases": {
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["evidence_class", "member_paths", "role", "stored_sha256"],
+        "properties": {
+          "evidence_class": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+          "member_paths": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+          "role": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+          "stored_sha256": {"$ref": "#/$defs/digest"}
+        }
+      },
+      "uniqueItems": true
+    },
     "source_binding": {
       "type": "object", "additionalProperties": false,
       "required": ["evidence_manifest_sha256", "logical_execution_count", "member_count", "physical_attempt_count", "source_raw_bytes"],

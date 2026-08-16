@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/million-scale-partition-plan.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["attempt_policy", "base_campaign", "campaign_definition_revision_id", "campaign_id", "campaign_manifest", "campaign_manifest_id", "classification", "denominator", "logical_execution_index", "parent_campaign_manifest_id", "partition_count", "partition_index", "planned_interruptions", "schema_version", "shards", "source_digests"],
+  "properties": {
+    "attempt_policy": {"$ref": "#/$defs/attemptPolicy"},
+    "base_campaign": {"$ref": "#/$defs/baseCampaign"},
+    "campaign_definition_revision_id": {"$ref": "#/$defs/rcid"},
+    "campaign_id": {"$ref": "#/$defs/rcid"},
+    "campaign_manifest": {"type": "object"},
+    "campaign_manifest_id": {"$ref": "#/$defs/rcid"},
+    "classification": {"type": "object"},
+    "denominator": {"$ref": "#/$defs/counts"},
+    "logical_execution_index": {
+      "type": "object", "additionalProperties": false,
+      "required": ["logical_execution_count", "ordered_ids_sha256", "ordering", "segment_count"],
+      "properties": {
+        "logical_execution_count": {"type": "integer", "minimum": 1, "maximum": 20000},
+        "ordered_ids_sha256": {"$ref": "#/$defs/digest"},
+        "ordering": {"const": "master-shard-ordinal-v1"},
+        "segment_count": {"type": "integer", "minimum": 1, "maximum": 64}
+      }
+    },
+    "parent_campaign_manifest_id": {"$ref": "#/$defs/rcid"},
+    "partition_count": {"const": 64},
+    "partition_index": {"type": "integer", "minimum": 0, "maximum": 63},
+    "planned_interruptions": {"type": "array", "minItems": 3, "maxItems": 3, "uniqueItems": true, "items": {"$ref": "#/$defs/interruption"}},
+    "schema_version": {"const": "million-scale-partition-plan.v1"},
+    "shards": {"type": "array", "minItems": 1, "maxItems": 64, "uniqueItems": true, "items": {"$ref": "#/$defs/shard"}},
+    "source_digests": {"type": "object", "minProperties": 1, "additionalProperties": {"$ref": "#/$defs/digest"}}
+  },
+  "$defs": {
+    "attemptPolicy": {"type": "object", "additionalProperties": false, "required": ["attempts_are_append_only", "infrastructure_failure_is_observation", "maximum_attempts_per_logical_execution"], "properties": {"attempts_are_append_only": {"const": true}, "infrastructure_failure_is_observation": {"const": false}, "maximum_attempts_per_logical_execution": {"const": 3}}},
+    "baseCampaign": {"type": "object", "additionalProperties": false, "required": ["campaign_manifest_id", "path", "sha256"], "properties": {"campaign_manifest_id": {"$ref": "#/$defs/rcid"}, "path": {"const": "campaigns/compiled/small-scale-qualification.v1.json"}, "sha256": {"$ref": "#/$defs/digest"}}},
+    "counts": {
+      "type": "object", "additionalProperties": false,
+      "required": ["candidate_count", "excluded_count", "included_count", "invalid_count", "unresolved_count"],
+      "properties": {
+        "candidate_count": {"type": "integer", "minimum": 1, "maximum": 20000},
+        "excluded_count": {"const": 0},
+        "included_count": {"type": "integer", "minimum": 1, "maximum": 20000},
+        "invalid_count": {"const": 0},
+        "unresolved_count": {"const": 0}
+      }
+    },
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "interruption": {"type": "object", "additionalProperties": false, "required": ["action", "after_committed_shards", "key"], "properties": {"action": {"enum": ["controller-restart", "worker-process-kill"]}, "after_committed_shards": {"type": "integer", "minimum": 1, "maximum": 400}, "key": {"$ref": "#/$defs/token"}}},
+    "rcid": {"type": "string", "pattern": "^rcid:v1:[a-z0-9]+(?:-[a-z0-9]+)*:(?:u7:[0-9a-f-]{36}|h:jcs-sha256-v1:[0-9a-f]{64})$"},
+    "shard": {"type": "object", "additionalProperties": false, "required": ["category", "first_logical_execution_id", "last_logical_execution_id", "logical_execution_count", "logical_execution_ids_sha256", "relative_path", "selection_key", "sha256", "shard_id", "size_bytes"], "properties": {"category": {"const": "logical-execution-segments"}, "first_logical_execution_id": {"$ref": "#/$defs/rcid"}, "last_logical_execution_id": {"$ref": "#/$defs/rcid"}, "logical_execution_count": {"type": "integer", "minimum": 1, "maximum": 250}, "logical_execution_ids_sha256": {"$ref": "#/$defs/digest"}, "relative_path": {"type": "string", "pattern": "^logical-execution-segments/sha256/[0-9a-f]{64}\\.json$"}, "selection_key": {"$ref": "#/$defs/token"}, "sha256": {"$ref": "#/$defs/digest"}, "shard_id": {"$ref": "#/$defs/rcid"}, "size_bytes": {"type": "integer", "minimum": 1}}},
+    "token": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"}
+  }
+}

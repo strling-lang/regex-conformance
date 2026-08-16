@@ -1,0 +1,69 @@
+{
+  "schema_version": "million-scale-campaign-definition.v1",
+  "campaign_definition_id": "rcid:v1:campaign-definition:u7:01a00928-c24f-7dac-b389-65292e0cfb51",
+  "campaign_id": "rcid:v1:campaign:u7:01a00928-c24f-77d2-928b-f619ef0c6e2d",
+  "base_campaign": {
+    "campaign_manifest_id": "rcid:v1:campaign-manifest:h:jcs-sha256-v1:a0e031d0a7745602c970a8fafe1c2dfedd866a9b59ad30545efffdaf3574ddc1",
+    "path": "campaigns/compiled/small-scale-qualification.v1.json",
+    "sha256": "2de0af5522d2847079309e762f6966d94a89db7885975cd0dbc933109e798d0d"
+  },
+  "base_coverage": {
+    "path": "reports/small-scale/qualification-coverage.json",
+    "sha256": "debc004e2994f31f919986cac0e0c487feb1c0e341ca1b8329ae7573732a74a2"
+  },
+  "base_vectors": {
+    "path": "vectors/definitions/small-scale-qualification.v1.json",
+    "sha256": "92a8f6068a699681b544bdbb7bfcbc5cd83bb0058c65223cc91c732736fa1fee"
+  },
+  "scale_basis": {
+    "path": "campaigns/compiled/100k-qualification.v1.json",
+    "sha256": "9ac0c002ad4cefc59d974907d646e7c6eec630f3daf89a91c41d58fd989cad04"
+  },
+  "classification": {
+    "completion_denominator": "development-only",
+    "normative_authority": false,
+    "operational_qualification_only": true,
+    "probe_only": true,
+    "semantic_authority": false
+  },
+  "logical_execution_target": 1000000,
+  "expansion_policy": {
+    "name": "balanced-planned-repetition-v1",
+    "quota_order": "base-logical-id-code-point-v1",
+    "logical_order": "selection-key-then-logical-id-v1"
+  },
+  "shard_policy": {
+    "algorithm": "bounded-selection-locality-then-logical-id-v1",
+    "maximum_execution_count": 250
+  },
+  "partition_policy": {
+    "algorithm": "balanced-contiguous-shard-ordinal-v1",
+    "partition_count": 64,
+    "maximum_partition_shards": 63
+  },
+  "attempt_policy": {
+    "attempts_are_append_only": true,
+    "infrastructure_failure_is_observation": false,
+    "maximum_attempts_per_logical_execution": 3
+  },
+  "planned_interruptions": [
+    {"action": "controller-restart", "partition_fraction_basis_points": 2500, "key": "controller-restart-a"},
+    {"action": "worker-process-kill", "partition_fraction_basis_points": 5000, "key": "worker-kill"},
+    {"action": "controller-restart", "partition_fraction_basis_points": 7500, "key": "controller-restart-b"}
+  ],
+  "stress_obligations": {
+    "minimum_base_logical_templates": 26,
+    "minimum_profile_coordinates": 4,
+    "required_categories": [
+      "capture",
+      "error",
+      "iteration",
+      "profile-differential",
+      "rejection",
+      "replacement",
+      "success",
+      "timeout",
+      "unicode"
+    ]
+  }
+}

@@ -23,6 +23,7 @@ from typing import Any, Callable, Iterable, Mapping, Sequence
 import rfc8785
 
 from regex_conformance_schema.jsonio import canonical_bytes, load_strict
+from regex_conformance_schema.schema import validate_instance
 
 from . import factorized_evidence as v1
 
@@ -572,6 +573,47 @@ def _fact_object(block: _FactBlock, tables: v1.TokenTables) -> PackObject:
     )
 
 
+def _deduplicate_physical_objects(
+    candidates: list[PackObject],
+) -> tuple[list[PackObject], list[dict[str, Any]]]:
+    ordered = sorted(
+        candidates, key=lambda item: (item.role, item.stored_sha256, item.member_paths)
+    )
+    objects: list[PackObject] = []
+    physical_by_digest: dict[str, PackObject] = {}
+    fact_aliases: list[dict[str, Any]] = []
+    for item in ordered:
+        previous = physical_by_digest.get(item.stored_sha256)
+        if previous is None:
+            physical_by_digest[item.stored_sha256] = item
+            objects.append(item)
+            continue
+        if (
+            previous.data != item.data
+            or previous.raw_sha256 != item.raw_sha256
+            or previous.raw_size_bytes != item.raw_size_bytes
+            or not previous.member_paths
+            or not item.member_paths
+        ):
+            raise _fail("pack stored-object identity collides across incompatible roles")
+        fact_aliases.append(
+            {
+                "evidence_class": item.evidence_class,
+                "member_paths": list(item.member_paths),
+                "role": item.role,
+                "stored_sha256": item.stored_sha256,
+            }
+        )
+    fact_aliases.sort(
+        key=lambda item: (
+            item["role"],
+            item["stored_sha256"],
+            item["member_paths"],
+        )
+    )
+    return objects, fact_aliases
+
+
 def build_evidence_pack(
     repository_root: Path,
     source: v1.SourceCorpus,
@@ -840,11 +882,9 @@ def build_evidence_pack(
         stored_size_bytes=len(dictionary_stored),
         data=dictionary_stored,
     )
-    objects = list(cas.objects.values()) + [dictionary]
-    objects.extend(_fact_object(item, tables) for item in fact_blocks)
-    objects.sort(key=lambda item: (item.role, item.stored_sha256, item.member_paths))
-    if len({item.stored_sha256 for item in objects}) != len(objects):
-        raise _fail("pack contains duplicate stored objects instead of exact references")
+    candidates = list(cas.objects.values()) + [dictionary]
+    candidates.extend(_fact_object(item, tables) for item in fact_blocks)
+    objects, fact_aliases = _deduplicate_physical_objects(candidates)
 
     manifest_body = {
         "authority": {
@@ -871,6 +911,8 @@ def build_evidence_pack(
             "source_raw_bytes": sum(item.size_bytes for item in source.members),
         },
     }
+    if fact_aliases:
+        manifest_body["fact_aliases"] = fact_aliases
     pack_digest = _sha256(canonical_bytes(manifest_body))
     manifest = {**manifest_body, "pack_digest_sha256": pack_digest}
     manifest_bytes = canonical_bytes(manifest) + b"\n"
@@ -900,6 +942,13 @@ def build_evidence_pack(
         bytes_by_evidence_class=dict(sorted(bytes_by_class.items())),
         measurements=measurements,
     )
+    validate_instance(
+        pack.manifest,
+        load_strict(
+            repository_root / "schemas/json/evidence-pack-v2-manifest.schema.json"
+        ),
+        source="Evidence Pack v2 manifest",
+    )
     verify_pack_structure(pack.manifest, pack.object_map())
     return pack
 
@@ -927,6 +976,36 @@ def _verify_manifest(manifest: Mapping[str, Any]) -> None:
         raise _fail("pack object ordinals are not closed")
     if len({item.get("stored_sha256") for item in objects}) != len(objects):
         raise _fail("pack manifest contains duplicate objects")
+    by_digest = {item["stored_sha256"]: item for item in objects}
+    aliases = manifest.get("fact_aliases", [])
+    if not isinstance(aliases, list) or aliases != sorted(
+        aliases,
+        key=lambda item: (
+            item.get("role"),
+            item.get("stored_sha256"),
+            item.get("member_paths"),
+        ),
+    ):
+        raise _fail("pack fact aliases are not deterministically ordered")
+    bindings = {
+        (
+            item.get("evidence_class"),
+            tuple(item.get("member_paths", [])),
+            item.get("role"),
+            item.get("stored_sha256"),
+        )
+        for item in aliases
+    }
+    if len(bindings) != len(aliases):
+        raise _fail("pack fact alias is duplicated")
+    for item in aliases:
+        physical = by_digest.get(item.get("stored_sha256"))
+        if (
+            physical is None
+            or not physical.get("member_paths")
+            or not item.get("member_paths")
+        ):
+            raise _fail("pack fact alias does not reference a fact object")
 
 
 def _decode_pack(
@@ -938,15 +1017,24 @@ def _decode_pack(
 ) -> _DecodedPack:
     _verify_manifest(manifest)
     descriptors = manifest["objects"]
-    selected = []
-    for item in descriptors:
+    aliases = manifest.get("fact_aliases", [])
+    bindings = [*descriptors, *aliases]
+    selected_bindings = []
+    for item in bindings:
         if item["role"] == "pack-dictionary":
-            selected.append(item)
+            selected_bindings.append(item)
         elif roles is None and paths is None:
-            selected.append(item)
+            selected_bindings.append(item)
         elif roles is not None and item["role"] in roles:
             if paths is None or set(item["member_paths"]) & paths or not item["member_paths"]:
-                selected.append(item)
+                selected_bindings.append(item)
+    selected_digests = {item["stored_sha256"] for item in selected_bindings}
+    selected = [
+        item
+        for item in descriptors
+        if item["stored_sha256"] in selected_digests
+        or item["role"] == "pack-dictionary"
+    ]
     raw_by_digest = {}
     for item in selected:
         digest = item["stored_sha256"]
@@ -970,7 +1058,7 @@ def _decode_pack(
         raise _fail("pack dictionary model differs")
     facts = []
     cas_values = {}
-    for item in selected:
+    for item in selected_bindings:
         if item["role"] == "pack-dictionary":
             continue
         raw = raw_by_digest[item["stored_sha256"]]
@@ -979,7 +1067,7 @@ def _decode_pack(
             if consumed != len(raw):
                 raise _fail("pack fact object has trailing bytes")
             facts.append((item, value))
-        else:
+        elif item in descriptors:
             try:
                 wrapper = json.loads(raw.decode("utf-8"))
             except (UnicodeDecodeError, json.JSONDecodeError) as error:
@@ -1177,7 +1265,7 @@ def lookup_pack_member(
         return RandomLookup(relative_path, canonical_bytes(payload) + b"\n", 1)
     target_meta = [
         item
-        for item in manifest["objects"]
+        for item in [*manifest["objects"], *manifest.get("fact_aliases", [])]
         if relative_path in item["member_paths"]
     ]
     target_roles = {item["role"] for item in target_meta}

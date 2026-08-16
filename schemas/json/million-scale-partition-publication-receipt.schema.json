@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/million-scale-partition-publication-receipt.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["attempt_count", "campaign_manifest_id", "class_a_requests", "class_b_requests", "created_objects", "evidence_manifest_sha256", "logical_execution_count", "manifest_key", "manifest_sha256", "object_count", "pack_digest_sha256", "parent_campaign_manifest_id", "partition_count", "partition_index", "physical_attempt_count", "recovered_existing_objects", "retained_bytes", "schema_version", "source_member_count", "verification"],
+  "properties": {
+    "attempt_count": {"type": "integer", "minimum": 1, "maximum": 60000},
+    "campaign_manifest_id": {"$ref": "#/$defs/rcid"},
+    "class_a_requests": {"type": "integer", "minimum": 0, "maximum": 512},
+    "class_b_requests": {"type": "integer", "minimum": 0, "maximum": 512},
+    "created_objects": {"type": "integer", "minimum": 0, "maximum": 512},
+    "evidence_manifest_sha256": {"$ref": "#/$defs/digest"},
+    "logical_execution_count": {"type": "integer", "minimum": 1, "maximum": 20000},
+    "manifest_key": {"type": "string", "pattern": "^regex-conformance/evidence-pack-v2/manifests/sha256/[0-9a-f]{64}\\.json$"},
+    "manifest_sha256": {"$ref": "#/$defs/digest"},
+    "object_count": {"type": "integer", "minimum": 2, "maximum": 512},
+    "pack_digest_sha256": {"$ref": "#/$defs/digest"},
+    "parent_campaign_manifest_id": {"$ref": "#/$defs/rcid"},
+    "partition_count": {"const": 64},
+    "partition_index": {"type": "integer", "minimum": 0, "maximum": 63},
+    "physical_attempt_count": {"type": "integer", "minimum": 1, "maximum": 60000},
+    "recovered_existing_objects": {"type": "integer", "minimum": 0, "maximum": 512},
+    "retained_bytes": {"type": "integer", "minimum": 1, "exclusiveMaximum": 8000000},
+    "schema_version": {"const": "million-scale-partition-publication-receipt.v1"},
+    "source_member_count": {"type": "integer", "minimum": 3, "maximum": 1000},
+    "verification": {
+      "type": "object", "additionalProperties": false,
+      "required": ["corruption_detected", "deterministic", "exact_reconstruction", "independent_attempts", "independent_observations", "list_requests"],
+      "properties": {
+        "corruption_detected": {"const": true},
+        "deterministic": {"const": true},
+        "exact_reconstruction": {"const": true},
+        "independent_attempts": {"const": true},
+        "independent_observations": {"const": true},
+        "list_requests": {"const": 0}
+      }
+    }
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "rcid": {"type": "string", "pattern": "^rcid:v1:[a-z0-9]+(?:-[a-z0-9]+)*:h:jcs-sha256-v1:[0-9a-f]{64}$"}
+  }
+}

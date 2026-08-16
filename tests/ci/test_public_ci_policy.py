@@ -22,6 +22,7 @@ class PublicCiPolicyTests(unittest.TestCase):
             ".github/CODEOWNERS",
             ".github/policies/main-protection.json",
             ".github/workflows/public-validation.yml",
+            ".github/workflows/trusted-million-qualification.yml",
             ".github/workflows/trusted-r2-publication-canary.yml",
             "requirements.lock",
             "requirements.ci.lock",
@@ -46,6 +47,12 @@ class PublicCiPolicyTests(unittest.TestCase):
 
     def mutate_trusted_workflow(self, old: str, new: str) -> None:
         path = self.root / ".github" / "workflows" / "trusted-r2-publication-canary.yml"
+        text = path.read_text(encoding="utf-8")
+        self.assertIn(old, text)
+        path.write_text(text.replace(old, new, 1), encoding="utf-8")
+
+    def mutate_million_workflow(self, old: str, new: str) -> None:
+        path = self.root / ".github" / "workflows" / "trusted-million-qualification.yml"
         text = path.read_text(encoding="utf-8")
         self.assertIn(old, text)
         path.write_text(text.replace(old, new, 1), encoding="utf-8")
@@ -119,6 +126,24 @@ class PublicCiPolicyTests(unittest.TestCase):
             "if: github.ref != ''",
         )
         self.assertIn("trusted-main-only", self.codes())
+
+    def test_million_campaign_rejects_socket_mount_or_public_trigger(self) -> None:
+        self.mutate_million_workflow(
+            "  workflow_dispatch:",
+            "  pull_request_target:\n  # /var/run/docker.sock",
+        )
+        self.assertIn("million-trust-boundary", self.codes())
+
+    def test_million_campaign_rejects_an_extra_secret(self) -> None:
+        self.mutate_million_workflow(
+            "STRLING_R2_REGION: ${{ vars.STRLING_R2_REGION }}",
+            "STRLING_R2_REGION: ${{ vars.STRLING_R2_REGION }}\n          EXTRA: ${{ secrets.EXTRA }}",
+        )
+        self.assertIn("million-secret-interface", self.codes())
+
+    def test_million_campaign_rejects_broader_concurrency(self) -> None:
+        self.mutate_million_workflow("max-parallel: 20", "max-parallel: 25")
+        self.assertIn("million-concurrency", self.codes())
 
     def test_floating_action_tag_is_rejected(self) -> None:
         self.mutate_workflow(

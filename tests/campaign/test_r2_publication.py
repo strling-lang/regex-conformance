@@ -27,6 +27,7 @@ from regex_conformance_scale.r2_publication import (  # noqa: E402
     PutResult,
     R2Configuration,
     R2TransportError,
+    million_partition_receipt_key,
     publication_items_from_evidence_pack,
 )
 
@@ -174,6 +175,32 @@ class PublisherTests(unittest.TestCase):
         self.assertEqual(len(plan), 2)
         self.assertFalse(plan[0].manifest)
         self.assertTrue(plan[1].manifest)
+
+    def test_partition_coordinate_receipt_is_immutable_and_role_bounded(self) -> None:
+        parent = "rcid:v1:campaign-manifest:h:jcs-sha256-v1:" + "a" * 64
+        key = million_partition_receipt_key(parent, 63)
+        self.assertEqual(
+            key,
+            "regex-conformance/evidence-pack-v2/campaigns/"
+            + "a" * 64
+            + "/partitions/063/receipt.json",
+        )
+        receipt = PublicationItem(
+            key=key,
+            data=b'{"partition":63}\n',
+            evidence_class="publication_receipt",
+            manifest=True,
+        )
+        receipt.validate()
+        with self.assertRaisesRegex(PublicationError, "coordinate-key-role"):
+            PublicationItem(
+                key=key,
+                data=receipt.data,
+                evidence_class="diagnostics",
+                manifest=True,
+            ).validate()
+        with self.assertRaisesRegex(PublicationError, "coordinate-invalid"):
+            million_partition_receipt_key(parent, 64)
 
 
 if __name__ == "__main__":

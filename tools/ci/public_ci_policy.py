@@ -40,17 +40,23 @@ def evaluate(root: Path) -> list[Violation]:
     workflows = sorted((root / ".github" / "workflows").glob("*.y*ml"))
     expected_workflow = root / ".github" / "workflows" / "public-validation.yml"
     trusted_workflow = root / ".github" / "workflows" / "trusted-r2-publication-canary.yml"
+    million_workflow = root / ".github" / "workflows" / "trusted-million-qualification.yml"
     _require(
-        workflows == sorted([expected_workflow, trusted_workflow]),
+        workflows == sorted([expected_workflow, trusted_workflow, million_workflow]),
         violations,
         "workflow-scope",
-        "repository permits exactly the public validation and trusted manual R2 canary workflows",
+        "repository permits exactly public validation and the two audited trusted manual workflows",
     )
-    if not expected_workflow.is_file() or not trusted_workflow.is_file():
+    if (
+        not expected_workflow.is_file()
+        or not trusted_workflow.is_file()
+        or not million_workflow.is_file()
+    ):
         return violations
 
     workflow = expected_workflow.read_text(encoding="utf-8")
     trusted = trusted_workflow.read_text(encoding="utf-8")
+    million = million_workflow.read_text(encoding="utf-8")
     folded = workflow.casefold()
     forbidden = {
         "forbidden-trigger": ["pull_request_target:", "repository_dispatch:", "workflow_run:", "workflow_call:"],
@@ -160,6 +166,59 @@ def evaluate(root: Path) -> list[Violation]:
     ]:
         _require(command in trusted, violations, "trusted-canary-contract", f"trusted R2 canary omits required command {command!r}")
 
+    million_folded = million.casefold()
+    for marker in [
+        "pull_request:",
+        "pull_request_target:",
+        "push:",
+        "schedule:",
+        "repository_dispatch:",
+        "workflow_run:",
+        "workflow_call:",
+        "/var/run/docker.sock",
+        "self-hosted",
+    ]:
+        _require(
+            marker not in million_folded,
+            violations,
+            "million-trust-boundary",
+            f"trusted 1M workflow contains forbidden marker {marker!r}",
+        )
+    _require("\n  workflow_dispatch:\n" in million, violations, "million-trigger", "trusted 1M workflow must be manual-only")
+    _require("\npermissions:\n  contents: read\n" in million, violations, "million-permissions", "trusted 1M workflow must retain read-only repository permissions")
+    _require(re.search(r"^\s+[a-z-]+:\s+write\s*$", million, re.MULTILINE) is None, violations, "million-write-permission", "trusted 1M workflow may not request repository write permission")
+    _require("if: github.ref == 'refs/heads/main'" in million, violations, "million-main-only", "trusted 1M workflow must reject non-main dispatches")
+    _require(million.count("runs-on: ubuntu-24.04") == 3, violations, "million-runner", "all trusted 1M jobs must use the audited hosted image")
+    million_checkout_count = len(re.findall(r"^\s*uses:\s*actions/checkout@", million, re.MULTILINE))
+    _require(million_checkout_count == 3 and million.count("persist-credentials: false") == million_checkout_count, violations, "million-checkout-credentials", "every trusted 1M checkout must disable persisted credentials")
+    _require("timeout-minutes: 360" in million and million.count("timeout-minutes: 45") == 2, violations, "million-timeout", "trusted 1M preparation, execution, and reconciliation must be bounded")
+    _require("max-parallel: 20" in million, violations, "million-concurrency", "trusted 1M worker fanout must retain the certified concurrency bound")
+    _require(set(re.findall(r"secrets\.([A-Z0-9_]+)", million)) == expected_secrets, violations, "million-secret-interface", "trusted 1M workflow must consume exactly the two approved secret names")
+    _require(set(re.findall(r"vars\.([A-Z0-9_]+)", million)) == expected_variables, violations, "million-variable-interface", "trusted 1M workflow must consume exactly the four approved variable names")
+    _require("secrets[" not in million_folded and "vars[" not in million_folded, violations, "million-indirect-configuration", "trusted 1M workflow may not use indirect secret or variable lookups")
+    for command in [
+        "--partition-root \"$RUNNER_TEMP/million-inputs\"",
+        "--partition-index \"${{ matrix.partition }}\"",
+        "run_million_partition.py",
+        "publish_million_partition.py",
+        "recover_million_partition.py",
+        "finalize_million_qualification.py",
+        "run_r2_publication_canary.py --check-configuration",
+        "million-scale-partition-execution-report.schema.json",
+        "million-scale-partition-publication-receipt.schema.json",
+        "million-scale-execution-report.schema.json",
+        "docker ps --all --quiet --filter name=strling-rc-",
+        "git diff --exit-code",
+        "steps.partition-recovery.outputs.completed != 'true'",
+        "partition: [\"000\"",
+        "\"063\"]",
+        "retention-days: 14",
+        "retention-days: 30",
+    ]:
+        _require(command in million, violations, "million-campaign-contract", f"trusted 1M workflow omits required command {command!r}")
+    _require("million-input-" not in million, violations, "million-input-artifacts", "trusted 1M workflow must materialize exact inputs locally rather than retain large input artifacts")
+    _require(million.count("uses: actions/upload-artifact@") == 2 and million.count("uses: actions/download-artifact@") == 1, violations, "million-artifact-contract", "trusted 1M workflow may retain only compact partition receipts and the final report")
+
     policy_path = root / ".github" / "policies" / "main-protection.json"
     try:
         policy = json.loads(policy_path.read_text(encoding="utf-8"))
@@ -168,7 +227,7 @@ def evaluate(root: Path) -> list[Violation]:
         return violations
 
     allowed = policy.get("actions", {}).get("allowed_actions", {})
-    observed_actions = USE_PATTERN.findall(workflow + "\n" + trusted)
+    observed_actions = USE_PATTERN.findall(workflow + "\n" + trusted + "\n" + million)
     _require(bool(observed_actions), violations, "missing-action", "workflow must contain its audited setup actions")
     for action, revision in observed_actions:
         _require(re.fullmatch(SHA, revision) is not None, violations, "floating-action", f"{action} is not pinned to a full commit SHA")

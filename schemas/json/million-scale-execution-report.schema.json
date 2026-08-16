@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/million-scale-execution-report.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["accepted_observation_count", "aggregate_manifest_key", "aggregate_manifest_sha256", "attempt_count", "campaign_manifest_id", "capacity", "class_a_requests", "class_b_requests", "infrastructure_failure_attempt_count", "logical_execution_count", "object_count", "pack_manifest_count", "partition_count", "reconciliation", "result_shard_count", "schema_version", "verification"],
+  "properties": {
+    "accepted_observation_count": {"const": 1000000},
+    "aggregate_manifest_key": {"type": "string", "pattern": "^regex-conformance/evidence-pack-v2/manifests/sha256/[0-9a-f]{64}\\.json$"},
+    "aggregate_manifest_sha256": {"$ref": "#/$defs/digest"},
+    "attempt_count": {"type": "integer", "minimum": 1000000, "maximum": 3000000},
+    "campaign_manifest_id": {"$ref": "#/$defs/rcid"},
+    "capacity": {
+      "type": "object", "additionalProperties": false,
+      "required": ["canary_bytes", "hard_cap_bytes", "projected_upper_bound_bytes", "soft_stop_bytes", "unique_campaign_bytes"],
+      "properties": {
+        "canary_bytes": {"const": 461},
+        "hard_cap_bytes": {"const": 10000000000},
+        "projected_upper_bound_bytes": {"type": "integer", "minimum": 1, "exclusiveMaximum": 8000000000},
+        "soft_stop_bytes": {"const": 8000000000},
+        "unique_campaign_bytes": {"type": "integer", "minimum": 1, "exclusiveMaximum": 8000000000}
+      }
+    },
+    "class_a_requests": {"type": "integer", "minimum": 1, "maximum": 50000},
+    "class_b_requests": {"type": "integer", "minimum": 1, "maximum": 50000},
+    "infrastructure_failure_attempt_count": {"type": "integer", "minimum": 16000, "maximum": 2000000},
+    "logical_execution_count": {"const": 1000000},
+    "object_count": {"type": "integer", "minimum": 2, "maximum": 20000},
+    "pack_manifest_count": {"const": 64},
+    "partition_count": {"const": 64},
+    "reconciliation": {"const": "exact"},
+    "result_shard_count": {"type": "integer", "minimum": 4000, "maximum": 4005},
+    "schema_version": {"const": "million-scale-execution-report.v1"},
+    "verification": {
+      "type": "object", "additionalProperties": false,
+      "required": ["duplicate_logical_completion", "manifest_last", "normal_list_requests", "pack_structures", "partition_indexes", "physical_attempt_distinction", "source_reconstruction_certified"],
+      "properties": {
+        "duplicate_logical_completion": {"const": false},
+        "manifest_last": {"const": true},
+        "normal_list_requests": {"const": 0},
+        "pack_structures": {"const": 64},
+        "partition_indexes": {"const": "0-63-exact"},
+        "physical_attempt_distinction": {"const": true},
+        "source_reconstruction_certified": {"const": true}
+      }
+    }
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "rcid": {"type": "string", "pattern": "^rcid:v1:[a-z0-9]+(?:-[a-z0-9]+)*:h:jcs-sha256-v1:[0-9a-f]{64}$"}
+  }
+}

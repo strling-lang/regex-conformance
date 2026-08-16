@@ -1,0 +1,227 @@
+name: Trusted 1M qualification
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: regex-conformance-p20-t02-million-qualification
+  cancel-in-progress: false
+
+jobs:
+  prepare-million-plan:
+    name: prepare-million-plan
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      PIP_DISABLE_PIP_VERSION_CHECK: "1"
+      PIP_NO_INPUT: "1"
+      PYTHONDONTWRITEBYTECODE: "1"
+      PYTHONHASHSEED: "0"
+    steps:
+      - name: Check out the exact protected revision without retained credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Select exact Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12.10"
+          cache: ""
+
+      - name: Install hash-locked campaign dependencies
+        run: "python -m pip install --only-binary=:all: --require-hashes --requirement requirements.ci.lock"
+
+      - name: Verify the exact million denominator and repository source set
+        run: |
+          python tools/campaigns/compile_million_qualification.py --check
+          python schemas/tooling/python/run.py validate-repository
+          git diff --exit-code
+
+  execute-and-publish-partitions:
+    name: execute-and-publish-partition-${{ matrix.partition }}
+    needs: prepare-million-plan
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        partition: ["000", "001", "002", "003", "004", "005", "006", "007", "008", "009", "010", "011", "012", "013", "014", "015", "016", "017", "018", "019", "020", "021", "022", "023", "024", "025", "026", "027", "028", "029", "030", "031", "032", "033", "034", "035", "036", "037", "038", "039", "040", "041", "042", "043", "044", "045", "046", "047", "048", "049", "050", "051", "052", "053", "054", "055", "056", "057", "058", "059", "060", "061", "062", "063"]
+    env:
+      PIP_DISABLE_PIP_VERSION_CHECK: "1"
+      PIP_NO_INPUT: "1"
+      PYTHONDONTWRITEBYTECODE: "1"
+      PYTHONHASHSEED: "0"
+    steps:
+      - name: Check out the exact protected revision without retained credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Select exact Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12.10"
+          cache: ""
+
+      - name: Install hash-locked campaign dependencies
+        run: "python -m pip install --only-binary=:all: --require-hashes --requirement requirements.ci.lock"
+
+      - name: Deterministically materialize only this exact partition
+        run: |
+          python tools/campaigns/compile_million_qualification.py \
+            --check \
+            --partition-root "$RUNNER_TEMP/million-inputs" \
+            --partition-index "${{ matrix.partition }}"
+          git diff --exit-code
+
+      - name: Verify trusted worker and target-provider prerequisites
+        run: |
+          python -m pip check
+          cmake --version
+          cc --version
+          docker version
+          python schemas/tooling/python/run.py validate "$RUNNER_TEMP/million-inputs/partition-${{ matrix.partition }}/partition-plan.json" schemas/json/million-scale-partition-plan.schema.json
+          test -z "$(docker ps --all --quiet --filter name=strling-rc-)"
+
+      - name: Recover an already certified partition by exact coordinate
+        id: partition-recovery
+        env:
+          STRLING_R2_ACCESS_KEY_ID: ${{ secrets.STRLING_R2_ACCESS_KEY_ID }}
+          STRLING_R2_SECRET_ACCESS_KEY: ${{ secrets.STRLING_R2_SECRET_ACCESS_KEY }}
+          STRLING_R2_ACCOUNT_ID: ${{ vars.STRLING_R2_ACCOUNT_ID }}
+          STRLING_R2_BUCKET_NAME: ${{ vars.STRLING_R2_BUCKET_NAME }}
+          STRLING_R2_ENDPOINT: ${{ vars.STRLING_R2_ENDPOINT }}
+          STRLING_R2_REGION: ${{ vars.STRLING_R2_REGION }}
+        run: |
+          python tools/campaigns/run_r2_publication_canary.py --check-configuration
+          mkdir -p "$RUNNER_TEMP/million-output"
+          python tools/campaigns/recover_million_partition.py \
+            --partition-plan "$RUNNER_TEMP/million-inputs/partition-${{ matrix.partition }}/partition-plan.json" \
+            --receipt "$RUNNER_TEMP/million-output/partition-receipt.json"
+          if test -f "$RUNNER_TEMP/million-output/partition-receipt.json"; then
+            echo "completed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "completed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Execute and recover the exact partition
+        if: steps.partition-recovery.outputs.completed != 'true'
+        run: |
+          completed=0
+          for session in 1 2 3 4; do
+            set +e
+            python tools/campaigns/run_million_partition.py \
+              --partition-plan "$RUNNER_TEMP/million-inputs/partition-${{ matrix.partition }}/partition-plan.json" \
+              --state-root "$RUNNER_TEMP/million-campaign-state" \
+              --logical-segment-root "$RUNNER_TEMP/million-inputs/partition-${{ matrix.partition }}/logical" \
+              --evidence-dir "$RUNNER_TEMP/million-inputs/partition-${{ matrix.partition }}/evidence" \
+              --compact-report "$RUNNER_TEMP/million-execution-report.json"
+            result=$?
+            set -e
+            if [ "$result" -eq 0 ]; then
+              completed=1
+              break
+            fi
+            if [ "$result" -ne 75 ]; then
+              exit "$result"
+            fi
+          done
+          test "$completed" -eq 1
+          python schemas/tooling/python/run.py validate "$RUNNER_TEMP/million-execution-report.json" schemas/json/million-scale-partition-execution-report.schema.json
+
+      - name: Certify and incrementally publish Evidence Pack v2
+        if: steps.partition-recovery.outputs.completed != 'true'
+        env:
+          STRLING_R2_ACCESS_KEY_ID: ${{ secrets.STRLING_R2_ACCESS_KEY_ID }}
+          STRLING_R2_SECRET_ACCESS_KEY: ${{ secrets.STRLING_R2_SECRET_ACCESS_KEY }}
+          STRLING_R2_ACCOUNT_ID: ${{ vars.STRLING_R2_ACCOUNT_ID }}
+          STRLING_R2_BUCKET_NAME: ${{ vars.STRLING_R2_BUCKET_NAME }}
+          STRLING_R2_ENDPOINT: ${{ vars.STRLING_R2_ENDPOINT }}
+          STRLING_R2_REGION: ${{ vars.STRLING_R2_REGION }}
+        run: |
+          python tools/campaigns/run_r2_publication_canary.py --check-configuration
+          python tools/campaigns/publish_million_partition.py \
+            --partition-plan "$RUNNER_TEMP/million-inputs/partition-${{ matrix.partition }}/partition-plan.json" \
+            --campaign-root "$RUNNER_TEMP/million-inputs/partition-${{ matrix.partition }}" \
+            --state-root "$RUNNER_TEMP/million-publication-state" \
+            --receipt "$RUNNER_TEMP/million-output/partition-receipt.json"
+          cp "$RUNNER_TEMP/million-execution-report.json" "$RUNNER_TEMP/million-output/execution-report.json"
+          python schemas/tooling/python/run.py validate "$RUNNER_TEMP/million-output/partition-receipt.json" schemas/json/million-scale-partition-publication-receipt.schema.json
+
+      - name: Prove target cleanup and repository immutability
+        if: always()
+        run: |
+          test -z "$(docker ps --all --quiet --filter name=strling-rc-)"
+          git diff --exit-code
+
+      - name: Upload safe partition receipt
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: million-receipt-${{ matrix.partition }}
+          path: ${{ runner.temp }}/million-output
+          compression-level: 9
+          if-no-files-found: error
+          retention-days: 14
+
+  reconcile-million-campaign:
+    name: reconcile-million-campaign
+    needs: execute-and-publish-partitions
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      PIP_DISABLE_PIP_VERSION_CHECK: "1"
+      PIP_NO_INPUT: "1"
+      PYTHONDONTWRITEBYTECODE: "1"
+      PYTHONHASHSEED: "0"
+    steps:
+      - name: Check out the exact protected revision without retained credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Select exact Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12.10"
+          cache: ""
+
+      - name: Install hash-locked campaign dependencies
+        run: "python -m pip install --only-binary=:all: --require-hashes --requirement requirements.ci.lock"
+
+      - name: Download the complete safe receipt set
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          pattern: million-receipt-*
+          path: ${{ runner.temp }}/million-receipts
+
+      - name: Reconcile exactly one million and publish the final manifest last
+        env:
+          STRLING_R2_ACCESS_KEY_ID: ${{ secrets.STRLING_R2_ACCESS_KEY_ID }}
+          STRLING_R2_SECRET_ACCESS_KEY: ${{ secrets.STRLING_R2_SECRET_ACCESS_KEY }}
+          STRLING_R2_ACCOUNT_ID: ${{ vars.STRLING_R2_ACCOUNT_ID }}
+          STRLING_R2_BUCKET_NAME: ${{ vars.STRLING_R2_BUCKET_NAME }}
+          STRLING_R2_ENDPOINT: ${{ vars.STRLING_R2_ENDPOINT }}
+          STRLING_R2_REGION: ${{ vars.STRLING_R2_REGION }}
+        run: |
+          python tools/campaigns/run_r2_publication_canary.py --check-configuration
+          python tools/campaigns/finalize_million_qualification.py \
+            --receipts-root "$RUNNER_TEMP/million-receipts" \
+            --state-root "$RUNNER_TEMP/million-final-state" \
+            --report "$RUNNER_TEMP/million-final-report.json"
+          python schemas/tooling/python/run.py validate "$RUNNER_TEMP/million-final-report.json" schemas/json/million-scale-execution-report.schema.json
+          git diff --exit-code
+
+      - name: Upload safe final reconciliation report
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: million-final-report
+          path: ${{ runner.temp }}/million-final-report.json
+          compression-level: 9
+          if-no-files-found: error
+          retention-days: 30

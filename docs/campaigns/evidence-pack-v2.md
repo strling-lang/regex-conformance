@@ -7,6 +7,12 @@ they point to the same content-addressed input, result, diagnostic, or
 provenance object. Parquet, warehouses, summaries, percentiles, and charts are
 regenerable analytics and are not pack authority.
 
+When two independently bound fact blocks have byte-identical physical bytes,
+the manifest stores the object once and records deterministic fact aliases for
+the additional member/role bindings. The aliases preserve every independent
+fact relationship without multiplying the stored object or implying semantic
+equivalence.
+
 The measured certification report is
 [`reports/scale/evidence-pack-v2-certification.json`](../../reports/scale/evidence-pack-v2-certification.json).
 Rebuild it read-only from the immutable P19 campaign root with:
@@ -113,3 +119,10 @@ prove authentication, write, read-back, idempotence, and fresh-ledger exact-key
 recovery. Repeated canaries reuse the same keys and do not grow retained bytes.
 It is not a material evidence publication path and cannot run from a pull
 request or non-`main` revision.
+
+P20-T02 uses the same publisher for incrementally certified partition packs.
+Content-addressed pack objects remain immutable and manifest-last. One
+canonical immutable coordinate receipt per master-manifest/partition pair
+provides exact-key, zero-`LIST` workflow recovery; it never replaces or merges
+independent observation or physical-attempt facts. See the
+[distributed 1M qualification design](million-qualification.md).

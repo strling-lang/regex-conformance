@@ -25,6 +25,9 @@ _TOKEN = re.compile(r"^[a-z0-9]+(?:[-_][a-z0-9]+)*$")
 _OBJECT_KEY = re.compile(
     r"^regex-conformance/evidence-pack-v2/[a-z0-9/_-]+/[0-9a-f]{64}\.(?:json|xz)$"
 )
+_PARTITION_RECEIPT_KEY = re.compile(
+    r"^regex-conformance/evidence-pack-v2/campaigns/[0-9a-f]{64}/partitions/(?:0[0-5][0-9]|06[0-3])/receipt\.json$"
+)
 
 
 class PublicationError(RuntimeError):
@@ -262,20 +265,46 @@ class PublicationItem:
         return hashlib.sha256(self.data).hexdigest()
 
     def validate(self) -> None:
-        if not _OBJECT_KEY.fullmatch(self.key) or ".." in self.key.split("/"):
+        content_addressed = _OBJECT_KEY.fullmatch(self.key) is not None
+        coordinate_receipt = _PARTITION_RECEIPT_KEY.fullmatch(self.key) is not None
+        if (not content_addressed and not coordinate_receipt) or ".." in self.key.split("/"):
             raise PublicationError("publication-key-invalid")
         if not isinstance(self.data, bytes):
             raise PublicationError("publication-data-must-be-bytes")
         filename = self.key.rsplit("/", 1)[-1]
-        claimed = filename.split(".", 1)[0]
-        if not _DIGEST.fullmatch(claimed) or claimed != self.sha256:
-            raise PublicationError("publication-key-is-not-exact-content-address")
+        if content_addressed:
+            claimed = filename.split(".", 1)[0]
+            if not _DIGEST.fullmatch(claimed) or claimed != self.sha256:
+                raise PublicationError("publication-key-is-not-exact-content-address")
+        elif not (
+            self.manifest
+            and self.evidence_class == "publication_receipt"
+            and filename == "receipt.json"
+        ):
+            raise PublicationError("publication-coordinate-key-role-invalid")
         if (self.manifest and not filename.endswith(".json")) or (
             not self.manifest and not filename.endswith(".xz")
         ):
             raise PublicationError("publication-key-extension-differs-from-role")
         if not _TOKEN.fullmatch(self.evidence_class):
             raise PublicationError("publication-evidence-class-invalid")
+
+
+def million_partition_receipt_key(
+    parent_campaign_manifest_id: str, partition_index: int
+) -> str:
+    prefix = "rcid:v1:campaign-manifest:h:jcs-sha256-v1:"
+    if (
+        not parent_campaign_manifest_id.startswith(prefix)
+        or not _DIGEST.fullmatch(parent_campaign_manifest_id[len(prefix) :])
+        or partition_index not in range(64)
+    ):
+        raise PublicationError("publication-partition-receipt-coordinate-invalid")
+    digest = parent_campaign_manifest_id[len(prefix) :]
+    return (
+        "regex-conformance/evidence-pack-v2/campaigns/"
+        f"{digest}/partitions/{partition_index:03d}/receipt.json"
+    )
 
 
 def publication_items_from_evidence_pack(pack: Any) -> list[PublicationItem]:

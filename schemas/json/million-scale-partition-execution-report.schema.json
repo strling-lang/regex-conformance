@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/million-scale-partition-execution-report.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["accepted_observation_count", "attempt_count", "campaign_manifest_id", "evidence_manifest_id", "evidence_manifest_reference", "infrastructure_failure_attempt_count", "interruption_count", "logical_execution_count", "parent_campaign_manifest_id", "partition_count", "partition_index", "reconciliation", "result_shard_count", "schema_version", "session_summary", "trust_class"],
+  "properties": {
+    "accepted_observation_count": {"type": "integer", "minimum": 1, "maximum": 20000},
+    "attempt_count": {"type": "integer", "minimum": 1, "maximum": 60000},
+    "campaign_manifest_id": {"$ref": "#/$defs/rcid"},
+    "evidence_manifest_id": {"$ref": "#/$defs/rcid"},
+    "evidence_manifest_reference": {"$ref": "#/$defs/reference"},
+    "infrastructure_failure_attempt_count": {"type": "integer", "minimum": 1, "maximum": 20000},
+    "interruption_count": {"const": 3},
+    "logical_execution_count": {"type": "integer", "minimum": 1, "maximum": 20000},
+    "parent_campaign_manifest_id": {"$ref": "#/$defs/rcid"},
+    "partition_count": {"const": 64},
+    "partition_index": {"type": "integer", "minimum": 0, "maximum": 63},
+    "reconciliation": {"const": "exact"},
+    "result_shard_count": {"type": "integer", "minimum": 1, "maximum": 64},
+    "schema_version": {"const": "million-scale-partition-execution-report.v1"},
+    "session_summary": {
+      "type": "object", "additionalProperties": false,
+      "required": ["active", "completed", "failed", "forced_interruption", "total"],
+      "properties": {
+        "active": {"const": 0}, "completed": {"const": 1},
+        "failed": {"type": "integer", "minimum": 0},
+        "forced_interruption": {"const": 3}, "total": {"type": "integer", "minimum": 4}
+      }
+    },
+    "trust_class": {"const": "trusted_executioner"}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "rcid": {"type": "string", "pattern": "^rcid:v1:[a-z0-9]+(?:-[a-z0-9]+)*:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "reference": {"type": "object", "additionalProperties": false, "required": ["category", "relative_path", "sha256", "size_bytes"], "properties": {"category": {"const": "scale-manifests"}, "relative_path": {"type": "string", "pattern": "^scale-manifests/sha256/[0-9a-f]{64}\\.json$"}, "sha256": {"$ref": "#/$defs/digest"}, "size_bytes": {"type": "integer", "minimum": 1}}}
+  }
+}

@@ -27,6 +27,7 @@ REPORT = ROOT / "reports" / "scale" / "evidence-pack-v2-certification.json"
 REPORT_SCHEMA = ROOT / "schemas" / "json" / "evidence-pack-v2-certification.schema.json"
 DIAGNOSTIC_SCHEMA = ROOT / "schemas" / "json" / "attempt-diagnostic-envelope-v2.schema.json"
 PERFORMANCE_SCHEMA = ROOT / "schemas" / "json" / "raw-performance-samples-v2.schema.json"
+MANIFEST_SCHEMA = ROOT / "schemas" / "json" / "evidence-pack-v2-manifest.schema.json"
 
 
 def load(path: Path) -> dict:
@@ -132,6 +133,93 @@ class ExpandedEvidenceContractTests(unittest.TestCase):
             second["stderr"]["evidence_pack_diagnostic_cas_sha256"],
         )
         self.assertEqual(len(cas.objects), 1)
+
+    def test_identical_fact_bytes_are_stored_once_with_independent_bindings(self) -> None:
+        model = {"schema_version": pack_v2.PACK_MODEL_SCHEMA}
+        fact_value = [{"availability": "absent"}]
+        tables = factorized.TokenTables.build([model, fact_value])
+        first = pack_v2._fact_object(
+            pack_v2._FactBlock(
+                "diagnostics",
+                "diagnostic-facts",
+                ("evidence/result-a.json",),
+                fact_value,
+            ),
+            tables,
+        )
+        second = pack_v2._fact_object(
+            pack_v2._FactBlock(
+                "diagnostics",
+                "diagnostic-facts",
+                ("evidence/result-b.json",),
+                fact_value,
+            ),
+            tables,
+        )
+        self.assertEqual(first.stored_sha256, second.stored_sha256)
+        objects, aliases = pack_v2._deduplicate_physical_objects([first, second])
+        self.assertEqual(len(objects), 1)
+        self.assertEqual(len(aliases), 1)
+        self.assertEqual(aliases[0]["member_paths"], ["evidence/result-b.json"])
+
+        dictionary_raw = tables.encode_tables() + tables.encode_value(model)
+        dictionary_stored = pack_v2._xz(dictionary_raw)
+        dictionary = pack_v2.PackObject(
+            evidence_class="shared_dictionary_cas",
+            role="pack-dictionary",
+            member_paths=(),
+            raw_sha256=pack_v2._sha256(dictionary_raw),
+            raw_size_bytes=len(dictionary_raw),
+            stored_sha256=pack_v2._sha256(dictionary_stored),
+            stored_size_bytes=len(dictionary_stored),
+            data=dictionary_stored,
+        )
+        objects, aliases = pack_v2._deduplicate_physical_objects(
+            [dictionary, first, second]
+        )
+        body = {
+            "authority": {
+                "analytics_authoritative": False,
+                "independent_observations_preserved": True,
+                "independent_physical_attempts_preserved": True,
+                "raw_empirical_evidence": True,
+            },
+            "fact_aliases": aliases,
+            "format": {
+                "compression": "xz-crc64-sha256-preset9",
+                "content_addressed_objects": True,
+                "deterministic": True,
+                "manifest_published_last": True,
+                "normal_list_requests": 0,
+                "version": 2,
+            },
+            "objects": [item.descriptor(index) for index, item in enumerate(objects)],
+            "schema_version": pack_v2.PACK_SCHEMA,
+            "source_binding": {
+                "evidence_manifest_sha256": "a" * 64,
+                "logical_execution_count": 2,
+                "member_count": 2,
+                "physical_attempt_count": 2,
+                "source_raw_bytes": 2,
+            },
+        }
+        manifest = {
+            **body,
+            "pack_digest_sha256": pack_v2._sha256(pack_v2.canonical_bytes(body)),
+        }
+        self.assertEqual(
+            list(Draft202012Validator(load(MANIFEST_SCHEMA)).iter_errors(manifest)),
+            [],
+        )
+        decoded = pack_v2._decode_pack(
+            manifest,
+            {item.stored_sha256: item.data for item in objects},
+            roles={"diagnostic-facts"},
+        )
+        self.assertEqual(
+            set(pack_v2._role_values(decoded)["diagnostic-facts"]),
+            {"evidence/result-a.json", "evidence/result-b.json"},
+        )
 
 
 class PlatformCanaryPolicyTests(unittest.TestCase):

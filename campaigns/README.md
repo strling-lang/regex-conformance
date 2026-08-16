@@ -31,3 +31,9 @@ typed dictionaries while retaining independent observation and physical-
 attempt facts. It also defines compact expanded diagnostic and raw performance
 records plus canary-triggered platform expansion. See
 `docs/campaigns/evidence-pack-v2.md`.
+
+The P20-T02 million-scale campaign expands the frozen P19 denominator exactly
+tenfold and divides 1,000,000 logical executions into 64 independently
+verifiable hosted partitions. Each partition emits Evidence Pack v2 and an
+immutable exact-coordinate recovery receipt before final no-`LIST`
+reconciliation. See `docs/campaigns/million-qualification.md`.
