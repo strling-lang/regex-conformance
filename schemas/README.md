@@ -67,6 +67,14 @@ secret and variable interface names, official research provenance, and the
 mandatory stop-before-execution gates. It cannot authorize Docker, execution,
 credential establishment, or production publication.
 
+`json/factorized-evidence-forecast.schema.json` defines the compact P20-T01B
+lossless-representation measurement and unchanged-denominator capacity gate.
+It binds the exact immutable P19 manifest/member/count basis, 8 GB/10 GB
+limits, deterministic reconstruction and corruption proofs, retained bytes by
+evidence class, and owner-only second-stage trimming menu. It cannot claim an
+evidence mutation, derived-data authority, Docker or credential use, paid
+capacity, material R2 publication, or an implemented scope/retention change.
+
 `json/scale-warehouse-reconciliation.schema.json` defines the compact P19-T04
 reconciliation report. It binds the certified campaign, evidence manifest,
 execution report, recovery hash chain, both non-crediting infrastructure

@@ -1,0 +1,223 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/factorized-evidence-forecast.schema.json",
+  "title": "P20-T01B Factorized Raw Evidence Forecast v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "classification", "source_binding", "representations", "factoring_measurements",
+    "certification", "forecast", "decision_gate", "second_stage_trimming_review",
+    "report_digest_sha256", "schema_version"
+  ],
+  "properties": {
+    "schema_version": {"const": "factorized-evidence-forecast.v1"},
+    "report_digest_sha256": {"$ref": "#/$defs/digest"},
+    "classification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "authoritative_raw_evidence_changed", "derived_analytics_are_authoritative",
+        "docker_accessed", "material_r2_publication_performed", "source_corpus_read_only",
+        "storage_limits_changed"
+      ],
+      "properties": {
+        "authoritative_raw_evidence_changed": {"const": false},
+        "derived_analytics_are_authoritative": {"const": false},
+        "docker_accessed": {"const": false},
+        "material_r2_publication_performed": {"const": false},
+        "source_corpus_read_only": {"const": true},
+        "storage_limits_changed": {"const": false}
+      }
+    },
+    "source_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "campaign", "evidence_manifest_sha256", "authoritative_member_count",
+        "authoritative_raw_bytes", "logical_execution_count", "physical_attempt_count"
+      ],
+      "properties": {
+        "campaign": {"const": "P19 Session 05 100K qualification"},
+        "evidence_manifest_sha256": {"const": "a2d8d1c460d7822bc2212df41d41842e02202961caad7bc17ca1b68204ae07fa"},
+        "authoritative_member_count": {"const": 807},
+        "authoritative_raw_bytes": {"const": 386855397},
+        "logical_execution_count": {"const": 100000},
+        "physical_attempt_count": {"const": 100500}
+      }
+    },
+    "representations": {
+      "type": "object",
+      "required": [
+        "canonical_json_members", "independent_gzip9_members", "deterministic_tar_gzip9",
+        "p20_t01a_certified_tar_gzip9", "deterministic_tar_xz9",
+        "factorized_deterministic_binary_xz9"
+      ],
+      "additionalProperties": {"$ref": "#/$defs/representation"}
+    },
+    "factoring_measurements": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "content_addressed_diagnostic_value_count", "cross_profile_shared_result_templates",
+        "cross_release_shared_result_templates", "derived_identity_counts",
+        "independently_executed_release_count", "infrastructure_failure_attempt_count",
+        "logical_execution_count", "logical_template_count", "logical_template_references",
+        "observation_count", "physical_attempt_count", "provenance_template_count",
+        "provenance_template_references", "raw_performance_sample_count",
+        "result_template_count", "result_template_references", "stdout_digest_count"
+      ],
+      "properties": {
+        "content_addressed_diagnostic_value_count": {"const": 2},
+        "cross_profile_shared_result_templates": {"const": 0},
+        "cross_release_shared_result_templates": {"const": 0},
+        "derived_identity_counts": {
+          "type": "object", "additionalProperties": false,
+          "required": ["evidence_manifest_id", "logical_execution_id", "member_sha256_and_path", "observation_content_id", "result_segment_id"],
+          "properties": {
+            "evidence_manifest_id": {"const": 1},
+            "logical_execution_id": {"const": 100000},
+            "member_sha256_and_path": {"const": 807},
+            "observation_content_id": {"const": 100000},
+            "result_segment_id": {"const": 404}
+          }
+        },
+        "independently_executed_release_count": {"const": 3},
+        "infrastructure_failure_attempt_count": {"const": 500},
+        "logical_execution_count": {"const": 100000},
+        "logical_template_count": {"const": 26},
+        "logical_template_references": {"const": 100000},
+        "observation_count": {"const": 100000},
+        "physical_attempt_count": {"const": 100500},
+        "provenance_template_count": {"const": 404},
+        "provenance_template_references": {"const": 404},
+        "raw_performance_sample_count": {"const": 4249},
+        "result_template_count": {"const": 26},
+        "result_template_references": {"const": 100000},
+        "stdout_digest_count": {"const": 4249}
+      }
+    },
+    "certification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "archive_root_sha256_verified", "byte_complete_reconstruction_verified",
+        "content_addressed_member_paths_verified", "corruption_injection_detected",
+        "deterministic_second_encoding_identical", "member_count",
+        "maximum_payload_blocks_per_random_lookup", "random_lookup_samples_verified"
+      ],
+      "properties": {
+        "archive_root_sha256_verified": {"const": true},
+        "byte_complete_reconstruction_verified": {"const": true},
+        "content_addressed_member_paths_verified": {"const": true},
+        "corruption_injection_detected": {"const": true},
+        "deterministic_second_encoding_identical": {"const": true},
+        "member_count": {"const": 807},
+        "maximum_payload_blocks_per_random_lookup": {"type": "integer", "minimum": 1, "maximum": 2},
+        "random_lookup_samples_verified": {"type": "integer", "minimum": 3}
+      }
+    },
+    "forecast": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["denominators_unchanged", "soft_limit_bytes", "hard_limit_bytes", "cases"],
+      "properties": {
+        "denominators_unchanged": {"const": true},
+        "soft_limit_bytes": {"const": 8000000000},
+        "hard_limit_bytes": {"const": 10000000000},
+        "cases": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["lower", "expected", "conservative"],
+          "properties": {
+            "lower": {"$ref": "#/$defs/forecastCase"},
+            "expected": {"$ref": "#/$defs/forecastCase"},
+            "conservative": {"$ref": "#/$defs/forecastCase"}
+          }
+        }
+      }
+    },
+    "decision_gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "strongest_lossless_representation",
+        "strongest_lossless_fits_expected_and_conservative_below_hard_cap",
+        "p20_t01a_capacity_blocker_resolved", "p20_t02_must_remain_planned",
+        "material_r2_publication_authorized", "paid_capacity_authorized",
+        "second_stage_trimming_review_required"
+      ],
+      "properties": {
+        "strongest_lossless_representation": {"const": "factorized_deterministic_binary_xz9"},
+        "strongest_lossless_fits_expected_and_conservative_below_hard_cap": {"type": "boolean"},
+        "p20_t01a_capacity_blocker_resolved": {"type": "boolean"},
+        "p20_t02_must_remain_planned": {"type": "boolean"},
+        "material_r2_publication_authorized": {"const": false},
+        "paid_capacity_authorized": {"const": false},
+        "second_stage_trimming_review_required": {"type": "boolean"}
+      }
+    },
+    "second_stage_trimming_review": {
+      "oneOf": [
+        {"type": "null"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "required", "reason", "baseline_conservative_total_retained_bytes",
+            "bytes_that_must_be_removed_for_hard_cap", "options_ranked_by_storage_and_scientific_tradeoff",
+            "authority_boundary", "p20_t02_must_remain_planned"
+          ],
+          "properties": {
+            "required": {"const": true},
+            "reason": {"type": "string", "minLength": 1},
+            "baseline_conservative_total_retained_bytes": {"type": "integer", "minimum": 1},
+            "bytes_that_must_be_removed_for_hard_cap": {"type": "integer", "minimum": 1},
+            "options_ranked_by_storage_and_scientific_tradeoff": {
+              "type": "array", "minItems": 7, "maxItems": 7,
+              "items": {"type": "object", "required": ["key", "storage_savings_bytes", "exact_capability_lost", "measurement_basis", "owner_review_rationale", "owner_review_rank", "storage_savings_rank", "requires_program_owner_approval", "implemented"]}
+            },
+            "authority_boundary": {"type": "string", "minLength": 1},
+            "p20_t02_must_remain_planned": {"const": true}
+          }
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "representation": {
+      "type": "object",
+      "required": ["retained_bytes", "bytes_per_logical_execution", "lossless"],
+      "properties": {
+        "retained_bytes": {"type": "integer", "minimum": 1},
+        "bytes_per_logical_execution": {"type": "string", "pattern": "^[0-9]+\\.[0-9]{9}$"},
+        "lossless": {"const": true}
+      }
+    },
+    "forecastCase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "logical_executions", "physical_attempts", "production_bytes_by_evidence_class_before_reserves",
+        "production_bytes_before_reserves", "required_diagnostics_reserve_bytes", "fixed_reserve_bytes",
+        "production_retained_bytes", "separate_p19_qualification_archive_bytes", "total_retained_bytes",
+        "soft_limit_remaining_bytes", "hard_limit_remaining_bytes", "exceeds_soft_limit", "exceeds_hard_limit"
+      ],
+      "properties": {
+        "logical_executions": {"type": "integer", "minimum": 1},
+        "physical_attempts": {"type": "integer", "minimum": 1},
+        "production_bytes_by_evidence_class_before_reserves": {"type": "object", "minProperties": 4, "additionalProperties": {"type": "integer", "minimum": 0}},
+        "production_bytes_before_reserves": {"type": "integer", "minimum": 1},
+        "required_diagnostics_reserve_bytes": {"type": "integer", "minimum": 0},
+        "fixed_reserve_bytes": {"type": "integer", "minimum": 0},
+        "production_retained_bytes": {"type": "integer", "minimum": 1},
+        "separate_p19_qualification_archive_bytes": {"type": "integer", "minimum": 1},
+        "total_retained_bytes": {"type": "integer", "minimum": 1},
+        "soft_limit_remaining_bytes": {"type": "integer", "minimum": 0},
+        "hard_limit_remaining_bytes": {"type": "integer", "minimum": 0},
+        "exceeds_soft_limit": {"type": "boolean"},
+        "exceeds_hard_limit": {"type": "boolean"}
+      }
+    }
+  }
+}

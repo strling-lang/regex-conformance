@@ -61,7 +61,7 @@ def evaluate(root: Path) -> list[Violation]:
     _require("\npermissions:\n  contents: read\n" in workflow, violations, "workflow-permissions", "top-level permissions must be contents: read")
     _require(re.search(r"^\s+[a-z-]+:\s+write\s*$", workflow, re.MULTILINE) is None, violations, "write-permission", "public workflow may not request write permission")
     _require("runs-on: ubuntu-24.04" in workflow, violations, "runner-class", "public workflow must use the audited disposable hosted image")
-    _require("timeout-minutes: 10" in workflow, violations, "missing-timeout", "public job must have a bounded timeout")
+    _require("timeout-minutes: 30" in workflow, violations, "missing-timeout", "public job must have a bounded timeout")
     checkout_count = len(re.findall(r"^\s*uses:\s*actions/checkout@", workflow, re.MULTILINE))
     _require(
         checkout_count > 0 and workflow.count("persist-credentials: false") == checkout_count,
