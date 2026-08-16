@@ -22,6 +22,10 @@ from .evidence_pack_v2 import (
     build_evidence_pack,
     plan_platform_expansion,
 )
+from .million_reconciliation import (
+    MillionReconciliationError,
+    verify_million_final_artifacts,
+)
 from .r2_publication import (
     CapacityAdmissionError,
     EvidencePackPublisher,
@@ -38,6 +42,7 @@ __all__ = [
     "EvidencePack",
     "EvidencePackError",
     "EvidencePackPublisher",
+    "MillionReconciliationError",
     "PlatformCanaryResult",
     "PublicationError",
     "PublicationReceiptLedger",
@@ -54,5 +59,6 @@ __all__ = [
     "verify_design_report",
     "verify_materialized_segments",
     "verify_million_scale_capacity_plan",
+    "verify_million_final_artifacts",
     "verify_scale_plan",
 ]
