@@ -1,8 +1,9 @@
 # Distributed 1M qualification
 
-P20-T02 expands the frozen, verified P19 100K denominator by exactly ten. The
+The million-scale qualification expands the frozen, verified 100K denominator
+by exactly ten. The
 tracked master plan contains 1,000,000 independent logical executions in 4,003
-content-addressed shards. It preserves the P19 profile distribution:
+content-addressed shards. It preserves the six-figure qualification profile distribution:
 
 | Profile | Logical executions |
 | --- | ---: |
@@ -13,7 +14,7 @@ content-addressed shards. It preserves the P19 profile distribution:
 
 The master plan is compiled from
 `campaigns/million/definitions/million-qualification.v1.json`. Its source set
-binds the frozen P19 plan, compiler, controller, Evidence Pack v2 codec,
+binds the frozen six-figure plan, compiler, controller, Evidence Pack v2 codec,
 publisher, recovery and finalization tools, schemas, and the trusted workflow.
 The 1M logical inputs are materialized only outside Git. Each worker derives
 its exact partition locally from the tracked master plan; GitHub Actions does
@@ -37,7 +38,8 @@ input artifacts rather than relying on unapproved storage overage.[^github-actio
 
 Each partition uses the already certified target providers through ordinary
 host-runner Docker. The controller is a normal trusted process and never
-mounts `/var/run/docker.sock`; P19 decision D102 is neither needed nor
+mounts `/var/run/docker.sock`; the expired six-figure-campaign Docker-daemon
+authorization is neither needed nor
 inherited. Provider-created targets retain their pinned artifacts, resource
 limits, capability controls, isolation, and post-session cleanup checks.
 
@@ -55,8 +57,9 @@ A completed partition is deterministically encoded and independently
 certified before publication. Certification includes exact source
 reconstruction, corruption detection, independent observation and physical
 attempt counts, and manifest-last structure. Each partition pack has a closed
-8,000,000-byte allocation; 64 maximum allocations plus the 461-byte P20-T01C
-canary remain far below the program's 8 GB soft stop and 10 GB hard cap.
+8,000,000-byte allocation; 64 maximum allocations plus the 461-byte production
+Evidence Pack v2 canary remain far below the program's 8 GB soft stop and 10 GB
+hard cap.
 
 Pack objects and pack manifests use immutable content-addressed keys. After a
 pack manifest is verified, the publisher conditionally creates one immutable

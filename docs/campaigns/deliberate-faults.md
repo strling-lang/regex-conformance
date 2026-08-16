@@ -1,6 +1,6 @@
 # Deliberate Fault and Timeout Qualification
 
-P18's fault harness proves that a process symptom is not, by itself, a regex
+The small-scale fault harness proves that a process symptom is not, by itself, a regex
 observation. The classifier consumes a closed set of facts about the injection
 point, last protocol checkpoint, adapter response, containment outcome,
 environment health, supervisor health, network acquisition, and evidence

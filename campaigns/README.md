@@ -4,7 +4,8 @@ Campaign definitions, frozen input references, compact manifests, and campaign
 policy live here. Raw result shards, diagnostics, and worker spools remain in
 immutable evidence or operational storage.
 
-`small-scale-qualification.v1.json` expands the frozen P17 campaign through a
+`small-scale-qualification.v1.json` expands the frozen architectural
+vertical-slice campaign through a
 digest-bound overlay. Its 48 candidates reconcile to 26 included logical
 executions and 22 explicit exclusions. See the [qualification design and
 reproduction procedure](../docs/campaigns/small-scale-qualification.md).
@@ -18,21 +19,24 @@ semantically impossible, and reconciliation-invalid object variants. Every varia
 is immutably quarantined and excluded from warehouse admission while its clean
 source evidence is preserved; see `docs/campaigns/evidence-verification.md`.
 
-The 100K qualification plan expands all 26 eligible P18 logical templates into
+The 100K qualification plan expands all 26 eligible small-scale qualification
+logical templates into
 exactly 100,000 balanced planned repetitions and 402 bounded locality shards.
 Git retains the compact manifest, ordered-ID commitment, exact segment hashes,
 distribution proof, and design report; the 100,000 logical records materialize
 as immutable content-addressed segments outside Git. See
 `docs/campaigns/100k-qualification-design.md`.
 
-D103 adopts Evidence Pack v2 for production raw evidence. The representation
+The accepted factorized-evidence and governed-canary policy adopts Evidence Pack
+v2 for production raw evidence. The representation
 factors shared canonical inputs, exact results, diagnostics, provenance, and
 typed dictionaries while retaining independent observation and physical-
 attempt facts. It also defines compact expanded diagnostic and raw performance
 records plus canary-triggered platform expansion. See
 `docs/campaigns/evidence-pack-v2.md`.
 
-The P20-T02 million-scale campaign expands the frozen P19 denominator exactly
+The million-scale qualification campaign expands the frozen six-figure
+denominator exactly
 tenfold and divides 1,000,000 logical executions into 64 independently
 verifiable hosted partitions. Each partition emits Evidence Pack v2 and an
 immutable exact-coordinate recovery receipt before final no-`LIST`

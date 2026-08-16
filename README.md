@@ -18,7 +18,7 @@ Revalidate it whenever a certification or campaign boundary changes; live
 planning and approval status remains in the canonical program hub.
 
 Repository bootstrap and the portable Control Plane foundation are certified.
-The P17 architectural vertical slice is active. Its exact PCRE2, CPython, and
+The architectural vertical slice is active. Its exact PCRE2, CPython, and
 MySQL release/profile coordinates and minimal reproducible environments are
 certified. Environment smoke observations establish executable identity only;
 no repository observation is a conformance result yet, and no production
@@ -139,7 +139,7 @@ for provenance, containment, commands, trust boundaries, and known limits.
 
 ## Minimal thin adapters
 
-The protocol-compliant P17 adapter packages exercise PCRE2's shared C ABI,
+The protocol-compliant vertical-slice adapter packages exercise PCRE2's shared C ABI,
 CPython's native `re` API, and MySQL's contained SQL regex surface without
 performing conformance judgment:
 

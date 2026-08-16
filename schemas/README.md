@@ -16,7 +16,7 @@ bootstrap contract.
   fixture tooling.
 - `tooling/node/` contains the independent dependency-free JCS oracle.
 
-The P17 executable boundary is defined by
+The architectural vertical-slice executable boundary is defined by
 `vertical-slice-coordinates.schema.json`,
 `certified-environment-recipe.schema.json`, and
 `minimal-environment-certification.schema.json`. Semantic validation binds the
@@ -53,40 +53,40 @@ planning explicitly non-mutating. Cross-field identity, ordering, and exact
 expected/actual reconciliation are additionally enforced by the typed Control
 Plane models before serialization.
 
-`json/cache-disk-pressure-qualification.schema.json` defines the compact P19
+`json/cache-disk-pressure-qualification.schema.json` defines the compact scale
 stress-certification report. It fixes the ten deterministic simulated cases,
 nine safety invariants, accepted-decision references, exact source bindings,
 and permanent non-authority declarations. The report cannot claim Docker use,
 target behavior, canonical authority, or mutation of external evidence.
 
-`json/million-scale-capacity-plan.schema.json` defines the compact P20-T01
+`json/million-scale-capacity-plan.schema.json` defines the compact million-scale
 technical plan for a possible 1M campaign. It fixes the exact denominator and
-shard ceiling, P19 measurement bindings, compute/memory/disk budgets, the
+shard ceiling, six-figure qualification measurement bindings, compute/memory/disk budgets, the
 8 GB soft and 10 GB hard R2 storage boundaries, request/cost envelopes, exact
 secret and variable interface names, official research provenance, and the
 mandatory stop-before-execution gates. It cannot authorize Docker, execution,
 credential establishment, or production publication.
 
-`json/factorized-evidence-forecast.schema.json` defines the compact P20-T01B
+`json/factorized-evidence-forecast.schema.json` defines the compact factorized-representation
 lossless-representation measurement and unchanged-denominator capacity gate.
-It binds the exact immutable P19 manifest/member/count basis, 8 GB/10 GB
+It binds the exact immutable six-figure manifest/member/count basis, 8 GB/10 GB
 limits, deterministic reconstruction and corruption proofs, retained bytes by
 evidence class, and owner-only second-stage trimming menu. It cannot claim an
 evidence mutation, derived-data authority, Docker or credential use, paid
 capacity, material R2 publication, or an implemented scope/retention change.
 
-`json/evidence-pack-v2-manifest.schema.json` defines the D103 production pack's
+`json/evidence-pack-v2-manifest.schema.json` defines the production pack's
 immutable manifest and independent content-addressed object catalog.
 `json/attempt-diagnostic-envelope-v2.schema.json` defines the complete ordered
 attempt diagnostic availability envelope, and
 `json/raw-performance-samples-v2.schema.json` keeps benchmark/resource samples
 as raw typed arrays rather than derived summaries.
-`json/evidence-pack-v2-certification.schema.json` binds the measured P19
+`json/evidence-pack-v2-certification.schema.json` binds the measured six-figure qualification
 reconstruction proof, exact pack/report identities, enriched evidence classes,
-D103 canary-only platform forecast, 8 GB/10 GB admission gates, and permanent
+governed-canary platform forecast, 8 GB/10 GB admission gates, and permanent
 no-paid-capacity/no-material-publication classification.
 
-`json/scale-warehouse-reconciliation.schema.json` defines the compact P19-T04
+`json/scale-warehouse-reconciliation.schema.json` defines the compact six-figure warehouse
 reconciliation report. It binds the certified campaign, evidence manifest,
 execution report, recovery hash chain, both non-crediting infrastructure
 segments, full-row commitments, immutable derived warehouse identity, and
@@ -105,7 +105,7 @@ add JCS integrity, secret rejection, migration/history verification, freshness,
 source-authority, and cross-source conflict semantics that JSON Schema alone
 cannot express.
 
-The JSON restart-resume qualification schema defines the deterministic 14-case D090 recovery matrix, while the restart-resume execution schema validates live external interruption evidence. Both schemas permanently deny canonical, normative, and semantic authority. The typed scheduler adds exact transition, identity, canonical payload, hash-chain, commit-receipt, private-path, and secret-rejection checks.
+The JSON restart-resume qualification schema defines the deterministic 14-case governed recovery matrix, while the restart-resume execution schema validates live external interruption evidence. Both schemas permanently deny canonical, normative, and semantic authority. The typed scheduler adds exact transition, identity, canonical payload, hash-chain, commit-receipt, private-path, and secret-rejection checks.
 
 `json/lifecycle-event.schema.json` defines the strict machine interface for
 individual lifecycle events, durable journal cursors and batches, and derived
@@ -134,13 +134,13 @@ authority. Typed models additionally enforce metric-name uniqueness,
 cross-field bounds, RFC 8785 determinism, secret rejection, and append-only
 sample identity.
 
-`json/vertical-slice-selection.schema.json` defines the governed P17 archetype
+`json/vertical-slice-selection.schema.json` defines the governed vertical-slice archetype
 crosswalk. It requires three in-scope root surfaces spanning standalone,
 host/runtime, and database/embedded APIs; requires native-build,
 native-runtime, and OCI-service environment strategies; conserves the complete
 19-candidate design-seed ledger; and permanently keeps the selection
 non-executable until exact release/profile/environment coordinates are supplied
-by P17-T02. Semantic validation additionally rejects identity collisions,
+by certified environment realization. Semantic validation additionally rejects identity collisions,
 candidate-accounting overlap, nondeterministic ordering, unknown coverage,
 disposition/reason mismatch, and missing architecture diversity.
 

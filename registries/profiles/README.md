@@ -3,7 +3,7 @@
 Systems, components, releases, profile families, component graphs, concrete
 profiles, material facets, and platform policies belong here.
 
-The P17 vertical-slice selection is recorded in
+The architectural vertical-slice selection is recorded in
 `vertical-slice-archetypes.v1.json` with its human audit in
 `vertical-slice-archetypes.md`. It crosswalks every governed design-seed
 candidate. `vertical-slice-coordinates.v1.json` assigns the exact stable
@@ -14,4 +14,4 @@ coordinate/recipe cross-record invariants validate.
 
 `small-scale-qualification.v1.json` binds the exact frozen coordinate-file
 digest and adds the behaviorally distinct PCRE2 DFA matcher profile. It is an
-overlay, not a rewrite of the P17 coordinate universe.
+overlay, not a rewrite of the vertical-slice coordinate universe.

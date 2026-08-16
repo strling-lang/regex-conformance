@@ -8,7 +8,8 @@ definitions, empirical evidence, certification truth, or Notion development
 status.
 
 The initial implementation is a Python 3.12 standard-library-first service layer
-under `python/`, governed by D101. Its controller facade is client-neutral;
+under `python/`, governed by the latest-stable release-line coverage policy. Its
+controller facade is client-neutral;
 machine discovery, diagnostics, models, rendering, and CLI parsing are separate
 and independently testable. Versioned JSON is the interoperability boundary, so
 future daemon, TUI, CI, dashboard, provider, or alternative-language clients do
@@ -76,9 +77,11 @@ against the certified schema identity tooling. Physical transaction IDs are
 separate `opid:v1:environment:u7` values and local provider handles/paths do not
 enter scientific identity.
 
-P16A-T02 certifies the common contract through materially different native-like
+The deterministic provider qualification certifies the common contract through
+materially different native-like
 and OCI-like deterministic providers. It does not claim those fixtures are
-certified ecosystem environments. P17 adds typed providers for the exact PCRE2
+certified ecosystem environments. The architectural vertical slice adds typed
+providers for the exact PCRE2
 source build, CPython archive, and MySQL OCI service. Those providers accept no
 recipe-supplied shell, enforce immutable acquisition and containment, verify
 runtime/configuration facts and smoke behavior, fingerprint `Ready`, and release
@@ -108,7 +111,7 @@ issue codes and concrete remediation.
 Environment admission accepts only the exact preflight report produced under
 the active policy for the same planned transaction. Admission consumes inventory
 without changing it; containment, measured telemetry feedback, and automatic
-forecast calibration remain later P16A contracts.
+forecast calibration remain later Control Plane contracts.
 
 ## Cache, cleanup, and transfer management
 
@@ -139,7 +142,7 @@ non-overwriting atomic link only after exact final verification. A corrupted
 checkpoint, destination race, or digest mismatch never becomes a completed
 transfer.
 
-The deterministic P19 cache/disk-pressure qualification composes these cache
+The deterministic scale cache/disk-pressure qualification composes these cache
 contracts with dynamic resource admission under shared-store pressure. It
 proves weighted protection, refusal, backpressure, drain, expected-versus-
 actual reclamation, interrupted/partial recovery, and committed-evidence

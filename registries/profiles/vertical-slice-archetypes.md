@@ -1,7 +1,7 @@
-# P17 Vertical-Slice Archetype Selection
+# Architectural Vertical-Slice Archetype Selection
 
-This selection is a crosswalk from the governed Notion seed registry
-`P04-SEED-DESIGN-2026-08-11-r1`. It tests architecture diversity; it is not a
+This selection is a crosswalk from the governed design-seed registry revision
+dated 2026-08-11. It tests architecture diversity; it is not a
 claim that the easiest installed runtimes were chosen. The machine-readable
 record is `vertical-slice-archetypes.v1.json` and repository validation rejects
 unaccounted seed candidates, pending targets, missing coverage, or a false
@@ -39,7 +39,7 @@ release.
 
 This record deliberately allocates no candidate, system, component, release,
 profile-family, profile, recipe, or environment IDs and remains
-`execution_eligible=false`. P17-T02 must, for every selected surface:
+`execution_eligible=false`. Certified environment realization must, for every selected surface:
 
 1. verify an exact stable public release from qualified primary provenance;
 2. materialize the complete required component graph and every material facet;

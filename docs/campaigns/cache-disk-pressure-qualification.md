@@ -1,6 +1,7 @@
 # Cache and disk-pressure qualification
 
-P19-T03 qualifies the existing provider-neutral Control Plane cache and resource
+The cache and disk-pressure qualification exercises the existing
+provider-neutral Control Plane cache and resource
 contracts under deterministic Executioner-like pressure. It does not execute a
 regex target, mutate the certified 100K evidence, or authorize an environment
 provider. The qualification is explicitly simulated operational evidence:
@@ -16,8 +17,8 @@ the tracked report file SHA-256, including its terminating newline, is
 
 ## Certified behavior
 
-Ten independently named cases cover the accepted D024, D026, D030, D081,
-D085, and D089 contracts:
+Ten independently named cases cover the accepted cache, storage, safety-margin,
+spool, and admission contracts:
 
 - weighted project-aware eviction selects a cheap reconstructible asset ahead
   of an older expensive asset and remains permutation-stable;
@@ -75,5 +76,5 @@ The qualification proves that the Control Plane does not knowingly consume its
 protected free-space floor and cannot select committed evidence or protected
 spool data for cache eviction. It also proves explicit backpressure, drain,
 refusal, partial-state accounting, and safe recovery. It does not claim that a
-specific runtime or Docker provider exhibits any regex behavior, and D102's
-expired P19-T02 authorization is not reused.
+specific runtime or Docker provider exhibits any regex behavior, and the expired
+six-figure campaign Docker-daemon authorization is not reused.

@@ -34,7 +34,7 @@ the result separately from the evidence it assessed.
   is moved, overwritten, or deleted.
 
 `analytical_admissible` is therefore independent of `certification_admissible`.
-P18-T04 leaves `trust_qualification` as `not-assessed` and
+Evidence-verification qualification leaves `trust_qualification` as `not-assessed` and
 `certification_admissible` as false even for clean development evidence. Later trust
 and certification policy must assess protected revision, runner, environment,
 adapter, provenance, replication, and operator requirements independently.

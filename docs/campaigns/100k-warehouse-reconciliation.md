@@ -1,6 +1,7 @@
 # 100K warehouse reconciliation
 
-P19-T04 independently reconciles the completed P19-T02 scale campaign into a
+The six-figure warehouse reconciliation independently projects the completed
+scale campaign into a
 regenerable analytical SQLite projection. It reads the certified campaign root
 and recovery ledger without mutation; it does not execute a regex target,
 realize an environment, use Docker, publish new raw evidence, or change a
@@ -88,5 +89,6 @@ python tools/campaigns/reconcile_100k_warehouse.py \
 ```
 
 Omit `--reuse-existing` only for the first immutable warehouse build. An
-existing destination is never silently replaced. D102 expired with P19-T02;
+existing destination is never silently replaced. The task-specific Docker-daemon
+authorization expired with the six-figure campaign;
 this procedure has no Docker-daemon authority.

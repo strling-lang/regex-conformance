@@ -1,8 +1,9 @@
 # Repository Delivery and Public CI Policy
 
 This policy implements the program's disposable public-validation trust zone and
-verified local fast-forward promotion boundary. It is controlled by accepted
-decisions D019, D091–D094, and D100 and by sections 21 and 22 of the Foundation
+verified local fast-forward promotion boundary. It is controlled by the
+accepted disposable-validation, least-privilege automation, and verified
+fast-forward promotion decisions and by sections 21 and 22 of the Foundation
 Specification. The existing filename is retained as a stable documentation and
 tooling path; this policy does not require GitHub branch protection.
 
@@ -54,8 +55,9 @@ administration, and Administration:write credentials are not prerequisites for
 ordinary program delivery. If a real existing remote rule rejects the normal
 push, stop and report the specific restriction; do not invent a workaround.
 
-The repository currently has one authorized promotion authority. D100 must be
-reviewed if authority becomes multi-party, public contributors enter the trusted
+The repository currently has one authorized promotion authority. The verified
+fast-forward promotion policy must be reviewed if authority becomes multi-party,
+public contributors enter the trusted
 promotion path, a later task independently requires server enforcement, or a
 real remote restriction changes the delivery boundary.
 

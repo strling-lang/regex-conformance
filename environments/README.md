@@ -14,6 +14,7 @@ is independently checked, and raw certification state remains outside Git.
 See the [minimal certified environment architecture](../docs/architecture/minimal-certified-environments.md)
 for exact provenance, containment, certification, and limitation details.
 
-`qualification-recipes/` contains post-P17 additions. Its PCRE2 DFA recipe
+`qualification-recipes/` contains additions after the architectural vertical
+slice. Its PCRE2 DFA recipe
 reuses the pinned 10.47 source artifact while independently binding the DFA
 profile and requiring an exported `pcre2_dfa_match_8` smoke probe.

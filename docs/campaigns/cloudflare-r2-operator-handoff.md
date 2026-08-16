@@ -1,6 +1,6 @@
 # Cloudflare R2 operator handoff
 
-This handoff defines the configuration boundary for the D103 Evidence Pack v2
+This handoff defines the configuration boundary for the accepted production Evidence Pack v2
 publisher. It authorizes only the smallest manual non-corpus integration
 canary after local gates pass; it does not authorize a material corpus upload.
 Do not paste any credential value into Git, Notion, an issue, a pull request, a
@@ -110,7 +110,7 @@ headers.
 - Crossing a byte, object, request, runtime, retry, RAM, disk, or freshness
   limit pauses or refuses work. It never triggers evidence deletion or a cap
   workaround.
-- D102 was P19-T02-specific and expired. This setup does not grant Docker
+- The six-figure campaign's task-specific authorization expired. This setup does not grant Docker
   authority.
 - Configuration and secrets authorize only the bounded manual canary. Material
   publication remains gated by the certified task/campaign workflow and the

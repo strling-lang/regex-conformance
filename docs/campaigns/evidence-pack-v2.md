@@ -1,7 +1,8 @@
 # Evidence Pack v2
 
 Evidence Pack v2 is the production authoritative raw-evidence representation
-adopted by D103. It stores empirical information, not repeated JSON envelopes.
+adopted by the accepted factorized-evidence and governed-canary policy. It
+stores empirical information, not repeated JSON envelopes.
 Exact observations and physical attempts remain independent facts even when
 they point to the same content-addressed input, result, diagnostic, or
 provenance object. Parquet, warehouses, summaries, percentiles, and charts are
@@ -15,10 +16,10 @@ equivalence.
 
 The measured certification report is
 [`reports/scale/evidence-pack-v2-certification.json`](../../reports/scale/evidence-pack-v2-certification.json).
-Rebuild it read-only from the immutable P19 campaign root with:
+Rebuild it read-only from the immutable six-figure campaign root with:
 
 ```sh
-python tools/campaigns/compile_evidence_pack_v2.py --evidence-root <P19-campaign-root> --check
+python tools/campaigns/compile_evidence_pack_v2.py --evidence-root <qualification-campaign-root> --check
 ```
 
 An optional `--pack-output` may materialize the measured raw pack only to a
@@ -51,9 +52,9 @@ counts, or nanoseconds. It distinguishes governed benchmarks from ordinary
 operational timing. Averages, percentiles, confidence intervals, rankings, and
 cross-engine claims remain derived.
 
-## Measured P19 certification
+## Measured six-figure certification
 
-The production encoder measured all 807 immutable P19 members (386,855,397
+The production encoder measured all 807 immutable six-figure campaign members (386,855,397
 bytes), 100,000 logical observations, and 100,500 physical attempts. The pack
 is 3,318,573 bytes across 208 objects including its manifest:
 
@@ -71,7 +72,7 @@ That is 33.185730000 bytes per logical execution and 33.020626866 bytes per
 physical attempt. Certification performed two identical encodings, exact
 source-byte reconstruction, applicable legacy identity/hash recomputation,
 corruption injection, distinct-attempt and distinct-observation checks, and
-random lookup bounded to at most 35 object reads. Both non-crediting P19
+random lookup bounded to at most 35 object reads. Both non-crediting qualification
 infrastructure-attempt segments remain present.
 
 The certified identities are:
@@ -80,10 +81,10 @@ The certified identities are:
 - manifest SHA-256: `6811186f105199f03cc65fad90edc4f9af318ac17ed52c2a42a52a08cb07530d`;
 - report digest: `112ce2a3d2496680ed3132372047b979b2375d6a04a6fc7f7eab7ea4bf7d4bee`.
 
-## D103 capacity and platform admission
+## Capacity and platform admission
 
-The full-universe forecast preserves the P20-T01A historical denominators and
-adds the D103 1.25 governed-canary multiplier. It also reserves retry growth,
+The full-universe forecast preserves the established historical denominators and
+adds the accepted 1.25 governed-canary multiplier. It also reserves retry growth,
 expanded diagnostic and raw-performance growth, 500 MB for triggered targeted
 platform expansion, and 500 MB for general program growth.
 
@@ -120,7 +121,7 @@ recovery. Repeated canaries reuse the same keys and do not grow retained bytes.
 It is not a material evidence publication path and cannot run from a pull
 request or non-`main` revision.
 
-P20-T02 uses the same publisher for incrementally certified partition packs.
+The million-scale campaign uses the same publisher for incrementally certified partition packs.
 Content-addressed pack objects remain immutable and manifest-last. One
 canonical immutable coordinate receipt per master-manifest/partition pair
 provides exact-key, zero-`LIST` workflow recovery; it never replaces or merges

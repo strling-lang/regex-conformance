@@ -1,6 +1,6 @@
 # Minimal Certified Environments
 
-The P17 architectural vertical slice has three executable coordinates. Each
+The architectural vertical slice has three executable coordinates. Each
 coordinate binds an exact stable release, component-graph profile, immutable
 environment recipe revision, and a realized environment fingerprint. The
 selection is intentionally small and architecturally diverse; it is not a
@@ -89,6 +89,6 @@ is not production observation evidence or publication authority.
 
 These smoke observations certify environment identity and the availability of
 the selected API paths. They are not normative expectations and are not a
-conformance campaign. P17 adapters and the first compiled campaign create the
+conformance campaign. The vertical-slice adapters and first compiled campaign create the
 first logical executions separately. Retryable physical attempts, immutable
 observations, and public evidence enter only under their later task contracts.

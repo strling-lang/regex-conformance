@@ -74,7 +74,7 @@ class StaticDoctor:
 
 @unittest.skipUnless(os.name == "posix", "full foundation certification runs on disposable Ubuntu")
 class ControlPlaneFoundationAcceptanceGate(unittest.TestCase):
-    """Independent clean-host and fault-recovery proof for the P16A hard gate."""
+    """Independent clean-host and fault-recovery proof for the Control Plane foundation gate."""
 
     def test_clean_host_fault_recovery_and_safe_admission(self) -> None:
         report: dict[str, object] = {}

@@ -9,6 +9,16 @@ semantics. `research-intelligence` owns research synthesis;
 `strling` owns language contracts and compiler implementation; `website` owns
 public presentation; `.github` owns organization defaults.
 
+## Repository identifier hygiene
+
+Planning identifiers belong only in the external program tracker. Do not add
+phase, task, gate, milestone, decision, risk, or similar tracker codes to
+repository documentation, source comments or docstrings, configuration
+comments, generated public documentation, or user-facing examples. Use durable
+descriptive terminology instead. Do not rewrite immutable evidence,
+identity-bound generated artifacts, or third-party material merely to remove a
+historical tracker identifier.
+
 ## Authority and entrypoints
 
 - Start with [README.md](README.md), [GOVERNANCE.md](GOVERNANCE.md), and

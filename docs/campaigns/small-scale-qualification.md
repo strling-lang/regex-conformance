@@ -1,6 +1,7 @@
 # Small-Scale Qualification Slice
 
-The P18 qualification slice expands the frozen P17 vertical slice without
+The small-scale qualification slice expands the frozen architectural vertical
+slice without
 rewriting its inputs or evidence. It adds one behaviorally distinct profile,
 `pcre2-dfa`, and twelve richer operational probe vectors covering success,
 rejection, captures, Unicode, replacement, errors, timeouts, iteration, and a
@@ -11,11 +12,12 @@ matcher-profile differential.
 This is an operational qualification surface. Its vectors ask executable
 questions but provide no normative expectation, Knowledge Program feature
 credit, C4 semantic-obligation credit, or conformance verdict. The timeout
-vector is a planned bounded execution coordinate; P18-T02 owns empirical
+vector is a planned bounded execution coordinate; deliberate fault and timeout
+qualification owns empirical
 timeout and deliberate-fault classification. Infrastructure failures must
 remain distinct from target observations.
 
-The P17 coordinate registry, recipes, manifests, compiled campaign, reports,
+The vertical-slice coordinate registry, recipes, manifests, compiled campaign, reports,
 and evidence remain byte-stable. The qualification layer binds their exact
 coordinate-file digest and adds its own overlay, recipe directory, adapter
 manifest directory, campaign definition, and coverage report.

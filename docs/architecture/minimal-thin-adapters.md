@@ -1,6 +1,7 @@
 # Minimal Thin Adapters
 
-The P17 adapter layer is a provider-neutral invocation boundary, not a source of
+The architectural vertical-slice adapter layer is a provider-neutral invocation
+boundary, not a source of
 regex semantics or conformance judgment. Each adapter accepts the governed v1
 protocol, validates exact release/profile/environment bindings, invokes one
 native target surface, and serializes the target's observable result. Every
@@ -54,7 +55,7 @@ python schemas/tooling/python/run.py validate-repository
 ```
 
 On Linux with CMake, a C compiler, and Docker, certify all adapters against the
-exact P17 environments:
+exact vertical-slice environments:
 
 ```sh
 python tools/adapters/certify_minimal.py \

@@ -10,4 +10,4 @@ normative, semantic, or conformance claims.
 
 The generated small-scale fault-classification report is recomputed from the closed deliberate-fault matrix. It distinguishes target terminal observations from adapter, worker, network, and storage attempts without assigning normative authority.
 
-The generated small-scale restart-resume qualification report is recomputed from the closed D090 boundary matrix. It governs continue, retry, committed, and quarantine decisions while remaining operational and non-authoritative.
+The generated small-scale restart-resume qualification report is recomputed from the closed governed-boundary matrix. It governs continue, retry, committed, and quarantine decisions while remaining operational and non-authoritative.

@@ -55,10 +55,10 @@ diff. Fixtures are not production observations or published evidence.
 | Seeded evidence-corruption matrix | `tools/campaigns/compile_evidence_verification_qualification.py` | `reports/small-scale/evidence-verification-qualification.json` | verifier/schema validation and focused campaign tests |
 | Cache and disk-pressure qualification | `tools/control_plane/compile_cache_disk_pressure_qualification.py` | `reports/scale/cache-disk-pressure-qualification.json` | schema validation, deterministic rebuild, source bindings, and focused Control Plane tests |
 | 100K warehouse reconciliation | `tools/campaigns/reconcile_100k_warehouse.py` | `reports/scale/100k-warehouse-reconciliation.json` | read-only evidence/ledger reconciliation, immutable warehouse row commitments, schema validation, and focused campaign tests |
-| 1M capacity and cost plan | `tools/campaigns/compile_million_scale_capacity_plan.py` | `reports/scale/million-scale-capacity-plan.json` | schema validation, deterministic rebuild, P19 source bindings, budget arithmetic, and focused campaign tests |
-| Full known-universe planning index, P19 measured raw corpus, and storage policy | `tools/campaigns/compile_full_known_universe_forecast.py` | `reports/scale/full-known-universe-corpus-forecast.json` | index/report schema validation, deterministic rebuild, D101 profile bounds, lossless-compression measurements, source bindings, budget arithmetic, and focused campaign tests |
-| P19 factorized raw-evidence model and unchanged-denominator capacity gate | `tools/campaigns/compile_factorized_evidence_forecast.py` | `reports/scale/factorized-raw-evidence-forecast.json` | exact 807-member reconstruction, deterministic binary rebuild, identity/hash recomputation, corruption injection, bounded random lookup, schema validation, unchanged P20-T01A denominator arithmetic, and focused campaign tests |
-| D103 production Evidence Pack v2 and enriched capacity gate | `tools/campaigns/compile_evidence_pack_v2.py` | `reports/scale/evidence-pack-v2-certification.json` | exact 807-member reconstruction, two identical encodings, legacy identity/hash recomputation, corruption injection, bounded lookup, attempt/observation independence, expanded diagnostic/performance contracts, D103 canary forecast, schema validation, and focused publisher tests |
+| Million-scale capacity and cost plan | `tools/campaigns/compile_million_scale_capacity_plan.py` | `reports/scale/million-scale-capacity-plan.json` | schema validation, deterministic rebuild, six-figure qualification source bindings, budget arithmetic, and focused campaign tests |
+| Full known-universe planning index, measured six-figure raw corpus, and storage policy | `tools/campaigns/compile_full_known_universe_forecast.py` | `reports/scale/full-known-universe-corpus-forecast.json` | index/report schema validation, deterministic rebuild, latest-stable release-line profile bounds, lossless-compression measurements, source bindings, budget arithmetic, and focused campaign tests |
+| Factorized raw-evidence model and unchanged-denominator capacity gate | `tools/campaigns/compile_factorized_evidence_forecast.py` | `reports/scale/factorized-raw-evidence-forecast.json` | exact 807-member reconstruction, deterministic binary rebuild, identity/hash recomputation, corruption injection, bounded random lookup, schema validation, unchanged full-universe denominator arithmetic, and focused campaign tests |
+| Production Evidence Pack v2 and enriched capacity gate | `tools/campaigns/compile_evidence_pack_v2.py` | `reports/scale/evidence-pack-v2-certification.json` | exact 807-member reconstruction, two identical encodings, legacy identity/hash recomputation, corruption injection, bounded lookup, attempt/observation independence, expanded diagnostic/performance contracts, governed-canary forecast, schema validation, and focused publisher tests |
 
 Edit the source and run the listed producer; do not hand-maintain these outputs.
 A compact report is a traceable projection, not raw evidence or independent
@@ -104,7 +104,7 @@ manifest and a fresh integrity assessment. Warehouse databases and large
 partitions remain outside Git and never outrank evidence. `reports/` may retain
 compact schema-validated coverage, reproducibility, differential, execution,
 or certification projections when repository architecture assigns them there.
-The P19-T04 scale warehouse is a separate external derived artifact; its tracked
+The six-figure scale warehouse is a separate external derived artifact; its tracked
 report binds the complete source row set without adding logical credit or
 changing the certified campaign root.
 

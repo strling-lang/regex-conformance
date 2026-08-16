@@ -1,6 +1,6 @@
 # 100K qualification results
 
-The P19-T02 qualification campaign completed on 2026-08-14. These results are
+The six-figure qualification campaign completed on 2026-08-14. These results are
 empirical observations of the exact frozen runtime profiles and execution
 conditions. They are operational qualification evidence, not normative regex
 semantics.
@@ -73,11 +73,12 @@ in `tools/campaigns/run_100k_qualification.py`, even though Git's text filter
 had normalized the corresponding blobs to LF. The executed bytes were
 reconstructed exactly from the immutable local implementation history: all 38
 plan source digests match, including the runner's CRLF spelling with lines
-80–87 retained as LF. The P19-T02 closure commit marks these eight paths
+80–87 retained as LF. The six-figure campaign closure commit marks these eight paths
 unfiltered and stores the exact executed bytes so a clean checkout of the
 certified SHA reproduces the frozen plan. Any later source change must bind a
 new campaign plan; it does not rewrite this result.
 
 No campaign rerun, new evidence root, raw-evidence mutation, recovery-ledger
-mutation, or Docker authority was used during final reconciliation. Decision
-D102 expired with P19-T02 and grants no authority to P19-T03 or later work.
+mutation, or Docker authority was used during final reconciliation. The
+task-specific Docker-daemon authorization expired with the six-figure
+campaign and grants no authority to cache/disk-pressure qualification or later work.

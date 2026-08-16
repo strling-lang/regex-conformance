@@ -1,11 +1,12 @@
 # Factorized Raw Evidence Representation
 
-P20-T01B measures whether the P20 storage problem is caused by irreducible
+The factorized-representation investigation measures whether the projected
+storage problem is caused by irreducible
 empirical information or by repeating that information in verbose JSON. It is
 an evidence-representation investigation, not a campaign, evidence correction,
 retention change, or publication operation.
 
-The measured source is the immutable P19 Session 05 corpus bound by evidence
+The measured source is the immutable six-figure qualification corpus bound by evidence
 manifest SHA-256
 `a2d8d1c460d7822bc2212df41d41842e02202961caad7bc17ca1b68204ae07fa`:
 
@@ -17,7 +18,7 @@ manifest SHA-256
   observations; and
 - 386,855,397 canonical source bytes across 807 members.
 
-The source root was read only. No P19 member, recovery ledger, report, or
+The source root was read only. No six-figure campaign member, recovery ledger, report, or
 manifest was modified. No target ran, no Docker or credential authority was
 used, and no material R2 publication occurred.
 
@@ -27,14 +28,14 @@ used, and no material R2 publication occurred.
 | --- | ---: | ---: |
 | Canonical JSON members | 386,855,397 | 3,868.553970 |
 | Independent gzip-9 members | 31,926,001 | 319.260010 |
-| Previously certified P20-T01A tar+gzip-9 | 31,742,126 | 317.421260 |
+| Previously certified initial-forecast tar+gzip-9 | 31,742,126 | 317.421260 |
 | Fresh deterministic PAX tar+gzip-9 | 31,742,032 | 317.420320 |
 | Deterministic PAX tar+XZ-9 | 16,946,152 | 169.461520 |
 | Factorized deterministic binary+XZ-9 | **2,906,175** | **29.061750** |
 
 The 94-byte difference between the previously certified and freshly reproduced
 gzip archives is wrapper/container metadata. Both contain the same 807 exact
-canonical members; the prior certified value remains the P20-T01A baseline.
+canonical members; the prior certified value remains the initial-forecast baseline.
 
 The strongest archive allocates its retained bytes as follows:
 
@@ -92,7 +93,7 @@ provenance correctly omits `isolated_target_processes`.
 The codec content-addresses result templates globally, so independently
 executed versions with identical factored exact results would share one
 template without losing their separate release/profile/provenance records.
-The P19 corpus contains three independently executed release identities but no
+The six-figure corpus contains three independently executed release identities but no
 same-facility multi-version comparison that produced an eligible shared exact
 result. Measured cross-release sharing credit is therefore zero. The forecast
 does not invent a cross-version compression benefit that this corpus cannot
@@ -119,11 +120,11 @@ The tracked report is
 with report digest
 `0786480ce5651aaba76e8de77addab34b90987438443c2ca82035154bdad8328`.
 It is a compact derived measurement and forecast. It does not replace or
-outrank the immutable P19 evidence.
+outrank the immutable six-figure qualification evidence.
 
 ## Unchanged-denominator forecast
 
-The P20-T01A denominators and retry assumptions are unchanged:
+The full-universe denominators and retry assumptions are unchanged:
 
 | Case | Logical executions | Physical attempts | Total retained bytes |
 | --- | ---: | ---: | ---: |
@@ -133,9 +134,9 @@ The P20-T01A denominators and retry assumptions are unchanged:
 
 The expected result remains 4,038,854,838 bytes below the 8 GB soft stop. The
 conservative result remains 3,115,924,170 bytes above the 10 GB hard cap after
-the established 15% diagnostic reserve, 1 GB fixed reserve, and separate P19
+the established 15% diagnostic reserve, 1 GB fixed reserve, and separate six-figure
 qualification archive. Therefore the strongest lossless representation does
-not resolve R014 or P20-T01A. P20-T02 remains Planned.
+not resolve the capacity risk or initial forecast. The million-scale campaign remains planned.
 
 ## Required second-stage review
 
@@ -159,7 +160,7 @@ change and preferentially removes historical coverage multiplication, although
 it does not by itself prove that a valid transition set exists. The platform
 option saves more but loses a complete conservative platform/architecture
 reference matrix until canaries trigger expansion. The uniform-repetition
-number is only a capacity boundary because P20-T01A does not expose a
+number is only a capacity boundary because the initial forecast does not expose a
 benchmark-only denominator; applying it to other obligations would remove
 coverage. Diagnostic or timing removal does not fit alone and weakens anomaly
 or performance evidence. Manifest removal violates the evidence contract for
@@ -178,7 +179,7 @@ The compact report can be checked without the external corpus:
 python tools/campaigns/compile_factorized_evidence_forecast.py --check
 ```
 
-An operator with the immutable P19 root can repeat the full read-only
+An operator with the immutable six-figure campaign root can repeat the full read-only
 measurement and exact reconstruction:
 
 ```sh

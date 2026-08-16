@@ -1,6 +1,6 @@
 # Restart, Resume, and Duplicate-Attempt Qualification
 
-Campaign recovery follows the accepted D090 boundary exactly:
+Campaign recovery follows the accepted restart/resume checkpoint boundary exactly:
 
 `leased → environment-ready → running → observation-finalized → spooled → segment-finalized → uploaded → verified → manifest-committed → acknowledged`
 
@@ -44,4 +44,4 @@ identity. Raw execution evidence remains outside Git:
 
 The journal accepts a manifest digest only at `manifest-committed`. Verification
 of the referenced immutable publication is the evidence verifier's responsibility;
-P18-T04 hardens that validation and diagnostic quarantine boundary.
+Evidence-verification qualification hardens that validation and diagnostic quarantine boundary.

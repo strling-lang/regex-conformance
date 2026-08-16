@@ -1,13 +1,14 @@
 # 100K qualification campaign design
 
-The P19 campaign is an operational scale qualification, not a semantic or
+The six-figure campaign is an operational scale qualification, not a semantic or
 normative expansion. It deterministically expands every one of the 26 eligible
-P18 logical templates into a balanced set of planned repetitions. A planned
+small-scale qualification logical templates into a balanced set of planned
+repetitions. A planned
 repetition is a distinct logical execution with its own content identity;
 retries of that logical execution remain separate append-only physical
 attempts.
 
-The completed P19-T02 execution, exact evidence anchors, retry disposition,
+The completed six-figure campaign execution, exact evidence anchors, retry disposition,
 and final accounting are recorded in
 [100K qualification results](100k-qualification-results.md).
 
@@ -16,7 +17,7 @@ four base logical IDs in code-point order receive 3,847 repetitions and the
 other 22 receive 3,846. This difference of at most one prevents workload
 selection from silently favoring a familiar engine, profile, vector, or result
 class. All four representative profile coordinates, all twelve vectors, and
-all nine P18 operational categories receive nonzero work.
+all nine small-scale qualification operational categories receive nonzero work.
 
 ## Compact manifest and external segments
 
@@ -31,7 +32,7 @@ as canonical JSON in an immutable content-addressed segment outside Git. The
 compact manifest records the exact path, byte count, SHA-256, shard identity,
 selection, first and last logical ID, member count, and ordered-member digest
 for every segment. An independent process can reconstruct every exact adapter
-request from the frozen P18 request template, planned repetition, campaign
+request from the frozen small-scale request template, planned repetition, campaign
 identity, and segment record.
 
 This representation preserves the controlling storage and identity contracts:
@@ -53,7 +54,7 @@ hash reconciliation while keeping retry exposure bounded.
 
 Three planned interruptions occur only after durable shard commits: controller
 restart after shard 100, worker-process kill after shard 201, and a second
-controller restart after shard 300. P19-T02 must preserve every interrupted
+controller restart after shard 300. The six-figure campaign must preserve every interrupted
 attempt, use new physical-run identities where retry policy requires them, and
 still reconcile exactly 100,000 logical completions.
 

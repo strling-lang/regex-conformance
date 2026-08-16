@@ -1,13 +1,15 @@
 # Million-scale capacity and cost plan
 
-> This P20-T01A plan records the pre-D103 planning basis. Its repetitive raw
+> This initial million-scale plan records the planning basis before the
+> factorized-evidence and governed-canary policy. Its repetitive raw
 > object layout and unconditional platform multiplication are superseded by the
-> P20-T01C [Evidence Pack v2](evidence-pack-v2.md) certification. D103 preserves
+> production [Evidence Pack v2](evidence-pack-v2.md) certification. The accepted
+> policy preserves
 > full historical semantics, adopts governed canaries with targeted semantic
 > expansion, and retains the same 8 GB soft stop and 10 GB hard cap.
 
-P20-T01 is a technical planning artifact for a possible 1,000,000-logical-
-execution campaign. It does not authorize P20-T02, execute a target, use
+This is a technical planning artifact for a possible 1,000,000-logical-
+execution campaign. It does not authorize the campaign, execute a target, use
 Docker, establish credentials, publish to Cloudflare R2, or mutate external
 evidence. The compact machine plan is
 [`reports/scale/million-scale-capacity-plan.json`](../../reports/scale/million-scale-capacity-plan.json),
@@ -16,7 +18,7 @@ and the operator boundary is
 
 ## Measured basis and deterministic workload
 
-The plan scales only measured P19 quantities. The certified 100K campaign
+The plan scales only measured six-figure qualification quantities. The certified 100K campaign
 contains 100,000 logical completions, 100,500 physical attempts, 402 credited
 result shards, 402 logical-plan segments, two non-crediting attempt-only
 segments, and three reconciled planned interruptions. Its tracked execution
@@ -33,7 +35,7 @@ The proposed denominator and profile allocation are an exact tenfold expansion:
 | Python `re` | 461,530 | 1,847 |
 | **Total** | **1,000,000** | **4,003** |
 
-The measured 0.5% P19 retry rate produces a 1,005,000-attempt planning
+The measured 0.5% six-figure qualification retry rate produces a 1,005,000-attempt planning
 expectation. Admission reserves 1,020,000 attempts (2% retry overhead) and
 pauses for a new decision at 1,050,000 attempts (5%). A logical execution may
 have at most three physical attempts. Infrastructure failures remain
@@ -42,7 +44,7 @@ completion.
 
 ## Runtime, CPU, and memory
 
-The P19 session history measured 10.152 active-session hours and 13.030
+The six-figure qualification session history measured 10.152 active-session hours and 13.030
 calendar hours. A strictly linear tenfold extrapolation is therefore 101.521
 active hours or 130.300 calendar hours. These are measurements multiplied by
 ten, not promises about future throughput.
@@ -82,7 +84,7 @@ spool and committed evidence are never eviction candidates.
 
 ## Evidence and R2 storage envelope
 
-P19 used 317,157,279 bytes of evidence objects and 69,698,118 bytes of logical
+The six-figure qualification used 317,157,279 bytes of evidence objects and 69,698,118 bytes of logical
 segments. Tenfold uncompressed growth is 3,868,553,970 remote bytes. The
 immutable derived warehouse is local-only; its tenfold allowance raises the
 expected local evidence/logical/warehouse total to 6,123,524,850 bytes.
@@ -146,7 +148,7 @@ requests—the expected remote bytes cost no more than about $0.0581/month, the
 conservative bytes about $0.1021/month, and the 10 GB hard cap $0.15/month.
 Expected write/read requests add less than $0.0391; their hard budget adds
 $0.0486. The hard first-month incremental envelope is therefore $0.1986 before
-any free allowance. Revalidate these rates immediately before P20-T02 against
+any free allowance. Revalidate these rates immediately before the million-scale campaign against
 Cloudflare's [R2 pricing](https://developers.cloudflare.com/r2/pricing/).
 
 ## Checkpoint and stop contract
@@ -157,7 +159,7 @@ adds a separate durable receipt only after read-back verification. New work
 backpressures on RAM, disk, retry, runtime, R2 byte, or request thresholds.
 Cleanup never rewrites committed evidence.
 
-P20-T02 remains Planned until all three conditions are true:
+The million-scale campaign remains planned until all three conditions are true:
 
 1. this research and operator handoff is complete;
 2. the Program Owner confirms the exact bucket/configuration and both secrets
@@ -165,5 +167,5 @@ P20-T02 remains Planned until all three conditions are true:
 3. the R2 publication integration is implemented and verified against these
    request, storage, integrity, and recovery contracts.
 
-The current task stops after P20-T01 and requests only the second confirmation.
+The capacity-planning task stops here and requests only the second confirmation.
 No 1M execution is authorized.

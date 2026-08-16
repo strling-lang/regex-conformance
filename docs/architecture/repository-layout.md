@@ -74,7 +74,7 @@ The following are intentionally absent from the scaffold:
 ## Traceability checklist
 
 - [x] Every root named by the Repository Bootstrap contract is present.
-- [x] P01-P15 and P12A machine-operational responsibilities map to an explicit
+- [x] Bootstrap and foundation machine-operational responsibilities map to an explicit
   repository root or documented external authority.
 - [x] Registry profiles remain component graphs with behaviorally relevant
   facets.

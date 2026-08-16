@@ -1,6 +1,6 @@
 # Full known-universe index and raw-corpus forecast
 
-P20-T01A reaches a mandatory Program Owner decision gate. The strongest
+The initial full-universe forecast reaches a mandatory Program Owner decision gate. The strongest
 defensible planning index at the 2026-08-15 cutoff contains 93 dispositioned
 candidates: 77 executable facilities, seven aliases, five normative-only
 authorities, three non-regex pattern languages, and one API hook without an
@@ -8,17 +8,17 @@ implementation. The compact machine sources are
 [`full-known-universe-2026-08-15.v1.json`](../../registries/universe/full-known-universe-2026-08-15.v1.json)
 and [`full-known-universe-corpus-forecast.json`](../../reports/scale/full-known-universe-corpus-forecast.json).
 
-This is a planning index, not the P21 canonical Universe Registry. It does not
+This is a planning index, not the future canonical Universe Registry. It does not
 claim global discovery exhaustion, C1, C2, normative authority, or semantic
 authority. It performed no regex execution, Docker operation, R2 request, or
-external-evidence mutation. P20-T02 remains Planned.
+external-evidence mutation. The million-scale campaign remains planned.
 
 ## Decision in one paragraph
 
 Even the lower-bound final stable corpus is 34,399,590 logical executions. At
-the lossless packing ratio independently measured from the immutable P19 raw
+the lossless packing ratio independently measured from the immutable six-figure raw
 corpus, that lower bound is 10,874,439,012 bytes before diagnostics or reserve:
-10,906,181,138 bytes after retaining the separate P19 qualification corpus,
+10,906,181,138 bytes after retaining the separate six-figure qualification corpus,
 906,181,138 bytes above the 10,000,000,000-byte hard cap. The expected final
 stable corpus is 129,715,224 logical executions and 43,264,830,705 total retained
 packed bytes; the conservative case is 360,702,963 logical executions and
@@ -30,7 +30,7 @@ decision.
 
 The [Foundation Completeness Contract](https://app.notion.com/p/3ba7d94064758154bf88ddfc16566b33)
 keeps executable facilities distinct from standards and from backend lineage.
-[D101](https://app.notion.com/p/3bc7d9406475811c9e0ec29a4a626ba3)
+[The latest-stable release-line coverage policy](https://app.notion.com/p/3bc7d9406475811c9e0ec29a4a626ba3)
 selects the latest stable patch/update within each upstream-governed release
 line; it does not retain every servicing patch as an active obligation. Compact
 supersession identity remains, and already-published evidence is immutable.
@@ -72,7 +72,7 @@ Historical profile accounting is bounded at 1,614 / 1,994 / 2,294. The index
 contains 128 current release-line representative selectors. Thirty-four are
 literal versions supported directly by complete primary evidence; 94 are
 governed upstream selectors such as “latest update in supported line.” Those
-selectors deliberately do not invent patch values where the P21 scanner and
+selectors deliberately do not invent patch values where the future universe scanner and
 canonical release ledger do not yet exist. This incompleteness cannot reverse
 the storage decision: the lowest profile, applicability, platform, diagnostics,
 and reserve assumptions already exceed the hard cap.
@@ -93,8 +93,8 @@ records for [Python `re`](https://docs.python.org/3/library/re.html),
 
 ## Logical denominator
 
-P19's four measured applicability archetypes are used as transparent workload
-proxies, not as C4 credit or normative coverage. The exact P19 selections were
+The six-figure qualification's four measured applicability archetypes are used as transparent workload
+proxies, not as C4 credit or normative coverage. The exact selections were
 11,538 for a linear/DFA surface, 19,231 for a standalone/CLI surface, 23,078
 for a database surface, and 46,153 for a host-runtime surface. Lower and upper
 bands prevent the four-profile qualification mix from being asserted as the
@@ -108,16 +108,17 @@ unknown future ontology.
 | **Final stable certification** | **34,399,590** | **129,715,224** | **360,702,963** |
 | Optional prerelease, separate | 92,304 | 400,000 | 1,920,000 |
 
-The expected 0.5% P19 retry rate gives 130,363,801 expected final physical
+The expected 0.5% six-figure qualification retry rate gives 130,363,801 expected final physical
 attempts. The conservative 5% boundary gives 378,738,112. Physical retries and
 infrastructure failures remain non-crediting and cannot add logical
 completions.
 
-D101 is already reflected: 128 current release-line representatives receive
+The latest-stable release-line policy is already reflected: 128 current
+release-line representatives receive
 active credit, each using only the latest stable patch/update in its governed
-line, and superseded servicing patches receive zero execution credit. The P21
+line, and superseded servicing patches receive zero execution credit. The future
 canonical supersession ledger does not yet exist, so the number of additional
-servicing-patch executions avoided by D101 is deliberately not invented. Any
+servicing-patch executions avoided by that policy is deliberately not invented. Any
 counterfactual that executes those patches can only increase this forecast.
 
 Historical stable profiles add 57,249,974 expected logical executions before
@@ -131,7 +132,7 @@ archetypes account for 55,592,148 of 64,857,612 expected historical executions.
 
 ## Measured raw-only compression
 
-The immutable P19 evidence was read without modification. Every compression
+The immutable six-figure qualification evidence was read without modification. Every compression
 experiment decompressed and byte-compared every member.
 
 | Raw class | Files | Raw bytes | Independent gzip-9 bytes |
@@ -160,7 +161,7 @@ reserve, and a fixed 1,000,000,000-byte contingency.
 | Current stable | 2,535,567,566 | 5,547,090,895 | 63 / 100 |
 | Full historical stable | 21,616,544,426 | 46,507,520,792 | 522 / 987 |
 | Final stable production evidence | 43,233,088,579 | 137,522,561,770 | 1,042 / 2,959 |
-| Retained P19 qualification evidence | 31,742,126 | 31,742,126 | 2 / 2 |
+| Retained six-figure qualification evidence | 31,742,126 | 31,742,126 | 2 / 2 |
 | **Final retained total** | **43,264,830,705** | **137,554,303,896** | **1,044 / 2,961** |
 | Optional prerelease, separate | 133,316,931 | 1,726,701,320 | 5 / 17 |
 
@@ -201,9 +202,10 @@ and [R2 limits](https://developers.cloudflare.com/r2/platform/limits/).
 ## Program Owner decision required
 
 No listed choice is authorized by this report. The Program Owner must choose a
-consequential path before P20-T01A can complete:
+consequential path before the full-universe capacity forecast can complete:
 
-1. Preserve C1–C7, D101, full raw retention, and final scope; authorize a
+1. Preserve all completeness criteria, the latest-stable release-line policy,
+   full raw retention, and final scope; authorize a
    larger/paid durable storage envelope and revise the 8 GB/10 GB limits.
 2. Preserve the no-cost 10 GB limit; approve a consequential change to scope,
    retention, certification staging, or the requirement that the complete raw
@@ -219,8 +221,8 @@ consequential path before P20-T01A can complete:
    and provenance requirements.
 
 Until that decision is recorded, do not weaken scope or retention, raise the
-cap, authorize paid storage, upload evidence, implement P20-T02 publication, or
-activate P20-T02.
+cap, authorize paid storage, upload evidence, implement million-scale
+publication, or activate the million-scale campaign.
 
 ## Reproduction and validation
 

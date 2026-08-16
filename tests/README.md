@@ -73,7 +73,7 @@ progress order, resume status, schema authority, and transfer interruption; the
 journal must fail closed while infrastructure outcomes remain operational rather
 than becoming regex observations.
 
-Restart/resume campaign tests reopen the durable scheduler journal after every D090 checkpoint, force an abrupt child-process exit, repeat target-invocation interruptions, and inject duplicate delivery, rolled-back transactions, identity collisions, payload and checkpoint tampering, missing commit receipts, linked paths, and credential-bearing material. They require distinct physical-run IDs, one exact logical commit, and external raw evidence outside Git.
+Restart/resume campaign tests reopen the durable scheduler journal after every governed checkpoint, force an abrupt child-process exit, repeat target-invocation interruptions, and inject duplicate delivery, rolled-back transactions, identity collisions, payload and checkpoint tampering, missing commit receipts, linked paths, and credential-bearing material. They require distinct physical-run IDs, one exact logical commit, and external raw evidence outside Git.
 
 CLI tests validate the shared command schema, stable outcome/exit-code mapping,
 deterministic secret-safe payloads, parity between human and JSON rendering,
@@ -100,7 +100,7 @@ identity-mismatched acquisitions roll back; an admitted environment reaches a
 verified Ready state; cache protection, transfer resume, durable restart,
 structured progress, and process-tree containment survive their fault cases.
 
-Schema tests also validate the governed P17 vertical-slice archetype crosswalk.
+Schema tests also validate the governed architectural vertical-slice archetype crosswalk.
 They conserve all 19 design-seed candidates; prove that only in-scope subjects
 are selected; require standalone, host/runtime, database/embedded, native-build,
 native-runtime, and OCI-service coverage; keep the selection non-executable
