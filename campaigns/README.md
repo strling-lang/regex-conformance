@@ -41,3 +41,11 @@ tenfold and divides 1,000,000 logical executions into 64 independently
 verifiable hosted partitions. Each partition emits Evidence Pack v2 and an
 immutable exact-coordinate recovery receipt before final no-`LIST`
 reconciliation. See `docs/campaigns/million-qualification.md`.
+
+Future production campaigns use Compact Evidence Pack v3. It globally factors
+repeated values, derives observation and physical-attempt identities from
+immutable execution coordinates, preserves every independent empirical fact,
+and replaces only randomly assigned labels and legacy container-layout
+identity. The measured declared-cutoff conservative footprint, including the
+completed qualification packs and a 1 GB reserve, is 7,782,536,009 bytes. See
+`docs/campaigns/evidence-pack-v3.md`.

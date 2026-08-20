@@ -1,6 +1,11 @@
 # Evidence Pack v2
 
-Evidence Pack v2 is the production authoritative raw-evidence representation
+> **Completed-evidence status:** This format remains authoritative for existing
+> immutable packs. New production evidence uses
+> [Compact Evidence Pack v3](evidence-pack-v3.md). Existing packs are never
+> rewritten to obtain the newer representation.
+
+Evidence Pack v2 was the production authoritative raw-evidence representation
 adopted by the accepted factorized-evidence and governed-canary policy. It
 stores empirical information, not repeated JSON envelopes.
 Exact observations and physical attempts remain independent facts even when

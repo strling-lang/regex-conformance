@@ -60,6 +60,7 @@ diff. Fixtures are not production observations or published evidence.
 | Declared-cutoff universe exhaustion ledger and factorized-evidence capacity reforecast | external read-only research ledger plus `tools/campaigns/verify_known_universe_census.py` | `reports/scale/known-universe-census-forecast.json` | exact external ledger hashes and row counts when supplied, catalog and candidate disposition closure, schema validation, canonical report identity, source bindings, material-surface bounds, release/profile projection, Evidence Pack scaling, byte/request arithmetic, and fail-closed capacity tests |
 | Factorized raw-evidence model and unchanged-denominator capacity gate | `tools/campaigns/compile_factorized_evidence_forecast.py` | `reports/scale/factorized-raw-evidence-forecast.json` | exact 807-member reconstruction, deterministic binary rebuild, identity/hash recomputation, corruption injection, bounded random lookup, schema validation, unchanged full-universe denominator arithmetic, and focused campaign tests |
 | Production Evidence Pack v2 and enriched capacity gate | `tools/campaigns/compile_evidence_pack_v2.py` | `reports/scale/evidence-pack-v2-certification.json` | exact 807-member reconstruction, two identical encodings, legacy identity/hash recomputation, corruption injection, bounded lookup, attempt/observation independence, expanded diagnostic/performance contracts, governed-canary forecast, schema validation, and focused publisher tests |
+| Compact Evidence Pack v3 and declared-cutoff capacity certification | `tools/campaigns/certify_compact_evidence.py` | `reports/scale/evidence-pack-v3-capacity-certification.json` | read-only million-corpus migration, exact retained-fact reconstruction, deterministic coordinate identities, corruption injection, bounded lookup, exact separation of lossless and retention-contract savings, schema validation, and fail-closed 8 GB/10 GB arithmetic |
 | Local million-scale publication preparation | `tools/campaigns/prepare_million_partition.py` and `tools/campaigns/finalize_million_local_artifacts.py` | external partition preparation records, staged content-addressed pack bytes, and an external local-readiness report | two identical encodings per partition, exact reconstruction, corruption detection, manifest-last staging, all-partition identity and interruption reconciliation, zero cloud requests, and capacity admission before later publication |
 
 Edit the source and run the listed producer; do not hand-maintain these outputs.
@@ -83,10 +84,11 @@ target execution.
 - Raw observations and evidence objects are immutable and content-addressed.
   Infrastructure failures stay distinct from target timeout, crash, rejection,
   match, or no-match observations.
-- Evidence Pack v2 is the authoritative physical representation for new raw
+- Evidence Pack v3 is the authoritative physical representation for new raw
   evidence. Shared immutable values may be stored once, but every independently
   executed observation and every physical attempt remains independently
-  identifiable. See [Evidence Pack v2](../campaigns/evidence-pack-v2.md).
+  identifiable. Existing v2 packs remain immutable and authoritative under
+  their original manifest. See [Compact Evidence Pack v3](../campaigns/evidence-pack-v3.md).
 - `run_vertical_slice.py`, environment/adapter certification, fault exercises,
   restart exercises, and `run_100k_qualification.py` require explicit execution
   authorization and external roots. Their presence is not authorization.

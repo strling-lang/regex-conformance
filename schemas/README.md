@@ -93,6 +93,14 @@ reconstruction proof, exact pack/report identities, enriched evidence classes,
 governed-canary platform forecast, 8 GB/10 GB admission gates, and permanent
 no-paid-capacity/no-material-publication classification.
 
+`json/evidence-pack-v3-manifest.schema.json` defines the compact future raw-
+evidence manifest, its closed retained-fact contract, deterministic identity
+derivations, content-addressed blocks, bounded lookup, and exact omission
+allowlist. `json/evidence-pack-v3-capacity-certification.schema.json` separates
+lossless structural savings from the minimum retained-information change and
+binds the measured million-corpus byte model to the declared-cutoff lower,
+expected, and conservative 8 GB/10 GB capacity forecast.
+
 `json/scale-warehouse-reconciliation.schema.json` defines the compact six-figure warehouse
 reconciliation report. It binds the certified campaign, evidence manifest,
 execution report, recovery hash chain, both non-crediting infrastructure

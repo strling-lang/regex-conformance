@@ -1,0 +1,273 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/evidence-pack-v3-capacity-certification.schema.json",
+  "title": "Compact Evidence Pack Capacity Certification",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "byte_cost_model",
+    "certification",
+    "classification",
+    "declared_cutoff_denominators",
+    "final_forecast",
+    "future_contract_measurement",
+    "lossless_redesign_checkpoint",
+    "six_figure_comparison",
+    "report_digest_sha256",
+    "retention_contract_change",
+    "schema_version",
+    "source_bindings",
+    "three_stage_accounting"
+  ],
+  "properties": {
+    "schema_version": {"const": "evidence-pack-v3-capacity-certification.v1"},
+    "report_digest_sha256": {"$ref": "#/$defs/digest"},
+    "classification": {"$ref": "#/$defs/booleanMap"},
+    "source_bindings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["completed_million_readiness_report_sha256", "known_universe_census_report_digest_sha256", "measurement_repository_sha", "million_campaign_manifest_sha256", "six_figure_evidence_manifest_sha256"],
+      "properties": {
+        "completed_million_readiness_report_sha256": {"$ref": "#/$defs/digest"},
+        "known_universe_census_report_digest_sha256": {"$ref": "#/$defs/digest"},
+        "measurement_repository_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "million_campaign_manifest_sha256": {"$ref": "#/$defs/digest"},
+        "six_figure_evidence_manifest_sha256": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "byte_cost_model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "compressed_unique_object_bytes",
+        "legacy_manifest_bytes",
+        "legacy_manifest_descriptor_occurrences",
+        "legacy_manifest_json_structural_bytes",
+        "legacy_member_path_occurrences",
+        "legacy_member_path_utf8_bytes",
+        "million_v2_bytes_by_evidence_class",
+        "million_v2_retained_bytes",
+        "object_container_and_compression",
+        "qualification_specific",
+        "value_entropy_and_repetition"
+      ],
+      "properties": {
+        "compressed_unique_object_bytes": {"type": "integer", "minimum": 1},
+        "legacy_manifest_bytes": {"type": "integer", "minimum": 1},
+        "legacy_manifest_descriptor_occurrences": {"type": "integer", "minimum": 1},
+        "legacy_manifest_json_structural_bytes": {"type": "integer", "minimum": 1},
+        "legacy_member_path_occurrences": {"type": "integer", "minimum": 1},
+        "legacy_member_path_utf8_bytes": {"type": "integer", "minimum": 1},
+        "million_v2_bytes_by_evidence_class": {"$ref": "#/$defs/nonNegativeIntegerMap"},
+        "million_v2_retained_bytes": {"type": "integer", "minimum": 1},
+        "object_container_and_compression": {"$ref": "#/$defs/nonNegativeIntegerMap"},
+        "qualification_specific": {"$ref": "#/$defs/nonNegativeIntegerMap"},
+        "value_entropy_and_repetition": {
+          "type": "object",
+          "additionalProperties": {"type": ["integer", "string"]},
+          "required": [
+            "assigned_uuidv7_count",
+            "assigned_uuidv7_minimum_random_entropy_bits",
+            "assigned_uuidv7_minimum_random_entropy_bytes",
+            "dictionary_raw_bytes",
+            "dictionary_strings",
+            "dictionary_unique_strings",
+            "finding"
+          ]
+        }
+      }
+    },
+    "certification": {"$ref": "#/$defs/booleanMap"},
+    "declared_cutoff_denominators": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["lower", "expected", "conservative"],
+      "properties": {
+        "lower": {"$ref": "#/$defs/denominatorCase"},
+        "expected": {"$ref": "#/$defs/denominatorCase"},
+        "conservative": {"$ref": "#/$defs/denominatorCase"}
+      }
+    },
+    "final_forecast": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cases", "hard_cap_bytes", "qualification_corpus_bytes", "soft_stop_bytes"],
+      "properties": {
+        "cases": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["lower", "expected", "conservative"],
+          "properties": {
+            "lower": {"$ref": "#/$defs/forecastCase"},
+            "expected": {"$ref": "#/$defs/forecastCase"},
+            "conservative": {"$ref": "#/$defs/forecastCase"}
+          }
+        },
+        "hard_cap_bytes": {"const": 10000000000},
+        "qualification_corpus_bytes": {"type": "integer", "minimum": 1},
+        "soft_stop_bytes": {"const": 8000000000}
+      }
+    },
+    "future_contract_measurement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "bytes_by_evidence_class",
+        "bytes_per_logical_execution",
+        "bytes_per_physical_attempt",
+        "campaign_manifest_sha256",
+        "corruption_detected",
+        "deterministic_second_encoding_identical",
+        "logical_executions",
+        "manifest_sha256",
+        "maximum_compressed_block_bytes",
+        "maximum_object_reads_per_lookup",
+        "object_count_including_manifest",
+        "observations",
+        "pack_digest_sha256",
+        "physical_attempts",
+        "retained_bytes",
+        "retained_fact_counts",
+        "source_v2_bytes",
+        "verified_canonical_logical_segments"
+      ],
+      "properties": {
+        "bytes_by_evidence_class": {"$ref": "#/$defs/evidenceClasses"},
+        "bytes_per_logical_execution": {"$ref": "#/$defs/decimal9"},
+        "bytes_per_physical_attempt": {"$ref": "#/$defs/decimal9"},
+        "campaign_manifest_sha256": {"$ref": "#/$defs/digest"},
+        "corruption_detected": {"const": true},
+        "deterministic_second_encoding_identical": {"const": true},
+        "logical_executions": {"type": "integer", "minimum": 1},
+        "manifest_sha256": {"$ref": "#/$defs/digest"},
+        "maximum_compressed_block_bytes": {"type": "integer", "minimum": 1},
+        "maximum_object_reads_per_lookup": {"type": "integer", "minimum": 1, "maximum": 3},
+        "object_count_including_manifest": {"type": "integer", "minimum": 2},
+        "observations": {"type": "integer", "minimum": 1},
+        "pack_digest_sha256": {"$ref": "#/$defs/digest"},
+        "physical_attempts": {"type": "integer", "minimum": 1},
+        "retained_bytes": {"type": "integer", "minimum": 1},
+        "retained_fact_counts": {"$ref": "#/$defs/nonNegativeIntegerMap"},
+        "source_v2_bytes": {"type": "integer", "minimum": 1},
+        "verified_canonical_logical_segments": {"type": "integer", "minimum": 1}
+      }
+    },
+    "lossless_redesign_checkpoint": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "architecture",
+        "bytes_by_evidence_class",
+        "exact_legacy_manifest_and_object_reconstruction",
+        "information_removed",
+        "million_retained_bytes",
+        "million_savings_bytes",
+        "projected_conservative_bytes"
+      ],
+      "properties": {
+        "architecture": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "bytes_by_evidence_class": {"$ref": "#/$defs/nonNegativeIntegerMap"},
+        "exact_legacy_manifest_and_object_reconstruction": {"const": true},
+        "information_removed": {"const": false},
+        "million_retained_bytes": {"type": "integer", "minimum": 1},
+        "million_savings_bytes": {"type": "integer", "minimum": 1},
+        "projected_conservative_bytes": {"type": "integer", "minimum": 10000000001}
+      }
+    },
+    "six_figure_comparison": {
+      "type": "object",
+      "additionalProperties": {"type": ["integer", "string"]},
+      "minProperties": 7
+    },
+    "retention_contract_change": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["capability_lost", "measured_million_information_no_longer_retained", "no_longer_retained", "preserved", "selection_rationale"],
+      "properties": {
+        "capability_lost": {"$ref": "#/$defs/nonEmptyStringArray"},
+        "measured_million_information_no_longer_retained": {"$ref": "#/$defs/nonNegativeIntegerMap"},
+        "no_longer_retained": {"type": "array", "minItems": 3, "maxItems": 3, "uniqueItems": true, "items": {"type": "string"}},
+        "preserved": {"$ref": "#/$defs/nonEmptyStringArray"},
+        "selection_rationale": {"type": "string", "minLength": 1}
+      }
+    },
+    "three_stage_accounting": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "deliberate_information_removal_savings_bytes",
+        "final_conservative_bytes",
+        "lossless_redesigned_conservative_bytes",
+        "lossless_structural_savings_bytes",
+        "lossless_structural_savings_percent",
+        "starting_combined_conservative_bytes",
+        "total_savings_bytes",
+        "total_savings_percent"
+      ],
+      "properties": {
+        "deliberate_information_removal_savings_bytes": {"type": "integer", "minimum": 1},
+        "final_conservative_bytes": {"type": "integer", "maximum": 10000000000},
+        "lossless_redesigned_conservative_bytes": {"type": "integer", "minimum": 10000000001},
+        "lossless_structural_savings_bytes": {"type": "integer", "minimum": 1},
+        "lossless_structural_savings_percent": {"$ref": "#/$defs/decimal9"},
+        "starting_combined_conservative_bytes": {"type": "integer", "minimum": 10000000001},
+        "total_savings_bytes": {"type": "integer", "minimum": 1},
+        "total_savings_percent": {"$ref": "#/$defs/decimal9"}
+      }
+    }
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "decimal9": {"type": "string", "pattern": "^[0-9]+\\.[0-9]{9}$"},
+    "booleanMap": {"type": "object", "minProperties": 1, "additionalProperties": {"type": "boolean"}},
+    "nonNegativeIntegerMap": {"type": "object", "minProperties": 1, "additionalProperties": {"type": "integer", "minimum": 0}},
+    "nonEmptyStringArray": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "denominatorCase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["logical_executions", "object_count", "physical_attempts"],
+      "properties": {
+        "logical_executions": {"type": "integer", "minimum": 1},
+        "object_count": {"type": "integer", "minimum": 1},
+        "physical_attempts": {"type": "integer", "minimum": 1}
+      }
+    },
+    "evidenceClasses": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["canonical_inputs", "diagnostics", "manifests_integrity", "performance_resource_samples", "physical_attempt_facts", "profile_environment_release_provenance", "semantic_results", "shared_dictionary_cas"],
+      "properties": {
+        "canonical_inputs": {"type": "integer", "minimum": 0},
+        "diagnostics": {"type": "integer", "minimum": 0},
+        "manifests_integrity": {"type": "integer", "minimum": 0},
+        "performance_resource_samples": {"type": "integer", "minimum": 0},
+        "physical_attempt_facts": {"type": "integer", "minimum": 0},
+        "profile_environment_release_provenance": {"type": "integer", "minimum": 0},
+        "semantic_results": {"type": "integer", "minimum": 0},
+        "shared_dictionary_cas": {"type": "integer", "minimum": 0}
+      }
+    },
+    "forecastCase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["bytes_by_evidence_class", "bytes_before_growth_allowances", "class_a_requests", "class_b_requests", "diagnostic_growth_allowance_bytes", "fixed_targeted_and_general_reserve_bytes", "hard_cap_delta_bytes", "logical_executions", "normal_list_requests", "object_count", "performance_growth_allowance_bytes", "physical_attempts", "qualification_corpus_bytes", "soft_stop_delta_bytes", "total_retained_bytes"],
+      "properties": {
+        "bytes_by_evidence_class": {"$ref": "#/$defs/evidenceClasses"},
+        "bytes_before_growth_allowances": {"type": "integer", "minimum": 1},
+        "class_a_requests": {"type": "integer", "minimum": 1},
+        "class_b_requests": {"type": "integer", "minimum": 1},
+        "diagnostic_growth_allowance_bytes": {"type": "integer", "minimum": 0},
+        "fixed_targeted_and_general_reserve_bytes": {"type": "integer", "minimum": 0},
+        "hard_cap_delta_bytes": {"type": "integer"},
+        "logical_executions": {"type": "integer", "minimum": 1},
+        "normal_list_requests": {"const": 0},
+        "object_count": {"type": "integer", "minimum": 1},
+        "performance_growth_allowance_bytes": {"type": "integer", "minimum": 0},
+        "physical_attempts": {"type": "integer", "minimum": 1},
+        "qualification_corpus_bytes": {"type": "integer", "minimum": 1},
+        "soft_stop_delta_bytes": {"type": "integer"},
+        "total_retained_bytes": {"type": "integer", "minimum": 1}
+      }
+    }
+  }
+}

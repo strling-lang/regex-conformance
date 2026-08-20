@@ -172,6 +172,20 @@ should be refined as the open release/profile obligations are adjudicated, but
 the current expected and conservative violations are too large to treat the
 old 6.757 GB estimate as controlling.
 
+### Subsequent compact-evidence admission result
+
+The forecast above remains the immutable census-era Evidence Pack v2 result;
+it has been superseded for future production admission by the measured
+[Compact Evidence Pack v3 capacity certification](evidence-pack-v3.md). The
+new lossless-only conservative checkpoint is 55,028,414,206 bytes. After
+replacing random assigned observation/attempt labels with deterministic
+coordinate identities and replacing only the obsolete v2 container identity,
+the complete declared-cutoff conservative program is 7,782,536,009 bytes,
+including completed qualification packs and the 1 GB reserve. No universe,
+release, profile, feature, semantic observation, diagnostic, performance fact,
+or provenance relation was removed. The result leaves 217,463,991 bytes below
+the 8 GB operational soft stop and 2,217,463,991 bytes below the 10 GB hard cap.
+
 ## Verification
 
 Repository validation checks the schema, canonical report digest, repository
