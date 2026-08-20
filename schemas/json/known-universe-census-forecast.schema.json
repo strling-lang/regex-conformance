@@ -1,0 +1,459 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/known-universe-census-forecast.schema.json",
+  "title": "Known Regex Universe Census and Evidence Pack Forecast",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "cutoff_date",
+    "classification",
+    "repository_source_bindings",
+    "ledger",
+    "discovery_coverage",
+    "material_surface_accounting",
+    "release_profile_forecast",
+    "evidence_pack_v2_storage_forecast",
+    "local_million_qualification_retention",
+    "adversarial_audit",
+    "capacity_gate",
+    "report_digest_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": "known-universe-census-forecast.v1"},
+    "cutoff_date": {"const": "2026-08-19"},
+    "classification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "canonical_registry_authority",
+        "discovery_exhaustion_claimed",
+        "external_ledger_tracked_in_git",
+        "planning_only",
+        "regex_execution_performed",
+        "r2_accessed",
+        "semantic_authority"
+      ],
+      "properties": {
+        "canonical_registry_authority": {"const": false},
+        "discovery_exhaustion_claimed": {"const": false},
+        "external_ledger_tracked_in_git": {"const": false},
+        "planning_only": {"const": true},
+        "regex_execution_performed": {"const": false},
+        "r2_accessed": {"const": false},
+        "semantic_authority": {"const": false}
+      }
+    },
+    "repository_source_bindings": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/sourceBinding"}
+    },
+    "ledger": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "language_roots",
+        "catalog_leads",
+        "candidate_facts",
+        "source_scans",
+        "positive_candidate_facts",
+        "unresolved_candidate_facts",
+        "candidate_disposition_counts",
+        "catalog_disposition_counts",
+        "quality_checks",
+        "sha256"
+      ],
+      "properties": {
+        "language_roots": {"const": 1025},
+        "catalog_leads": {"const": 664},
+        "candidate_facts": {"const": 6677},
+        "source_scans": {"const": 1176},
+        "positive_candidate_facts": {"const": 1166},
+        "unresolved_candidate_facts": {"const": 3071},
+        "candidate_disposition_counts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "alias/thin-wrapper",
+            "duplicate",
+            "executable-independent-facility",
+            "historical-facility",
+            "materially-distinct-host-library",
+            "no-implementation",
+            "normative-only",
+            "not-actually-executable-regex",
+            "not-actually-regex",
+            "out-of-current-mainstream-candidate",
+            "out-of-scope-with-reason",
+            "unresolved"
+          ],
+          "properties": {
+            "alias/thin-wrapper": {"$ref": "#/$defs/nonnegativeInteger"},
+            "duplicate": {"$ref": "#/$defs/nonnegativeInteger"},
+            "executable-independent-facility": {"$ref": "#/$defs/nonnegativeInteger"},
+            "historical-facility": {"$ref": "#/$defs/nonnegativeInteger"},
+            "materially-distinct-host-library": {"$ref": "#/$defs/nonnegativeInteger"},
+            "no-implementation": {"$ref": "#/$defs/nonnegativeInteger"},
+            "normative-only": {"$ref": "#/$defs/nonnegativeInteger"},
+            "not-actually-executable-regex": {"$ref": "#/$defs/nonnegativeInteger"},
+            "not-actually-regex": {"$ref": "#/$defs/nonnegativeInteger"},
+            "out-of-current-mainstream-candidate": {"$ref": "#/$defs/nonnegativeInteger"},
+            "out-of-scope-with-reason": {"$ref": "#/$defs/nonnegativeInteger"},
+            "unresolved": {"$ref": "#/$defs/nonnegativeInteger"}
+          }
+        },
+        "catalog_disposition_counts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["duplicate", "pending", "root-added", "root-present", "subordinate-ecosystem-present"],
+          "properties": {
+            "duplicate": {"const": 5},
+            "pending": {"const": 0},
+            "root-added": {"const": 391},
+            "root-present": {"const": 227},
+            "subordinate-ecosystem-present": {"const": 41}
+          }
+        },
+        "quality_checks": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["blank_required_fields", "duplicate_candidate_ids", "duplicate_language_root_ids", "duplicate_scan_ids"],
+          "properties": {
+            "blank_required_fields": {"const": 0},
+            "duplicate_candidate_ids": {"const": 0},
+            "duplicate_language_root_ids": {"const": 0},
+            "duplicate_scan_ids": {"const": 0}
+          }
+        },
+        "sha256": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["candidate_ledger", "catalog", "language_screening", "non_language_audit", "source_scans"],
+          "properties": {
+            "candidate_ledger": {"$ref": "#/$defs/digest"},
+            "catalog": {"$ref": "#/$defs/digest"},
+            "language_screening": {"$ref": "#/$defs/digest"},
+            "non_language_audit": {"$ref": "#/$defs/digest"},
+            "source_scans": {"$ref": "#/$defs/digest"}
+          }
+        }
+      }
+    },
+    "discovery_coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["method", "source_classes", "package_ecosystems", "unresolved_policy"],
+      "properties": {
+        "method": {"type": "string", "minLength": 1},
+        "source_classes": {
+          "type": "array",
+          "minItems": 10,
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "package_ecosystems": {
+          "type": "array",
+          "minItems": 16,
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "unresolved_policy": {"type": "string", "minLength": 1}
+      }
+    },
+    "material_surface_accounting": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["method", "bounds", "non_mutually_exclusive_pair_counts", "non_language_positive_ecosystems", "normative_only_candidate_facts"],
+      "properties": {
+        "method": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["lower", "expected", "conservative"],
+          "properties": {
+            "lower": {"type": "string", "minLength": 1},
+            "expected": {"type": "string", "minLength": 1},
+            "conservative": {"type": "string", "minLength": 1}
+          }
+        },
+        "bounds": {"$ref": "#/$defs/bounds"},
+        "non_mutually_exclusive_pair_counts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["binding_or_host_surface", "language_runtime_and_runtime_implementation", "standalone_engine", "standard_library", "third_party_language_library"],
+          "properties": {
+            "binding_or_host_surface": {"$ref": "#/$defs/nonnegativeInteger"},
+            "language_runtime_and_runtime_implementation": {"$ref": "#/$defs/nonnegativeInteger"},
+            "standalone_engine": {"$ref": "#/$defs/nonnegativeInteger"},
+            "standard_library": {"$ref": "#/$defs/nonnegativeInteger"},
+            "third_party_language_library": {"$ref": "#/$defs/nonnegativeInteger"}
+          }
+        },
+        "non_language_positive_ecosystems": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["cli_server_application_and_security_product", "database_data_search_and_managed_service"],
+          "properties": {
+            "cli_server_application_and_security_product": {"$ref": "#/$defs/nonnegativeInteger"},
+            "database_data_search_and_managed_service": {"$ref": "#/$defs/nonnegativeInteger"}
+          }
+        },
+        "normative_only_candidate_facts": {"const": 72}
+      }
+    },
+    "release_profile_forecast": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["method", "planning_density_basis", "cases"],
+      "properties": {
+        "method": {"type": "string", "minLength": 1},
+        "planning_density_basis": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["facility_count", "current_stable_release_line_representatives", "current_profiles", "historical_profiles"],
+          "properties": {
+            "facility_count": {"const": 77},
+            "current_stable_release_line_representatives": {"const": 128},
+            "current_profiles": {"const": 224},
+            "historical_profiles": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["lower", "expected", "conservative"],
+              "properties": {
+                "lower": {"const": 1614},
+                "expected": {"const": 1994},
+                "conservative": {"const": 2294}
+              }
+            }
+          }
+        },
+        "cases": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["lower", "expected", "conservative"],
+          "properties": {
+            "lower": {"$ref": "#/$defs/releaseProfileCase"},
+            "expected": {"$ref": "#/$defs/releaseProfileCase"},
+            "conservative": {"$ref": "#/$defs/releaseProfileCase"}
+          }
+        }
+      }
+    },
+    "evidence_pack_v2_storage_forecast": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["method", "soft_stop_bytes", "hard_cap_bytes", "planning_basis", "cases"],
+      "properties": {
+        "method": {"type": "string", "minLength": 1},
+        "soft_stop_bytes": {"const": 8000000000},
+        "hard_cap_bytes": {"const": 10000000000},
+        "planning_basis": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["facility_count", "lower", "expected", "conservative"],
+          "properties": {
+            "facility_count": {"const": 77},
+            "lower": {"$ref": "#/$defs/storageBasisCase"},
+            "expected": {"$ref": "#/$defs/storageBasisCase"},
+            "conservative": {"$ref": "#/$defs/storageBasisCase"}
+          }
+        },
+        "cases": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["lower", "expected", "conservative"],
+          "properties": {
+            "lower": {"$ref": "#/$defs/storageCase"},
+            "expected": {"$ref": "#/$defs/storageCase"},
+            "conservative": {"$ref": "#/$defs/storageCase"}
+          }
+        }
+      }
+    },
+    "local_million_qualification_retention": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_report_sha256",
+        "source_revision",
+        "campaign_manifest_sha256",
+        "logical_executions",
+        "physical_attempts",
+        "infrastructure_failure_attempts",
+        "planned_interruptions",
+        "partitions",
+        "result_shards",
+        "content_addressed_objects",
+        "deferred_control_objects",
+        "projected_remote_upper_bound_bytes",
+        "cloud_publication_performed",
+        "cloud_requests",
+        "combined_if_later_published"
+      ],
+      "properties": {
+        "source_report_sha256": {"$ref": "#/$defs/digest"},
+        "source_revision": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "campaign_manifest_sha256": {"$ref": "#/$defs/digest"},
+        "logical_executions": {"const": 1000000},
+        "physical_attempts": {"const": 1016750},
+        "infrastructure_failure_attempts": {"const": 16750},
+        "planned_interruptions": {"const": 192},
+        "partitions": {"const": 64},
+        "result_shards": {"const": 4003},
+        "content_addressed_objects": {"const": 2514},
+        "deferred_control_objects": {"const": 65},
+        "projected_remote_upper_bound_bytes": {"const": 40552303},
+        "cloud_publication_performed": {"const": false},
+        "cloud_requests": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["class_a", "class_b", "list"],
+          "properties": {
+            "class_a": {"const": 0},
+            "class_b": {"const": 0},
+            "list": {"const": 0}
+          }
+        },
+        "combined_if_later_published": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["lower", "expected", "conservative"],
+          "properties": {
+            "lower": {"$ref": "#/$defs/combinedRetentionCase"},
+            "expected": {"$ref": "#/$defs/combinedRetentionCase"},
+            "conservative": {"$ref": "#/$defs/combinedRetentionCase"}
+          }
+        }
+      }
+    },
+    "adversarial_audit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "major_unexplained_category_holes", "late_additions", "late_duplicate_or_nonregex_corrections", "remaining_uncertainty"],
+      "properties": {
+        "status": {"const": "closed-at-declared-cutoff-with-explicit-unresolved-obligations"},
+        "major_unexplained_category_holes": {"const": 0},
+        "late_additions": {"type": "array", "minItems": 8, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "late_duplicate_or_nonregex_corrections": {"type": "array", "minItems": 3, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "remaining_uncertainty": {"type": "string", "minLength": 1}
+      }
+    },
+    "capacity_gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["outcome", "publication_admission", "program_owner_decision_required", "paid_capacity_authorized", "scientific_scope_reduction_authorized", "reason"],
+      "properties": {
+        "outcome": {"const": "fail-closed"},
+        "publication_admission": {"const": "blocked"},
+        "program_owner_decision_required": {"const": true},
+        "paid_capacity_authorized": {"const": false},
+        "scientific_scope_reduction_authorized": {"const": false},
+        "reason": {"type": "string", "minLength": 1}
+      }
+    },
+    "report_digest_sha256": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "nonnegativeInteger": {"type": "integer", "minimum": 0},
+    "sourceBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "bounds": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["lower", "expected", "conservative"],
+      "properties": {
+        "lower": {"const": 543},
+        "expected": {"const": 746},
+        "conservative": {"const": 1025}
+      }
+    },
+    "releaseProfileCase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["modeled_facility_or_material_surface_count", "current_stable_release_line_representatives", "current_profiles", "historical_profiles"],
+      "properties": {
+        "modeled_facility_or_material_surface_count": {"type": "integer", "minimum": 1},
+        "current_stable_release_line_representatives": {"type": "integer", "minimum": 1},
+        "current_profiles": {"type": "integer", "minimum": 1},
+        "historical_profiles": {"type": "integer", "minimum": 1}
+      }
+    },
+    "storageBasisCase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["logical_executions", "physical_attempts", "bytes_before_growth_allowances", "diagnostic_growth_rate", "performance_growth_rate", "fixed_targeted_and_general_reserve_bytes", "qualification_corpus_bytes", "object_count"],
+      "properties": {
+        "logical_executions": {"type": "integer", "minimum": 1},
+        "physical_attempts": {"type": "integer", "minimum": 1},
+        "bytes_before_growth_allowances": {"type": "integer", "minimum": 1},
+        "diagnostic_growth_rate": {"type": "string", "pattern": "^0\\.[0-9]+$"},
+        "performance_growth_rate": {"type": "string", "pattern": "^0\\.[0-9]+$"},
+        "fixed_targeted_and_general_reserve_bytes": {"type": "integer", "minimum": 0},
+        "qualification_corpus_bytes": {"type": "integer", "minimum": 1},
+        "object_count": {"type": "integer", "minimum": 1}
+      }
+    },
+    "storageCase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "surface_count_basis",
+        "scale_from_planning_index",
+        "logical_executions",
+        "physical_attempts",
+        "bytes_before_growth_allowances",
+        "diagnostic_growth_allowance_bytes",
+        "performance_growth_allowance_bytes",
+        "fixed_targeted_and_general_reserve_bytes",
+        "qualification_corpus_bytes",
+        "total_retained_bytes",
+        "soft_stop_delta_bytes",
+        "hard_cap_delta_bytes",
+        "object_count",
+        "class_a_requests",
+        "class_b_requests",
+        "exceeds_soft_stop",
+        "exceeds_hard_cap"
+      ],
+      "properties": {
+        "surface_count_basis": {"type": "integer", "minimum": 1},
+        "scale_from_planning_index": {"type": "string", "pattern": "^[0-9]+\\.[0-9]{12}$"},
+        "logical_executions": {"type": "integer", "minimum": 1},
+        "physical_attempts": {"type": "integer", "minimum": 1},
+        "bytes_before_growth_allowances": {"type": "integer", "minimum": 1},
+        "diagnostic_growth_allowance_bytes": {"type": "integer", "minimum": 0},
+        "performance_growth_allowance_bytes": {"type": "integer", "minimum": 0},
+        "fixed_targeted_and_general_reserve_bytes": {"type": "integer", "minimum": 0},
+        "qualification_corpus_bytes": {"type": "integer", "minimum": 1},
+        "total_retained_bytes": {"type": "integer", "minimum": 1},
+        "soft_stop_delta_bytes": {"type": "integer"},
+        "hard_cap_delta_bytes": {"type": "integer"},
+        "object_count": {"type": "integer", "minimum": 1},
+        "class_a_requests": {"type": "integer", "minimum": 1},
+        "class_b_requests": {"type": "integer", "minimum": 1},
+        "exceeds_soft_stop": {"type": "boolean"},
+        "exceeds_hard_cap": {"type": "boolean"}
+      }
+    },
+    "combinedRetentionCase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["retained_bytes", "soft_stop_delta_bytes", "hard_cap_delta_bytes"],
+      "properties": {
+        "retained_bytes": {"type": "integer", "minimum": 1},
+        "soft_stop_delta_bytes": {"type": "integer"},
+        "hard_cap_delta_bytes": {"type": "integer"}
+      }
+    }
+  }
+}

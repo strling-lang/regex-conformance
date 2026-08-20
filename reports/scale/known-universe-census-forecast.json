@@ -1,0 +1,326 @@
+{
+  "schema_version": "known-universe-census-forecast.v1",
+  "cutoff_date": "2026-08-19",
+  "classification": {
+    "canonical_registry_authority": false,
+    "discovery_exhaustion_claimed": false,
+    "external_ledger_tracked_in_git": false,
+    "planning_only": true,
+    "regex_execution_performed": false,
+    "r2_accessed": false,
+    "semantic_authority": false
+  },
+  "repository_source_bindings": [
+    {
+      "path": "registries/universe/full-known-universe-2026-08-15.v1.json",
+      "sha256": "0601c2c948b19c7f5265bd53260c7c8a47478d12d3dc79e863a2f2f8e411f9f8"
+    },
+    {
+      "path": "reports/scale/evidence-pack-v2-certification.json",
+      "sha256": "f39c80c34e75cec6a2c002d18ab0221ab55ce090fd59e68525f8a1988a80d6ca"
+    }
+  ],
+  "ledger": {
+    "language_roots": 1025,
+    "catalog_leads": 664,
+    "candidate_facts": 6677,
+    "source_scans": 1176,
+    "positive_candidate_facts": 1166,
+    "unresolved_candidate_facts": 3071,
+    "candidate_disposition_counts": {
+      "alias/thin-wrapper": 680,
+      "duplicate": 48,
+      "executable-independent-facility": 328,
+      "historical-facility": 417,
+      "materially-distinct-host-library": 838,
+      "no-implementation": 664,
+      "normative-only": 72,
+      "not-actually-executable-regex": 405,
+      "not-actually-regex": 17,
+      "out-of-current-mainstream-candidate": 4,
+      "out-of-scope-with-reason": 133,
+      "unresolved": 3071
+    },
+    "catalog_disposition_counts": {
+      "duplicate": 5,
+      "pending": 0,
+      "root-added": 391,
+      "root-present": 227,
+      "subordinate-ecosystem-present": 41
+    },
+    "quality_checks": {
+      "blank_required_fields": 0,
+      "duplicate_candidate_ids": 0,
+      "duplicate_language_root_ids": 0,
+      "duplicate_scan_ids": 0
+    },
+    "sha256": {
+      "candidate_ledger": "6ff8caa140ea78e38bb37808b988b46ae64dfbcc263f7c7a9871b26e5f977669",
+      "catalog": "50be1f27254c2d04d7edd315123f3f9db250a5c5cdfb81a92c1708a733c7d45d",
+      "language_screening": "9e1edcbab15d8b83d2997ce6b57a6636464c1c56854cfa5b017eb29a8a5fcdbf",
+      "non_language_audit": "9e9bd072ecb1fc2fec10f043bd3fe9b6ddc18ef0a8a34b6cbdd18ba581709478",
+      "source_scans": "0682089f3e0c5ec9ade294a884d178125e9a73e1bd8a0024840f126d4acb738d"
+    }
+  },
+  "discovery_coverage": {
+    "method": "Broad language catalogs were enumerated first, every lead was reconciled to a root or subordinate ecosystem, each root was screened across built-in, standard-library, runtime, alternative-library, binding and backend possibilities, and a separate cross-category adversarial audit challenged database, engine, product and standards coverage.",
+    "source_classes": [
+      "normative standards",
+      "official language documentation",
+      "official runtime documentation",
+      "official engine and library documentation",
+      "upstream repositories",
+      "release histories",
+      "package registries",
+      "dependency and code indexes",
+      "distribution package catalogs",
+      "runtime and platform catalogs",
+      "archive and preservation histories",
+      "academic and technical literature",
+      "secondary ecosystem catalogs",
+      "database and managed-service documentation",
+      "product and application documentation"
+    ],
+    "package_ecosystems": [
+      "PyPI",
+      "npm",
+      "Maven Central",
+      "NuGet",
+      "crates.io",
+      "RubyGems",
+      "Packagist",
+      "Go modules",
+      "Swift package sources",
+      "pub.dev",
+      "Hex",
+      "CRAN",
+      "Julia General",
+      "Hackage",
+      "CPAN",
+      "LuaRocks",
+      "Clojars",
+      "C and C++ distribution catalogs"
+    ],
+    "unresolved_policy": "An unresolved candidate remains an explicit release, profile, backend, library, operation, diagnostic or historical research obligation. It is never silently promoted to execution credit and never silently discarded."
+  },
+  "material_surface_accounting": {
+    "method": {
+      "lower": "One credited facility per ecosystem containing at least one positive executable or materially distinct host/library fact.",
+      "expected": "Rounded geometric mean of the positive-ecosystem count and distinct positive ecosystem/backend pairs.",
+      "conservative": "One credited facility per distinct positive ecosystem/backend pair. Equality with the language-root count is coincidental and does not convert every root into an executable facility."
+    },
+    "bounds": {
+      "lower": 543,
+      "expected": 746,
+      "conservative": 1025
+    },
+    "non_mutually_exclusive_pair_counts": {
+      "binding_or_host_surface": 146,
+      "language_runtime_and_runtime_implementation": 150,
+      "standalone_engine": 11,
+      "standard_library": 157,
+      "third_party_language_library": 129
+    },
+    "non_language_positive_ecosystems": {
+      "cli_server_application_and_security_product": 90,
+      "database_data_search_and_managed_service": 51
+    },
+    "normative_only_candidate_facts": 72
+  },
+  "release_profile_forecast": {
+    "method": "The declared-cutoff census has not yet adjudicated every exact stable release line or persistent profile. The forecast therefore scales the provisional index's measured release/profile density across the material-surface bounds instead of inventing exact releases.",
+    "planning_density_basis": {
+      "facility_count": 77,
+      "current_stable_release_line_representatives": 128,
+      "current_profiles": 224,
+      "historical_profiles": {
+        "lower": 1614,
+        "expected": 1994,
+        "conservative": 2294
+      }
+    },
+    "cases": {
+      "lower": {
+        "modeled_facility_or_material_surface_count": 543,
+        "current_stable_release_line_representatives": 903,
+        "current_profiles": 1580,
+        "historical_profiles": 11382
+      },
+      "expected": {
+        "modeled_facility_or_material_surface_count": 746,
+        "current_stable_release_line_representatives": 1240,
+        "current_profiles": 2170,
+        "historical_profiles": 19318
+      },
+      "conservative": {
+        "modeled_facility_or_material_surface_count": 1025,
+        "current_stable_release_line_representatives": 1704,
+        "current_profiles": 2982,
+        "historical_profiles": 30537
+      }
+    }
+  },
+  "evidence_pack_v2_storage_forecast": {
+    "method": "Each material-surface bound scales the corresponding certified factorized Evidence Pack canary-policy case from the 77-facility planning baseline. Diagnostic, performance, qualification, targeted-expansion and general-growth allowances are preserved. The result is a planning envelope, not an exact corpus byte count.",
+    "soft_stop_bytes": 8000000000,
+    "hard_cap_bytes": 10000000000,
+    "planning_basis": {
+      "facility_count": 77,
+      "lower": {
+        "logical_executions": 34399590,
+        "physical_attempts": 34399590,
+        "bytes_before_growth_allowances": 1141172470,
+        "diagnostic_growth_rate": "0.00",
+        "performance_growth_rate": "0.00",
+        "fixed_targeted_and_general_reserve_bytes": 0,
+        "qualification_corpus_bytes": 3318573,
+        "object_count": 71760
+      },
+      "expected": {
+        "logical_executions": 81072015,
+        "physical_attempts": 81477376,
+        "bytes_before_growth_allowances": 2690434005,
+        "diagnostic_growth_rate": "0.04",
+        "performance_growth_rate": "0.01",
+        "fixed_targeted_and_general_reserve_bytes": 0,
+        "qualification_corpus_bytes": 3318573,
+        "object_count": 168896
+      },
+      "conservative": {
+        "logical_executions": 150292902,
+        "physical_attempts": 157807548,
+        "bytes_before_growth_allowances": 5003427721,
+        "diagnostic_growth_rate": "0.10",
+        "performance_growth_rate": "0.05",
+        "fixed_targeted_and_general_reserve_bytes": 1000000000,
+        "qualification_corpus_bytes": 3318573,
+        "object_count": 312832
+      }
+    },
+    "cases": {
+      "lower": {
+        "surface_count_basis": 543,
+        "scale_from_planning_index": "7.051948051948",
+        "logical_executions": 242584122,
+        "physical_attempts": 242584122,
+        "bytes_before_growth_allowances": 8047488977,
+        "diagnostic_growth_allowance_bytes": 0,
+        "performance_growth_allowance_bytes": 0,
+        "fixed_targeted_and_general_reserve_bytes": 0,
+        "qualification_corpus_bytes": 3318573,
+        "total_retained_bytes": 8050807550,
+        "soft_stop_delta_bytes": -50807550,
+        "hard_cap_delta_bytes": 1949192450,
+        "object_count": 506048,
+        "class_a_requests": 506048,
+        "class_b_requests": 506048,
+        "exceeds_soft_stop": true,
+        "exceeds_hard_cap": false
+      },
+      "expected": {
+        "surface_count_basis": 746,
+        "scale_from_planning_index": "9.688311688312",
+        "logical_executions": 785450951,
+        "physical_attempts": 789378214,
+        "bytes_before_growth_allowances": 26065763217,
+        "diagnostic_growth_allowance_bytes": 1042630529,
+        "performance_growth_allowance_bytes": 260657632,
+        "fixed_targeted_and_general_reserve_bytes": 0,
+        "qualification_corpus_bytes": 3318573,
+        "total_retained_bytes": 27372369951,
+        "soft_stop_delta_bytes": -19372369951,
+        "hard_cap_delta_bytes": -17372369951,
+        "object_count": 1636318,
+        "class_a_requests": 1636318,
+        "class_b_requests": 1636318,
+        "exceeds_soft_stop": true,
+        "exceeds_hard_cap": true
+      },
+      "conservative": {
+        "surface_count_basis": 1025,
+        "scale_from_planning_index": "13.311688311688",
+        "logical_executions": 2000652267,
+        "physical_attempts": 2100684892,
+        "bytes_before_growth_allowances": 66604070312,
+        "diagnostic_growth_allowance_bytes": 6660407031,
+        "performance_growth_allowance_bytes": 3330203516,
+        "fixed_targeted_and_general_reserve_bytes": 1000000000,
+        "qualification_corpus_bytes": 3318573,
+        "total_retained_bytes": 77597999432,
+        "soft_stop_delta_bytes": -69597999432,
+        "hard_cap_delta_bytes": -67597999432,
+        "object_count": 4164323,
+        "class_a_requests": 4164323,
+        "class_b_requests": 4164323,
+        "exceeds_soft_stop": true,
+        "exceeds_hard_cap": true
+      }
+    }
+  },
+  "local_million_qualification_retention": {
+    "source_report_sha256": "0d8129d8038abc65406bb78ba4ed2ede4641f4d5c8e208c56efea8fb3001464e",
+    "source_revision": "eed59d2f8f8d29da378993676995e021077cdc4d",
+    "campaign_manifest_sha256": "854c71503e9e4d8dffe97b3645e71c2bd2c1314c0a9287adfff5f3d602a2536b",
+    "logical_executions": 1000000,
+    "physical_attempts": 1016750,
+    "infrastructure_failure_attempts": 16750,
+    "planned_interruptions": 192,
+    "partitions": 64,
+    "result_shards": 4003,
+    "content_addressed_objects": 2514,
+    "deferred_control_objects": 65,
+    "projected_remote_upper_bound_bytes": 40552303,
+    "cloud_publication_performed": false,
+    "cloud_requests": {
+      "class_a": 0,
+      "class_b": 0,
+      "list": 0
+    },
+    "combined_if_later_published": {
+      "lower": {
+        "retained_bytes": 8091359853,
+        "soft_stop_delta_bytes": -91359853,
+        "hard_cap_delta_bytes": 1908640147
+      },
+      "expected": {
+        "retained_bytes": 27412922254,
+        "soft_stop_delta_bytes": -19412922254,
+        "hard_cap_delta_bytes": -17412922254
+      },
+      "conservative": {
+        "retained_bytes": 77638551735,
+        "soft_stop_delta_bytes": -69638551735,
+        "hard_cap_delta_bytes": -67638551735
+      }
+    }
+  },
+  "adversarial_audit": {
+    "status": "closed-at-declared-cutoff-with-explicit-unresolved-obligations",
+    "major_unexplained_category_holes": 0,
+    "late_additions": [
+      "H2 database regex functions",
+      "Kusto regex language and query functions",
+      "Cloud Spanner RE2 SQL functions",
+      "Solr Lucene RegExp surface",
+      "Solr Java Pattern surface",
+      "Traefik Go-regexp routing surface",
+      "Fluentd Onigmo parser surface",
+      "Graylog pipeline regex surface"
+    ],
+    "late_duplicate_or_nonregex_corrections": [
+      "Apache Hive was already represented and received no duplicate credit",
+      "Apache Cassandra was already represented and received no duplicate credit",
+      "Redis Search wildcard and fuzzy syntax was not promoted to regex credit"
+    ],
+    "remaining_uncertainty": "The 3,071 unresolved facts are visible follow-on adjudication obligations, predominantly exact release histories, backend identity, persistent profile materiality, diagnostics, historical implementations and thin-wrapper transparency. They do not represent undispositioned catalog leads or an unexplained missing major category."
+  },
+  "capacity_gate": {
+    "outcome": "fail-closed",
+    "publication_admission": "blocked",
+    "program_owner_decision_required": true,
+    "paid_capacity_authorized": false,
+    "scientific_scope_reduction_authorized": false,
+    "reason": "The lower forecast exceeds the 8,000,000,000-byte operational soft stop, while the expected and conservative forecasts exceed the 10,000,000,000-byte absolute hard cap. No material publication or automatic scope reduction is permitted."
+  },
+  "report_digest_sha256": "bd41377d3f5ce5bed5f141dcc09b1050f2b7a85a523519fc6b6bf158de919a2f"
+}

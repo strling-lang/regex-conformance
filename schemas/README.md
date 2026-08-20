@@ -75,6 +75,13 @@ evidence class, and owner-only second-stage trimming menu. It cannot claim an
 evidence mutation, derived-data authority, Docker or credential use, paid
 capacity, material R2 publication, or an implemented scope/retention change.
 
+`json/known-universe-census-forecast.schema.json` defines the compact
+declared-cutoff discovery ledger projection and revised factorized-evidence
+capacity gate. It binds the external exhaustion-ledger hashes and counts,
+keeps roots distinct from executable facilities, preserves unresolved
+obligations, verifies bounded release/profile and storage arithmetic, and
+cannot authorize publication, paid capacity, or scientific-scope reduction.
+
 `json/evidence-pack-v2-manifest.schema.json` defines the production pack's
 immutable manifest and independent content-addressed object catalog.
 `json/attempt-diagnostic-envelope-v2.schema.json` defines the complete ordered

@@ -1,5 +1,10 @@
 # Full known-universe index and raw-corpus forecast
 
+> This document records the initial provisional planning forecast. Its
+> 77-facility breadth and storage conclusions have been superseded by the
+> [declared-cutoff known-universe census](known-universe-census-2026-08-19.md).
+> The original report remains immutable as a historical planning basis.
+
 The initial full-universe forecast reaches a mandatory Program Owner decision gate. The strongest
 defensible planning index at the 2026-08-15 cutoff contains 93 dispositioned
 candidates: 77 executable facilities, seven aliases, five normative-only
