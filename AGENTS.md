@@ -2,10 +2,12 @@
 
 ## Repository ownership
 
-This repository owns empirical regex execution, operational profiles and
+This repository owns the versioned canonical taxonomy of researched regex
+semantic concepts, empirical regex execution, operational profiles and
 vectors, observations, evidence qualification, compatibility analysis, and
-certification. It does not create normative regex knowledge or product-language
-semantics. `research-intelligence` owns research synthesis;
+certification. Normative standards remain authoritative for their own claims,
+and this repository does not own product-language semantics.
+`research-intelligence` owns general research synthesis;
 `strling` owns language contracts and compiler implementation; `website` owns
 public presentation; `.github` owns organization defaults.
 
@@ -28,6 +30,8 @@ historical tracker identifier.
   for system boundaries.
 - Use [docs/architecture/generated-artifacts.md](docs/architecture/generated-artifacts.md)
   for canonical, generated, and external artifact relationships.
+- Use [semantic-corpus/README.md](semantic-corpus/README.md) for feature
+  identity, source-claim, snapshot, and projection authority.
 - Read the nearest nested `AGENTS.md` before changing schemas, campaigns,
   Control Plane, or verifier code.
 

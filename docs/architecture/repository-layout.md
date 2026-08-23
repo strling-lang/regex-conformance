@@ -9,9 +9,10 @@ current lightweight Git boundary.
 
 | Root | Repository-owned responsibility | Certified lineage | Must not contain |
 | --- | --- | --- | --- |
+| `semantic-corpus/` | Versioned canonical regex semantic concepts, exact source claims, candidate dispositions, manifestations, variants, and typed interactions | Semantic Feature Authority | Empirical support claims, product-language contracts, or mutable unversioned taxonomy |
 | `schemas/` | Versioned schema families, identity projections, canonicalization declarations, and reference fixtures | Canonical Identity & Schema System; all artifact models | Runtime artifacts, raw observations, or mutable `latest` certification inputs |
 | `registries/` | Discovery definitions, Universe Registry records, systems/components/releases, profile families, concrete profiles, and namespace metadata | Universe Discovery; Universe Registry; Release & Profile Modeling | Undispositioned scope hidden from snapshots or flattened engine-only profiles |
-| `ontology/` | Immutable Knowledge snapshot references, qualified crosswalks, executable projections, and expectation references | Feature/Ontology Integration | A competing semantic taxonomy or copied external IDs presented as local ownership |
+| `ontology/` | Immutable executable projections and crosswalks from exact semantic-corpus snapshots | Feature/Ontology Integration | Silent changes to canonical meaning or projections without an exact source snapshot |
 | `vectors/` | Probe families, executable vectors, operations, observation requests, and vector provenance | Conformance Vector Model | Universal truth inferred from engine-specific behavior |
 | `applicability/` | Pure applicability rules, capability references, relevant-dimension expansion, and exclusion explanations | Applicability & Matrix Semantics | Opaque filters or unaccounted exclusions |
 | `protocol/` | Language-neutral adapter request/response, capability, encoding, native-index, error, diagnostic, and evolution contracts | Adapter Protocol; Result & Evidence Model | Conformance judgments embedded in adapter transport |
@@ -37,7 +38,7 @@ credentials.
 ## Dependency direction
 
 1. `schemas/` constrains every versioned machine-operational artifact.
-2. `registries/`, `ontology/`, `vectors/`, `applicability/`,
+2. `semantic-corpus/`, `registries/`, `ontology/`, `vectors/`, `applicability/`,
    `environments/`, and `protocol/` provide frozen definitions.
 3. `matrix/` compiles logical scope; `control-plane/`, `adapters/`, and
    `scheduler/` plan and execute physical work without changing that scope.
@@ -68,8 +69,9 @@ The following are intentionally absent from the scaffold:
 - local machine inventory, transfers, assignments, checkpoints, processes,
   spools, telemetry, and ETA state, which are non-canonical Control Plane state;
 - Notion task/decision/risk records; and
-- canonical normative concepts, researched claims, and primary-source evidence
-  owned by the Regex Knowledge Program.
+- copies of normative specifications or independent product-language contracts;
+  the tracked semantic corpus stores researched claim bindings, not ownership
+  of an upstream standard's authority.
 
 ## Traceability checklist
 
@@ -78,8 +80,8 @@ The following are intentionally absent from the scaffold:
   repository root or documented external authority.
 - [x] Registry profiles remain component graphs with behaviorally relevant
   facets.
-- [x] Ontology projections remain immutable consumers of qualified Knowledge
-  references.
+- [x] Ontology projections remain immutable consumers of exact semantic-corpus
+  snapshots.
 - [x] Probes, expectations, logical executions, physical attempts, observations,
   infrastructure failures, and findings remain distinct.
 - [x] Environment recipes are separated from realized instances.

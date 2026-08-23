@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/regex-semantic-vector-requirements.schema.json",
+  "title": "Regex Semantic Vector Requirements",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "cutoff_date", "semantic_projection_id", "semantic_projection_digest_sha256", "minimum_rule", "reuse_audit", "requirements", "counts", "requirements_digest_sha256"],
+  "properties": {
+    "schema_version": {"const": "regex-semantic-vector-requirements-v1"},
+    "cutoff_date": {"const": "2026-08-22"},
+    "semantic_projection_id": {"type": "string", "minLength": 1},
+    "semantic_projection_digest_sha256": {"$ref": "#/$defs/digest"},
+    "minimum_rule": {"type": "string", "minLength": 1},
+    "reuse_audit": {
+      "type": "object", "additionalProperties": false,
+      "required": ["existing_vector_files_inspected", "existing_vector_file_count", "reusable_vector_count", "reason"],
+      "properties": {"existing_vector_files_inspected": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}}, "existing_vector_file_count": {"$ref": "#/$defs/nonnegativeInteger"}, "reusable_vector_count": {"const": 0}, "reason": {"type": "string", "minLength": 1}}
+    },
+    "requirements": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/requirement"}},
+    "counts": {"type": "object", "minProperties": 7, "additionalProperties": {"$ref": "#/$defs/nonnegativeInteger"}},
+    "requirements_digest_sha256": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "nonnegativeInteger": {"type": "integer", "minimum": 0},
+    "requirement": {
+      "type": "object", "additionalProperties": false,
+      "required": ["requirement_id", "feature_id", "obligation_id", "facet", "vector_role", "required_operation_ids", "required_attribution", "existing_vector_ids", "status"],
+      "properties": {
+        "requirement_id": {"type": "string", "pattern": "^vector-requirement\\."}, "feature_id": {"type": "string", "pattern": "^feature\\."}, "obligation_id": {"type": "string", "pattern": "^obligation\\."}, "facet": {"type": "string", "minLength": 1}, "vector_role": {"type": "string", "minLength": 1}, "required_operation_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^operation\\."}}, "required_attribution": {"type": "string", "minLength": 1}, "existing_vector_ids": {"type": "array", "maxItems": 0}, "status": {"const": "missing"}
+      }
+    }
+  }
+}

@@ -159,6 +159,136 @@ class ProductionPackTests(unittest.TestCase):
         with self.assertRaises(pack_v3.EvidencePackV3Error):
             pack_v3.strip_legacy_assigned_identities(invalid)
 
+    def test_routine_process_summary_reconstructs_and_commitment_verifies(self) -> None:
+        stdout = b'{"outcome":"match"}\n'
+        original = {
+            "canonical_authority": False,
+            "diagnostic": None,
+            "exit_code": 0,
+            "outcome": "completed",
+            "provider_plan": {
+                "canonical_authority": False,
+                "enforced_limits": ["stderr", "stdout", "wall-time"],
+                "launch_arguments": [],
+                "process_tree_containment": True,
+                "provider": "native",
+                "semantic_authority": False,
+            },
+            "semantic_authority": False,
+            "stderr_sha256": pack_v3.hashlib.sha256(b"").hexdigest(),
+            "stderr_total_bytes": 0,
+            "stdout_sha256": pack_v3.hashlib.sha256(stdout).hexdigest(),
+            "stdout_total_bytes": len(stdout),
+        }
+        removed = pack_v3.Counter()
+        commitment = pack_v3._RoutineProcessCommitment()
+        summary = pack_v3._retain_process_diagnostic(
+            original, removed, commitment
+        )
+        self.assertEqual(
+            pack_v3.reconstruct_routine_process_diagnostic(summary, stdout),
+            original,
+        )
+        pack_v3.verify_routine_process_stdout_commitment(
+            [original], commitment.value()
+        )
+        self.assertEqual(removed["routine_success_process_diagnostic_records"], 1)
+
+    def test_nonroutine_process_diagnostic_is_never_summarized(self) -> None:
+        value = {
+            "canonical_authority": False,
+            "diagnostic": {"message": "compile error"},
+            "exit_code": 2,
+            "outcome": "completed",
+            "provider_plan": {"provider": "native"},
+            "semantic_authority": False,
+            "stderr_sha256": "a" * 64,
+            "stderr_total_bytes": 13,
+            "stdout_sha256": "b" * 64,
+            "stdout_total_bytes": 1,
+        }
+        commitment = pack_v3._RoutineProcessCommitment()
+        self.assertEqual(
+            pack_v3._retain_process_diagnostic(value, pack_v3.Counter(), commitment),
+            value,
+        )
+        self.assertEqual(commitment.record_count, 0)
+
+        unknown = deepcopy(value)
+        unknown.update(
+            {
+                "diagnostic": None,
+                "exit_code": 0,
+                "stderr_sha256": pack_v3.hashlib.sha256(b"").hexdigest(),
+                "stderr_total_bytes": 0,
+                "unexpected_telemetry": {"must_survive": True},
+            }
+        )
+        self.assertEqual(
+            pack_v3._retain_process_diagnostic(
+                unknown, pack_v3.Counter(), commitment
+            ),
+            unknown,
+        )
+        self.assertEqual(commitment.record_count, 0)
+
+    def test_summary_without_commitment_fails_closed(self) -> None:
+        blocks = sample_blocks()
+        blocks[1] = pack_v3.RetainedBlock(
+            "diagnostics",
+            "diagnostic-facts",
+            0,
+            {"provider_plan": {"provider": "native"}, "routine_success": True},
+        )
+        with self.assertRaises(pack_v3.EvidencePackV3Error):
+            pack_v3.build_evidence_pack(
+                blocks,
+                campaign_manifest_sha256=CAMPAIGN_SHA,
+                counts={
+                    "logical_executions": 2,
+                    "observations": 2,
+                    "physical_attempts": 3,
+                },
+                canonical_input_derivation="fixture-compiler-v1",
+            )
+
+    def test_malformed_commitment_fails_closed(self) -> None:
+        blocks = sample_blocks()
+        blocks[1] = pack_v3.RetainedBlock(
+            "diagnostics",
+            "diagnostic-facts",
+            0,
+            {"provider_plan": {"provider": "native"}, "routine_success": True},
+        )
+        commitment = pack_v3._RoutineProcessCommitment()
+        commitment.add(
+            {
+                "stdout_sha256": "b" * 64,
+                "stdout_total_bytes": 1,
+            }
+        )
+        malformed = commitment.value()
+        malformed["unexpected"] = True
+        blocks.append(
+            pack_v3.RetainedBlock(
+                "diagnostics",
+                "routine-process-stdout-commitment",
+                0,
+                malformed,
+            )
+        )
+        with self.assertRaises(pack_v3.EvidencePackV3Error):
+            pack_v3.build_evidence_pack(
+                blocks,
+                campaign_manifest_sha256=CAMPAIGN_SHA,
+                counts={
+                    "logical_executions": 2,
+                    "observations": 2,
+                    "physical_attempts": 3,
+                },
+                canonical_input_derivation="fixture-compiler-v1",
+            )
+
 
 class CapacityCertificationTests(unittest.TestCase):
     def test_tracked_report_recomputes_and_clears_both_capacity_limits(self) -> None:
@@ -169,9 +299,9 @@ class CapacityCertificationTests(unittest.TestCase):
         )
         pack_v3.verify_certification_report(report)
         conservative = report["final_forecast"]["cases"]["conservative"]
-        self.assertEqual(conservative["total_retained_bytes"], 7_782_536_009)
-        self.assertEqual(conservative["soft_stop_delta_bytes"], 217_463_991)
-        self.assertEqual(conservative["hard_cap_delta_bytes"], 2_217_463_991)
+        self.assertEqual(conservative["total_retained_bytes"], 4_234_896_306)
+        self.assertEqual(conservative["soft_stop_delta_bytes"], 3_765_103_694)
+        self.assertEqual(conservative["hard_cap_delta_bytes"], 5_765_103_694)
 
     def test_forecast_verification_fails_closed_above_soft_stop(self) -> None:
         report = load(REPORT)

@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/regex-semantic-projection.schema.json",
+  "title": "Regex Semantic Executable Projection",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "cutoff_date", "semantic_snapshot_id", "semantic_corpus_digest_sha256", "projection_rule", "feature_revisions", "manifestations", "modifiers", "operations", "typed_interactions", "semantic_obligation_templates", "facet_taxonomy", "counts", "projection_digest_sha256", "projection_id"],
+  "properties": {
+    "schema_version": {"const": "regex-semantic-projection-v1"},
+    "cutoff_date": {"const": "2026-08-22"},
+    "semantic_snapshot_id": {"type": "string", "minLength": 1},
+    "semantic_corpus_digest_sha256": {"$ref": "#/$defs/digest"},
+    "projection_rule": {"type": "string", "minLength": 1},
+    "feature_revisions": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/featureRevision"}},
+    "manifestations": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "object", "minProperties": 6}},
+    "modifiers": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "object", "minProperties": 3}},
+    "operations": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "object", "minProperties": 3}},
+    "typed_interactions": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "object", "minProperties": 4}},
+    "semantic_obligation_templates": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/obligation"}},
+    "facet_taxonomy": {"type": "array", "minItems": 12, "maxItems": 12, "uniqueItems": true, "items": {"$ref": "#/$defs/facet"}},
+    "counts": {"type": "object", "minProperties": 7, "additionalProperties": {"$ref": "#/$defs/nonnegativeInteger"}},
+    "projection_digest_sha256": {"$ref": "#/$defs/digest"},
+    "projection_id": {"type": "string", "pattern": "^regex-semantic-projection-2026-08-22\\.sha256-[0-9a-f]{64}$"}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "nonnegativeInteger": {"type": "integer", "minimum": 0},
+    "stringArray": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "featureRevision": {
+      "type": "object", "additionalProperties": false,
+      "required": ["feature_id", "revision", "category", "feature_class", "semantic_definition_sha256", "supported_operation_ids"],
+      "properties": {"feature_id": {"type": "string", "pattern": "^feature\\."}, "revision": {"const": 1}, "category": {"type": "string", "minLength": 1}, "feature_class": {"type": "string", "minLength": 1}, "semantic_definition_sha256": {"$ref": "#/$defs/digest"}, "supported_operation_ids": {"$ref": "#/$defs/stringArray"}}
+    },
+    "obligation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["obligation_id", "feature_id", "facet", "case", "classification", "operation_ids", "applicability_predicate", "expected_observation_contract", "single_credit_rule"],
+      "properties": {
+        "obligation_id": {"type": "string", "pattern": "^obligation\\."}, "feature_id": {"type": "string", "pattern": "^feature\\."}, "facet": {"enum": ["syntax", "core-semantics", "search-iteration", "captures", "unicode-encoding", "options-state", "host-operation", "replacement", "errors", "resource-termination", "interaction", "differential"]}, "case": {"type": "string", "minLength": 1}, "classification": {"enum": ["mandatory", "conditional", "informative", "prohibited/not-applicable"]}, "operation_ids": {"$ref": "#/$defs/stringArray"}, "applicability_predicate": {"type": "object", "minProperties": 2}, "expected_observation_contract": {"type": "object", "additionalProperties": false, "required": ["unsupported", "supported", "unknown"], "properties": {"unsupported": {"type": "string", "minLength": 1}, "supported": {"type": "string", "minLength": 1}, "unknown": {"type": "string", "minLength": 1}}}, "single_credit_rule": {"type": "string", "minLength": 1}
+      }
+    },
+    "facet": {"type": "object", "additionalProperties": false, "required": ["facet", "cases", "allowed_classifications"], "properties": {"facet": {"type": "string", "minLength": 1}, "cases": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}, "allowed_classifications": {"type": "array", "minItems": 4, "maxItems": 4, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}}}
+  }
+}

@@ -24,6 +24,13 @@ certified. Environment smoke observations establish executable identity only;
 no repository observation is a conformance result yet, and no production
 evidence campaign is authorized merely by this certification.
 
+The declared-cutoff semantic corpus contains 251 canonical features at digest
+`350bfea4c3da07b3426d885aa8ff645ac55539bbb1294a2ea35dd5319541d6c7`.
+Its complete bounded execution forecast uses the anomaly-complete,
+routine-process-summary Evidence Pack v3 contract and passes the 8 GB
+soft stop at 7,452,076,843 conservative retained bytes. The 9,506 attributable
+production vectors remain to be authored; no full conformance campaign has run.
+
 Program planning, dependencies, decisions, risks, and certification gates are
 maintained in the canonical [STRling Regex Conformance Program][program-hub].
 The controlling constitutional text is the [Regex Conformance Foundation
@@ -33,8 +40,9 @@ Specification][foundation].
 
 Each durable fact class has one primary home:
 
-- The STRling Regex Knowledge Program owns canonical researched knowledge,
-  terminology, feature ontology, and normative primary-source evidence.
+- `semantic-corpus/` in this repository owns the versioned canonical taxonomy
+  of researched regex semantic concepts and its source-claim bindings.
+  Normative standards remain authoritative for their own specifications.
 - This repository owns lightweight machine-operational definitions and source,
   including registries, profiles, vectors, applicability, environment recipes,
   campaign definitions, schemas, and compact generated reports.
@@ -48,6 +56,11 @@ Each durable fact class has one primary home:
   canonical scientific evidence.
 - Notion owns the development program: work status, dependencies, decisions,
   risks, assumptions, and certification gates.
+
+Regex Conformance consumes an immutable identified projection of the semantic
+corpus. Empirical observations cannot redefine a feature, and public products
+must LEFT JOIN evidence onto the complete corpus so missing evidence remains
+Unknown/Not Tested rather than silently becoming Unsupported.
 
 Normative expectations, empirical probes, physical attempts, observations,
 derived findings, and inferences remain distinct. Infrastructure failure is
@@ -75,6 +88,8 @@ runtime orchestration, verification, and analytical projections retain explicit
 boundaries before implementation-language choices are made. See the
 [repository layout and architecture traceability map](docs/architecture/repository-layout.md).
 Each module contains a local README defining what may and may not live there.
+The declared-cutoff semantic baseline is documented in
+[`semantic-corpus/README.md`](semantic-corpus/README.md).
 
 Large runtime artifacts, realized environments, raw observations, physical-run
 records, diagnostics, execution spools, and warehouse datasets remain outside

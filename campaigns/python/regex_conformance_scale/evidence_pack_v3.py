@@ -1,12 +1,12 @@
 """Compact, deterministic Evidence Pack v3 production representation.
 
-The format keeps semantic observations, physical attempts, diagnostics,
-performance samples, and provenance as independent facts.  It removes two
-non-empirical features of the previous container contract for future packs:
-randomly assigned observation/attempt labels and the byte identity of the old
-container layout.  Stable identities are derived from immutable execution
-coordinates, while content-addressed blocks and the root manifest provide the
-new integrity boundary.
+The format keeps semantic observations, physical attempts, exceptional
+diagnostics, performance samples, and provenance as independent facts. It
+removes random labels, the byte identity of the old container layout, and
+repeated routine-success process fields. Stable identities are derived from
+immutable execution coordinates, while content-addressed blocks, an ordered
+routine-stdout commitment, and the root manifest provide the new integrity
+boundary.
 """
 
 from __future__ import annotations
@@ -56,6 +56,22 @@ AUTHORIZED_OMISSIONS = (
     "legacy-random-observation-uuidv7-labels",
     "legacy-random-physical-attempt-uuidv7-labels",
     "legacy-v2-container-path-and-object-identities",
+    "routine-success-process-repeated-fields-and-direct-stdout-facts",
+)
+
+_ROUTINE_PROCESS_FIELDS = frozenset(
+    {
+        "canonical_authority",
+        "diagnostic",
+        "exit_code",
+        "outcome",
+        "provider_plan",
+        "semantic_authority",
+        "stderr_sha256",
+        "stderr_total_bytes",
+        "stdout_sha256",
+        "stdout_total_bytes",
+    }
 )
 
 _RCID_HASH = re.compile(r"^(rcid:v1:[^:]+:h:[^:]+:)([0-9a-f]{64})$")
@@ -534,6 +550,137 @@ def _compact_partition_descriptor(
     }
 
 
+def _apply_diagnostic_retention(
+    row: Mapping[str, Any],
+    removed: Counter[str],
+    commitment: "_RoutineProcessCommitment",
+) -> dict[str, Any]:
+    """Summarize only clean process successes; retain every exception richly."""
+
+    result = deepcopy(dict(row))
+    availability = result.get("availability_codes")
+    envelopes = result.get("expanded_envelopes")
+    if not isinstance(availability, bytes) or not availability:
+        raise _fail("diagnostic availability grid is absent or malformed")
+    if not isinstance(envelopes, list):
+        raise _fail("expanded diagnostic envelope index is malformed")
+    result["isolated_process_diagnostics"] = [
+        _retain_process_diagnostic(item, removed, commitment)
+        for item in result["isolated_process_diagnostics"]
+    ]
+    result["provenance_process_diagnostic"] = _retain_process_diagnostic(
+        result["provenance_process_diagnostic"], removed, commitment
+    )
+    return result
+
+
+@dataclass
+class _RoutineProcessCommitment:
+    hasher: Any = None
+    record_count: int = 0
+    total_stdout_bytes: int = 0
+
+    def __post_init__(self) -> None:
+        self.hasher = hashlib.sha256()
+
+    def add(self, diagnostic: Mapping[str, Any]) -> None:
+        encoded = canonical_bytes(
+            {
+                "stdout_sha256": diagnostic["stdout_sha256"],
+                "stdout_total_bytes": diagnostic["stdout_total_bytes"],
+            }
+        )
+        self.hasher.update(_uvarint(len(encoded)))
+        self.hasher.update(encoded)
+        self.record_count += 1
+        self.total_stdout_bytes += diagnostic["stdout_total_bytes"]
+
+    def value(self) -> dict[str, Any]:
+        if self.record_count < 1:
+            raise _fail("routine process commitment has no records")
+        return {
+            "algorithm": "sha256-length-prefixed-rfc8785-record-stream-v1",
+            "ordered_traversal": "manifest-digest/fact-ordinal/member-order/process-order",
+            "record_count": self.record_count,
+            "sha256": self.hasher.hexdigest(),
+            "total_stdout_bytes": self.total_stdout_bytes,
+        }
+
+
+def reconstruct_routine_process_diagnostic(
+    summary: Mapping[str, Any], canonical_stdout: bytes
+) -> dict[str, Any]:
+    """Restore a summary when canonical stdout is independently regenerated."""
+
+    if set(summary) != {"provider_plan", "routine_success"}:
+        raise _fail("routine process summary fields differ")
+    if summary["routine_success"] is not True or not isinstance(
+        summary["provider_plan"], dict
+    ):
+        raise _fail("routine process summary is malformed")
+    if not isinstance(canonical_stdout, bytes) or not canonical_stdout:
+        raise _fail("routine process canonical stdout is absent")
+    return {
+        "canonical_authority": False,
+        "diagnostic": None,
+        "exit_code": 0,
+        "outcome": "completed",
+        "provider_plan": deepcopy(summary["provider_plan"]),
+        "semantic_authority": False,
+        "stderr_sha256": hashlib.sha256(b"").hexdigest(),
+        "stderr_total_bytes": 0,
+        "stdout_sha256": hashlib.sha256(canonical_stdout).hexdigest(),
+        "stdout_total_bytes": len(canonical_stdout),
+    }
+
+
+def verify_routine_process_stdout_commitment(
+    diagnostics: Iterable[Mapping[str, Any]], expected: Mapping[str, Any]
+) -> None:
+    """Verify the exact ordered commitment over reconstructed routine records."""
+
+    actual = _RoutineProcessCommitment()
+    for diagnostic in diagnostics:
+        actual.add(diagnostic)
+    if actual.value() != dict(expected):
+        raise _fail("routine process stdout commitment differs")
+
+
+def _retain_process_diagnostic(
+    value: Mapping[str, Any],
+    removed: Counter[str],
+    commitment: _RoutineProcessCommitment,
+) -> dict[str, Any]:
+    """Keep rich process diagnostics; summarize only an ordinary clean success."""
+
+    diagnostic = deepcopy(dict(value))
+    routine = (
+        set(diagnostic) == _ROUTINE_PROCESS_FIELDS
+        and diagnostic.get("outcome") == "completed"
+        and diagnostic.get("exit_code") == 0
+        and diagnostic.get("diagnostic") is None
+        and diagnostic.get("stderr_total_bytes") == 0
+        and diagnostic.get("stderr_sha256") == hashlib.sha256(b"").hexdigest()
+        and diagnostic.get("canonical_authority") is False
+        and diagnostic.get("semantic_authority") is False
+        and isinstance(diagnostic.get("stdout_total_bytes"), int)
+        and diagnostic["stdout_total_bytes"] > 0
+        and isinstance(diagnostic.get("stdout_sha256"), str)
+        and _HEX64.fullmatch(diagnostic["stdout_sha256"])
+        and isinstance(diagnostic.get("provider_plan"), dict)
+    )
+    if not routine:
+        return diagnostic
+    commitment.add(diagnostic)
+    removed["routine_success_process_diagnostic_records"] += 1
+    removed["routine_success_process_stdout_digest_bytes"] += 32
+    removed["routine_success_process_stdout_total_bytes_values"] += 1
+    return {
+        "provider_plan": diagnostic["provider_plan"],
+        "routine_success": True,
+    }
+
+
 @dataclass(frozen=True)
 class RetainedBlock:
     evidence_class: str
@@ -577,6 +724,66 @@ def _validate_counts(counts: Mapping[str, Any]) -> None:
         raise _fail("physical attempt count cannot be below logical executions")
 
 
+def _routine_summary_count(value: Any) -> int:
+    if isinstance(value, dict):
+        if "routine_success" in value:
+            if (
+                set(value) != {"provider_plan", "routine_success"}
+                or value.get("routine_success") is not True
+                or not isinstance(value.get("provider_plan"), dict)
+            ):
+                raise _fail("routine process summary is malformed")
+            return 1
+        return sum(_routine_summary_count(item) for item in value.values())
+    if isinstance(value, list):
+        return sum(_routine_summary_count(item) for item in value)
+    return 0
+
+
+def _validate_retained_block_contract(blocks: Sequence[RetainedBlock]) -> None:
+    summary_count = sum(
+        _routine_summary_count(block.value)
+        for block in blocks
+        if block.role == "diagnostic-facts"
+    )
+    commitments = [
+        block
+        for block in blocks
+        if block.role == "routine-process-stdout-commitment"
+    ]
+    if summary_count == 0:
+        if commitments:
+            raise _fail("routine process commitment has no summarized records")
+        return
+    if len(commitments) != 1:
+        raise _fail("summarized routine process diagnostics require one commitment")
+    value = commitments[0].value
+    if not isinstance(value, dict) or set(value) != {
+        "algorithm",
+        "ordered_traversal",
+        "record_count",
+        "sha256",
+        "total_stdout_bytes",
+    }:
+        raise _fail("routine process commitment fields differ")
+    if value.get("record_count") != summary_count:
+        raise _fail("routine process commitment count differs")
+    if value.get("algorithm") != "sha256-length-prefixed-rfc8785-record-stream-v1":
+        raise _fail("routine process commitment algorithm differs")
+    if not isinstance(value.get("sha256"), str) or not _HEX64.fullmatch(
+        value["sha256"]
+    ):
+        raise _fail("routine process commitment digest differs")
+    if (
+        value.get("ordered_traversal")
+        != "manifest-digest/fact-ordinal/member-order/process-order"
+        or isinstance(value.get("total_stdout_bytes"), bool)
+        or not isinstance(value.get("total_stdout_bytes"), int)
+        or value["total_stdout_bytes"] < summary_count
+    ):
+        raise _fail("routine process commitment accounting differs")
+
+
 def build_evidence_pack(
     blocks: Iterable[RetainedBlock],
     *,
@@ -593,6 +800,7 @@ def build_evidence_pack(
     )
     if not ordered:
         raise _fail("pack contains no retained evidence blocks")
+    _validate_retained_block_contract(ordered)
     coordinates = [(item.evidence_class, item.role, item.lookup_group) for item in ordered]
     if len(coordinates) != len(set(coordinates)):
         raise _fail("pack block coordinate is duplicated")
@@ -624,7 +832,7 @@ def build_evidence_pack(
             "independent_observations_preserved": True,
             "independent_physical_attempts_preserved": True,
             "raw_empirical_evidence": True,
-            "retained_fact_contract": "semantic-diagnostic-performance-provenance-complete.v1",
+            "retained_fact_contract": "semantic-anomaly-complete-routine-process-summary.v2",
         },
         "blocks": descriptors,
         "counts": dict(counts),
@@ -632,6 +840,7 @@ def build_evidence_pack(
             "canonical_logical_inputs": canonical_input_derivation,
             "observation_identity": "sha256(campaign-manifest,partition,shard,logical-index)",
             "physical_attempt_identity": "sha256(campaign-manifest,partition,shard,logical-index,attempt-number)",
+            "routine_process_success": "constant-clean-fields-from-routine-marker.v1",
         },
         "format": {
             "compression": "xz-sha256-preset9",
@@ -720,6 +929,7 @@ def transcode_v2_staging(
     partitions: list[dict[str, Any]] = []
     removed: Counter[str] = Counter()
     retained_fact_counts: Counter[str] = Counter()
+    routine_process_commitment = _RoutineProcessCommitment()
     logical_count = physical_count = observation_count = 0
     verified_logical_segments = 0
     for ordinal, (manifest, descriptors, decoded) in enumerate(decoded_packs):
@@ -742,6 +952,13 @@ def transcode_v2_staging(
                 values, removed, local_cas_indexes
             )
             rows = transformed if isinstance(transformed, list) else [transformed]
+            if role == "diagnostic-facts":
+                rows = [
+                    _apply_diagnostic_retention(
+                        row, removed, routine_process_commitment
+                    )
+                    for row in rows
+                ]
             if role == "logical-facts":
                 template_keys = (
                     "base_logical_execution_id",
@@ -824,6 +1041,16 @@ def transcode_v2_staging(
             },
         )
     ]
+    if routine_process_commitment.record_count:
+        blocks.append(
+            RetainedBlock(
+                "diagnostics",
+                "routine-process-stdout-commitment",
+                0,
+                routine_process_commitment.value(),
+            )
+        )
+        retained_fact_counts["routine-process-stdout-commitment"] = 1
     cas_by_class: dict[str, list[Any]] = defaultdict(list)
     for item in global_cas:
         cas_by_class[item["evidence_class"]].append(item)
@@ -1119,6 +1346,10 @@ def verify_certification_report(report: Mapping[str, Any]) -> None:
         qualification_corpus_bytes=report["final_forecast"]["qualification_corpus_bytes"],
     )
     accounting = report["three_stage_accounting"]
+    if accounting["final_conservative_bytes"] != report["final_forecast"]["cases"][
+        "conservative"
+    ]["total_retained_bytes"]:
+        raise _fail("final conservative accounting differs from forecast")
     if accounting["starting_combined_conservative_bytes"] - accounting["lossless_redesigned_conservative_bytes"] != accounting["lossless_structural_savings_bytes"]:
         raise _fail("lossless savings accounting differs")
     if accounting["lossless_redesigned_conservative_bytes"] - accounting["final_conservative_bytes"] != accounting["deliberate_information_removal_savings_bytes"]:
@@ -1127,3 +1358,23 @@ def verify_certification_report(report: Mapping[str, Any]) -> None:
         raise _fail("total savings accounting differs")
     if tuple(report["retention_contract_change"]["no_longer_retained"]) != AUTHORIZED_OMISSIONS:
         raise _fail("certification omission list differs")
+    retention = report["retention_analysis"]
+    restored = retention["restored_contract_measurement"]
+    if sum(restored["bytes_by_evidence_class"].values()) != restored["retained_bytes"]:
+        raise _fail("restored-contract byte attribution does not close")
+    selected = retention["selected_contract"]
+    if (
+        restored["retained_bytes"] - measurement["retained_bytes"]
+        != selected["measured_million_savings_bytes"]
+    ):
+        raise _fail("selected million retention saving differs")
+    removed = report["retention_contract_change"][
+        "measured_million_information_no_longer_retained"
+    ]
+    if (
+        selected["routine_process_records_summarized"]
+        != removed["routine_success_process_diagnostic_records"]
+        or selected["routine_stdout_commitment_records"]
+        != removed["routine_success_process_diagnostic_records"]
+    ):
+        raise _fail("routine process commitment coverage differs")

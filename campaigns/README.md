@@ -44,8 +44,9 @@ reconciliation. See `docs/campaigns/million-qualification.md`.
 
 Future production campaigns use Compact Evidence Pack v3. It globally factors
 repeated values, derives observation and physical-attempt identities from
-immutable execution coordinates, preserves every independent empirical fact,
-and replaces only randomly assigned labels and legacy container-layout
-identity. The measured declared-cutoff conservative footprint, including the
-completed qualification packs and a 1 GB reserve, is 7,782,536,009 bytes. See
+immutable execution coordinates, preserves every semantic result and rich
+exception diagnostic, and summarizes only reconstructible routine clean process
+fields under an ordered commitment. The feature-complete conservative footprint,
+including completed qualification packs and a 1 GB reserve, is 7,452,076,843
+bytes. See
 `docs/campaigns/evidence-pack-v3.md`.

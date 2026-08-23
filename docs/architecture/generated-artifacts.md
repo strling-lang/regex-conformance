@@ -8,6 +8,8 @@ machine authority for exact fields and validation.
 ## Authority flow
 
 ```text
+primary sources → semantic-corpus snapshot → immutable ontology projection
+                                      ↓
 profile / vector / campaign / applicability / schema source
 → compiler or fixture materializer
 → compact tracked manifest, fixture, or report
@@ -47,6 +49,7 @@ diff. Fixtures are not production observations or published evidence.
 
 | Source family | Producer | Tracked product | Verification |
 | --- | --- | --- | --- |
+| Declared-cutoff semantic census, frozen profile bounds, and certified Evidence Pack v3 measurement | `tools/semantics/compile_semantic_baseline.py` | semantic-corpus snapshot, executable ontology projection, vector-requirement ledger, and `reports/scale/regex-semantic-denominator-forecast.json` | schema validation, candidate conservation, feature/relation integrity, twelve-facet obligation closure, deterministic bounded applicability expansion, independent denominator arithmetic, content digests, and fail-closed capacity gate |
 | First vertical-slice definition, profiles, vectors, applicability, schemas | `tools/campaigns/compile_vertical_slice.py` | `campaigns/compiled/first-vertical-slice.v1.json` | repository validation and campaign tests |
 | Small-scale qualification inputs | `tools/campaigns/compile_small_scale.py` | `campaigns/compiled/small-scale-qualification.v1.json`; `reports/small-scale/qualification-coverage.json` | compiler read-after-write checks and `test_small_scale_qualification.py` |
 | 100K qualification definition plus frozen small-scale basis | `tools/campaigns/compile_100k_qualification.py` | `campaigns/compiled/100k-qualification.v1.json`; `reports/scale/100k-qualification-design.json` | compiler verification and `test_100k_qualification_design.py` |
@@ -60,7 +63,7 @@ diff. Fixtures are not production observations or published evidence.
 | Declared-cutoff universe exhaustion ledger and factorized-evidence capacity reforecast | external read-only research ledger plus `tools/campaigns/verify_known_universe_census.py` | `reports/scale/known-universe-census-forecast.json` | exact external ledger hashes and row counts when supplied, catalog and candidate disposition closure, schema validation, canonical report identity, source bindings, material-surface bounds, release/profile projection, Evidence Pack scaling, byte/request arithmetic, and fail-closed capacity tests |
 | Factorized raw-evidence model and unchanged-denominator capacity gate | `tools/campaigns/compile_factorized_evidence_forecast.py` | `reports/scale/factorized-raw-evidence-forecast.json` | exact 807-member reconstruction, deterministic binary rebuild, identity/hash recomputation, corruption injection, bounded random lookup, schema validation, unchanged full-universe denominator arithmetic, and focused campaign tests |
 | Production Evidence Pack v2 and enriched capacity gate | `tools/campaigns/compile_evidence_pack_v2.py` | `reports/scale/evidence-pack-v2-certification.json` | exact 807-member reconstruction, two identical encodings, legacy identity/hash recomputation, corruption injection, bounded lookup, attempt/observation independence, expanded diagnostic/performance contracts, governed-canary forecast, schema validation, and focused publisher tests |
-| Compact Evidence Pack v3 and declared-cutoff capacity certification | `tools/campaigns/certify_compact_evidence.py` | `reports/scale/evidence-pack-v3-capacity-certification.json` | read-only million-corpus migration, exact retained-fact reconstruction, deterministic coordinate identities, corruption injection, bounded lookup, exact separation of lossless and retention-contract savings, schema validation, and fail-closed 8 GB/10 GB arithmetic |
+| Compact Evidence Pack v3 and declared-cutoff capacity certification | `tools/campaigns/certify_compact_evidence.py` | `reports/scale/evidence-pack-v3-capacity-certification.json` | read-only million-corpus migration, exact semantic and exception-fact reconstruction, deterministic routine-process reconstruction plus ordered stdout commitment, deterministic coordinate identities, corruption injection, bounded lookup, exact separation of lossless and retention-contract savings, schema validation, and fail-closed 8 GB/10 GB arithmetic |
 | Local million-scale publication preparation | `tools/campaigns/prepare_million_partition.py` and `tools/campaigns/finalize_million_local_artifacts.py` | external partition preparation records, staged content-addressed pack bytes, and an external local-readiness report | two identical encodings per partition, exact reconstruction, corruption detection, manifest-last staging, all-partition identity and interruption reconciliation, zero cloud requests, and capacity admission before later publication |
 
 Edit the source and run the listed producer; do not hand-maintain these outputs.

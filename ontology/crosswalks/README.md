@@ -1,4 +1,4 @@
 # Ontology Crosswalks
 
-Versioned qualified mappings between local executable artifacts and externally
-owned Knowledge identifiers belong here.
+Versioned qualified mappings between local executable artifacts, historical
+external identifiers, and canonical semantic-corpus identifiers belong here.

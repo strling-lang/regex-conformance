@@ -1,9 +1,9 @@
 # Ontology Projections
 
-Regex Conformance consumes exact, qualified snapshots from the Regex Knowledge
-Program and materializes immutable executable projections. It does not own or
+Regex Conformance materializes immutable executable projections from exact
+snapshots owned by `semantic-corpus/`. This directory does not redefine or
 duplicate the canonical semantic taxonomy.
 
-- `snapshots/` — exact owner-qualified source snapshot references
-- `crosswalks/` — durable local-to-external reference mappings
+- `snapshots/` — exact historical external and local source snapshot references
+- `crosswalks/` — durable local-to-snapshot reference mappings
 - `projections/` — content-derived executable feature/expectation projections

@@ -14,6 +14,7 @@
     "lossless_redesign_checkpoint",
     "six_figure_comparison",
     "report_digest_sha256",
+    "retention_analysis",
     "retention_contract_change",
     "schema_version",
     "source_bindings",
@@ -22,15 +23,17 @@
   "properties": {
     "schema_version": {"const": "evidence-pack-v3-capacity-certification.v1"},
     "report_digest_sha256": {"$ref": "#/$defs/digest"},
+    "retention_analysis": {"type": "object", "minProperties": 1},
     "classification": {"$ref": "#/$defs/booleanMap"},
     "source_bindings": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["completed_million_readiness_report_sha256", "known_universe_census_report_digest_sha256", "measurement_repository_sha", "million_campaign_manifest_sha256", "six_figure_evidence_manifest_sha256"],
+      "required": ["completed_million_readiness_report_sha256", "known_universe_census_report_digest_sha256", "measurement_repository_sha", "measurement_implementation_digest_sha256", "million_campaign_manifest_sha256", "six_figure_evidence_manifest_sha256"],
       "properties": {
         "completed_million_readiness_report_sha256": {"$ref": "#/$defs/digest"},
         "known_universe_census_report_digest_sha256": {"$ref": "#/$defs/digest"},
         "measurement_repository_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "measurement_implementation_digest_sha256": {"$ref": "#/$defs/digest"},
         "million_campaign_manifest_sha256": {"$ref": "#/$defs/digest"},
         "six_figure_evidence_manifest_sha256": {"$ref": "#/$defs/digest"}
       }
@@ -186,7 +189,7 @@
       "properties": {
         "capability_lost": {"$ref": "#/$defs/nonEmptyStringArray"},
         "measured_million_information_no_longer_retained": {"$ref": "#/$defs/nonNegativeIntegerMap"},
-        "no_longer_retained": {"type": "array", "minItems": 3, "maxItems": 3, "uniqueItems": true, "items": {"type": "string"}},
+        "no_longer_retained": {"type": "array", "minItems": 4, "maxItems": 4, "uniqueItems": true, "items": {"type": "string"}},
         "preserved": {"$ref": "#/$defs/nonEmptyStringArray"},
         "selection_rationale": {"type": "string", "minLength": 1}
       }

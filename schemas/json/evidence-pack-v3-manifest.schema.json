@@ -17,7 +17,7 @@
         "independent_observations_preserved": {"const": true},
         "independent_physical_attempts_preserved": {"const": true},
         "raw_empirical_evidence": {"const": true},
-        "retained_fact_contract": {"const": "semantic-diagnostic-performance-provenance-complete.v1"}
+        "retained_fact_contract": {"const": "semantic-anomaly-complete-routine-process-summary.v2"}
       }
     },
     "blocks": {
@@ -53,11 +53,12 @@
     "derivations": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["canonical_logical_inputs", "observation_identity", "physical_attempt_identity"],
+      "required": ["canonical_logical_inputs", "observation_identity", "physical_attempt_identity", "routine_process_success"],
       "properties": {
         "canonical_logical_inputs": {"type": "string", "minLength": 1},
         "observation_identity": {"const": "sha256(campaign-manifest,partition,shard,logical-index)"},
-        "physical_attempt_identity": {"const": "sha256(campaign-manifest,partition,shard,logical-index,attempt-number)"}
+        "physical_attempt_identity": {"const": "sha256(campaign-manifest,partition,shard,logical-index,attempt-number)"},
+        "routine_process_success": {"const": "constant-clean-fields-from-routine-marker.v1"}
       }
     },
     "format": {
@@ -79,10 +80,11 @@
       "prefixItems": [
         {"const": "legacy-random-observation-uuidv7-labels"},
         {"const": "legacy-random-physical-attempt-uuidv7-labels"},
-        {"const": "legacy-v2-container-path-and-object-identities"}
+        {"const": "legacy-v2-container-path-and-object-identities"},
+        {"const": "routine-success-process-repeated-fields-and-direct-stdout-facts"}
       ],
-      "minItems": 3,
-      "maxItems": 3
+      "minItems": 4,
+      "maxItems": 4
     },
     "source_binding": {
       "type": "object",

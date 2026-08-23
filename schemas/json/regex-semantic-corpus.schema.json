@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/regex-semantic-corpus.schema.json",
+  "title": "Regex Semantic Feature Corpus",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "cutoff_date", "status", "authority", "methodology", "sources", "features", "modifiers", "operations", "manifestations", "interactions", "candidates", "discovery_scans", "facility_family_reconciliations", "adversarial_audit", "counts", "candidate_disposition_counts", "corpus_digest_sha256", "snapshot_id"],
+  "properties": {
+    "schema_version": {"const": "regex-semantic-corpus-v1"},
+    "cutoff_date": {"const": "2026-08-22"},
+    "status": {"const": "frozen-declared-cutoff-baseline"},
+    "authority": {"$ref": "#/$defs/nonemptyObject"},
+    "methodology": {"$ref": "#/$defs/nonemptyObject"},
+    "sources": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/source"}},
+    "features": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/feature"}},
+    "modifiers": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/modifier"}},
+    "operations": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/operation"}},
+    "manifestations": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/manifestation"}},
+    "interactions": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/interaction"}},
+    "candidates": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/candidate"}},
+    "discovery_scans": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/nonemptyObject"}},
+    "facility_family_reconciliations": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/nonemptyObject"}},
+    "adversarial_audit": {"$ref": "#/$defs/nonemptyObject"},
+    "counts": {"$ref": "#/$defs/counts"},
+    "candidate_disposition_counts": {"type": "object", "minProperties": 14, "additionalProperties": {"$ref": "#/$defs/nonnegativeInteger"}},
+    "corpus_digest_sha256": {"$ref": "#/$defs/digest"},
+    "snapshot_id": {"type": "string", "pattern": "^regex-semantic-features-2026-08-22\\.sha256-[0-9a-f]{64}$"}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "nonnegativeInteger": {"type": "integer", "minimum": 0},
+    "nonemptyString": {"type": "string", "minLength": 1},
+    "stringArray": {"type": "array", "items": {"$ref": "#/$defs/nonemptyString"}, "uniqueItems": true},
+    "nonemptyObject": {"type": "object", "minProperties": 1},
+    "source": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source_id", "title", "url", "authority", "version_or_revision", "retrieved_on", "source_class", "normative", "scope"],
+      "properties": {
+        "source_id": {"$ref": "#/$defs/nonemptyString"}, "title": {"$ref": "#/$defs/nonemptyString"}, "url": {"$ref": "#/$defs/nonemptyString"}, "authority": {"$ref": "#/$defs/nonemptyString"}, "version_or_revision": {"$ref": "#/$defs/nonemptyString"}, "retrieved_on": {"const": "2026-08-22"}, "source_class": {"$ref": "#/$defs/nonemptyString"}, "normative": {"type": "boolean"}, "scope": {"$ref": "#/$defs/nonemptyString"}
+      }
+    },
+    "variant": {
+      "type": "object", "additionalProperties": false,
+      "required": ["variant_id", "name", "distinguishing_rule"],
+      "properties": {"variant_id": {"$ref": "#/$defs/nonemptyString"}, "name": {"$ref": "#/$defs/nonemptyString"}, "distinguishing_rule": {"$ref": "#/$defs/nonemptyString"}}
+    },
+    "relation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["relation_type", "target_id"],
+      "properties": {"relation_type": {"$ref": "#/$defs/nonemptyString"}, "target_id": {"$ref": "#/$defs/nonemptyString"}}
+    },
+    "feature": {
+      "type": "object", "additionalProperties": false,
+      "required": ["feature_id", "revision", "canonical_name", "aliases", "historical_names", "category", "feature_class", "semantic_definition", "prerequisite_feature_ids", "modifier_ids", "semantic_variants", "typed_relations", "manifestation_ids", "abstract_grammar_form", "supported_operation_ids", "capture_result_semantics", "replacement_implications", "unicode_encoding_implications", "option_state_dependencies", "diagnostic_error_semantics", "resource_termination_implications", "lifecycle", "normative_reference_ids", "implementation_reference_ids", "test_concepts", "unresolved_semantic_questions", "provenance"],
+      "properties": {
+        "feature_id": {"type": "string", "pattern": "^feature\\.[a-z0-9-]+$"}, "revision": {"const": 1}, "canonical_name": {"$ref": "#/$defs/nonemptyString"}, "aliases": {"$ref": "#/$defs/stringArray"}, "historical_names": {"$ref": "#/$defs/stringArray"}, "category": {"$ref": "#/$defs/nonemptyString"}, "feature_class": {"$ref": "#/$defs/nonemptyString"}, "semantic_definition": {"$ref": "#/$defs/nonemptyString"}, "prerequisite_feature_ids": {"$ref": "#/$defs/stringArray"}, "modifier_ids": {"$ref": "#/$defs/stringArray"}, "semantic_variants": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/variant"}}, "typed_relations": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/relation"}}, "manifestation_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/nonemptyString"}}, "abstract_grammar_form": {"type": ["string", "null"]}, "supported_operation_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/nonemptyString"}}, "capture_result_semantics": {"$ref": "#/$defs/nonemptyString"}, "replacement_implications": {"$ref": "#/$defs/nonemptyString"}, "unicode_encoding_implications": {"$ref": "#/$defs/nonemptyString"}, "option_state_dependencies": {"$ref": "#/$defs/stringArray"}, "diagnostic_error_semantics": {"$ref": "#/$defs/nonemptyString"}, "resource_termination_implications": {"$ref": "#/$defs/nonemptyString"}, "lifecycle": {"$ref": "#/$defs/nonemptyObject"}, "normative_reference_ids": {"$ref": "#/$defs/stringArray"}, "implementation_reference_ids": {"$ref": "#/$defs/stringArray"}, "test_concepts": {"$ref": "#/$defs/nonemptyObject"}, "unresolved_semantic_questions": {"$ref": "#/$defs/stringArray"}, "provenance": {"$ref": "#/$defs/nonemptyObject"}
+      }
+    },
+    "modifier": {"type": "object", "additionalProperties": false, "required": ["modifier_id", "name", "semantic_effect"], "properties": {"modifier_id": {"type": "string", "pattern": "^modifier\\."}, "name": {"$ref": "#/$defs/nonemptyString"}, "semantic_effect": {"$ref": "#/$defs/nonemptyString"}}},
+    "operation": {"type": "object", "additionalProperties": false, "required": ["operation_id", "name", "semantic_contract"], "properties": {"operation_id": {"type": "string", "pattern": "^operation\\."}, "name": {"$ref": "#/$defs/nonemptyString"}, "semantic_contract": {"$ref": "#/$defs/nonemptyString"}}},
+    "manifestation": {"type": "object", "additionalProperties": false, "required": ["manifestation_id", "source_id", "kind", "syntax_or_api_form", "semantic_feature_id", "identity_note"], "properties": {"manifestation_id": {"type": "string", "pattern": "^manifestation\\."}, "source_id": {"$ref": "#/$defs/nonemptyString"}, "kind": {"$ref": "#/$defs/nonemptyString"}, "syntax_or_api_form": {"$ref": "#/$defs/nonemptyString"}, "semantic_feature_id": {"type": "string", "pattern": "^feature\\."}, "identity_note": {"$ref": "#/$defs/nonemptyString"}}},
+    "interaction": {"type": "object", "additionalProperties": false, "required": ["interaction_id", "source_id", "target_id", "interaction_type"], "properties": {"interaction_id": {"type": "string", "pattern": "^interaction\\."}, "source_id": {"$ref": "#/$defs/nonemptyString"}, "target_id": {"$ref": "#/$defs/nonemptyString"}, "interaction_type": {"$ref": "#/$defs/nonemptyString"}}},
+    "candidate": {"type": "object", "required": ["candidate_id", "label", "disposition", "reason", "source_ids"], "properties": {"candidate_id": {"type": "string", "pattern": "^candidate\\."}, "label": {"$ref": "#/$defs/nonemptyString"}, "disposition": {"enum": ["canonical semantic feature", "canonical subfeature/semantic variant", "syntax manifestation of an existing feature", "alias/synonym", "modifier/option rather than independent feature", "host operation rather than independent feature", "interaction/composition rather than independent feature", "result/capture/replacement semantic facet", "diagnostic/resource behavior", "historical-only capability", "duplicate", "not actually regex", "out of scope with reason", "unresolved"]}, "reason": {"$ref": "#/$defs/nonemptyString"}, "source_ids": {"$ref": "#/$defs/stringArray"}, "canonical_feature_id": {"type": "string"}, "canonical_modifier_id": {"type": "string"}, "canonical_operation_id": {"type": "string"}, "canonical_interaction_id": {"type": "string"}}, "additionalProperties": false},
+    "counts": {"type": "object", "additionalProperties": {"$ref": "#/$defs/nonnegativeInteger"}, "minProperties": 13}
+  }
+}

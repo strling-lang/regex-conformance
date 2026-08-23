@@ -23,8 +23,9 @@ Every future pack retains or deterministically reconstructs:
   interruption;
 - exact match, capture, capture-history, span, replacement, split, native-error,
   and operation results;
-- emitted diagnostic payloads and their truncation, redaction, timeout,
-  containment, and attribution facts;
+- emitted and exceptional diagnostic payloads and their truncation, redaction,
+  timeout, containment, and attribution facts; routine clean process envelopes
+  are represented by a success marker plus an ordered stdout-fact commitment;
 - raw performance and resource values;
 - profile, release, backend, adapter, runtime, environment, vector, campaign,
   partition, and shard provenance;
@@ -121,56 +122,70 @@ by 45,028,414,206 bytes. A retention-contract decision was therefore required.
 
 ## Minimum retained-information change
 
-The future production contract no longer stores exactly three kinds of
+The future production contract no longer stores exactly four kinds of
 information:
 
 1. randomly assigned UUIDv7 labels for observations;
 2. randomly assigned UUIDv7 labels for physical attempts; and
 3. paths, manifest facts, and object hashes whose only meaning is the byte
-   layout of a hypothetical Evidence Pack v2 container.
+   layout of a hypothetical Evidence Pack v2 container; and
+4. repeated fields in a routine clean process envelope: completed outcome,
+   exit code zero, null diagnostic, empty stderr digest/count, false authority
+   flags, and directly stored per-process stdout digest/count.
 
 The measured million pack drops 1,000,000 observation labels, 1,016,750
-attempt labels, and 64 old-container manifest facts. It does **not** drop any
-execution, observation, attempt, semantic result, diagnostic, performance
-sample, provenance relationship, anomaly, retry, interruption, release,
-profile, vector, backend, facility, feature, historical line, or platform
-canary.
+attempt labels, 64 old-container manifest facts, and the repeated fields from
+42,473 routine clean process records. It does **not** drop any execution,
+observation, attempt, semantic result, performance sample, provenance
+relationship, anomaly, retry, interruption, release, profile, vector, backend,
+facility, feature, historical line, platform canary, or non-routine diagnostic.
 
 The capability loss is precise: a future v3 pack cannot reproduce the random
-UUID strings or the old v2 byte layout. Stable coordinate-derived identities
-replace the labels, and v3 block/root identities replace the old container
-identity. Existing v2 evidence remains immutable and exactly decodable.
+UUID strings or the old v2 byte layout. A particular routine process stdout
+digest or length is not directly retained. A success marker restores the
+constant clean-envelope fields; independently regenerating canonical stdout can
+restore the omitted per-process fields, and one ordered whole-pack SHA-256
+commitment, record count, and aggregate byte count verify the complete
+regenerated stdout stream.
+Stable coordinate-derived identities replace the random labels, and v3
+block/root identities replace the old container identity. Existing v2 evidence
+remains immutable and exactly decodable.
 
 | Change | Measured million saving | Conservative forecast saving | Capability lost |
 | --- | ---: | ---: | --- |
 | Replace assigned observation/attempt UUIDv7 labels with derived identities and adopt v3 container identity | 21,742,894 | 47,245,878,197 | Random label strings and hypothetical v2 container-byte reproduction only |
+| Summarize routine clean process envelopes; preserve one ordered stdout commitment | 1,493,103 from the restored v3 measurement | 7,107,004,686 in the feature-complete forecast | Direct per-process lookup of a routine stdout digest/count; independent regeneration is required to restore it |
 
-This is the minimum measured change that preserves the entire scientific
-evidence surface. Removing diagnostics, performance samples, historical
-vectors, platform canaries, releases, profiles, features, or facilities would
-discard empirical or reference information and was rejected.
+The routine-process rule was selected only after a less consequential
+availability-grid candidate was measured. That candidate reduced the million
+pack to 2,534,691 bytes but left the feature-complete conservative forecast at
+12,966,651,733 bytes, so it was insufficient. Removing diagnostics,
+performance samples, attempts, semantic results, historical vectors, platform
+canaries, releases, profiles, features, or facilities was rejected.
 
 ## Final capacity forecast
 
-The production implementation measures 2,869,225 bytes for the million corpus,
-or 2.869225000 bytes per logical execution and 2.821958446 bytes per physical
-attempt, across 86 objects including the manifest. The conservative forecast
+The production implementation measures 1,376,122 bytes for the million corpus,
+or 1.376122000 bytes per logical execution and 1.353451685 bytes per physical
+attempt, across 87 objects including the manifest. The conservative forecast
 includes the completed qualification packs, 10% diagnostic growth, 5%
 performance growth, and a 1,000,000,000-byte targeted/general reserve.
 
 The deterministic measured-pack manifest is
-`4d30175f192785bdf7025c5c06ec0453af579c83d84d5e0dcc934f368e16079a`;
+`08f0ccc30a02ebaaca82259ca28940d1c6702508a84b1d3bdc7780c8e0dabcce`;
 its content digest is
-`4ce51b2d4bc03b2e0e401c75cb5595f7b2e1e9b5cdc8799b0b8eae0322c664bf`.
+`209825c04cf89afc3344b7ca1f594c0741aebda7cd4255fb21409c1552556971`.
 
 | Case | Logical executions | Physical attempts | Objects / Class A / Class B | Retained bytes | Soft-stop headroom | Hard-cap headroom |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| Lower | 242,584,122 | 242,584,122 | 21,005 | 716,223,535 | 7,283,776,465 | 9,283,776,465 |
-| Expected | 785,450,951 | 789,378,214 | 67,703 | 2,375,268,821 | 5,624,731,179 | 7,624,731,179 |
-| Conservative | 2,000,652,267 | 2,100,684,892 | 172,193 | **7,782,536,009** | **217,463,991** | **2,217,463,991** |
+| Lower | 242,584,122 | 242,584,122 | 21,005 | 359,989,652 | 7,640,010,348 | 9,640,010,348 |
+| Expected | 785,450,951 | 789,378,214 | 67,703 | 1,158,107,579 | 6,841,892,421 | 8,841,892,421 |
+| Conservative | 2,000,652,267 | 2,100,684,892 | 172,193 | **4,234,896,306** | **3,765,103,694** | **5,765,103,694** |
 
-Normal LIST requests are zero. The conservative reserve below the soft stop is
-narrow, so every campaign still requires exact pre-publication admission and
+Normal LIST requests are zero. The semantic-feature-complete denominator is
+larger than the older declared-cutoff denominator in the table: its current
+conservative forecast is 7,452,076,843 bytes with 547,923,157 bytes below the
+soft stop. Every campaign still requires exact pre-publication admission and
 must fail closed before the 8 GB operational stop or 10 GB absolute cap. This
 certification authorizes neither execution nor publication.
 

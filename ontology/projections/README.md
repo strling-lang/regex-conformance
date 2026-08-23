@@ -1,4 +1,4 @@
 # Executable Ontology Projections
 
-Content-derived feature, interaction, manifestation, and expectation projections
-from exact Knowledge snapshots belong here.
+Content-derived feature, interaction, manifestation, and semantic-obligation
+projections from exact `semantic-corpus/` snapshots belong here.

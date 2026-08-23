@@ -8,6 +8,12 @@ not become independently hand-maintained truth.
 logical-execution set and proves operational category coverage without making
 normative, semantic, or conformance claims.
 
+`scale/regex-semantic-denominator-forecast.json` is the deterministic bounded
+profile × feature × semantic obligation × operation denominator and Compact
+Evidence Pack v3 forecast bound to the frozen semantic snapshot. It carries the
+restored 14,559,081,529-byte baseline, candidate-retention accounting, and the
+selected 7,452,076,843-byte conservative capacity result.
+
 The generated small-scale fault-classification report is recomputed from the closed deliberate-fault matrix. It distinguishes target terminal observations from adapter, worker, network, and storage attempts without assigning normative authority.
 
 The generated small-scale restart-resume qualification report is recomputed from the closed governed-boundary matrix. It governs continue, retry, committed, and quarantine decisions while remaining operational and non-authoritative.

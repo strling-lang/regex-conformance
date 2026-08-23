@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/regex-semantic-denominator.schema.json",
+  "title": "Regex Semantic Conformance Denominator and Evidence Pack v3 Forecast",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "cutoff_date", "classification", "source_bindings", "denominator_contract", "profile_bounds_and_allocations", "coordinate_units_per_profile_by_archetype", "coordinate_units_by_archetype_and_facet", "unweighted_applicable_coordinate_units_by_facet", "unweighted_applicable_coordinate_units_by_feature_category", "semantic_obligation_template_counts", "obligation_denominator_bounds", "logical_execution_denominator", "physical_attempt_denominator", "vector_requirements", "compact_evidence_pack_v3", "comparison_to_prior_feature_denominator", "exact_next_dependency", "public_product_readiness", "report_digest_sha256"],
+  "properties": {
+    "schema_version": {"const": "regex-semantic-denominator-v1"},
+    "cutoff_date": {"const": "2026-08-22"},
+    "classification": {"$ref": "#/$defs/object"},
+    "source_bindings": {"$ref": "#/$defs/object"},
+    "denominator_contract": {"const": "profile × feature × semantic obligation × operation"},
+    "profile_bounds_and_allocations": {"$ref": "#/$defs/cases"},
+    "coordinate_units_per_profile_by_archetype": {"$ref": "#/$defs/countMap"},
+    "coordinate_units_by_archetype_and_facet": {"$ref": "#/$defs/object"},
+    "unweighted_applicable_coordinate_units_by_facet": {"$ref": "#/$defs/countMap"},
+    "unweighted_applicable_coordinate_units_by_feature_category": {"$ref": "#/$defs/countMap"},
+    "semantic_obligation_template_counts": {"$ref": "#/$defs/countMap"},
+    "obligation_denominator_bounds": {"$ref": "#/$defs/cases"},
+    "logical_execution_denominator": {"$ref": "#/$defs/cases"},
+    "physical_attempt_denominator": {"$ref": "#/$defs/cases"},
+    "vector_requirements": {"$ref": "#/$defs/countMap"},
+    "compact_evidence_pack_v3": {"$ref": "#/$defs/capacity"},
+    "comparison_to_prior_feature_denominator": {"$ref": "#/$defs/cases"},
+    "exact_next_dependency": {"type": "string", "minLength": 1},
+    "public_product_readiness": {"$ref": "#/$defs/object"},
+    "report_digest_sha256": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "nonnegativeInteger": {"type": "integer", "minimum": 0},
+    "integer": {"type": "integer"},
+    "object": {"type": "object", "minProperties": 1},
+    "countMap": {"type": "object", "minProperties": 1, "additionalProperties": {"$ref": "#/$defs/nonnegativeInteger"}},
+    "cases": {"type": "object", "additionalProperties": false, "required": ["lower", "expected", "conservative"], "properties": {"lower": {"$ref": "#/$defs/object"}, "expected": {"$ref": "#/$defs/object"}, "conservative": {"$ref": "#/$defs/object"}}},
+    "capacity": {
+      "type": "object", "additionalProperties": false,
+      "required": ["restored_baseline", "measurement", "qualification_corpus_bytes", "forecast_cases", "soft_stop_bytes", "hard_cap_bytes", "capacity_status", "conservative_soft_stop_overage_bytes", "conservative_hard_cap_overage_bytes", "stop_rule_applied", "retention_optimization"],
+      "properties": {
+        "restored_baseline": {"$ref": "#/$defs/object"}, "measurement": {"$ref": "#/$defs/object"}, "qualification_corpus_bytes": {"$ref": "#/$defs/nonnegativeInteger"}, "forecast_cases": {"$ref": "#/$defs/cases"}, "soft_stop_bytes": {"const": 8000000000}, "hard_cap_bytes": {"const": 10000000000}, "capacity_status": {"enum": ["PASS", "BLOCKED"]}, "conservative_soft_stop_overage_bytes": {"$ref": "#/$defs/nonnegativeInteger"}, "conservative_hard_cap_overage_bytes": {"$ref": "#/$defs/nonnegativeInteger"}, "stop_rule_applied": {"type": "boolean"}, "retention_optimization": {"$ref": "#/$defs/object"}
+      }
+    }
+  }
+}

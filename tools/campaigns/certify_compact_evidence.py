@@ -5,6 +5,8 @@ from __future__ import annotations
 
 import argparse
 from copy import deepcopy
+from decimal import Decimal
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -48,8 +50,8 @@ MILLION_V2_CLASSES = {
 }
 MILLION_V3_CLASSES = {
     "canonical_inputs": 4_536,
-    "diagnostics": 1_893_888,
-    "manifests_integrity": 38_945,
+    "diagnostics": 400_224,
+    "manifests_integrity": 39_506,
     "performance_resource_samples": 69_836,
     "physical_attempt_facts": 67_816,
     "profile_environment_release_provenance": 85_420,
@@ -76,6 +78,23 @@ DECLARED_CUTOFF_CASES = {
 QUALIFICATION_CORPUS_BYTES = 28_313_839
 
 
+def measurement_implementation_digest() -> str:
+    paths = (
+        ROOT / "campaigns" / "python" / "regex_conformance_scale" / "evidence_pack_v3.py",
+        ROOT / "schemas" / "json" / "evidence-pack-v3-manifest.schema.json",
+        ROOT / "schemas" / "json" / "evidence-pack-v3-capacity-certification.schema.json",
+        Path(__file__).resolve(),
+    )
+    model = [
+        {
+            "path": path.relative_to(ROOT).as_posix(),
+            "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+        }
+        for path in paths
+    ]
+    return hashlib.sha256(canonical_bytes(model)).hexdigest()
+
+
 def build_report() -> dict:
     final_forecast = build_capacity_forecast(
         MILLION_V3_CLASSES,
@@ -84,6 +103,11 @@ def build_report() -> dict:
         measured_physical_attempts=1_016_750,
         qualification_corpus_bytes=QUALIFICATION_CORPUS_BYTES,
     )
+    starting_conservative = 77_638_551_735
+    lossless_conservative = 55_028_414_206
+    final_conservative = final_forecast["conservative"]["total_retained_bytes"]
+    deliberate_savings = lossless_conservative - final_conservative
+    total_savings = starting_conservative - final_conservative
     report = {
         "byte_cost_model": {
             "compressed_unique_object_bytes": 31_700_416,
@@ -143,25 +167,26 @@ def build_report() -> dict:
         },
         "future_contract_measurement": {
             "bytes_by_evidence_class": MILLION_V3_CLASSES,
-            "bytes_per_logical_execution": "2.869225000",
-            "bytes_per_physical_attempt": "2.821958446",
+            "bytes_per_logical_execution": "1.376122000",
+            "bytes_per_physical_attempt": "1.353451685",
             "campaign_manifest_sha256": CAMPAIGN_MANIFEST_SHA256,
             "corruption_detected": True,
             "deterministic_second_encoding_identical": True,
             "logical_executions": 1_000_000,
-            "manifest_sha256": "4d30175f192785bdf7025c5c06ec0453af579c83d84d5e0dcc934f368e16079a",
-            "maximum_compressed_block_bytes": 126_616,
+            "manifest_sha256": "08f0ccc30a02ebaaca82259ca28940d1c6702508a84b1d3bdc7780c8e0dabcce",
+            "maximum_compressed_block_bytes": 44_124,
             "maximum_object_reads_per_lookup": 3,
-            "object_count_including_manifest": 86,
+            "object_count_including_manifest": 87,
             "observations": 1_000_000,
-            "pack_digest_sha256": "4ce51b2d4bc03b2e0e401c75cb5595f7b2e1e9b5cdc8799b0b8eae0322c664bf",
+            "pack_digest_sha256": "209825c04cf89afc3344b7ca1f594c0741aebda7cd4255fb21409c1552556971",
             "physical_attempts": 1_016_750,
-            "retained_bytes": 2_869_225,
+            "retained_bytes": 1_376_122,
             "retained_fact_counts": {
                 "diagnostic-facts": 4_070,
                 "observation-facts": 4_070,
                 "performance-resource-facts": 4_070,
                 "physical-attempt-facts": 4_070,
+                "routine-process-stdout-commitment": 1,
             },
             "source_v2_bytes": 36_643_494,
             "verified_canonical_logical_segments": 4_003,
@@ -218,50 +243,104 @@ def build_report() -> dict:
             "physical_attempts": 100_500,
         },
         "report_digest_sha256": "",
+        "retention_analysis": {
+            "restored_contract_measurement": {
+                "bytes_by_evidence_class": {
+                    "canonical_inputs": 4_536,
+                    "diagnostics": 1_893_888,
+                    "manifests_integrity": 38_945,
+                    "performance_resource_samples": 69_836,
+                    "physical_attempt_facts": 67_816,
+                    "profile_environment_release_provenance": 85_420,
+                    "semantic_results": 686_588,
+                    "shared_dictionary_cas": 22_196,
+                },
+                "logical_executions": 1_000_000,
+                "physical_attempts": 1_016_750,
+                "retained_bytes": 2_869_225,
+            },
+            "measured_counterfactuals": {
+                "reconstructible_routine_availability_only": {
+                    "bytes_by_evidence_class": {
+                        "canonical_inputs": 4_536,
+                        "diagnostics": 1_558_664,
+                        "manifests_integrity": 38_991,
+                        "performance_resource_samples": 69_836,
+                        "physical_attempt_facts": 67_816,
+                        "profile_environment_release_provenance": 86_064,
+                        "semantic_results": 686_588,
+                        "shared_dictionary_cas": 22_196,
+                    },
+                    "retained_bytes": 2_534_691,
+                    "selected": False,
+                    "selection_reason": "Insufficient by itself: the feature-complete conservative forecast remained 12,966,651,733 bytes.",
+                }
+            },
+            "selected_contract": {
+                "measured_million_savings_bytes": 1_493_103,
+                "retention_contract": "semantic-anomaly-complete-routine-process-summary.v2",
+                "routine_process_records_summarized": 42_473,
+                "routine_stdout_commitment_records": 42_473,
+                "selection_reason": "This was the first coherent conditional rule that cleared the 8 GB soft stop while retaining every semantic result and every non-routine process diagnostic.",
+            },
+        },
         "retention_contract_change": {
             "capability_lost": [
                 "Future packs cannot reproduce the randomly generated UUIDv7 labels formerly assigned to observations and physical attempts; coordinate-derived content identities replace them.",
                 "Future packs cannot reproduce the byte layout, member paths, or object hashes of a hypothetical Evidence Pack v2 container; Evidence Pack v3 content and Merkle-style block identities are authoritative.",
+                "A routine clean process stdout digest or byte count is no longer individually retained; independently regenerating canonical stdout can restore those fields and one ordered whole-pack commitment, record count, and total byte count can verify the complete regenerated stream.",
             ],
             "measured_million_information_no_longer_retained": {
                 "legacy_v2_manifest_facts": 64,
                 "observation_uuidv7_labels": 1_000_000,
                 "physical_attempt_uuidv7_labels": 1_016_750,
+                "routine_success_process_diagnostic_records": 42_473,
+                "routine_success_process_stdout_digest_bytes": 1_359_136,
+                "routine_success_process_stdout_total_bytes_values": 42_473,
             },
             "no_longer_retained": [
                 "legacy-random-observation-uuidv7-labels",
                 "legacy-random-physical-attempt-uuidv7-labels",
                 "legacy-v2-container-path-and-object-identities",
+                "routine-success-process-repeated-fields-and-direct-stdout-facts",
             ],
             "preserved": [
                 "every governed facility, profile, release, backend, feature, and vector identity",
                 "every credited logical execution and independent semantic observation fact",
                 "every physical attempt, attempt number, retry, infrastructure failure, and interruption",
                 "every exact semantic result, match, capture, replacement, split, and native error",
-                "every diagnostic and performance/resource value",
+                "every explicit or exceptional diagnostic and every performance/resource value",
+                "an ordered whole-pack SHA-256 commitment, record count, and total bytes for summarized routine process stdout facts",
                 "exact environment, adapter, runtime, release, profile, vector, shard, and campaign provenance",
                 "anomaly, discrepancy, replication, validity, trust, and transition relationships",
                 "content integrity, corruption detection, and independently verifiable reconstruction",
             ],
-            "selection_rationale": "The omitted labels are randomly assigned bookkeeping values with no independent empirical content; the same independently executed facts receive stable coordinate-derived identities. The omitted v2 container identity describes an obsolete serialization rather than a regex observation. Removing any semantic, diagnostic, performance, provenance, historical, platform-canary, profile, release, facility, or feature fact was therefore rejected as a higher scientific loss.",
+            "selection_rationale": "The omitted labels are randomly assigned bookkeeping values with no independent empirical content; the same independently executed facts receive stable coordinate-derived identities. The omitted v2 container identity describes an obsolete serialization rather than a regex observation. For routine clean processes only, constant success fields are reconstructed from an explicit marker; direct per-process stdout digest/length telemetry is replaced by an ordered whole-pack commitment. Independently regenerated canonical stdout can be verified against that commitment. All non-routine process diagnostics remain exact. Removing semantic results, captures, errors, performance samples, provenance, historical or platform scope, profiles, releases, facilities, features, or diagnostic exceptions was rejected as a higher scientific loss.",
         },
         "schema_version": REPORT_SCHEMA,
         "source_bindings": {
             "completed_million_readiness_report_sha256": "0d8123593951df2c6c9d6c21e1f4f3c96128f8712440203626be5641fda0d5f3",
             "known_universe_census_report_digest_sha256": "bd41377deca1b39f253090c4daf4e1d06400cf92d8c7657dbdc31e84c01c8bde",
             "measurement_repository_sha": "8f2a878cde30bf69e0c187a763227d50e30e84fd",
+            "measurement_implementation_digest_sha256": measurement_implementation_digest(),
             "million_campaign_manifest_sha256": CAMPAIGN_MANIFEST_SHA256,
             "six_figure_evidence_manifest_sha256": "a2d8d1c460d7822bc2212df41d41842e02202961caad7bc17ca1b68204ae07fa",
         },
         "three_stage_accounting": {
-            "deliberate_information_removal_savings_bytes": 47_245_878_197,
-            "final_conservative_bytes": 7_782_536_009,
-            "lossless_redesigned_conservative_bytes": 55_028_414_206,
+            "deliberate_information_removal_savings_bytes": deliberate_savings,
+            "final_conservative_bytes": final_conservative,
+            "lossless_redesigned_conservative_bytes": lossless_conservative,
             "lossless_structural_savings_bytes": 22_610_137_529,
             "lossless_structural_savings_percent": "29.122307183",
-            "starting_combined_conservative_bytes": 77_638_551_735,
-            "total_savings_bytes": 69_856_015_726,
-            "total_savings_percent": "89.975938712",
+            "starting_combined_conservative_bytes": starting_conservative,
+            "total_savings_bytes": total_savings,
+            "total_savings_percent": str(
+                (
+                    Decimal(total_savings)
+                    * Decimal(100)
+                    / Decimal(starting_conservative)
+                ).quantize(Decimal("0.000000001"))
+            ),
         },
     }
     report["report_digest_sha256"] = report_digest(report)
