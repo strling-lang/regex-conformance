@@ -166,6 +166,14 @@ authority. Typed models additionally enforce metric-name uniqueness,
 cross-field bounds, RFC 8785 determinism, secret rejection, and append-only
 sample identity.
 
+`json/sustained-operating-envelope.schema.json` defines the tracked multi-day
+qualification policy, external predecessor-linked measurement checkpoints, and
+deterministically derived report. Typed validation additionally enforces one
+logical execution across recovery attempts, exact cumulative counters,
+required portable resource coverage, explicit unavailable temperature
+telemetry, stability and overhead arithmetic, and report equality with the
+complete checkpoint chain.
+
 `json/vertical-slice-selection.schema.json` defines the governed vertical-slice archetype
 crosswalk. It requires three in-scope root surfaces spanning standalone,
 host/runtime, and database/embedded APIs; requires native-build,

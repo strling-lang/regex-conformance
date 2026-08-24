@@ -98,6 +98,9 @@ here only when the architecture assigns them to repository authority.
 Certified Coverage Shards additionally emit compact generated Lab and
 Compatibility projections through the append-only checkpoint protocol under
 `downstream/`; an execution shard by itself is never a synchronization signal.
+The source contract for resumable multi-day operating-envelope qualification is
+also installed. Its checkpoints and report remain external operational state,
+and the contract itself does not claim that the qualification has run.
 
 ## Bootstrap schema and identity checks
 

@@ -19,7 +19,7 @@ current lightweight Git boundary.
 | `adapters/` | Thin runtime adapters and adapter conformance fixtures | Adapter Protocol; Distributed Runner & Security | Environment acquisition, scheduling policy, or trusted-evidence decisions |
 | `environments/` | Reproducible recipes, acquisition policies, provider contracts, and verification definitions | Environment & Provenance; Control Plane Architecture | Realized environments, downloaded toolchains, images, or mutable cache state |
 | `matrix/` | Deterministic compilation of exact applicable logical execution coordinates and exclusion ledgers | Applicability & Matrix Semantics; Scheduler Design | Physical attempts or scheduler-local assignments |
-| `control-plane/` | Provider-neutral machine, resource, environment, cache, state, event, CLI/API, and containment services | Control Plane Architecture | Canonical evidence or provider-specific policy disguised as a common guarantee |
+| `control-plane/` | Provider-neutral machine, resource, environment, cache, state, event, CLI/API, containment, and operating-envelope qualification services | Control Plane Architecture | Canonical evidence or provider-specific policy disguised as a common guarantee |
 | `scheduler/` | Deterministic sharding, capability-aware placement, checkpoints, retries, and resumability logic | Scheduler, Sharding & Resumability | Overwriting attempts or treating assignments as scientific evidence |
 | `campaigns/` | Campaign definitions, frozen manifest inputs, and compact campaign metadata | Scheduler Design; Validation & Certification | Large result shards, raw diagnostics, or local checkpoints |
 | `verifier/` | Structural, provenance, result, evidence-integrity, reconciliation, and discrepancy verification source | Result & Evidence Model; Validation & Certification | Mutation of published observations or normative claim ownership |
@@ -71,7 +71,8 @@ The following are intentionally absent from the scaffold:
 - Parquet partitions and large warehouse datasets, which live in analytical
   storage and remain regenerable;
 - local machine inventory, transfers, assignments, checkpoints, processes,
-  spools, telemetry, and ETA state, which are non-canonical Control Plane state;
+  spools, telemetry, sustained operating-envelope checkpoints/reports, and ETA
+  state, which are non-canonical Control Plane state;
 - Notion task/decision/risk records; and
 - copies of normative specifications or independent product-language contracts;
   the tracked semantic corpus stores researched claim bindings, not ownership

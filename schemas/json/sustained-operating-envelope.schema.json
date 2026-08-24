@@ -1,0 +1,377 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://strling.dev/regex-conformance/schemas/sustained-operating-envelope.v1.schema.json",
+  "title": "Sustained Operating-Envelope Qualification",
+  "oneOf": [
+    { "$ref": "#/$defs/plan" },
+    { "$ref": "#/$defs/checkpoint" },
+    { "$ref": "#/$defs/report" }
+  ],
+  "$defs": {
+    "safeInteger": { "type": "integer", "minimum": 0, "maximum": 9007199254740991 },
+    "positiveInteger": { "type": "integer", "minimum": 1, "maximum": 9007199254740991 },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "token": { "type": "string", "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$" },
+    "operationalId": {
+      "type": "string",
+      "pattern": "^opid:v1:[a-z][a-z0-9]*(?:-[a-z0-9]+)*:u7:[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+      "maxLength": 512
+    },
+    "classification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "canonical_authority",
+        "normative_authority",
+        "operational_qualification_only",
+        "semantic_authority",
+        "target_behavior"
+      ],
+      "properties": {
+        "canonical_authority": { "const": false },
+        "normative_authority": { "const": false },
+        "operational_qualification_only": { "const": true },
+        "semantic_authority": { "const": false },
+        "target_behavior": { "const": false }
+      }
+    },
+    "measurementPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["measurement", "required", "unit"],
+      "properties": {
+        "measurement": { "$ref": "#/$defs/token" },
+        "required": { "type": "boolean" },
+        "unit": { "enum": ["basis_points", "bytes", "millidegrees_celsius"] }
+      }
+    },
+    "sourceBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\).+$"
+        },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "measurementSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "diagnostic",
+        "last",
+        "maximum",
+        "measurement",
+        "minimum",
+        "sample_count",
+        "status",
+        "unit"
+      ],
+      "properties": {
+        "diagnostic": { "oneOf": [{ "type": "null" }, { "type": "string", "minLength": 1, "maxLength": 512 }] },
+        "last": { "oneOf": [{ "$ref": "#/$defs/safeInteger" }, { "type": "null" }] },
+        "maximum": { "oneOf": [{ "$ref": "#/$defs/safeInteger" }, { "type": "null" }] },
+        "measurement": { "$ref": "#/$defs/token" },
+        "minimum": { "oneOf": [{ "$ref": "#/$defs/safeInteger" }, { "type": "null" }] },
+        "sample_count": { "$ref": "#/$defs/safeInteger" },
+        "status": { "enum": ["observed", "unavailable"] },
+        "unit": { "enum": ["basis_points", "bytes", "millidegrees_celsius"] }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "status": { "const": "observed" } }, "required": ["status"] },
+          "then": {
+            "properties": {
+              "diagnostic": { "type": "null" },
+              "last": { "$ref": "#/$defs/safeInteger" },
+              "maximum": { "$ref": "#/$defs/safeInteger" },
+              "minimum": { "$ref": "#/$defs/safeInteger" },
+              "sample_count": { "$ref": "#/$defs/positiveInteger" }
+            }
+          },
+          "else": {
+            "properties": {
+              "diagnostic": { "type": "string", "minLength": 1, "maxLength": 512 },
+              "last": { "type": "null" },
+              "maximum": { "type": "null" },
+              "minimum": { "type": "null" },
+              "sample_count": { "const": 0 }
+            }
+          }
+        }
+      ]
+    },
+    "window": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["completed_work_count", "duration_ms", "measurement_summaries", "sampling_overhead_ms"],
+      "properties": {
+        "completed_work_count": { "$ref": "#/$defs/safeInteger" },
+        "duration_ms": { "$ref": "#/$defs/positiveInteger" },
+        "measurement_summaries": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 64,
+          "items": { "$ref": "#/$defs/measurementSummary" }
+        },
+        "sampling_overhead_ms": { "$ref": "#/$defs/safeInteger" }
+      }
+    },
+    "counters": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "completed_work_count",
+        "containment_failure_count",
+        "duplicate_completion_count",
+        "integrity_failure_count",
+        "interruption_count",
+        "logical_completion_count",
+        "post_recovery_duration_ms",
+        "resource_floor_breach_count",
+        "sampler_overhead_ms",
+        "stability_duration_ms",
+        "stability_window_count",
+        "successful_resume_count"
+      ],
+      "properties": {
+        "completed_work_count": { "$ref": "#/$defs/safeInteger" },
+        "containment_failure_count": { "$ref": "#/$defs/safeInteger" },
+        "duplicate_completion_count": { "$ref": "#/$defs/safeInteger" },
+        "integrity_failure_count": { "$ref": "#/$defs/safeInteger" },
+        "interruption_count": { "$ref": "#/$defs/safeInteger" },
+        "logical_completion_count": { "type": "integer", "minimum": 0, "maximum": 1 },
+        "post_recovery_duration_ms": { "$ref": "#/$defs/safeInteger" },
+        "resource_floor_breach_count": { "$ref": "#/$defs/safeInteger" },
+        "sampler_overhead_ms": { "$ref": "#/$defs/safeInteger" },
+        "stability_duration_ms": { "$ref": "#/$defs/safeInteger" },
+        "stability_window_count": { "$ref": "#/$defs/safeInteger" },
+        "successful_resume_count": { "$ref": "#/$defs/safeInteger" }
+      }
+    },
+    "failureIncrements": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "containment_failure_count",
+        "duplicate_completion_count",
+        "integrity_failure_count",
+        "resource_floor_breach_count"
+      ],
+      "properties": {
+        "containment_failure_count": { "$ref": "#/$defs/safeInteger" },
+        "duplicate_completion_count": { "$ref": "#/$defs/safeInteger" },
+        "integrity_failure_count": { "$ref": "#/$defs/safeInteger" },
+        "resource_floor_breach_count": { "$ref": "#/$defs/safeInteger" }
+      }
+    },
+    "plan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "classification",
+        "maximum_sampling_overhead_basis_points",
+        "maximum_throughput_degradation_basis_points",
+        "measurement_policy",
+        "minimum_post_recovery_duration_ms",
+        "minimum_recovery_count",
+        "minimum_stability_duration_ms",
+        "minimum_stability_window_count",
+        "plan_digest_sha256",
+        "record_type",
+        "schema_version",
+        "source_bindings"
+      ],
+      "properties": {
+        "classification": { "$ref": "#/$defs/classification" },
+        "maximum_sampling_overhead_basis_points": { "type": "integer", "minimum": 0, "maximum": 10000 },
+        "maximum_throughput_degradation_basis_points": { "type": "integer", "minimum": 0, "maximum": 10000 },
+        "measurement_policy": {
+          "type": "array",
+          "minItems": 7,
+          "maxItems": 64,
+          "items": { "$ref": "#/$defs/measurementPolicy" }
+        },
+        "minimum_post_recovery_duration_ms": { "$ref": "#/$defs/positiveInteger" },
+        "minimum_recovery_count": { "$ref": "#/$defs/positiveInteger" },
+        "minimum_stability_duration_ms": { "$ref": "#/$defs/positiveInteger" },
+        "minimum_stability_window_count": { "type": "integer", "minimum": 2, "maximum": 9007199254740991 },
+        "plan_digest_sha256": { "$ref": "#/$defs/sha256" },
+        "record_type": { "const": "plan" },
+        "schema_version": { "const": "sustained-operating-envelope-plan.v1" },
+        "source_bindings": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/sourceBinding" }
+        }
+      }
+    },
+    "checkpoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "attempt_id",
+        "checkpoint_digest_sha256",
+        "checkpoint_id",
+        "classification",
+        "counters",
+        "failure_increments",
+        "logical_execution_id",
+        "observed_at",
+        "phase",
+        "plan_digest_sha256",
+        "previous_checkpoint_digest_sha256",
+        "qualification_id",
+        "record_type",
+        "schema_version",
+        "sequence",
+        "session_index",
+        "window"
+      ],
+      "properties": {
+        "attempt_id": { "$ref": "#/$defs/operationalId" },
+        "checkpoint_digest_sha256": { "$ref": "#/$defs/sha256" },
+        "checkpoint_id": { "$ref": "#/$defs/operationalId" },
+        "classification": { "$ref": "#/$defs/classification" },
+        "counters": { "$ref": "#/$defs/counters" },
+        "failure_increments": { "$ref": "#/$defs/failureIncrements" },
+        "logical_execution_id": { "$ref": "#/$defs/operationalId" },
+        "observed_at": { "type": "string", "format": "date-time", "maxLength": 64 },
+        "phase": { "enum": ["baseline", "steady-load", "interruption", "recovery", "post-recovery", "complete"] },
+        "plan_digest_sha256": { "$ref": "#/$defs/sha256" },
+        "previous_checkpoint_digest_sha256": { "oneOf": [{ "$ref": "#/$defs/sha256" }, { "type": "null" }] },
+        "qualification_id": { "$ref": "#/$defs/operationalId" },
+        "record_type": { "const": "checkpoint" },
+        "schema_version": { "const": "sustained-operating-envelope-checkpoint.v1" },
+        "sequence": { "$ref": "#/$defs/positiveInteger" },
+        "session_index": { "$ref": "#/$defs/positiveInteger" },
+        "window": { "oneOf": [{ "$ref": "#/$defs/window" }, { "type": "null" }] }
+      }
+    },
+    "criterion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["criterion", "status"],
+      "properties": {
+        "criterion": { "$ref": "#/$defs/token" },
+        "status": { "enum": ["failed", "passed", "pending"] }
+      }
+    },
+    "measurementCoverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["diagnostics", "measurement", "sample_count", "status", "unit"],
+      "properties": {
+        "diagnostics": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1, "maxLength": 512 }
+        },
+        "measurement": { "$ref": "#/$defs/token" },
+        "sample_count": { "$ref": "#/$defs/safeInteger" },
+        "status": { "enum": ["observed", "partial", "unavailable"] },
+        "unit": { "enum": ["basis_points", "bytes", "millidegrees_celsius"] }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "checkpoint_count",
+        "completed_work_count",
+        "containment_failure_count",
+        "duplicate_completion_count",
+        "integrity_failure_count",
+        "interruption_count",
+        "logical_completion_count",
+        "median_throughput_count_per_second_milli",
+        "minimum_throughput_count_per_second_milli",
+        "physical_attempt_count",
+        "post_recovery_duration_ms",
+        "resource_floor_breach_count",
+        "sampler_overhead_basis_points",
+        "sampler_overhead_ms",
+        "stability_duration_ms",
+        "stability_window_count",
+        "status",
+        "successful_resume_count",
+        "throughput_degradation_basis_points"
+      ],
+      "properties": {
+        "checkpoint_count": { "$ref": "#/$defs/positiveInteger" },
+        "completed_work_count": { "$ref": "#/$defs/safeInteger" },
+        "containment_failure_count": { "$ref": "#/$defs/safeInteger" },
+        "duplicate_completion_count": { "$ref": "#/$defs/safeInteger" },
+        "integrity_failure_count": { "$ref": "#/$defs/safeInteger" },
+        "interruption_count": { "$ref": "#/$defs/safeInteger" },
+        "logical_completion_count": { "type": "integer", "minimum": 0, "maximum": 1 },
+        "median_throughput_count_per_second_milli": { "$ref": "#/$defs/safeInteger" },
+        "minimum_throughput_count_per_second_milli": { "$ref": "#/$defs/safeInteger" },
+        "physical_attempt_count": { "$ref": "#/$defs/positiveInteger" },
+        "post_recovery_duration_ms": { "$ref": "#/$defs/safeInteger" },
+        "resource_floor_breach_count": { "$ref": "#/$defs/safeInteger" },
+        "sampler_overhead_basis_points": { "$ref": "#/$defs/safeInteger" },
+        "sampler_overhead_ms": { "$ref": "#/$defs/safeInteger" },
+        "stability_duration_ms": { "$ref": "#/$defs/safeInteger" },
+        "stability_window_count": { "$ref": "#/$defs/safeInteger" },
+        "status": { "enum": ["failed", "in-progress", "passed"] },
+        "successful_resume_count": { "$ref": "#/$defs/safeInteger" },
+        "throughput_degradation_basis_points": { "$ref": "#/$defs/safeInteger" }
+      }
+    },
+    "report": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "checkpoint_digests",
+        "classification",
+        "criteria",
+        "first_observed_at",
+        "last_observed_at",
+        "logical_execution_id",
+        "measurement_coverage",
+        "plan_digest_sha256",
+        "qualification_id",
+        "record_type",
+        "report_digest_sha256",
+        "schema_version",
+        "summary"
+      ],
+      "properties": {
+        "checkpoint_digests": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/sha256" }
+        },
+        "classification": { "$ref": "#/$defs/classification" },
+        "criteria": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/criterion" }
+        },
+        "first_observed_at": { "type": "string", "format": "date-time", "maxLength": 64 },
+        "last_observed_at": { "type": "string", "format": "date-time", "maxLength": 64 },
+        "logical_execution_id": { "$ref": "#/$defs/operationalId" },
+        "measurement_coverage": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 64,
+          "items": { "$ref": "#/$defs/measurementCoverage" }
+        },
+        "plan_digest_sha256": { "$ref": "#/$defs/sha256" },
+        "qualification_id": { "$ref": "#/$defs/operationalId" },
+        "record_type": { "const": "report" },
+        "report_digest_sha256": { "$ref": "#/$defs/sha256" },
+        "schema_version": { "const": "sustained-operating-envelope-report.v1" },
+        "summary": { "$ref": "#/$defs/summary" }
+      }
+    }
+  }
+}

@@ -213,6 +213,23 @@ work. A projection explicitly declares when bounded retention removed its early
 history. The controller exposes publish, cursor reads, subscriptions, progress
 inspection, and health without making the local journal a scientific authority.
 
+## Sustained operating-envelope qualification
+
+The versioned sustained operating-envelope protocol adds external,
+append-only measurement checkpoints for a multi-day Executioner qualification.
+The tracked plan requires stability before and after an explicit interruption,
+bounded sampling overhead, portable CPU/memory/cache/scratch/spool/disk
+measurements, and explicit `unavailable` processor-temperature telemetry when
+the host cannot observe it. Checkpoints preserve one logical execution across
+distinct retryable physical attempts and reconcile cumulative failure and
+completion counters at every predecessor-linked step.
+
+`tools/control_plane/compile_sustained_operating_envelope.py` validates an
+external checkpoint root and deterministically derives a non-canonical report.
+It does not launch a workload or authorize environment, provider, target, or
+campaign execution. See the
+[qualification contract](../docs/campaigns/sustained-operating-envelope.md).
+
 ## CLI and automation contract
 
 `control-plane/python/run.py` exposes the currently backed `doctor`, `machine`,

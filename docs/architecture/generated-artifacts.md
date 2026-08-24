@@ -57,6 +57,7 @@ diff. Fixtures are not production observations or published evidence.
 | Closed restart/resume matrix | `tools/campaigns/compile_restart_resume_qualification.py` | `reports/small-scale/restart-resume-qualification.json` | schema validation and deterministic rebuild |
 | Seeded evidence-corruption matrix | `tools/campaigns/compile_evidence_verification_qualification.py` | `reports/small-scale/evidence-verification-qualification.json` | verifier/schema validation and focused campaign tests |
 | Cache and disk-pressure qualification | `tools/control_plane/compile_cache_disk_pressure_qualification.py` | `reports/scale/cache-disk-pressure-qualification.json` | schema validation, deterministic rebuild, source bindings, and focused Control Plane tests |
+| Sustained operating-envelope qualification | tracked Control Plane policy plus `tools/control_plane/compile_sustained_operating_envelope.py` | external append-only checkpoints and an external non-canonical report | canonical-byte validation, predecessor-chain continuity, logical/physical attempt separation, cumulative measurement reconciliation, required resource coverage, explicit unavailable temperature telemetry, deterministic stability/overhead arithmetic, and exact report rebuild |
 | 100K warehouse reconciliation | `tools/campaigns/reconcile_100k_warehouse.py` | `reports/scale/100k-warehouse-reconciliation.json` | read-only evidence/ledger reconciliation, immutable warehouse row commitments, schema validation, and focused campaign tests |
 | Million-scale capacity and cost plan | `tools/campaigns/compile_million_scale_capacity_plan.py` | `reports/scale/million-scale-capacity-plan.json` | schema validation, deterministic rebuild, six-figure qualification source bindings, budget arithmetic, and focused campaign tests |
 | Full known-universe planning index, measured six-figure raw corpus, and storage policy | `tools/campaigns/compile_full_known_universe_forecast.py` | `reports/scale/full-known-universe-corpus-forecast.json` | index/report schema validation, deterministic rebuild, latest-stable release-line profile bounds, lossless-compression measurements, source bindings, budget arithmetic, and focused campaign tests |
@@ -93,7 +94,8 @@ target execution.
 ## Operational state, physical runs, and observations
 
 - Control Plane state, provider handles, caches, builds, images, containers,
-  execution scratch, protected spools, and diagnostics remain outside Git.
+  execution scratch, protected spools, sustained operating-envelope
+  checkpoints/reports, and diagnostics remain outside Git.
 - Physical attempts are append-only operational/evidence records. A retry adds
   an attempt while retaining the same logical-execution identity.
 - Raw observations and evidence objects are immutable and content-addressed.
