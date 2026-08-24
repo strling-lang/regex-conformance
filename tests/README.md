@@ -94,11 +94,14 @@ cannot manufacture semantic observations.
 
 The sustained operating-envelope tests build a complete 48-hour synthetic
 checkpoint chain without launching a target. They prove canonical append-only
-loading, source and predecessor digest binding, exact interruption/recovery
-attempt changes, one logical completion, required resource coverage, explicit
-unavailable temperature telemetry, bounded sampling overhead, throughput
-stability, immutable report publication, and fail-closed substitution,
-implicit-retry, duplicate-completion, and incomplete-chain behavior.
+loading, source, workload, and predecessor digest binding, exact
+interruption/recovery attempt changes, one logical completion, required
+resource coverage, explicit unavailable temperature telemetry, governed
+resource-boundary accounting, bounded sampling overhead, throughput stability,
+immutable and crash-recoverable report publication, and fail-closed
+substitution, implicit-retry, duplicate-completion, and incomplete-chain
+behavior. Producer helper tests also cover deterministic input-tree identities
+and exclusive artifact creation without starting the Linux workload.
 
 The Linux-only foundation acceptance test independently composes these Control
 Plane services into one clean-host certification scenario. It proves that host

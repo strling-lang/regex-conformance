@@ -15,6 +15,7 @@ from .state_models import OPERATIONAL_ID_PATTERN, SAFE_INTEGER_MAX, canonical_js
 PLAN_SCHEMA_VERSION = "sustained-operating-envelope-plan.v1"
 CHECKPOINT_SCHEMA_VERSION = "sustained-operating-envelope-checkpoint.v1"
 REPORT_SCHEMA_VERSION = "sustained-operating-envelope-report.v1"
+WORKLOAD_SCHEMA_VERSION = "sustained-operating-envelope-workload.v1"
 CLASSIFICATION = {
     "canonical_authority": False,
     "normative_authority": False,
@@ -134,9 +135,11 @@ def validate_plan(value: Mapping[str, Any]) -> None:
         "operating-envelope plan",
         value,
         {
+            "baseline_duration_ms",
             "classification",
             "maximum_sampling_overhead_basis_points",
             "maximum_throughput_degradation_basis_points",
+            "maximum_workload_iteration_ms",
             "measurement_policy",
             "minimum_post_recovery_duration_ms",
             "minimum_recovery_count",
@@ -144,6 +147,8 @@ def validate_plan(value: Mapping[str, Any]) -> None:
             "minimum_stability_window_count",
             "plan_digest_sha256",
             "record_type",
+            "resource_boundaries",
+            "sampling_interval_ms",
             "schema_version",
             "source_bindings",
         },
@@ -151,6 +156,14 @@ def validate_plan(value: Mapping[str, Any]) -> None:
     if plan["schema_version"] != PLAN_SCHEMA_VERSION or plan["record_type"] != "plan":
         raise OperatingEnvelopeError("unsupported operating-envelope plan schema")
     _classification(plan["classification"])
+    baseline_duration = _integer(
+        "baseline duration", plan["baseline_duration_ms"], minimum=1
+    )
+    sampling_interval = _integer(
+        "sampling interval", plan["sampling_interval_ms"], minimum=1_000
+    )
+    if baseline_duration < sampling_interval * 2:
+        raise OperatingEnvelopeError("baseline duration must contain at least two sampling intervals")
     minimum_duration = _integer(
         "minimum stability duration", plan["minimum_stability_duration_ms"], minimum=1
     )
@@ -159,7 +172,9 @@ def validate_plan(value: Mapping[str, Any]) -> None:
     )
     if post_duration > minimum_duration:
         raise OperatingEnvelopeError("post-recovery duration cannot exceed total stability duration")
-    _integer("minimum stability window count", plan["minimum_stability_window_count"], minimum=2)
+    minimum_windows = _integer(
+        "minimum stability window count", plan["minimum_stability_window_count"], minimum=2
+    )
     _integer("minimum recovery count", plan["minimum_recovery_count"], minimum=1)
     overhead = _integer(
         "maximum sampling overhead", plan["maximum_sampling_overhead_basis_points"]
@@ -167,6 +182,13 @@ def validate_plan(value: Mapping[str, Any]) -> None:
     degradation = _integer(
         "maximum throughput degradation", plan["maximum_throughput_degradation_basis_points"]
     )
+    maximum_iteration = _integer(
+        "maximum workload iteration", plan["maximum_workload_iteration_ms"], minimum=1
+    )
+    if maximum_iteration > minimum_duration // minimum_windows:
+        raise OperatingEnvelopeError(
+            "maximum workload iteration cannot exceed the planned average stability window"
+        )
     if overhead > 10_000 or degradation > 10_000:
         raise OperatingEnvelopeError("basis-point thresholds cannot exceed 100 percent")
 
@@ -200,6 +222,33 @@ def validate_plan(value: Mapping[str, Any]) -> None:
     thermal = next((item for item in policies if item["measurement"] == "processor-temperature"), None)
     if thermal is None or thermal["required"] or thermal["unit"] != "millidegrees_celsius":
         raise OperatingEnvelopeError("processor temperature must be present as an optional explicit measurement")
+    boundaries = _array("resource boundaries", plan["resource_boundaries"], minimum=1)
+    boundary_names: list[str] = []
+    for index, raw in enumerate(boundaries):
+        boundary = _object(
+            f"resource boundary {index}", raw, {"boundary", "measurement", "value"}
+        )
+        name = boundary["measurement"]
+        if name not in {item["measurement"] for item in policies}:
+            raise OperatingEnvelopeError("resource boundary references an unknown measurement")
+        if boundary["boundary"] not in {"maximum", "minimum"}:
+            raise OperatingEnvelopeError("resource boundary direction is unsupported")
+        _integer("resource boundary value", boundary["value"])
+        boundary_names.append(name)
+    if boundary_names != sorted(boundary_names) or len(boundary_names) != len(set(boundary_names)):
+        raise OperatingEnvelopeError("resource boundaries must be unique and sorted by measurement")
+    if set(boundary_names) != {item["measurement"] for item in policies} - {"cpu-utilization"}:
+        raise OperatingEnvelopeError("every non-CPU resource measurement requires one governed boundary")
+    expected_directions = {
+        "environment-cache-size": "maximum",
+        "execution-scratch-size": "maximum",
+        "persistent-disk-available": "minimum",
+        "processor-temperature": "maximum",
+        "ram-working-set": "maximum",
+        "result-spool-size": "maximum",
+    }
+    if {item["measurement"]: item["boundary"] for item in boundaries} != expected_directions:
+        raise OperatingEnvelopeError("resource boundary directions do not match their measurements")
     bindings = _array("operating-envelope source bindings", plan["source_bindings"], minimum=1)
     paths: list[str] = []
     for index, raw in enumerate(bindings):
@@ -236,6 +285,100 @@ def verify_plan_source_bindings(root: Path, plan: Mapping[str, Any]) -> None:
             raise OperatingEnvelopeError("source bindings must identify regular non-link files")
         if hashlib.sha256(path.read_bytes()).hexdigest() != binding["sha256"]:
             raise OperatingEnvelopeError(f"source binding digest changed: {binding['path']}")
+
+
+def validate_workload_binding(value: Mapping[str, Any]) -> None:
+    binding = _object(
+        "operating-envelope workload binding",
+        value,
+        {
+            "classification",
+            "command",
+            "input_bindings",
+            "machine_inventory_sha256",
+            "measurement_paths",
+            "plan_digest_sha256",
+            "record_type",
+            "schema_version",
+            "source_revision",
+            "workload_digest_sha256",
+        },
+    )
+    if binding["schema_version"] != WORKLOAD_SCHEMA_VERSION or binding["record_type"] != "workload":
+        raise OperatingEnvelopeError("unsupported operating-envelope workload schema")
+    _classification(binding["classification"])
+    _sha256("workload plan digest", binding["plan_digest_sha256"])
+    _sha256("machine inventory digest", binding["machine_inventory_sha256"])
+    revision = binding["source_revision"]
+    if not isinstance(revision, str) or re.fullmatch(r"[0-9a-f]{40}", revision) is None:
+        raise OperatingEnvelopeError("workload source revision must be a full Git SHA-1")
+    command = _array("workload command", binding["command"], minimum=1)
+    if len(command) > 128 or any(
+        not isinstance(item, str)
+        or not item
+        or len(item) > 2048
+        or any(character in item for character in "\r\n\x00")
+        for item in command
+    ):
+        raise OperatingEnvelopeError("workload command arguments must be bounded single-line strings")
+    inputs = _array("workload input bindings", binding["input_bindings"], minimum=1)
+    input_keys: list[tuple[str, str]] = []
+    input_labels: list[str] = []
+    for index, raw in enumerate(inputs):
+        item = _object(
+            f"workload input binding {index}", raw, {"label", "path", "sha256", "size_bytes"}
+        )
+        label = item["label"]
+        path = item["path"]
+        if not isinstance(label, str) or re.fullmatch(r"[a-z][a-z0-9]*(?:-[a-z0-9]+)*", label) is None:
+            raise OperatingEnvelopeError("workload input labels must be canonical tokens")
+        if (
+            not isinstance(path, str)
+            or not path
+            or len(path) > 2048
+            or any(character in path for character in "\r\n\x00")
+        ):
+            raise OperatingEnvelopeError("workload input paths must be bounded single-line strings")
+        _sha256("workload input digest", item["sha256"])
+        _integer("workload input size", item["size_bytes"])
+        input_keys.append((label, path))
+        input_labels.append(label)
+    if (
+        input_keys != sorted(input_keys)
+        or len(input_keys) != len(set(input_keys))
+        or len(input_labels) != len(set(input_labels))
+    ):
+        raise OperatingEnvelopeError("workload input bindings must be unique and deterministically ordered")
+    paths = _object(
+        "workload measurement paths",
+        binding["measurement_paths"],
+        {"environment_cache", "execution_scratch", "persistent_disk", "result_spool"},
+    )
+    for path in paths.values():
+        if (
+            not isinstance(path, str)
+            or not path
+            or len(path) > 2048
+            or any(character in path for character in "\r\n\x00")
+        ):
+            raise OperatingEnvelopeError("measurement paths must be bounded single-line strings")
+    claimed = _sha256("workload digest", binding["workload_digest_sha256"])
+    if claimed != _digest_without(binding, "workload_digest_sha256"):
+        raise OperatingEnvelopeError("workload binding digest does not match its contents")
+
+
+def finalize_workload_binding(value: Mapping[str, Any]) -> dict[str, Any]:
+    result = dict(value)
+    result["workload_digest_sha256"] = "0" * 64
+    result["workload_digest_sha256"] = _digest_without(result, "workload_digest_sha256")
+    validate_workload_binding(result)
+    return result
+
+
+def load_workload_binding(path: Path) -> dict[str, Any]:
+    binding = _load_canonical(path)
+    validate_workload_binding(binding)
+    return binding
 
 
 def _measurement_summaries(
@@ -290,7 +433,7 @@ COUNTER_FIELDS = {
     "interruption_count",
     "logical_completion_count",
     "post_recovery_duration_ms",
-    "resource_floor_breach_count",
+    "resource_boundary_breach_count",
     "sampler_overhead_ms",
     "stability_duration_ms",
     "stability_window_count",
@@ -300,7 +443,7 @@ FAILURE_FIELDS = {
     "containment_failure_count",
     "duplicate_completion_count",
     "integrity_failure_count",
-    "resource_floor_breach_count",
+    "resource_boundary_breach_count",
 }
 
 
@@ -339,6 +482,7 @@ def validate_checkpoint_chain(
     attempt_ids: set[str] = set()
     qualification_id: str | None = None
     logical_execution_id: str | None = None
+    workload_digest: str | None = None
     allowed_transitions = {
         "baseline": {"baseline", "steady-load", "interruption"},
         "steady-load": {"steady-load", "interruption", "complete"},
@@ -371,6 +515,7 @@ def validate_checkpoint_chain(
                     "sequence",
                     "session_index",
                     "window",
+                    "workload_digest_sha256",
                 },
             )
         )
@@ -392,11 +537,21 @@ def validate_checkpoint_chain(
         current_logical = _operational_id(
             "logical execution ID", checkpoint["logical_execution_id"], "logical-execution"
         )
+        current_workload = _sha256(
+            "workload binding digest", checkpoint["workload_digest_sha256"]
+        )
         attempt = _operational_id("attempt ID", checkpoint["attempt_id"], "execution-attempt")
         qualification_id = current_qualification if qualification_id is None else qualification_id
         logical_execution_id = current_logical if logical_execution_id is None else logical_execution_id
-        if current_qualification != qualification_id or current_logical != logical_execution_id:
-            raise OperatingEnvelopeError("checkpoint chain changed qualification or logical-execution identity")
+        workload_digest = current_workload if workload_digest is None else workload_digest
+        if (
+            current_qualification != qualification_id
+            or current_logical != logical_execution_id
+            or current_workload != workload_digest
+        ):
+            raise OperatingEnvelopeError(
+                "checkpoint chain changed qualification, logical-execution, or workload identity"
+            )
         if checkpoint["plan_digest_sha256"] != plan["plan_digest_sha256"]:
             raise OperatingEnvelopeError("checkpoint plan digest differs from the qualification plan")
         claimed_digest = _sha256("checkpoint digest", checkpoint["checkpoint_digest_sha256"])
@@ -456,7 +611,22 @@ def validate_checkpoint_chain(
             overhead_ms = _integer("window sampling overhead", window_object["sampling_overhead_ms"])
             if overhead_ms > duration:
                 raise OperatingEnvelopeError("sampling overhead cannot exceed its observation window")
-            _measurement_summaries(window_object["measurement_summaries"], policies, f"checkpoint {offset}")
+            summaries = _measurement_summaries(
+                window_object["measurement_summaries"], policies, f"checkpoint {offset}"
+            )
+            breached = False
+            for boundary in plan["resource_boundaries"]:
+                summary = summaries[boundary["measurement"]]
+                if summary["status"] != "observed":
+                    continue
+                if boundary["boundary"] == "minimum":
+                    breached = summary["minimum"] < boundary["value"] or breached
+                else:
+                    breached = summary["maximum"] > boundary["value"] or breached
+            if failure_increments["resource_boundary_breach_count"] != int(breached):
+                raise OperatingEnvelopeError(
+                    "resource-boundary failure increment does not match measured window bounds"
+                )
             increments["completed_work_count"] = completed
             increments["sampler_overhead_ms"] = overhead_ms
             if phase in STABILITY_PHASES:
@@ -466,6 +636,10 @@ def validate_checkpoint_chain(
                     increments["post_recovery_duration_ms"] = duration
         elif window is not None:
             raise OperatingEnvelopeError("event checkpoints cannot contain a measurement window")
+        elif failure_increments["resource_boundary_breach_count"] != 0:
+            raise OperatingEnvelopeError(
+                "event checkpoints cannot claim an unmeasured resource-boundary breach"
+            )
         if phase == "interruption":
             increments["interruption_count"] = 1
         elif phase == "recovery":
@@ -614,7 +788,7 @@ def build_report(plan: Mapping[str, Any], checkpoints: Sequence[Mapping[str, Any
             "minimum_throughput_count_per_second_milli": minimum_rate,
             "physical_attempt_count": len(attempt_ids),
             "post_recovery_duration_ms": counters["post_recovery_duration_ms"],
-            "resource_floor_breach_count": counters["resource_floor_breach_count"],
+            "resource_boundary_breach_count": counters["resource_boundary_breach_count"],
             "sampler_overhead_basis_points": overhead,
             "sampler_overhead_ms": counters["sampler_overhead_ms"],
             "stability_duration_ms": counters["stability_duration_ms"],
@@ -623,6 +797,7 @@ def build_report(plan: Mapping[str, Any], checkpoints: Sequence[Mapping[str, Any
             "successful_resume_count": counters["successful_resume_count"],
             "throughput_degradation_basis_points": degradation,
         },
+        "workload_digest_sha256": final["workload_digest_sha256"],
     }
     report["report_digest_sha256"] = _digest_without(report, "report_digest_sha256")
     return report

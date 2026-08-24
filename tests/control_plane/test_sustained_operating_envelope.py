@@ -22,14 +22,17 @@ from regex_conformance_control_plane.operating_envelope import (  # noqa: E402
     CLASSIFICATION,
     COUNTER_FIELDS,
     OperatingEnvelopeError,
+    WORKLOAD_SCHEMA_VERSION,
     build_report,
     canonical_artifact_bytes,
     finalize_checkpoint,
+    finalize_workload_binding,
     load_checkpoint_chain,
     load_plan,
     validate_checkpoint_chain,
     validate_plan,
     validate_report,
+    validate_workload_binding,
     verify_plan_source_bindings,
 )
 
@@ -48,7 +51,7 @@ def measurement_summaries(*, thermal_available: bool = False) -> list[dict[str, 
         ("cpu-utilization", "basis_points", 5000),
         ("environment-cache-size", "bytes", 10_000),
         ("execution-scratch-size", "bytes", 20_000),
-        ("persistent-disk-available", "bytes", 50_000),
+        ("persistent-disk-available", "bytes", 50_000_000_000),
         ("processor-temperature", "millidegrees_celsius", 60_000),
         ("ram-working-set", "bytes", 30_000),
         ("result-spool-size", "bytes", 40_000),
@@ -128,7 +131,7 @@ def build_chain(*, unstable: bool = False) -> tuple[dict[str, object], ...]:
                 "containment_failure_count",
                 "duplicate_completion_count",
                 "integrity_failure_count",
-                "resource_floor_breach_count",
+                "resource_boundary_breach_count",
             })},
             "logical_execution_id": opid("logical-execution", 1),
             "observed_at": observed.isoformat().replace("+00:00", "Z"),
@@ -143,6 +146,7 @@ def build_chain(*, unstable: bool = False) -> tuple[dict[str, object], ...]:
             "sequence": sequence,
             "session_index": session,
             "window": window,
+            "workload_digest_sha256": "a" * 64,
         }
         checkpoints.append(finalize_checkpoint(checkpoint))
         observed += timedelta(hours=1)
@@ -175,6 +179,54 @@ class SustainedOperatingEnvelopeTests(unittest.TestCase):
         self.validator.validate(self.plan)
         self.assertEqual(self.plan["minimum_stability_duration_ms"], 48 * 60 * 60 * 1000)
         self.assertEqual(self.plan["minimum_post_recovery_duration_ms"], 12 * 60 * 60 * 1000)
+        self.assertEqual(self.plan["baseline_duration_ms"], 5 * 60 * 1000)
+        self.assertEqual(self.plan["sampling_interval_ms"], 60 * 1000)
+
+    def test_workload_binding_is_self_digest_bound_and_schema_valid(self) -> None:
+        binding = finalize_workload_binding(
+            {
+                "classification": dict(CLASSIFICATION),
+                "command": ["/qualification/bin/python", "workload.py", "--check"],
+                "input_bindings": [
+                    {
+                        "label": "million-staging",
+                        "path": "/qualification/inputs/million-staging",
+                        "sha256": "b" * 64,
+                        "size_bytes": 36_643_494,
+                    }
+                ],
+                "machine_inventory_sha256": "c" * 64,
+                "measurement_paths": {
+                    "environment_cache": "/qualification/cache",
+                    "execution_scratch": "/qualification/scratch",
+                    "persistent_disk": "/",
+                    "result_spool": "/qualification/checkpoints",
+                },
+                "plan_digest_sha256": self.plan["plan_digest_sha256"],
+                "record_type": "workload",
+                "schema_version": WORKLOAD_SCHEMA_VERSION,
+                "source_revision": "d" * 40,
+                "workload_digest_sha256": "0" * 64,
+            }
+        )
+        validate_workload_binding(binding)
+        self.validator.validate(binding)
+        changed = deepcopy(binding)
+        changed["command"].append("--changed")
+        with self.assertRaisesRegex(OperatingEnvelopeError, "digest"):
+            validate_workload_binding(changed)
+
+        duplicate_label = deepcopy(binding)
+        duplicate_label["input_bindings"].append(
+            {
+                "label": "million-staging",
+                "path": "/qualification/inputs/second-copy",
+                "sha256": "e" * 64,
+                "size_bytes": 1,
+            }
+        )
+        with self.assertRaisesRegex(OperatingEnvelopeError, "unique"):
+            finalize_workload_binding(duplicate_label)
 
     def test_complete_multi_day_chain_passes_with_one_logical_completion(self) -> None:
         chain = build_chain()
@@ -300,6 +352,33 @@ class SustainedOperatingEnvelopeTests(unittest.TestCase):
         )
         chain[1] = finalize_checkpoint(changed)
         with self.assertRaisesRegex(OperatingEnvelopeError, "required measurement"):
+            validate_checkpoint_chain(self.plan, chain[:2])
+
+    def test_resource_boundary_breach_requires_an_exact_failure_increment(self) -> None:
+        chain = list(build_chain())
+        changed = deepcopy(chain[1])
+        summary = next(
+            item for item in changed["window"]["measurement_summaries"]
+            if item["measurement"] == "environment-cache-size"
+        )
+        summary["maximum"] = 10_000_000_001
+        chain[1] = finalize_checkpoint(changed)
+        with self.assertRaisesRegex(OperatingEnvelopeError, "resource-boundary"):
+            validate_checkpoint_chain(self.plan, chain[:2])
+
+        changed["failure_increments"]["resource_boundary_breach_count"] = 1
+        changed["counters"]["resource_boundary_breach_count"] = 1
+        chain[1] = finalize_checkpoint(changed)
+        validated = validate_checkpoint_chain(self.plan, chain[:2])
+        report = build_report(self.plan, validated)
+        self.assertEqual(report["summary"]["status"], "failed")
+
+    def test_checkpoint_chain_cannot_change_workload_identity(self) -> None:
+        chain = list(build_chain())
+        changed = deepcopy(chain[1])
+        changed["workload_digest_sha256"] = "f" * 64
+        chain[1] = finalize_checkpoint(changed)
+        with self.assertRaisesRegex(OperatingEnvelopeError, "workload identity"):
             validate_checkpoint_chain(self.plan, chain[:2])
 
     def test_completed_unstable_throughput_fails_qualification(self) -> None:
