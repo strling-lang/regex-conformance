@@ -95,6 +95,9 @@ Large runtime artifacts, realized environments, raw observations, physical-run
 records, diagnostics, execution spools, and warehouse datasets remain outside
 Git. Compact definitions, schemas, manifests, reports, hashes, and source belong
 here only when the architecture assigns them to repository authority.
+Certified Coverage Shards additionally emit compact generated Lab and
+Compatibility projections through the append-only checkpoint protocol under
+`downstream/`; an execution shard by itself is never a synchronization signal.
 
 ## Bootstrap schema and identity checks
 

@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/coverage-shard-checkpoint-index.schema.json",
+  "title": "Monotonic Coverage Shard Checkpoint Index",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["authority", "checkpoint_count", "entries", "index_digest_sha256", "latest_checkpoint_digest_sha256", "latest_checkpoint_id", "schema_version"],
+  "properties": {
+    "schema_version": {"const": "coverage-shard-checkpoint-index.v1"},
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["append_only", "checkpoint_commit_only_sync_signal", "consumers_independent", "execution_shards_are_sync_signals"],
+      "properties": {
+        "append_only": {"const": true},
+        "checkpoint_commit_only_sync_signal": {"const": true},
+        "consumers_independent": {"const": true},
+        "execution_shards_are_sync_signals": {"const": false}
+      }
+    },
+    "checkpoint_count": {"type": "integer", "minimum": 0, "maximum": 9999},
+    "latest_checkpoint_id": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/shardId"}]},
+    "latest_checkpoint_digest_sha256": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]},
+    "entries": {"type": "array", "maxItems": 9999, "items": {"$ref": "#/$defs/entry"}},
+    "index_digest_sha256": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "gitSha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "shardId": {"type": "string", "pattern": "^coverage-shard-[0-9]{4}$"},
+    "entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["checkpoint_digest_sha256", "checkpoint_id", "checkpoint_sha256", "relative_path", "sequence", "source_revision"],
+      "properties": {
+        "sequence": {"type": "integer", "minimum": 1, "maximum": 9999},
+        "checkpoint_id": {"$ref": "#/$defs/shardId"},
+        "relative_path": {"type": "string", "pattern": "^downstream/checkpoints/coverage-shard-[0-9]{4}\\.v1\\.json$"},
+        "checkpoint_sha256": {"$ref": "#/$defs/digest"},
+        "checkpoint_digest_sha256": {"$ref": "#/$defs/digest"},
+        "source_revision": {"$ref": "#/$defs/gitSha"}
+      }
+    }
+  }
+}

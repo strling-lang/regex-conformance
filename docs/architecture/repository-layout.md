@@ -23,6 +23,7 @@ current lightweight Git boundary.
 | `scheduler/` | Deterministic sharding, capability-aware placement, checkpoints, retries, and resumability logic | Scheduler, Sharding & Resumability | Overwriting attempts or treating assignments as scientific evidence |
 | `campaigns/` | Campaign definitions, frozen manifest inputs, and compact campaign metadata | Scheduler Design; Validation & Certification | Large result shards, raw diagnostics, or local checkpoints |
 | `verifier/` | Structural, provenance, result, evidence-integrity, reconciliation, and discrepancy verification source | Result & Evidence Model; Validation & Certification | Mutation of published observations or normative claim ownership |
+| `downstream/` | Compact generated Lab and Compatibility projections plus the append-only certified Coverage Shard checkpoint chain | Validation & Certification; asynchronous downstream synchronization | Primary evidence, execution-shard state, website workflow state, or hand-authored compatibility truth |
 | `warehouse/` | Regenerable warehouse schemas, transforms, partition/compaction declarations, and query source | Storage & Warehouse Architecture | Authoritative raw evidence or committed large analytical datasets |
 | `reports/` | Compact generated coverage, reproducibility, differential, and certification report definitions/outputs | Storage & Warehouse; Validation & Certification | Hand-maintained claims that diverge from canonical inputs |
 | `certification/` | Certification definitions, input-set rules, pass/fail gates, revocation, and supersession metadata | Scope & Completeness; Validation & Certification | Declared waivers or mutable certification history |
@@ -48,6 +49,9 @@ credentials.
    compact `reports/`; warehouse rows never replace evidence authority.
 6. `certification/` evaluates exact input sets and immutable evidence against
    C1-C7 as a conjunction.
+7. Only completely certified Coverage Shards emit compact `downstream/`
+   projections and an append-only checkpoint; downstream consumers advance
+   independently from that Git signal.
 
 Dependencies may point to stable contracts earlier in this sequence. Provider,
 adapter, scheduler, warehouse, report, and CLI implementations must not reach

@@ -102,6 +102,15 @@ lossless structural savings from the minimum retained-information change and
 binds the measured million-corpus byte model to the declared-cutoff lower,
 expected, and conservative 8 GB/10 GB capacity forecast.
 
+The downstream synchronization family consists of strict Lab and Compatibility
+projection schemas plus the Coverage Shard checkpoint and monotonic index
+schemas. Cross-artifact validation checks canonical bytes, content and file
+digests, contiguous predecessor linkage, frozen semantic/profile membership,
+profile and coordinate reconciliation, evidence/exclusion/limitation trace
+rules, and deterministic index reconstruction. Unknown cannot validate as
+Unsupported, and low-level execution shards cannot enter the synchronization
+index.
+
 The regex semantic corpus, projection, vector-requirements, and denominator
 schemas define the content-addressed semantic authority and its executable
 consumer boundary. The companion compiler adds uniqueness, relation,

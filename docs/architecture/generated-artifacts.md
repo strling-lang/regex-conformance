@@ -65,10 +65,22 @@ diff. Fixtures are not production observations or published evidence.
 | Production Evidence Pack v2 and enriched capacity gate | `tools/campaigns/compile_evidence_pack_v2.py` | `reports/scale/evidence-pack-v2-certification.json` | exact 807-member reconstruction, two identical encodings, legacy identity/hash recomputation, corruption injection, bounded lookup, attempt/observation independence, expanded diagnostic/performance contracts, governed-canary forecast, schema validation, and focused publisher tests |
 | Compact Evidence Pack v3 and declared-cutoff capacity certification | `tools/campaigns/certify_compact_evidence.py` | `reports/scale/evidence-pack-v3-capacity-certification.json` | read-only million-corpus migration, exact semantic and exception-fact reconstruction, deterministic routine-process reconstruction plus ordered stdout commitment, deterministic coordinate identities, corruption injection, bounded lookup, exact separation of lossless and retention-contract savings, schema validation, and fail-closed 8 GB/10 GB arithmetic |
 | Local million-scale publication preparation | `tools/campaigns/prepare_million_partition.py` and `tools/campaigns/finalize_million_local_artifacts.py` | external partition preparation records, staged content-addressed pack bytes, and an external local-readiness report | two identical encodings per partition, exact reconstruction, corruption detection, manifest-last staging, all-partition identity and interruption reconciliation, zero cloud requests, and capacity admission before later publication |
+| Coverage Shard synchronization | certified evidence/projection producers plus `tools/downstream/compile_checkpoint_index.py` | `downstream/lab/coverage-shard-NNNN.v1.json`, `downstream/compatibility/coverage-shard-NNNN.v1.json`, `downstream/checkpoints/coverage-shard-NNNN.v1.json`, and `downstream/checkpoints/index.v1.json` | canonical bytes, frozen source bindings, exact profile/coordinate reconciliation, evidence/exclusion/limitation trace rules, predecessor-chain continuity, immutable-prefix enforcement, and deterministic index rebuild |
 
 Edit the source and run the listed producer; do not hand-maintain these outputs.
 A compact report is a traceable projection, not raw evidence or independent
 truth.
+
+## Downstream synchronization products
+
+A low-level execution shard is never a publication signal. One coherent
+Coverage Shard may contain many execution shards, but it emits downstream
+artifacts only after exact reconciliation, Evidence Pack v3 publication and
+read-back verification, downstream projection validation, capacity admission,
+and certification all pass. The matching checkpoint commit is the sole Git
+synchronization signal. Lab and Compatibility workflows consume the monotonic
+index independently; this repository records no downstream workflow cursor and
+does not wait for either consumer.
 
 ## External logical segments
 
