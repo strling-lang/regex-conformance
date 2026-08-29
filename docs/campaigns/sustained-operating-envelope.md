@@ -29,6 +29,37 @@ persistent-disk availability. Those portable measurements are required.
 Processor temperature is also required as a field but may be marked
 `unavailable` with a bounded diagnostic; it must never be invented as zero.
 
+## Qualified storage and host topology
+
+Sustained Evidence Pack work must read its immutable corpus from native,
+persistent Linux storage. Windows-mounted, network, FUSE, overlay, and
+temporary filesystems are not qualified input locations. Before a new
+qualification identity is created, stage the source tree once and retain the
+no-overwrite receipt outside Git:
+
+```sh
+python tools/control_plane/stage_sustained_operating_envelope_input.py \
+  --source /mnt/c/immutable/million/publication-staging \
+  --destination /durable/regex-conformance/inputs/million-staging \
+  --receipt /durable/regex-conformance/inputs/million-staging-receipt.json \
+  --execute --yes
+```
+
+The staging tool rejects a non-native destination, links, special filesystem
+nodes, empty trees, identity mismatches, and any destination or receipt that
+already exists. It computes the same canonical relative-file digest used by
+the workload binding, verifies the copied tree byte-for-byte by identity,
+publishes it read-only, and records both source and destination identities.
+The producer independently re-hashes the staged tree when it creates or
+resumes the workload binding.
+
+The Windows host and Linux guest must also be free of unrelated sustained CPU,
+I/O, Docker, indexing, antivirus-scan, or VM work before the baseline begins.
+Record the host/guest process snapshot and active Windows power policy with the
+external qualification materials. Do not terminate an unrelated workload to
+satisfy this preflight without explicit authority. A host that cannot be
+isolated is not eligible for the sustained qualification.
+
 ## Resumable checkpoint chain
 
 Checkpoint files are external, immutable, canonical JSON named
@@ -66,10 +97,10 @@ python tools/control_plane/run_sustained_operating_envelope.py \
   --environment-cache-root /durable/regex-conformance/cache \
   --execution-scratch-root /durable/regex-conformance/scratch \
   --persistent-disk-root / \
-  --input-binding million-staging=/immutable/million/publication-staging \
+  --input-binding million-staging=/durable/regex-conformance/inputs/million-staging \
   --execute --yes -- \
   /qualified/python tools/campaigns/certify_compact_evidence.py \
-  --check --million-staging /immutable/million/publication-staging \
+  --check --million-staging /durable/regex-conformance/inputs/million-staging \
   --pack-output /durable/regex-conformance/cache/evidence-pack-v3
 ```
 
