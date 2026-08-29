@@ -86,7 +86,9 @@ def measurement_summaries(*, thermal_available: bool = False) -> list[dict[str, 
     return values
 
 
-def build_chain(*, unstable: bool = False) -> tuple[dict[str, object], ...]:
+def build_chain(
+    *, unstable: bool = False, workload_digest: str = "a" * 64
+) -> tuple[dict[str, object], ...]:
     plan = load_plan(PLAN_PATH)
     checkpoints: list[dict[str, object]] = []
     counters = {field: 0 for field in COUNTER_FIELDS}
@@ -146,7 +148,7 @@ def build_chain(*, unstable: bool = False) -> tuple[dict[str, object], ...]:
             "sequence": sequence,
             "session_index": session,
             "window": window,
-            "workload_digest_sha256": "a" * 64,
+            "workload_digest_sha256": workload_digest,
         }
         checkpoints.append(finalize_checkpoint(checkpoint))
         observed += timedelta(hours=1)
@@ -387,6 +389,75 @@ class SustainedOperatingEnvelopeTests(unittest.TestCase):
         self.assertEqual(report["summary"]["status"], "failed")
         criterion = {item["criterion"]: item["status"] for item in report["criteria"]}
         self.assertEqual(criterion["throughput-stability"], "failed")
+
+    def test_read_only_throughput_analysis_reproduces_report_and_exact_rates(self) -> None:
+        binding = finalize_workload_binding(
+            {
+                "classification": dict(CLASSIFICATION),
+                "command": ["/qualification/bin/python", "workload.py", "--check"],
+                "input_bindings": [
+                    {
+                        "label": "million-staging",
+                        "path": "/qualification/inputs/million-staging",
+                        "sha256": "b" * 64,
+                        "size_bytes": 36_643_494,
+                    }
+                ],
+                "machine_inventory_sha256": "c" * 64,
+                "measurement_paths": {
+                    "environment_cache": "/qualification/cache",
+                    "execution_scratch": "/qualification/scratch",
+                    "persistent_disk": "/",
+                    "result_spool": "/qualification/checkpoints",
+                },
+                "plan_digest_sha256": self.plan["plan_digest_sha256"],
+                "record_type": "workload",
+                "schema_version": WORKLOAD_SCHEMA_VERSION,
+                "source_revision": "d" * 40,
+                "workload_digest_sha256": "0" * 64,
+            }
+        )
+        chain = build_chain(
+            unstable=True,
+            workload_digest=binding["workload_digest_sha256"],
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for checkpoint in chain:
+                (root / f"checkpoint-{checkpoint['sequence']:06d}.json").write_bytes(
+                    canonical_artifact_bytes(checkpoint)
+                )
+            (root / "workload-binding.json").write_bytes(canonical_artifact_bytes(binding))
+            (root / "operating-envelope-report.json").write_bytes(
+                canonical_artifact_bytes(build_report(self.plan, chain))
+            )
+            tool = ROOT / "tools" / "control_plane" / "analyze_sustained_throughput.py"
+            analyzed = subprocess.run(
+                [sys.executable, str(tool), "--checkpoint-root", str(root)],
+                cwd=ROOT,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                check=False,
+            )
+        self.assertEqual(analyzed.returncode, 0, analyzed.stderr.decode("utf-8"))
+        result = json.loads(analyzed.stdout)
+        self.assertEqual(len(result["windows"]), 48)
+        self.assertTrue(result["summary"]["independent_report_reproduction"])
+        self.assertEqual(result["summary"]["reported_status"], "failed")
+        self.assertGreater(
+            result["summary"]["exact_minimum_to_lower_median_degradation_basis_points"],
+            result["summary"]["reported_degradation_basis_points"],
+        )
+        self.assertEqual(
+            result["summary"]["first_governed_running_threshold_crossing"][
+                "checkpoint_sequence"
+            ],
+            51,
+        )
+        self.assertEqual(
+            result["summary"]["baseline_throughput_status"],
+            "unavailable-idle-resource-baseline",
+        )
 
     def test_incomplete_chain_reports_pending_without_claiming_success(self) -> None:
         report = build_report(self.plan, build_chain()[:-1])
