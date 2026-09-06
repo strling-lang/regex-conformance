@@ -28,8 +28,13 @@ The declared-cutoff semantic corpus contains 251 canonical features at digest
 `350bfea4c3da07b3426d885aa8ff645ac55539bbb1294a2ea35dd5319541d6c7`.
 Its complete bounded execution forecast uses the anomaly-complete,
 routine-process-summary Evidence Pack v3 contract and passes the 8 GB
-soft stop at 7,452,076,843 conservative retained bytes. The 9,506 attributable
-production vectors remain to be authored; no full conformance campaign has run.
+soft stop at 7,452,076,843 conservative retained bytes. Its 9,506 minimum
+vector requirements are a preserved planning baseline rather than the final
+scientific denominator. Broad vector authoring now waits for researched
+feature semantics, derived obligations, oracle and applicability contracts,
+and an empirically frozen profile universe. No full conformance campaign has
+run. See the [scientific implementation dependency
+architecture](docs/architecture/scientific-implementation-dependencies.md).
 
 Program planning, dependencies, decisions, risks, and certification gates are
 maintained in the canonical [STRling Regex Conformance Program][program-hub].

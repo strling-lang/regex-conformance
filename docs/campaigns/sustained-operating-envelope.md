@@ -53,12 +53,22 @@ publishes it read-only, and records both source and destination identities.
 The producer independently re-hashes the staged tree when it creates or
 resumes the workload binding.
 
-The Windows host and Linux guest must also be free of unrelated sustained CPU,
-I/O, Docker, indexing, antivirus-scan, or VM work before the baseline begins.
-Record the host/guest process snapshot and active Windows power policy with the
-external qualification materials. Do not terminate an unrelated workload to
-satisfy this preflight without explicit authority. A host that cannot be
-isolated is not eligible for the sustained qualification.
+The Windows host and Linux guest must also be free of competing sustained
+high-load work before the baseline begins. Examples include another multi-hour
+test campaign, a sustained compiler or build loop, a benchmark or stress test,
+heavyweight background analysis, and an unrelated long-running Docker or VM
+workload consuming substantial resources. Record the host/guest process
+snapshot and active Windows power policy with the external qualification
+materials. The preflight evaluates material host contention; it does not
+require zero other processes or a completely unused device.
+
+Ordinary interactive activity remains permissible during qualification. That
+includes web browsing, editing, normal development interaction, communication,
+and lightweight applications unless measured evidence demonstrates that a
+narrower restriction is scientifically required. Do not terminate an unrelated
+workload to satisfy preflight without explicit authority. If stricter isolation
+appears necessary, stop for a Program Owner decision rather than imposing an
+unusable 48-hour requirement.
 
 ## Resumable checkpoint chain
 

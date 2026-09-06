@@ -5,4 +5,5 @@ architecture. It summarizes controlling Notion records without becoming a
 second program authority.
 
 - [Repository layout and traceability](repository-layout.md)
+- [Scientific implementation dependencies](scientific-implementation-dependencies.md)
 - [Telemetry calibration and hard containment](telemetry-containment.md)
