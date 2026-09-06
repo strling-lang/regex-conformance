@@ -33,7 +33,14 @@ for source in (
 from regex_conformance_scale.evidence_pack_v3 import build_capacity_forecast  # noqa: E402
 from regex_conformance_schema.jsonio import canonical_bytes, load_strict  # noqa: E402
 from regex_conformance_schema.schema import validate_instance  # noqa: E402
-from regex_conformance_schema.scientific_identity import verify_catalog  # noqa: E402
+from regex_conformance_schema.derivation import (  # noqa: E402
+    CATALOG_PATH as DERIVATION_CATALOG_PATH,
+    require_assertion_gate,
+    verify_catalog as verify_derivation_catalog,
+)
+from regex_conformance_schema.scientific_identity import (  # noqa: E402
+    verify_catalog as verify_identity_catalog,
+)
 
 
 CUTOFF = "2026-08-22"
@@ -2035,7 +2042,14 @@ def verify_artifacts(
         by_feature_facets[obligation["feature_id"]].add(obligation["facet"])
     expected_facets = set(FACET_CASES)
     if any(by_feature_facets[feature_id] != expected_facets for feature_id in feature_id_set):
-        raise ValueError("every feature must have the complete twelve-facet template set")
+        raise ValueError("every feature must have the complete declared facet-template set")
+    derivation_catalog = load_strict(ROOT / DERIVATION_CATALOG_PATH)
+    require_assertion_gate(
+        derivation_catalog,
+        "ontology/projections/regex-semantic-projection-2026-08-22.v1.json",
+        "/semantic_obligation_templates/0/facet",
+        "structural-integrity",
+    )
     requirement_obligations = {item["obligation_id"] for item in vector_requirements["requirements"]}
     executable_obligations = {item["obligation_id"] for item in obligations if item["classification"] in {"mandatory", "conditional"}}
     if requirement_obligations != executable_obligations:
@@ -2087,7 +2101,8 @@ def main() -> int:
     parser.add_argument("--check", action="store_true", help="verify tracked artifacts against a deterministic rebuild")
     args = parser.parse_args()
     artifacts = build_all()
-    verify_catalog(ROOT)
+    verify_identity_catalog(ROOT)
+    verify_derivation_catalog(ROOT)
     bindings = [
         (artifacts[0], CORPUS_PATH, CORPUS_SCHEMA_PATH),
         (artifacts[1], PROJECTION_PATH, PROJECTION_SCHEMA_PATH),

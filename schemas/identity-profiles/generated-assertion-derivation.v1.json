@@ -1,0 +1,47 @@
+{
+  "profile_version": "1.0.0",
+  "root": {
+    "additional_properties": false,
+    "kind": "object",
+    "properties": {
+      "allowed_gate_kinds": {
+        "items": {"kind": "token"},
+        "kind": "set"
+      },
+      "authority_references": {
+        "items": {"kind": "canonical_text"},
+        "kind": "set"
+      },
+      "derivation_class": {
+        "kind": "enum",
+        "values": [
+          "calculation",
+          "constant-by-construction",
+          "external-evidence",
+          "inference",
+          "manual-decision",
+          "measurement",
+          "research-derived"
+        ]
+      },
+      "derivation_id": {"kind": "rcid"},
+      "independent_evidence": {"kind": "boolean"},
+      "input_references": {
+        "items": {"kind": "canonical_text"},
+        "kind": "set"
+      },
+      "method_key": {"kind": "token"},
+      "method_version": {"kind": "semver"}
+    },
+    "required": [
+      "allowed_gate_kinds",
+      "authority_references",
+      "derivation_class",
+      "derivation_id",
+      "independent_evidence",
+      "input_references",
+      "method_key",
+      "method_version"
+    ]
+  }
+}

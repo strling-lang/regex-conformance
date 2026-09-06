@@ -59,12 +59,17 @@ entities have permanent bindings, while vector revisions and applicability
 coordinates retain content-derived identity. See
 [Scientific identity and migration contract](scientific-identities.md).
 
-The next dependency is to bind generated assertions to their construction
-inputs and derivation metadata so deterministic construction is not mistaken
-for independent evidence. After that, physical attempts must expose sufficient
-reset and retry provenance and the certification conditions must become
-machine-readable predicates over freshly recomputed repository and evidence
-state.
+Generated assertions are now bound to a common derivation model so measured,
+calculated, researched, external, inferred, constructed, and policy-defined
+statements cannot silently substitute for one another. In particular, uniform
+facet expansion and legacy fixed audit prose prove structural construction,
+not independent semantic completeness. See
+[Generated assertion derivation contract](generated-assertion-derivations.md).
+
+The next dependency is for physical attempts to expose sufficient reset,
+retry, environment, and terminal-outcome provenance. The certification
+conditions then become machine-readable predicates over freshly recomputed
+repository and evidence state.
 
 ### Complete the semantic knowledge architecture
 

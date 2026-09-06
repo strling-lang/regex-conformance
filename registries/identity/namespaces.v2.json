@@ -26,6 +26,7 @@
       "applicability-coordinate",
       "applicability-policy",
       "applicability-rule-set",
+      "assertion-derivation-revision",
       "artifact-set-manifest",
       "campaign-definition-revision",
       "campaign-manifest",
@@ -68,6 +69,7 @@
     "u7": [
       "adapter",
       "adapter-release",
+      "assertion-derivation",
       "attestation",
       "campaign",
       "campaign-definition",

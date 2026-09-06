@@ -114,9 +114,20 @@ index.
 The regex semantic corpus, projection, vector-requirements, and denominator
 schemas define the content-addressed semantic authority and its executable
 consumer boundary. The companion compiler adds uniqueness, relation,
-candidate-conservation, complete twelve-facet, attribution, deterministic
+candidate-conservation, declared facet-template structural closure,
+attribution, deterministic
 profile-allocation, denominator arithmetic, and digest checks that cannot be
-expressed as independent JSON fields.
+expressed as independent JSON fields. Those construction checks are not
+independent evidence of researched semantic completeness.
+
+`json/generated-assertion-derivation-catalog.schema.json` defines the shared
+provenance contract for assertion-like generated fields. It requires
+class-specific metadata for measurement, calculation, research-derived,
+external-evidence, inference, constant-by-construction, and manual-decision
+records. Semantic validation binds stable typed derivation handles to
+content-derived method revisions, rejects dangling or stale references and
+inappropriate gate strength, reconciles declared counts with named
+populations, and requires deterministic complete inventory coverage.
 
 `json/scientific-identity-catalog.schema.json` and the semantic identity
 validator define the permanent assigned-ID lock over current features,

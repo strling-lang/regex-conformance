@@ -55,5 +55,14 @@ The generated products are:
 
 Each product is validated by a versioned schema and an additional semantic
 verifier that checks identity uniqueness, relation targets, candidate
-conservation, twelve-facet completeness, vector attribution, profile-bound
-allocation, arithmetic closure, and content digests.
+conservation, declared facet-template structural closure, vector attribution,
+profile-bound allocation, arithmetic closure, content digests, and generated
+assertion derivations. Structural closure means that the compiler emitted the
+declared template; it is not evidence that the declared facets are a complete
+scientific model.
+
+Published semantic artifacts remain immutable. The companion derivation
+inventory records that legacy fixed audit, discovery, facility-reconciliation,
+and facet-template statements are construction output where appropriate,
+without rewriting their bytes. See
+[`../docs/architecture/generated-assertion-derivations.md`](../docs/architecture/generated-assertion-derivations.md).

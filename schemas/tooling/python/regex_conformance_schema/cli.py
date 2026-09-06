@@ -8,11 +8,14 @@ import sys
 from pathlib import Path
 
 from .errors import ConformanceDataError
+from .derivation import CATALOG_PATH as DERIVATION_CATALOG_PATH
+from .derivation import SCHEMA_PATH as DERIVATION_SCHEMA_PATH
+from .derivation import verify_catalog as verify_derivation_catalog
 from .fixtures import materialize_manifest, verify_manifest
 from .identity import NamespaceRegistry, build_content_identity, generate_assigned_id
 from .jsonio import canonical_bytes, load_strict
 from .profile import IdentityProfile
-from .schema import validate_file, validate_repository
+from .schema import validate_file, validate_instance, validate_repository
 
 
 def _root(value: str | None) -> Path:
@@ -57,7 +60,26 @@ def run(argv: list[str] | None = None) -> int:
     registry_path = root / "registries" / "identity" / "namespaces.v1.json"
     try:
         if arguments.command == "validate-repository":
-            _emit({"ok": True, **validate_repository(root)})
+            counts = validate_repository(root)
+            registry_schema = load_strict(root / "schemas/json/namespace-registry.schema.json")
+            validate_instance(
+                load_strict(root / "registries/identity/namespaces.v2.json"),
+                registry_schema,
+                source="registries/identity/namespaces.v2.json",
+            )
+            derivation_catalog = load_strict(root / DERIVATION_CATALOG_PATH)
+            validate_instance(
+                derivation_catalog,
+                load_strict(root / DERIVATION_SCHEMA_PATH),
+                source=DERIVATION_CATALOG_PATH.as_posix(),
+            )
+            _emit(
+                {
+                    "ok": True,
+                    **counts,
+                    **verify_derivation_catalog(root, derivation_catalog),
+                }
+            )
         elif arguments.command == "verify-fixtures":
             _emit({"ok": True, **verify_manifest(root, root / arguments.manifest)})
         elif arguments.command == "materialize-fixtures":

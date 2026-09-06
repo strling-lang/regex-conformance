@@ -1,0 +1,378 @@
+{
+  "$id": "https://strling.dev/regex-conformance/schemas/generated-assertion-derivation-catalog/1.0.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "artifacts": {
+      "items": {"$ref": "#/$defs/artifact"},
+      "minItems": 1,
+      "type": "array"
+    },
+    "catalog_digest_sha256": {"$ref": "#/$defs/digest"},
+    "coverage_policy": {
+      "additionalProperties": false,
+      "properties": {
+        "assertion_container_names": {
+          "items": {"$ref": "#/$defs/fieldName"},
+          "minItems": 1,
+          "type": "array",
+          "uniqueItems": true
+        },
+        "assertion_key_fragments": {
+          "items": {"$ref": "#/$defs/fieldName"},
+          "minItems": 1,
+          "type": "array",
+          "uniqueItems": true
+        },
+        "rule": {"minLength": 1, "type": "string"}
+      },
+      "required": ["assertion_container_names", "assertion_key_fragments", "rule"],
+      "type": "object"
+    },
+    "coverage_summary": {
+      "additionalProperties": false,
+      "properties": {
+        "assertion_groups": {"minimum": 1, "type": "integer"},
+        "assertion_occurrences": {"minimum": 1, "type": "integer"},
+        "by_derivation_class": {
+          "additionalProperties": {"minimum": 0, "type": "integer"},
+          "type": "object"
+        },
+        "derivation_id": {"$ref": "#/$defs/rcid"},
+        "derivation_revision_id": {"$ref": "#/$defs/rcid"},
+        "evidence_role": {"const": "arithmetic-result"},
+        "count_contracts": {"minimum": 1, "type": "integer"},
+        "historical_immutable_artifacts": {"minimum": 0, "type": "integer"},
+        "inventoried_artifacts": {"minimum": 1, "type": "integer"},
+        "previously_ambiguous_occurrences": {"minimum": 0, "type": "integer"}
+      },
+      "required": [
+        "assertion_groups",
+        "assertion_occurrences",
+        "by_derivation_class",
+        "count_contracts",
+        "derivation_id",
+        "derivation_revision_id",
+        "evidence_role",
+        "historical_immutable_artifacts",
+        "inventoried_artifacts",
+        "previously_ambiguous_occurrences"
+      ],
+      "type": "object"
+    },
+    "derivation_identity_profile": {"minLength": 1, "type": "string"},
+    "derivations": {
+      "items": {"$ref": "#/$defs/derivation"},
+      "minItems": 7,
+      "type": "array"
+    },
+    "namespace_registry": {"minLength": 1, "type": "string"},
+    "schema_family_id": {"$ref": "#/$defs/rcid"},
+    "schema_version": {"const": "generated-assertion-derivation-catalog.v1"}
+  },
+  "required": [
+    "artifacts",
+    "catalog_digest_sha256",
+    "coverage_policy",
+    "coverage_summary",
+    "derivation_identity_profile",
+    "derivations",
+    "namespace_registry",
+    "schema_family_id",
+    "schema_version"
+  ],
+  "type": "object",
+  "$defs": {
+    "artifact": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_class": {
+          "enum": [
+                    "audit-or-reconciliation-report",
+                    "adapter-release-manifest",
+                    "campaign-plan",
+                    "certification-or-qualification-report",
+                    "checkpoint-index",
+                    "forecast",
+                    "governed-registry",
+                    "identity-lock",
+                    "qualification-policy",
+            "semantic-projection",
+            "semantic-snapshot",
+            "vector-requirement-ledger"
+          ]
+        },
+        "artifact_sha256": {"$ref": "#/$defs/digest"},
+        "assertion_bindings": {
+          "items": {"$ref": "#/$defs/binding"},
+          "minItems": 1,
+          "type": "array"
+        },
+        "count_contracts": {
+          "items": {"$ref": "#/$defs/countContract"},
+          "type": "array"
+        },
+        "coverage_selectors": {
+          "items": {"pattern": "^/", "type": "string"},
+          "type": "array",
+          "uniqueItems": true
+        },
+        "generators": {
+          "items": {"minLength": 1, "type": "string"},
+          "minItems": 1,
+          "type": "array",
+          "uniqueItems": true
+        },
+        "lifecycle": {
+          "enum": ["current-generated", "governed-registry", "historical-immutable"]
+        },
+        "path": {"minLength": 1, "pattern": "^[^\\\\]+$", "type": "string"},
+        "schema_reference": {"minLength": 1, "type": "string"}
+      },
+      "required": [
+        "artifact_class",
+        "artifact_sha256",
+        "assertion_bindings",
+        "count_contracts",
+        "coverage_selectors",
+        "generators",
+        "lifecycle",
+        "path"
+      ],
+      "type": "object"
+    },
+    "binding": {
+      "additionalProperties": false,
+      "properties": {
+        "assertion_kind": {
+          "enum": [
+            "audit",
+            "certification",
+            "completeness",
+            "coverage",
+            "discovery",
+            "disposition",
+            "forecast",
+            "governance",
+            "measurement",
+            "reconciliation",
+            "scientific",
+            "structural",
+            "validation"
+          ]
+        },
+        "current_value_source": {"minLength": 1, "type": "string"},
+        "derivation_id": {"$ref": "#/$defs/rcid"},
+        "derivation_revision_id": {"$ref": "#/$defs/rcid"},
+        "evidence_role": {
+          "enum": [
+            "arithmetic-result",
+            "external-authority-restatement",
+            "governance-constraint",
+            "independent-measurement",
+            "reasoned-conclusion",
+            "researched-conclusion",
+            "structural-invariant"
+          ]
+        },
+        "legacy_ambiguity": {
+          "enum": ["none", "overstated-evidence-strength", "unclear-counted-population"]
+        },
+        "matched_assertion_count": {"minimum": 1, "type": "integer"},
+        "reproducible": {"type": "boolean"},
+        "selector": {"pattern": "^/", "type": "string"}
+      },
+      "required": [
+        "assertion_kind",
+        "current_value_source",
+        "derivation_id",
+        "derivation_revision_id",
+        "evidence_role",
+        "legacy_ambiguity",
+        "matched_assertion_count",
+        "reproducible",
+        "selector"
+      ],
+      "type": "object"
+    },
+    "countContract": {
+      "additionalProperties": false,
+      "properties": {
+        "calculation_rule": {
+          "enum": [
+            "collection-length",
+            "matching-value-count",
+            "sum-collection-lengths",
+            "sum-integer-values"
+          ]
+        },
+        "counted_population": {"minLength": 1, "type": "string"},
+        "declared_count_selector": {"pattern": "^/", "type": "string"},
+        "input_selectors": {
+          "items": {"pattern": "^/", "type": "string"},
+          "minItems": 1,
+          "type": "array",
+          "uniqueItems": true
+        },
+        "legacy_name_ambiguous": {"type": "boolean"},
+        "match_values": {
+          "items": {},
+          "type": "array",
+          "uniqueItems": true
+        },
+        "resolution": {"minLength": 1, "type": "string"}
+      },
+      "required": [
+        "calculation_rule",
+        "counted_population",
+        "declared_count_selector",
+        "input_selectors",
+        "legacy_name_ambiguous",
+        "resolution"
+      ],
+      "type": "object"
+    },
+    "derivation": {
+      "additionalProperties": false,
+      "properties": {
+        "allowed_gate_kinds": {
+          "items": {"$ref": "#/$defs/token"},
+          "minItems": 1,
+          "type": "array",
+          "uniqueItems": true
+        },
+        "authority_references": {
+          "items": {"minLength": 1, "type": "string"},
+          "type": "array",
+          "uniqueItems": true
+        },
+        "derivation_class": {
+          "enum": [
+            "calculation",
+            "constant-by-construction",
+            "external-evidence",
+            "inference",
+            "manual-decision",
+            "measurement",
+            "research-derived"
+          ]
+        },
+        "derivation_id": {"$ref": "#/$defs/rcid"},
+        "derivation_revision_id": {"$ref": "#/$defs/rcid"},
+        "independent_evidence": {"type": "boolean"},
+        "input_references": {
+          "items": {"minLength": 1, "type": "string"},
+          "type": "array",
+          "uniqueItems": true
+        },
+        "metadata": {
+          "oneOf": [
+            {"$ref": "#/$defs/measurementMetadata"},
+            {"$ref": "#/$defs/calculationMetadata"},
+            {"$ref": "#/$defs/researchMetadata"},
+            {"$ref": "#/$defs/externalMetadata"},
+            {"$ref": "#/$defs/inferenceMetadata"},
+            {"$ref": "#/$defs/constructionMetadata"},
+            {"$ref": "#/$defs/manualMetadata"}
+          ]
+        },
+        "method_key": {"$ref": "#/$defs/token"},
+        "method_version": {"$ref": "#/$defs/semver"},
+        "notes": {"minLength": 1, "type": "string"},
+        "title": {"minLength": 1, "type": "string"}
+      },
+      "required": [
+        "allowed_gate_kinds",
+        "authority_references",
+        "derivation_class",
+        "derivation_id",
+        "derivation_revision_id",
+        "independent_evidence",
+        "input_references",
+        "metadata",
+        "method_key",
+        "method_version",
+        "notes",
+        "title"
+      ],
+      "type": "object"
+    },
+    "measurementMetadata": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {"const": "measurement"},
+        "measured_inputs": {"items": {"minLength": 1, "type": "string"}, "minItems": 1, "type": "array"},
+        "procedure_ref": {"minLength": 1, "type": "string"},
+        "procedure_version": {"$ref": "#/$defs/semver"}
+      },
+      "required": ["kind", "measured_inputs", "procedure_ref", "procedure_version"],
+      "type": "object"
+    },
+    "calculationMetadata": {
+      "additionalProperties": false,
+      "properties": {
+        "formula": {"minLength": 1, "type": "string"},
+        "input_references": {"items": {"minLength": 1, "type": "string"}, "minItems": 1, "type": "array"},
+        "kind": {"const": "calculation"},
+        "procedure_ref": {"minLength": 1, "type": "string"}
+      },
+      "required": ["formula", "input_references", "kind", "procedure_ref"],
+      "type": "object"
+    },
+    "researchMetadata": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {"const": "research-derived"},
+        "methodology": {"minLength": 1, "type": "string"},
+        "research_artifact_ref": {"minLength": 1, "type": "string"},
+        "source_references": {"items": {"minLength": 1, "type": "string"}, "minItems": 1, "type": "array"}
+      },
+      "required": ["kind", "methodology", "research_artifact_ref", "source_references"],
+      "type": "object"
+    },
+    "externalMetadata": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {"const": "external-evidence"},
+        "source_references": {"items": {"minLength": 1, "type": "string"}, "minItems": 1, "type": "array"}
+      },
+      "required": ["kind", "source_references"],
+      "type": "object"
+    },
+    "inferenceMetadata": {
+      "additionalProperties": false,
+      "properties": {
+        "inference_rule": {"minLength": 1, "type": "string"},
+        "kind": {"const": "inference"},
+        "supporting_evidence_references": {"items": {"minLength": 1, "type": "string"}, "minItems": 1, "type": "array"}
+      },
+      "required": ["inference_rule", "kind", "supporting_evidence_references"],
+      "type": "object"
+    },
+    "constructionMetadata": {
+      "additionalProperties": false,
+      "properties": {
+        "construction_rule": {"minLength": 1, "type": "string"},
+        "constructor_ref": {"minLength": 1, "type": "string"},
+        "kind": {"const": "constant-by-construction"}
+      },
+      "required": ["construction_rule", "constructor_ref", "kind"],
+      "type": "object"
+    },
+    "manualMetadata": {
+      "additionalProperties": false,
+      "properties": {
+        "decision_scope": {"minLength": 1, "type": "string"},
+        "governing_decision_ref": {"minLength": 1, "type": "string"},
+        "kind": {"const": "manual-decision"}
+      },
+      "required": ["decision_scope", "governing_decision_ref", "kind"],
+      "type": "object"
+    },
+    "digest": {"pattern": "^[0-9a-f]{64}$", "type": "string"},
+    "fieldName": {"pattern": "^[a-z][a-z0-9_-]*$", "type": "string"},
+    "rcid": {"pattern": "^rcid:v1:[a-z][a-z0-9-]*:(?:u7:[0-9a-f-]{36}|h:jcs-sha256-v1:[0-9a-f]{64})$", "type": "string"},
+    "semver": {"pattern": "^(?:0|[1-9][0-9]*)\\.(?:0|[1-9][0-9]*)\\.(?:0|[1-9][0-9]*)$", "type": "string"},
+    "token": {"pattern": "^[a-z][a-z0-9-]*$", "type": "string"}
+  }
+}

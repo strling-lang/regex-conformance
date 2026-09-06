@@ -32,6 +32,13 @@ from the catalog and fail on missing, reused, retired, or mutated bindings;
 they never mint replacement IDs because ordering, generator version, or file
 layout changed. See [Scientific identity and migration contract](scientific-identities.md).
 
+The generated-assertion derivation catalog is a separate companion binding
+over assertion-like fields in generated artifacts. It records whether each
+assertion is measured, calculated, researched, externally evidenced, inferred,
+constant by construction, or a manual decision. This metadata does not enter
+the scientific entity identities. See
+[Generated assertion derivation contract](generated-assertion-derivations.md).
+
 ## Tracked authored sources
 
 - `registries/profiles/`, `vectors/definitions/`, `applicability/policies/`, and
@@ -59,7 +66,8 @@ diff. Fixtures are not production observations or published evidence.
 | Source family | Producer | Tracked product | Verification |
 | --- | --- | --- | --- |
 | Frozen semantic products plus the permanent identity lock | `tools/identity/freeze_scientific_identities.py` | `registries/identity/scientific-identities.v1.json` | typed namespace validation, source reconciliation, immutable fingerprint history, lineage graph, key ownership, retirement and reuse checks, and catalog digest |
-| Declared-cutoff semantic census, frozen profile bounds, and certified Evidence Pack v3 measurement | `tools/semantics/compile_semantic_baseline.py` | semantic-corpus snapshot, executable ontology projection, vector-requirement ledger, and `reports/scale/regex-semantic-denominator-forecast.json` | schema validation, candidate conservation, feature/relation integrity, twelve-facet obligation closure, deterministic bounded applicability expansion, independent denominator arithmetic, content digests, and fail-closed capacity gate |
+| Generated assertion inventory | `tools/provenance/compile_generated_assertion_derivations.py` | `registries/provenance/generated-assertion-derivations.v1.json` | exact source digests, assertion coverage, class-specific metadata, typed handles and content-derived revisions, evidence-strength gates, count/population reconciliation, and deterministic canonical bytes |
+| Declared-cutoff semantic census, frozen profile bounds, and certified Evidence Pack v3 measurement | `tools/semantics/compile_semantic_baseline.py` | semantic-corpus snapshot, executable ontology projection, vector-requirement ledger, and `reports/scale/regex-semantic-denominator-forecast.json` | schema validation, candidate conservation, feature/relation integrity, declared facet-template structural closure, deterministic bounded applicability expansion, denominator arithmetic, content digests, fail-closed capacity gate, and derivation-strength validation |
 | First vertical-slice definition, profiles, vectors, applicability, schemas | `tools/campaigns/compile_vertical_slice.py` | `campaigns/compiled/first-vertical-slice.v1.json` | repository validation and campaign tests |
 | Small-scale qualification inputs | `tools/campaigns/compile_small_scale.py` | `campaigns/compiled/small-scale-qualification.v1.json`; `reports/small-scale/qualification-coverage.json` | compiler read-after-write checks and `test_small_scale_qualification.py` |
 | 100K qualification definition plus frozen small-scale basis | `tools/campaigns/compile_100k_qualification.py` | `campaigns/compiled/100k-qualification.v1.json`; `reports/scale/100k-qualification-design.json` | compiler verification and `test_100k_qualification_design.py` |
@@ -81,6 +89,11 @@ diff. Fixtures are not production observations or published evidence.
 Edit the source and run the listed producer; do not hand-maintain these outputs.
 A compact report is a traceable projection, not raw evidence or independent
 truth.
+
+An enclosing artifact digest may change when derivation or reporting metadata
+changes. That does not mint new scientific identities for unchanged entities
+inside it. Historical immutable artifacts retain their original bytes; the
+companion derivation catalog records their assertion semantics prospectively.
 
 ## Downstream synchronization products
 

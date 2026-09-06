@@ -17,7 +17,13 @@ for source in (
     sys.path.insert(0, str(source))
 
 import compile_semantic_baseline as baseline  # noqa: E402
+from regex_conformance_schema.derivation import (  # noqa: E402
+    CATALOG_PATH as DERIVATION_CATALOG_PATH,
+    require_assertion_gate,
+)
+from regex_conformance_schema.errors import ConformanceDataError  # noqa: E402
 from regex_conformance_schema.jsonio import canonical_bytes  # noqa: E402
+from regex_conformance_schema.jsonio import load_strict  # noqa: E402
 
 
 class RegexSemanticBaselineTests(unittest.TestCase):
@@ -66,12 +72,29 @@ class RegexSemanticBaselineTests(unittest.TestCase):
             self.assertIn(manifestation["semantic_feature_id"], feature_ids)
             self.assertIn("does not allocate", manifestation["identity_note"])
 
-    def test_all_features_have_the_complete_facet_taxonomy(self) -> None:
+    def test_all_features_close_the_declared_facet_template_structurally(self) -> None:
         facets_by_feature: dict[str, set[str]] = {}
         for obligation in self.projection["semantic_obligation_templates"]:
             facets_by_feature.setdefault(obligation["feature_id"], set()).add(obligation["facet"])
         self.assertEqual(len(self.projection["semantic_obligation_templates"]), 12048)
         self.assertTrue(all(facets == set(baseline.FACET_CASES) for facets in facets_by_feature.values()))
+        catalog = load_strict(ROOT / DERIVATION_CATALOG_PATH)
+        assertion = "/semantic_obligation_templates/0/facet"
+        require_assertion_gate(
+            catalog,
+            "ontology/projections/regex-semantic-projection-2026-08-22.v1.json",
+            assertion,
+            "structural-integrity",
+        )
+        with self.assertRaisesRegex(
+            ConformanceDataError, "inappropriate-evidence-strength"
+        ):
+            require_assertion_gate(
+                catalog,
+                "ontology/projections/regex-semantic-projection-2026-08-22.v1.json",
+                assertion,
+                "semantic-completeness",
+            )
 
     def test_vector_gap_is_explicit_and_attributable(self) -> None:
         counts = self.vectors["counts"]

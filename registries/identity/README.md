@@ -6,11 +6,16 @@ qualified external crosswalk metadata belong here.
 `namespaces.v1.json` remains the exact registry used by already-generated
 qualification and evidence artifacts. `namespaces.v2.json` is its additive
 successor for permanent semantic-entity and applicability-coordinate
-identities. Both use the same typed `rcid`/`opid` grammar; the successor is not
-a second identity system.
+identities and generated-assertion derivation handles/revisions. Both use the
+same typed `rcid`/`opid` grammar; the successor is not a second identity system.
 
 `scientific-identities.v1.json` is the canonical semantic-entity binding and
 persistent identity lock. Readable keys are compatibility metadata. The
 scientific and content identity rules, migration graph, and safe allocation
 procedure are documented in
 [`../../docs/architecture/scientific-identities.md`](../../docs/architecture/scientific-identities.md).
+
+Generated assertion derivations use an assigned stable handle and a
+content-derived method revision. They describe why an assertion was emitted;
+they neither replace nor participate in the frozen identities of the
+scientific entities being described.

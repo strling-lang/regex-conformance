@@ -14,6 +14,14 @@ Evidence Pack v3 forecast bound to the frozen semantic snapshot. It carries the
 restored 14,559,081,529-byte baseline, candidate-retention accounting, and the
 selected 7,452,076,843-byte conservative capacity result.
 
+Forecast arithmetic is distinct from the authority of its inputs. Measured
+corpus and compression bases are measurements; profile counts, multipliers,
+retry rates, reserves, bounds, and growth allowances remain planning
+assumptions until replaced by later empirical work. The 8 GB soft stop, 10 GB
+hard ceiling, and no-paid-capacity rule are policy decisions. Their current
+values are unchanged. The generated assertion inventory binds each class and
+prevents forecast calculation from masquerading as evidence for an assumption.
+
 The generated small-scale fault-classification report is recomputed from the closed deliberate-fault matrix. It distinguishes target terminal observations from adapter, worker, network, and storage attempts without assigning normative authority.
 
 The generated small-scale restart-resume qualification report is recomputed from the closed governed-boundary matrix. It governs continue, retry, committed, and quarantine decisions while remaining operational and non-authoritative.
