@@ -33,6 +33,7 @@ for source in (
 from regex_conformance_scale.evidence_pack_v3 import build_capacity_forecast  # noqa: E402
 from regex_conformance_schema.jsonio import canonical_bytes, load_strict  # noqa: E402
 from regex_conformance_schema.schema import validate_instance  # noqa: E402
+from regex_conformance_schema.scientific_identity import verify_catalog  # noqa: E402
 
 
 CUTOFF = "2026-08-22"
@@ -2086,6 +2087,7 @@ def main() -> int:
     parser.add_argument("--check", action="store_true", help="verify tracked artifacts against a deterministic rebuild")
     args = parser.parse_args()
     artifacts = build_all()
+    verify_catalog(ROOT)
     bindings = [
         (artifacts[0], CORPUS_PATH, CORPUS_SCHEMA_PATH),
         (artifacts[1], PROJECTION_PATH, PROJECTION_SCHEMA_PATH),

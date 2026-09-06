@@ -1,0 +1,46 @@
+{
+  "profile_version": "1.0.0",
+  "root": {
+    "additional_properties": false,
+    "kind": "object",
+    "properties": {
+      "change_kind": {
+        "kind": "enum",
+        "values": [
+          "alias-of",
+          "corrected-without-semantic-change",
+          "deprecated",
+          "merged-from",
+          "renamed-from",
+          "split-from",
+          "superseded-by",
+          "supersedes"
+        ]
+      },
+      "current_fingerprints": {"items": {"kind": "digest"}, "kind": "set"},
+      "current_keys": {"items": {"kind": "canonical_text"}, "kind": "set"},
+      "effective_date": {"kind": "date"},
+      "identity_effect": {
+        "kind": "enum",
+        "values": ["new-identity", "no-identity", "retained"]
+      },
+      "prior_fingerprints": {"items": {"kind": "digest"}, "kind": "set"},
+      "prior_keys": {"items": {"kind": "canonical_text"}, "kind": "set"},
+      "rationale": {"kind": "canonical_text"},
+      "source_ids": {"items": {"kind": "rcid"}, "kind": "set"},
+      "target_ids": {"items": {"kind": "rcid"}, "kind": "set"}
+    },
+    "required": [
+      "change_kind",
+      "current_fingerprints",
+      "current_keys",
+      "effective_date",
+      "identity_effect",
+      "prior_fingerprints",
+      "prior_keys",
+      "rationale",
+      "source_ids",
+      "target_ids"
+    ]
+  }
+}

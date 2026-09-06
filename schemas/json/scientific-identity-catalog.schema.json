@@ -1,0 +1,187 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/scientific-identity-catalog.schema.json",
+  "title": "Scientific identity catalog and persistent lock",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "namespace_registry",
+    "adoption",
+    "source_artifacts",
+    "bindings",
+    "lineage_records",
+    "counts",
+    "catalog_digest_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": "scientific-identity-catalog.v1"},
+    "namespace_registry": {"const": "registries/identity/namespaces.v2.json"},
+    "adoption": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["effective_date", "legacy_keys_remain_resolvable", "allocation_rule"],
+      "properties": {
+        "effective_date": {"type": "string", "format": "date"},
+        "legacy_keys_remain_resolvable": {"const": true},
+        "allocation_rule": {"type": "string", "minLength": 1}
+      }
+    },
+    "source_artifacts": {
+      "type": "array",
+      "minItems": 3,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["role", "artifact_id", "digest_sha256"],
+        "properties": {
+          "role": {"enum": ["semantic-projection", "semantic-snapshot", "vector-requirement-ledger"]},
+          "artifact_id": {"type": ["string", "null"]},
+          "digest_sha256": {"$ref": "#/$defs/digest"}
+        }
+      }
+    },
+    "bindings": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/binding"}
+    },
+    "lineage_records": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/lineage"}
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["active", "historical", "by_class", "lineage_records", "total"],
+      "properties": {
+        "active": {"$ref": "#/$defs/nonnegativeInteger"},
+        "historical": {"$ref": "#/$defs/nonnegativeInteger"},
+        "by_class": {
+          "type": "object",
+          "additionalProperties": {"$ref": "#/$defs/nonnegativeInteger"}
+        },
+        "lineage_records": {"$ref": "#/$defs/nonnegativeInteger"},
+        "total": {"$ref": "#/$defs/nonnegativeInteger"}
+      }
+    },
+    "catalog_digest_sha256": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "nonnegativeInteger": {"type": "integer", "minimum": 0},
+    "scientificId": {
+      "type": "string",
+      "pattern": "^rcid:v1:[a-z][a-z0-9]*(?:-[a-z0-9]+)*:u7:[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "migrationId": {
+      "type": "string",
+      "pattern": "^rcid:v1:identity-migration:h:jcs-sha256-v1:[0-9a-f]{64}$"
+    },
+    "key": {"type": "string", "minLength": 1, "maxLength": 2048},
+    "fingerprintHistory": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["effective_date", "fingerprint_sha256", "lineage_record_id"],
+      "properties": {
+        "effective_date": {"type": "string", "format": "date"},
+        "fingerprint_sha256": {"$ref": "#/$defs/digest"},
+        "lineage_record_id": {"oneOf": [{"$ref": "#/$defs/migrationId"}, {"type": "null"}]}
+      }
+    },
+    "binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scientific_id",
+        "entity_class",
+        "canonical_key",
+        "former_keys",
+        "status",
+        "source_role",
+        "semantic_fingerprint_history"
+      ],
+      "properties": {
+        "scientific_id": {"$ref": "#/$defs/scientificId"},
+        "entity_class": {
+          "enum": [
+            "feature",
+            "manifestation",
+            "modifier",
+            "obligation",
+            "operation",
+            "semantic-requirement",
+            "semantic-variant",
+            "typed-interaction"
+          ]
+        },
+        "canonical_key": {"$ref": "#/$defs/key"},
+        "former_keys": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/key"}
+        },
+        "status": {
+          "enum": [
+            "active",
+            "deprecated",
+            "erroneous-historical-classification",
+            "merged",
+            "out-of-scope",
+            "split",
+            "superseded",
+            "unresolved"
+          ]
+        },
+        "source_role": {"enum": ["semantic-projection", "semantic-snapshot", "vector-requirement-ledger"]},
+        "semantic_fingerprint_history": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/fingerprintHistory"}
+        }
+      }
+    },
+    "lineage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "lineage_record_id",
+        "change_kind",
+        "identity_effect",
+        "effective_date",
+        "source_ids",
+        "target_ids",
+        "prior_keys",
+        "current_keys",
+        "prior_fingerprints",
+        "current_fingerprints",
+        "rationale"
+      ],
+      "properties": {
+        "lineage_record_id": {"$ref": "#/$defs/migrationId"},
+        "change_kind": {
+          "enum": [
+            "alias-of",
+            "corrected-without-semantic-change",
+            "deprecated",
+            "merged-from",
+            "renamed-from",
+            "split-from",
+            "superseded-by",
+            "supersedes"
+          ]
+        },
+        "identity_effect": {"enum": ["new-identity", "no-identity", "retained"]},
+        "effective_date": {"type": "string", "format": "date"},
+        "source_ids": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/scientificId"}},
+        "target_ids": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/scientificId"}},
+        "prior_keys": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/key"}},
+        "current_keys": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/key"}},
+        "prior_fingerprints": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/digest"}},
+        "current_fingerprints": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/digest"}},
+        "rationale": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

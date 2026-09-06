@@ -10,6 +10,8 @@ machine authority for exact fields and validation.
 ```text
 primary sources → semantic-corpus snapshot → immutable ontology projection
                                       ↓
+                         scientific identity catalog
+                                      ↓
 profile / vector / campaign / applicability / schema source
 → compiler or fixture materializer
 → compact tracked manifest, fixture, or report
@@ -22,6 +24,13 @@ profile / vector / campaign / applicability / schema source
 An arrow records derivation, not authority elevation. Empirical output never
 becomes a normative regex guarantee merely because it is deterministic,
 verified, or published.
+
+The scientific identity catalog is an additive binding over legacy semantic
+keys. An enclosing generated-artifact digest may change while its internal
+scientific entity IDs remain stable. Generators must resolve existing entities
+from the catalog and fail on missing, reused, retired, or mutated bindings;
+they never mint replacement IDs because ordering, generator version, or file
+layout changed. See [Scientific identity and migration contract](scientific-identities.md).
 
 ## Tracked authored sources
 
@@ -49,6 +58,7 @@ diff. Fixtures are not production observations or published evidence.
 
 | Source family | Producer | Tracked product | Verification |
 | --- | --- | --- | --- |
+| Frozen semantic products plus the permanent identity lock | `tools/identity/freeze_scientific_identities.py` | `registries/identity/scientific-identities.v1.json` | typed namespace validation, source reconciliation, immutable fingerprint history, lineage graph, key ownership, retirement and reuse checks, and catalog digest |
 | Declared-cutoff semantic census, frozen profile bounds, and certified Evidence Pack v3 measurement | `tools/semantics/compile_semantic_baseline.py` | semantic-corpus snapshot, executable ontology projection, vector-requirement ledger, and `reports/scale/regex-semantic-denominator-forecast.json` | schema validation, candidate conservation, feature/relation integrity, twelve-facet obligation closure, deterministic bounded applicability expansion, independent denominator arithmetic, content digests, and fail-closed capacity gate |
 | First vertical-slice definition, profiles, vectors, applicability, schemas | `tools/campaigns/compile_vertical_slice.py` | `campaigns/compiled/first-vertical-slice.v1.json` | repository validation and campaign tests |
 | Small-scale qualification inputs | `tools/campaigns/compile_small_scale.py` | `campaigns/compiled/small-scale-qualification.v1.json`; `reports/small-scale/qualification-coverage.json` | compiler read-after-write checks and `test_small_scale_qualification.py` |

@@ -1,0 +1,39 @@
+{
+  "profile_version": "1.0.0",
+  "root": {
+    "additional_properties": false,
+    "kind": "object",
+    "properties": {
+      "applicability_preconditions_sha256": {"kind": "digest"},
+      "callback_fixture_sha256": {"kind": "digest"},
+      "deterministic_limits_sha256": {"kind": "digest"},
+      "domain": {"kind": "token"},
+      "initial_state_sha256": {"kind": "digest"},
+      "interaction_ids": {"items": {"kind": "rcid"}, "kind": "set"},
+      "obligation_ids": {"items": {"kind": "rcid"}, "kind": "set"},
+      "operation_id": {"kind": "rcid"},
+      "options_sha256": {"kind": "digest"},
+      "pattern_sha256": {"kind": "digest"},
+      "replacement_sha256": {"kind": "digest"},
+      "requested_observations": {"items": {"kind": "token"}, "kind": "set"},
+      "semantic_requirement_ids": {"items": {"kind": "rcid"}, "kind": "set"},
+      "subjects_sha256": {"kind": "digest"}
+    },
+    "required": [
+      "applicability_preconditions_sha256",
+      "callback_fixture_sha256",
+      "deterministic_limits_sha256",
+      "domain",
+      "initial_state_sha256",
+      "interaction_ids",
+      "obligation_ids",
+      "operation_id",
+      "options_sha256",
+      "pattern_sha256",
+      "replacement_sha256",
+      "requested_observations",
+      "semantic_requirement_ids",
+      "subjects_sha256"
+    ]
+  }
+}

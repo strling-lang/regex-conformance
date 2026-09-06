@@ -53,11 +53,16 @@ identity where that stronger existing contract applies.
 
 ### Freeze identities and certification predicates
 
-Freeze immutable identifiers and migration rules for requirements,
-obligations, vectors, and coordinates. Generated assertions must bind their
-construction inputs and derivation metadata so deterministic construction is
-not mistaken for independent evidence. Physical attempts must expose sufficient
-reset and retry provenance. The certification conditions must become
+Immutable scientific identity and migration rules are now frozen. The existing
+typed identity architecture remains authoritative; 22,359 current semantic
+entities have permanent bindings, while vector revisions and applicability
+coordinates retain content-derived identity. See
+[Scientific identity and migration contract](scientific-identities.md).
+
+The next dependency is to bind generated assertions to their construction
+inputs and derivation metadata so deterministic construction is not mistaken
+for independent evidence. After that, physical attempts must expose sufficient
+reset and retry provenance and the certification conditions must become
 machine-readable predicates over freshly recomputed repository and evidence
 state.
 

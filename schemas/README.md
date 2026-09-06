@@ -118,6 +118,15 @@ candidate-conservation, complete twelve-facet, attribution, deterministic
 profile-allocation, denominator arithmetic, and digest checks that cannot be
 expressed as independent JSON fields.
 
+`json/scientific-identity-catalog.schema.json` and the semantic identity
+validator define the permanent assigned-ID lock over current features,
+variants, modifiers, operations, manifestations, interactions, obligations,
+and requirements. The `production-vector-revision`,
+`applicability-coordinate`, and `scientific-lineage` identity profiles define
+the exact content-derived constructors for future production artifacts and
+migration records. Legacy generated semantic products remain immutable and
+resolve their readable keys through the catalog.
+
 `json/scale-warehouse-reconciliation.schema.json` defines the compact six-figure warehouse
 reconciliation report. It binds the certified campaign, evidence manifest,
 execution report, recovery hash chain, both non-crediting infrastructure

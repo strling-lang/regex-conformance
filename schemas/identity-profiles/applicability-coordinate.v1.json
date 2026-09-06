@@ -1,0 +1,27 @@
+{
+  "profile_version": "1.0.0",
+  "root": {
+    "additional_properties": false,
+    "kind": "object",
+    "properties": {
+      "applicability_inputs_sha256": {"kind": "digest"},
+      "applicability_rule_set_id": {"kind": "rcid"},
+      "obligation_ids": {"items": {"kind": "rcid"}, "kind": "set"},
+      "operation_id": {"kind": "rcid"},
+      "profile_revision_id": {"kind": "rcid"},
+      "semantic_requirement_ids": {"items": {"kind": "rcid"}, "kind": "set"},
+      "target_release_revision_id": {"kind": "rcid"},
+      "vector_revision_id": {"kind": "rcid"}
+    },
+    "required": [
+      "applicability_inputs_sha256",
+      "applicability_rule_set_id",
+      "obligation_ids",
+      "operation_id",
+      "profile_revision_id",
+      "semantic_requirement_ids",
+      "target_release_revision_id",
+      "vector_revision_id"
+    ]
+  }
+}
