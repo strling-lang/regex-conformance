@@ -1,0 +1,17 @@
+{
+  "actions": [],
+  "authority_index_sha256": "81ed5f835dcd1b0c2e8d5e6f0a047fd3669073dc88b561c5e0aef79929c5c8df",
+  "certifications": [],
+  "current_certification_id": null,
+  "current_contract": {
+    "contract_digest_sha256": "ed0c3db8560926e55d8642343a4557d565386264cb55fc95718dea8cfd0cf871",
+    "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:c4e37ec6c122d758f71e6000fb708dd72ef8b9e2d948813919d1c3ddf15f1bfa",
+    "contract_version": "1.0.0"
+  },
+  "current_evaluation": {
+    "final_state": "FAIL",
+    "report_digest_sha256": "7ceed685bbfa532a55d35ab1fc9d45392c6eaff8f9cadac028788972fb843cce",
+    "report_id": "rcid:v1:certification-report:h:jcs-sha256-v1:dc743163d75f19b41c5730ba3e98f1ac386233266a6810577e19af12faa839d3"
+  },
+  "schema_version": "certification-authority-index.v1"
+}

@@ -75,6 +75,7 @@ publisher's authority and is not recast as a repository ID.
 | Evidence object / block | raw and stored SHA-256 content addresses | object key and block ordinal | Evidence Pack lookup and corruption proof |
 | Evidence manifest | content-derived `evidence-manifest` or exact manifest digest under its versioned pack contract | publication location | evidence admission and downstream checkpoints |
 | Downstream checkpoint | content-derived checkpoint digest and `shard` identity | sequence and relative paths | monotonic downstream index |
+| Certification contract / input / report | content-derived `certification-definition`, `certification-input-set`, and `certification-report`; issued certification and authority actions use assigned `certification` and `certification-action` | contract title, report display, authority-index ordering | exact predicate version, source set, evaluation, supersession, and revocation |
 | Claim, divergence, waiver | not yet implemented; must use assigned scientific IDs with explicit content revisions and lineage when introduced | titles, issue labels, reviewer prose | adjudication and certification; never infer IDs from labels |
 | Schema family / revision | assigned `schema-family`; content-derived `schema-revision` | schema filename and version string | every content constructor and compatibility edge |
 | Operational local state | `opid` in the registered local namespace | process, cache, transfer, telemetry labels | never scientific or evidence authority |

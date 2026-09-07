@@ -149,6 +149,13 @@ the exact content-derived constructors for future production artifacts and
 migration records. Legacy generated semantic products remain immutable and
 resolve their readable keys through the catalog.
 
+The certification schema family defines the versioned predicate contract,
+digest-bound input set, deterministic C1-C7 report, separate authority index,
+and adversarial fixture set. Contract, input-set, and report identities use
+the existing content-derived identity architecture under permanent schema
+family `rcid:v1:schema-family:u7:01a079d7-bff3-79f7-bd14-3184c831b9f5`;
+issuance and authority actions retain assigned typed identities.
+
 `json/scale-warehouse-reconciliation.schema.json` defines the compact six-figure warehouse
 reconciliation report. It binds the certified campaign, evidence manifest,
 execution report, recovery hash chain, both non-crediting infrastructure

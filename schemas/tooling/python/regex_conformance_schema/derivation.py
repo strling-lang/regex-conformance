@@ -96,6 +96,7 @@ DERIVATION_IDS = {
     "vector-coverage-calculation": "rcid:v1:assertion-derivation:u7:01a07849-7263-7abb-8910-ff1786f90213",
     "facet-template-construction": "rcid:v1:assertion-derivation:u7:01a07849-7263-7c28-a56f-103c3b1f15c8",
     "manual-registry-decision": "rcid:v1:assertion-derivation:u7:01a07849-7263-7a47-adb6-32ef7f4fb541",
+    "certification-predicate-calculation": "rcid:v1:assertion-derivation:u7:01a079d7-da99-7de8-a311-4e0196c5e676",
 }
 
 ALLOWED_GATES_BY_CLASS = {
@@ -460,6 +461,32 @@ def _derivation_specs(root: Path) -> list[dict[str, Any]]:
             },
             "notes": "Governance state is not an observed runtime fact.",
         },
+        {
+            "key": "certification-predicate-calculation",
+            "title": "Versioned certification predicate evaluation",
+            "derivation_class": "calculation",
+            "method_key": "certification-predicate-evaluation",
+            "method_version": "1.0.0",
+            "input_references": [
+                "certification/contracts/regex-conformance-certification.v1.json",
+                "the exact digest-bound certification input set",
+            ],
+            "authority_references": [
+                "schemas/tooling/python/regex_conformance_schema/certification.py"
+            ],
+            "allowed_gate_kinds": ["arithmetic-closure", "structural-integrity"],
+            "independent_evidence": False,
+            "metadata": {
+                "kind": "calculation",
+                "input_references": [
+                    "the versioned predicate contract",
+                    "the exact source artifacts, derivation revisions, and denominator members bound by the input set",
+                ],
+                "procedure_ref": "schemas/tooling/python/regex_conformance_schema/certification.py",
+                "formula": "Evaluate each criterion independently over exact stable-ID sets, then compose required results with FAIL before BLOCKED before PASS precedence.",
+            },
+            "notes": "The evaluator derives certification state but cannot upgrade the evidence strength of its inputs.",
+        },
     ]
 
 
@@ -728,6 +755,68 @@ def _artifact_specs() -> tuple[ArtifactSpec, ...]:
                 _b("/classification", "classification-guard", "structural", "Protective non-authority declarations."),
             ),
             schema_reference="schemas/json/qualification-profile-overlay.schema.json",
+        ),
+        ArtifactSpec(
+            "certification/contracts/regex-conformance-certification.v1.json",
+            "certification-contract",
+            "governed-registry",
+            ("schemas/tooling/python/regex_conformance_schema/certification.py",),
+            (
+                _b("/", "manual-registry-decision", "governance", "Accepted completeness and certification rules encoded by the versioned contract builder."),
+                _b("/contract_digest_sha256", "certification-predicate-calculation", "validation", "Canonical digest of the contract content excluding its content identity and digest fields."),
+                _b("/contract_id", "certification-predicate-calculation", "validation", "Content-derived certification-definition identity calculated from the contract digest."),
+            ),
+            coverage_selectors=("/criteria", "/final_composition", "/result_states", "/supersession_and_revocation"),
+            schema_reference="schemas/json/certification-contract.schema.json",
+        ),
+        ArtifactSpec(
+            "certification/inputs/current-repository.v1.json",
+            "certification-input-set",
+            "current-generated",
+            ("tools/certification/evaluate.py",),
+            (
+                _b("/", "certification-predicate-calculation", "reconciliation", "Deterministic classification and digest binding of the repository's current canonical certification inputs."),
+                _b("/source_artifacts/*/sha256", "artifact-measurement", "measurement", "Measured byte digest of the exact referenced repository artifact."),
+            ),
+            coverage_selectors=("/criteria", "/source_artifacts"),
+            schema_reference="schemas/json/certification-input-set.schema.json",
+        ),
+        ArtifactSpec(
+            "certification/reports/current-repository.v1.json",
+            "certification-report",
+            "current-generated",
+            ("tools/certification/evaluate.py",),
+            (
+                _b("/", "certification-predicate-calculation", "certification", "Deterministic per-criterion evaluation and final required-criterion conjunction over the bound input set."),
+            ),
+            coverage_selectors=("/authority_status", "/certification_eligible", "/criteria", "/final_state"),
+            schema_reference="schemas/json/certification-report.schema.json",
+        ),
+        ArtifactSpec(
+            "certification/current-authority.v1.json",
+            "certification-authority-index",
+            "governed-registry",
+            ("tools/certification/evaluate.py",),
+            (
+                _b("/", "manual-registry-decision", "governance", "Append-only certification issuance, supersession, and revocation authority state."),
+                _b("/authority_index_sha256", "certification-predicate-calculation", "validation", "Canonical digest over the authority index excluding its digest field."),
+                _b("/current_contract", "certification-predicate-calculation", "reconciliation", "Deterministic pointer to the current versioned predicate contract."),
+                _b("/current_evaluation", "certification-predicate-calculation", "reconciliation", "Deterministic pointer to the freshly evaluated current-repository report."),
+            ),
+            coverage_selectors=("/actions", "/certifications", "/current_certification_id", "/current_contract", "/current_evaluation"),
+            schema_reference="schemas/json/certification-authority-index.schema.json",
+        ),
+        ArtifactSpec(
+            "tests/fixtures/certification/certification-predicates.v1.json",
+            "certification-fixture-set",
+            "current-generated",
+            ("tools/certification/evaluate.py",),
+            (
+                _b("/", "certification-predicate-calculation", "validation", "Deterministic expected states obtained by evaluating adversarial fixture input sets with the versioned contract."),
+                _b("/supersession_fixture", "classification-guard", "structural", "Synthetic immutable-history fixture used only to validate authority-state routing."),
+            ),
+            coverage_selectors=("/cases", "/supersession_fixture"),
+            schema_reference="schemas/json/certification-predicate-fixtures.schema.json",
         ),
         *_report_specs(),
         *_campaign_specs(),

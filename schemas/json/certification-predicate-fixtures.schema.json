@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/certification-predicate-fixtures.schema.json",
+  "title": "Certification Predicate Fixture Set v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["cases", "contract_id", "fixture_digest_sha256", "schema_version", "supersession_fixture"],
+  "properties": {
+    "schema_version": {"const": "certification-predicate-fixtures.v1"},
+    "contract_id": {"type": "string", "pattern": "^rcid:v1:certification-definition:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "fixture_digest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "cases": {
+      "type": "array",
+      "minItems": 12,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["expected_criterion_states", "expected_final_state", "input_set", "name"],
+        "properties": {
+          "name": {"type": "string", "pattern": "^[a-z0-9-]+$"},
+          "expected_final_state": {"enum": ["BLOCKED", "FAIL", "PASS"]},
+          "expected_criterion_states": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["C1", "C2", "C3", "C4", "C5", "C6", "C7"],
+            "properties": {
+              "C1": {"enum": ["BLOCKED", "FAIL", "PASS"]},
+              "C2": {"enum": ["BLOCKED", "FAIL", "PASS"]},
+              "C3": {"enum": ["BLOCKED", "FAIL", "PASS"]},
+              "C4": {"enum": ["BLOCKED", "FAIL", "PASS"]},
+              "C5": {"enum": ["BLOCKED", "FAIL", "PASS"]},
+              "C6": {"enum": ["BLOCKED", "FAIL", "PASS"]},
+              "C7": {"enum": ["BLOCKED", "FAIL", "PASS"]}
+            }
+          },
+          "input_set": {"type": "object"}
+        }
+      }
+    },
+    "supersession_fixture": {"type": "object"}
+  }
+}

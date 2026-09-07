@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/certification-input-set.schema.json",
+  "title": "Regex Conformance Certification Input Set v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["authority_claim_requested", "contract_id", "criteria", "identity_schema_family_id", "identity_schema_version", "input_set_digest_sha256", "input_set_id", "schema_version", "scope_kind", "source_artifacts"],
+  "properties": {
+    "schema_version": {"const": "certification-input-set.v1"},
+    "identity_schema_family_id": {"const": "rcid:v1:schema-family:u7:01a079d7-bff3-79f7-bd14-3184c831b9f5"},
+    "identity_schema_version": {"const": "1.0.0"},
+    "input_set_id": {"$ref": "#/$defs/inputSetId"},
+    "input_set_digest_sha256": {"$ref": "#/$defs/digest"},
+    "contract_id": {"$ref": "#/$defs/contractId"},
+    "scope_kind": {"enum": ["certification-candidate", "current-repository", "validation-fixture"]},
+    "authority_claim_requested": {"type": "boolean"},
+    "source_artifacts": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/sourceArtifact"}},
+    "criteria": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["C1", "C2", "C3", "C4", "C5", "C6", "C7"],
+      "properties": {
+        "C1": {"$ref": "#/$defs/criterionInput"},
+        "C2": {"$ref": "#/$defs/criterionInput"},
+        "C3": {"$ref": "#/$defs/criterionInput"},
+        "C4": {"$ref": "#/$defs/criterionInput"},
+        "C5": {"$ref": "#/$defs/criterionInput"},
+        "C6": {"$ref": "#/$defs/criterionInput"},
+        "C7": {"$ref": "#/$defs/criterionInput"}
+      }
+    }
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "contractId": {"type": "string", "pattern": "^rcid:v1:certification-definition:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "inputSetId": {"type": "string", "pattern": "^rcid:v1:certification-input-set:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "derivationRevisionId": {"type": "string", "pattern": "^rcid:v1:assertion-derivation-revision:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "sourceArtifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["artifact_class", "artifact_id", "authority_status", "relative_path", "sha256"],
+      "properties": {
+        "artifact_class": {"type": "string", "minLength": 1},
+        "artifact_id": {"type": ["string", "null"]},
+        "authority_status": {"enum": ["canonical", "historical", "planning-only", "qualification-only", "validation-fixture"]},
+        "relative_path": {"type": "string", "minLength": 1},
+        "sha256": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "blocker": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "message"],
+      "properties": {
+        "code": {"type": "string", "pattern": "^[a-z0-9-]+$"},
+        "message": {"type": "string", "minLength": 1}
+      }
+    },
+    "member": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["derivation_revision_ids", "evidence_references", "member_id", "state"],
+      "properties": {
+        "member_id": {"type": "string", "pattern": "^rcid:v1:[a-z0-9-]+:(?:u7|h):.+$"},
+        "state": {"type": "string", "pattern": "^[a-z0-9-]+$"},
+        "derivation_revision_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/derivationRevisionId"}},
+        "evidence_references": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "canonical_owner_id": {"type": ["string", "null"]},
+        "claims_canonical_ownership": {"type": "boolean"},
+        "details": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "attribution_complete": {"type": "boolean"},
+            "lineage_valid": {"type": "boolean"},
+            "lineage_successor_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/memberId"}},
+            "mapping_explicit": {"type": "boolean"},
+            "next_action_present": {"type": "boolean"},
+            "owner_present": {"type": "boolean"},
+            "record_complete": {"type": "boolean"},
+            "review_condition_present": {"type": "boolean"},
+            "severity_present": {"type": "boolean"},
+            "trusted": {"type": "boolean"},
+            "downstream_obligation_count": {"type": "integer", "minimum": 0},
+            "validator_receipt_sha256": {"$ref": "#/$defs/digest"}
+          }
+        }
+      }
+    },
+    "memberId": {"type": "string", "pattern": "^rcid:v1:[a-z0-9-]+:(?:u7|h):.+$"},
+    "zeroResultManifest": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["completed", "derivation_revision_ids", "evidence_references", "manifest_id"],
+      "properties": {
+        "completed": {"const": true},
+        "manifest_id": {"type": "string", "pattern": "^rcid:v1:reconciliation-set:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+        "derivation_revision_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/derivationRevisionId"}},
+        "evidence_references": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+      }
+    },
+    "criterionInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["blockers", "derivation_revision_ids", "input_mode", "lineage_set", "members", "population_status", "source_artifact_refs", "zero_result_manifest"],
+      "properties": {
+        "input_mode": {"enum": ["blocked", "execution-lineage-set-v1", "normalized-member-ledger-v1", "semantic-vector-requirements-v1"]},
+        "population_status": {"enum": ["absent", "complete", "invalid", "provisional"]},
+        "source_artifact_refs": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "derivation_revision_ids": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/derivationRevisionId"}},
+        "blockers": {"type": "array", "items": {"$ref": "#/$defs/blocker"}},
+        "members": {"type": "array", "items": {"$ref": "#/$defs/member"}},
+        "lineage_set": {"type": ["object", "null"]},
+        "zero_result_manifest": {"$ref": "#/$defs/zeroResultManifest"}
+      }
+    }
+  }
+}

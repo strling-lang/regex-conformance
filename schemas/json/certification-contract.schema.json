@@ -1,0 +1,156 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/certification-contract.schema.json",
+  "title": "Regex Conformance Certification Contract v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "authority_boundary",
+    "contract_digest_sha256",
+    "contract_id",
+    "contract_key",
+    "contract_version",
+    "criteria",
+    "final_composition",
+    "governing_authorities",
+    "identity_schema_family_id",
+    "identity_schema_version",
+    "implementation_bindings",
+    "result_states",
+    "schema_version",
+    "supersession_and_revocation"
+  ],
+  "properties": {
+    "schema_version": {"const": "certification-contract.v1"},
+    "contract_key": {"const": "regex-conformance-completeness"},
+    "contract_version": {"const": "1.0.0"},
+    "identity_schema_family_id": {"const": "rcid:v1:schema-family:u7:01a079d7-bff3-79f7-bd14-3184c831b9f5"},
+    "identity_schema_version": {"const": "1.0.0"},
+    "contract_id": {"$ref": "#/$defs/certificationDefinitionId"},
+    "contract_digest_sha256": {"$ref": "#/$defs/digest"},
+    "governing_authorities": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "implementation_bindings": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["relative_path", "sha256"],
+        "properties": {
+          "relative_path": {"type": "string", "minLength": 1},
+          "sha256": {"$ref": "#/$defs/digest"}
+        }
+      }
+    },
+    "authority_boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["program_authority", "repository_authority", "policy_change_rule"],
+      "properties": {
+        "program_authority": {"type": "string", "minLength": 1},
+        "repository_authority": {"type": "string", "minLength": 1},
+        "policy_change_rule": {"type": "string", "minLength": 1}
+      }
+    },
+    "result_states": {
+      "const": {
+        "PASS": "The predicate is true over complete admissible inputs.",
+        "FAIL": "The inputs are sufficient to prove the predicate false or invalid.",
+        "BLOCKED": "The predicate lacks complete authoritative prerequisites and makes no semantic failure claim."
+      }
+    },
+    "criteria": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "items": {"$ref": "#/$defs/criterion"}
+    },
+    "final_composition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["criterion_order", "failure_precedence", "operator", "pass_condition"],
+      "properties": {
+        "criterion_order": {"const": ["C1", "C2", "C3", "C4", "C5", "C6", "C7"]},
+        "failure_precedence": {"const": ["FAIL", "BLOCKED", "PASS"]},
+        "operator": {"const": "required-criterion-conjunction"},
+        "pass_condition": {"const": "Every required criterion reports PASS under this exact contract revision."}
+      }
+    },
+    "supersession_and_revocation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["authority_location", "historical_reports_immutable", "revocation_triggers", "supersession_triggers"],
+      "properties": {
+        "authority_location": {"const": "separate-certification-authority-index"},
+        "historical_reports_immutable": {"const": true},
+        "revocation_triggers": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "supersession_triggers": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+      }
+    }
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "certificationDefinitionId": {"type": "string", "pattern": "^rcid:v1:certification-definition:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "derivationClass": {
+      "enum": ["calculation", "constant-by-construction", "external-evidence", "inference", "manual-decision", "measurement", "research-derived"]
+    },
+    "criterion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "admitted_derivation_classes",
+        "blocked_conditions",
+        "criterion_id",
+        "dependencies",
+        "diagnostic_codes",
+        "failure_conditions",
+        "governing_authorities",
+        "independent_evidence_required",
+        "input_artifact_classes",
+        "predicate",
+        "predicate_digest_sha256",
+        "required_for_final",
+        "revision_policy",
+        "revocation_conditions",
+        "title",
+        "version"
+      ],
+      "properties": {
+        "criterion_id": {"enum": ["C1", "C2", "C3", "C4", "C5", "C6", "C7"]},
+        "version": {"const": "1.0.0"},
+        "predicate_digest_sha256": {"$ref": "#/$defs/digest"},
+        "title": {"type": "string", "minLength": 1},
+        "required_for_final": {"const": true},
+        "governing_authorities": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "input_artifact_classes": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "admitted_derivation_classes": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/derivationClass"}},
+        "independent_evidence_required": {"type": "boolean"},
+        "dependencies": {"type": "array", "uniqueItems": true, "items": {"enum": ["C1", "C2", "C3", "C4", "C5", "C6", "C7"]}},
+        "predicate": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["allowed_states", "denominator_exclusion_rule", "empty_denominator", "operation", "qualifying_states", "required_member_details"],
+          "properties": {
+            "operation": {"enum": ["all-qualified", "report-actual", "all-qualified-or-certified-empty"]},
+            "allowed_states": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+            "qualifying_states": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+            "required_member_details": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+            "denominator_exclusion_rule": {"type": "string", "minLength": 1},
+            "empty_denominator": {"enum": ["FAIL", "BLOCKED", "CERTIFIED_ZERO_RESULT"]}
+          }
+        },
+        "failure_conditions": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "blocked_conditions": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "diagnostic_codes": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^[a-z0-9-]+$"}},
+        "revision_policy": {"type": "string", "minLength": 1},
+        "revocation_conditions": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+      }
+    }
+  }
+}

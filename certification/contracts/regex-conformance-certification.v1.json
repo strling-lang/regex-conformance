@@ -1,0 +1,536 @@
+{
+  "authority_boundary": {
+    "policy_change_rule": "A policy defect requires a recorded consequential amendment and a new contract revision; an evaluator cannot waive or silently reinterpret a predicate.",
+    "program_authority": "The canonical program workspace owns governance intent, accepted decisions, and amendments requiring Program Owner authority.",
+    "repository_authority": "This versioned contract, its schemas, evaluator, fixtures, and deterministic reports own the exact executable predicates."
+  },
+  "contract_digest_sha256": "ed0c3db8560926e55d8642343a4557d565386264cb55fc95718dea8cfd0cf871",
+  "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:c4e37ec6c122d758f71e6000fb708dd72ef8b9e2d948813919d1c3ddf15f1bfa",
+  "contract_key": "regex-conformance-completeness",
+  "contract_version": "1.0.0",
+  "criteria": [
+    {
+      "admitted_derivation_classes": [
+        "calculation",
+        "external-evidence",
+        "research-derived"
+      ],
+      "blocked_conditions": [
+        "The discovery cutoff or canonical universe snapshot is absent or provisional."
+      ],
+      "criterion_id": "C1",
+      "dependencies": [],
+      "diagnostic_codes": [
+        "candidate-disposition-incomplete",
+        "duplicate-canonical-owner",
+        "empty-universe-denominator",
+        "invalid-candidate-lineage",
+        "universe-input-blocked"
+      ],
+      "failure_conditions": [
+        "A candidate is undispositioned or pending.",
+        "Canonical ownership is duplicated.",
+        "A split, alias, or disposition graph is invalid."
+      ],
+      "governing_authorities": [
+        "Define completeness as exact snapshot-bound set ratios",
+        "Regex Conformance Foundation Specification"
+      ],
+      "independent_evidence_required": true,
+      "input_artifact_classes": [
+        "candidate-disposition-ledger",
+        "universe-snapshot"
+      ],
+      "predicate": {
+        "allowed_states": [
+          "alias",
+          "in-scope",
+          "not-a-regex-facility",
+          "normative-only",
+          "out-of-scope",
+          "pending",
+          "resolved-by-split"
+        ],
+        "denominator_exclusion_rule": "No frozen candidate is excluded. A split predecessor remains in the denominator but creates no downstream release, profile, or execution obligations.",
+        "empty_denominator": "FAIL",
+        "operation": "all-qualified",
+        "qualifying_states": [
+          "alias",
+          "in-scope",
+          "not-a-regex-facility",
+          "normative-only",
+          "out-of-scope",
+          "resolved-by-split"
+        ],
+        "required_member_details": [
+          "record_complete"
+        ]
+      },
+      "predicate_digest_sha256": "cfbe66e6b2dd95e29e2c6ae38b35b8ec78c36f737661d954bfb9b6702328aded",
+      "required_for_final": true,
+      "revision_policy": "Change the criterion version and content digest whenever its population, admitted evidence, state semantics, or predicate meaning changes; never reinterpret an old report in place.",
+      "revocation_conditions": [
+        "A referenced canonical input or evidence member is invalidated.",
+        "A defect is confirmed in this criterion predicate or its authoritative source validator."
+      ],
+      "title": "Universe disposition coverage",
+      "version": "1.0.0"
+    },
+    {
+      "admitted_derivation_classes": [
+        "calculation",
+        "external-evidence",
+        "research-derived"
+      ],
+      "blocked_conditions": [
+        "Universe admission, channel evidence, or release-line selection remains provisional."
+      ],
+      "criterion_id": "C2",
+      "dependencies": [
+        "C1"
+      ],
+      "diagnostic_codes": [
+        "duplicate-canonical-owner",
+        "empty-release-denominator",
+        "release-representative-incomplete",
+        "release-input-blocked"
+      ],
+      "failure_conditions": [
+        "A governed release line lacks its valid latest stable representative.",
+        "A representative is stale, duplicated, or lacks provenance."
+      ],
+      "governing_authorities": [
+        "Define completeness as exact snapshot-bound set ratios",
+        "Regex Conformance Foundation Specification",
+        "Use latest stable patch or update as the active representative of each release line"
+      ],
+      "independent_evidence_required": true,
+      "input_artifact_classes": [
+        "release-line-registry",
+        "universe-snapshot"
+      ],
+      "predicate": {
+        "allowed_states": [
+          "accounted",
+          "channel-conflict",
+          "missing",
+          "stale-representative"
+        ],
+        "denominator_exclusion_rule": "Only candidates validly dispositioned outside the governed executable universe by C1 are excluded; historic exceptions remain explicit denominator members.",
+        "empty_denominator": "FAIL",
+        "operation": "all-qualified",
+        "qualifying_states": [
+          "accounted"
+        ],
+        "required_member_details": [
+          "record_complete"
+        ]
+      },
+      "predicate_digest_sha256": "291ec77fcf662b65b6ae36a8c264f6c3a7020adf4d723cb2885cf934e6808186",
+      "required_for_final": true,
+      "revision_policy": "Change the criterion version and content digest whenever its population, admitted evidence, state semantics, or predicate meaning changes; never reinterpret an old report in place.",
+      "revocation_conditions": [
+        "A referenced canonical input or evidence member is invalidated.",
+        "A defect is confirmed in this criterion predicate or its authoritative source validator."
+      ],
+      "title": "Governed release-line representative coverage",
+      "version": "1.0.0"
+    },
+    {
+      "admitted_derivation_classes": [
+        "calculation",
+        "external-evidence",
+        "measurement",
+        "research-derived"
+      ],
+      "blocked_conditions": [
+        "Stable representatives or concrete-profile derivation are incomplete."
+      ],
+      "criterion_id": "C3",
+      "dependencies": [
+        "C2"
+      ],
+      "diagnostic_codes": [
+        "duplicate-canonical-owner",
+        "profile-input-blocked",
+        "reproducibility-accounting-invalid"
+      ],
+      "failure_conditions": [
+        "A profile obligation is omitted, duplicated, or uses an uncontrolled assessment state."
+      ],
+      "governing_authorities": [
+        "Define completeness as exact snapshot-bound set ratios",
+        "Regex Conformance Foundation Specification",
+        "Use latest stable patch or update as the active representative of each release line"
+      ],
+      "independent_evidence_required": true,
+      "input_artifact_classes": [
+        "profile-reproducibility-ledger",
+        "release-line-registry"
+      ],
+      "predicate": {
+        "allowed_states": [
+          "access-or-license-blocked",
+          "artifact-unavailable",
+          "attainable-unverified",
+          "identity-or-provenance-insufficient",
+          "pending-assessment",
+          "platform-or-hardware-blocked",
+          "reconstruction-failed",
+          "service-retired-or-unreachable",
+          "verified-reproducible"
+        ],
+        "denominator_exclusion_rule": "No derived concrete-profile obligation is excluded. Controlled non-reproducible and unresolved states remain in the denominator.",
+        "empty_denominator": "BLOCKED",
+        "operation": "report-actual",
+        "qualifying_states": [
+          "verified-reproducible"
+        ],
+        "required_member_details": [
+          "record_complete"
+        ]
+      },
+      "predicate_digest_sha256": "10b5629e7cecef436c242e852caf291bb701a6f28e69b01edcd33bfc61550508",
+      "required_for_final": true,
+      "revision_policy": "Change the criterion version and content digest whenever its population, admitted evidence, state semantics, or predicate meaning changes; never reinterpret an old report in place.",
+      "revocation_conditions": [
+        "A referenced canonical input or evidence member is invalidated.",
+        "A defect is confirmed in this criterion predicate or its authoritative source validator."
+      ],
+      "title": "Concrete-profile reproducibility accounting",
+      "version": "1.0.0"
+    },
+    {
+      "admitted_derivation_classes": [
+        "calculation",
+        "external-evidence",
+        "manual-decision",
+        "research-derived"
+      ],
+      "blocked_conditions": [
+        "The profile, semantic, applicability, or obligation population is absent or provisional."
+      ],
+      "criterion_id": "C4",
+      "dependencies": [
+        "C1",
+        "C2"
+      ],
+      "diagnostic_codes": [
+        "construction-evidence-rejected",
+        "duplicate-requirement-owner",
+        "empty-vector-denominator",
+        "semantic-identity-stale",
+        "vector-coverage-incomplete",
+        "vector-input-blocked"
+      ],
+      "failure_conditions": [
+        "An applicable obligation has no explicit certified vector attribution or approved machine-readable unperformable disposition.",
+        "Requirement ownership or generated-instance lineage is duplicate, stale, or invalid."
+      ],
+      "governing_authorities": [
+        "Define completeness as exact snapshot-bound set ratios",
+        "Regex Conformance Foundation Specification"
+      ],
+      "independent_evidence_required": true,
+      "input_artifact_classes": [
+        "applicability-ledger",
+        "scientific-identity-catalog",
+        "semantic-requirement-ledger",
+        "vector-attribution-ledger"
+      ],
+      "predicate": {
+        "allowed_states": [
+          "approved-unperformable",
+          "certified-vector-mapping",
+          "invalid-lineage",
+          "missing",
+          "prose-exclusion"
+        ],
+        "denominator_exclusion_rule": "Only coordinates proven non-applicable by the canonical applicability authority are excluded. Prose exclusions and prerequisite labels do not remove a member.",
+        "empty_denominator": "FAIL",
+        "operation": "all-qualified",
+        "qualifying_states": [
+          "approved-unperformable",
+          "certified-vector-mapping"
+        ],
+        "required_member_details": []
+      },
+      "predicate_digest_sha256": "eba5091f5d547980d1d6634707c6e192353151bba4c185bd171d7ccec83776c6",
+      "required_for_final": true,
+      "revision_policy": "Change the criterion version and content digest whenever its population, admitted evidence, state semantics, or predicate meaning changes; never reinterpret an old report in place.",
+      "revocation_conditions": [
+        "A referenced canonical input or evidence member is invalidated.",
+        "A defect is confirmed in this criterion predicate or its authoritative source validator."
+      ],
+      "title": "Semantic obligation and vector coverage",
+      "version": "1.0.0"
+    },
+    {
+      "admitted_derivation_classes": [
+        "calculation",
+        "measurement"
+      ],
+      "blocked_conditions": [
+        "No frozen production campaign or complete execution-lineage set exists."
+      ],
+      "criterion_id": "C5",
+      "dependencies": [
+        "C4"
+      ],
+      "diagnostic_codes": [
+        "execution-input-blocked",
+        "inconclusive-attempt-no-credit",
+        "logical-execution-incomplete",
+        "nonmeasurement-execution-evidence"
+      ],
+      "failure_conditions": [
+        "A planned logical execution lacks an admissible target-attributable terminal observation set.",
+        "Retry, recovery, or repeat attempts create duplicate logical credit."
+      ],
+      "governing_authorities": [
+        "Certify campaigns and evidence through exact manifests, complete completeness proofs, and append-only validity selection",
+        "Define completeness as exact snapshot-bound set ratios",
+        "Regex Conformance Foundation Specification"
+      ],
+      "independent_evidence_required": true,
+      "input_artifact_classes": [
+        "execution-lineage-set",
+        "execution-policy",
+        "logical-campaign-manifest"
+      ],
+      "predicate": {
+        "allowed_states": [
+          "satisfied",
+          "unresolved"
+        ],
+        "denominator_exclusion_rule": "Physical attempts and repeats are never denominator members; the denominator is the exact frozen set of unique logical executions.",
+        "empty_denominator": "FAIL",
+        "operation": "all-qualified",
+        "qualifying_states": [
+          "satisfied"
+        ],
+        "required_member_details": []
+      },
+      "predicate_digest_sha256": "a004399bd151da32378b2672fb88ce39ecc7da5aef12ac0280b103b9fa14a53e",
+      "required_for_final": true,
+      "revision_policy": "Change the criterion version and content digest whenever its population, admitted evidence, state semantics, or predicate meaning changes; never reinterpret an old report in place.",
+      "revocation_conditions": [
+        "A referenced canonical input or evidence member is invalidated.",
+        "A defect is confirmed in this criterion predicate or its authoritative source validator."
+      ],
+      "title": "Logical execution completion",
+      "version": "1.0.0"
+    },
+    {
+      "admitted_derivation_classes": [
+        "calculation",
+        "external-evidence",
+        "measurement"
+      ],
+      "blocked_conditions": [
+        "No complete official observation population and current integrity assessments exist."
+      ],
+      "criterion_id": "C6",
+      "dependencies": [
+        "C5"
+      ],
+      "diagnostic_codes": [
+        "evidence-input-blocked",
+        "evidence-integrity-incomplete",
+        "missing-integrity-validator-receipt"
+      ],
+      "failure_conditions": [
+        "An official observation or preserved correction-history member fails content, manifest, schema, provenance, or reference integrity."
+      ],
+      "governing_authorities": [
+        "Certify campaigns and evidence through exact manifests, complete completeness proofs, and append-only validity selection",
+        "Define completeness as exact snapshot-bound set ratios",
+        "Publish empirical evidence append-only and correct it through explicit validity, replacement, and selection graphs",
+        "Regex Conformance Foundation Specification"
+      ],
+      "independent_evidence_required": true,
+      "input_artifact_classes": [
+        "evidence-integrity-assessment",
+        "evidence-manifest",
+        "observation-validity-graph"
+      ],
+      "predicate": {
+        "allowed_states": [
+          "corrupt",
+          "correction-graph-valid",
+          "dangling-reference",
+          "integrity-valid",
+          "schema-invalid"
+        ],
+        "denominator_exclusion_rule": "No official observation is excluded, including invalidated and superseded history; correction and selection state is represented in the validity graph.",
+        "empty_denominator": "FAIL",
+        "operation": "all-qualified",
+        "qualifying_states": [
+          "correction-graph-valid",
+          "integrity-valid"
+        ],
+        "required_member_details": [
+          "validator_receipt_sha256"
+        ]
+      },
+      "predicate_digest_sha256": "9befc0cbcd499e7b4eb60ef83be57ce2c336cefc33078e55a6ec7b974205eeed",
+      "required_for_final": true,
+      "revision_policy": "Change the criterion version and content digest whenever its population, admitted evidence, state semantics, or predicate meaning changes; never reinterpret an old report in place.",
+      "revocation_conditions": [
+        "A referenced canonical input or evidence member is invalidated.",
+        "A defect is confirmed in this criterion predicate or its authoritative source validator."
+      ],
+      "title": "Evidence integrity coverage",
+      "version": "1.0.0"
+    },
+    {
+      "admitted_derivation_classes": [
+        "calculation",
+        "external-evidence",
+        "manual-decision",
+        "measurement",
+        "research-derived"
+      ],
+      "blocked_conditions": [
+        "No completed reconciliation detection pass exists."
+      ],
+      "criterion_id": "C7",
+      "dependencies": [
+        "C5",
+        "C6"
+      ],
+      "diagnostic_codes": [
+        "discrepancy-input-blocked",
+        "discrepancy-triage-incomplete",
+        "missing-zero-result-manifest"
+      ],
+      "failure_conditions": [
+        "A detected discrepancy lacks a proof-bearing disposition or structured unresolved triage.",
+        "Reconciliation/accounting debt is orphaned or inconsistent."
+      ],
+      "governing_authorities": [
+        "Certify campaigns and evidence through exact manifests, complete completeness proofs, and append-only validity selection",
+        "Define completeness as exact snapshot-bound set ratios",
+        "Qualify evidence integrity, replication, confidence, reconciliation, and discrepancy independently",
+        "Regex Conformance Foundation Specification"
+      ],
+      "independent_evidence_required": true,
+      "input_artifact_classes": [
+        "discrepancy-ledger",
+        "reconciliation-set",
+        "zero-result-detection-manifest"
+      ],
+      "predicate": {
+        "allowed_states": [
+          "bare-unresolved",
+          "confirmed-deviation",
+          "expected-differential",
+          "resolved",
+          "structured-unresolved"
+        ],
+        "denominator_exclusion_rule": "No detected discrepancy is excluded. An empty set is authoritative only with a completed independently evidenced zero-result detection manifest.",
+        "empty_denominator": "CERTIFIED_ZERO_RESULT",
+        "operation": "all-qualified-or-certified-empty",
+        "qualifying_states": [
+          "confirmed-deviation",
+          "expected-differential",
+          "resolved",
+          "structured-unresolved"
+        ],
+        "required_member_details": [
+          "record_complete"
+        ]
+      },
+      "predicate_digest_sha256": "e70168273e6a62c5c61404c26994d7bbe495de19ca53e2e3e6b3fb5c7818be1a",
+      "required_for_final": true,
+      "revision_policy": "Change the criterion version and content digest whenever its population, admitted evidence, state semantics, or predicate meaning changes; never reinterpret an old report in place.",
+      "revocation_conditions": [
+        "A referenced canonical input or evidence member is invalidated.",
+        "A defect is confirmed in this criterion predicate or its authoritative source validator."
+      ],
+      "title": "Discrepancy detection and triage coverage",
+      "version": "1.0.0"
+    }
+  ],
+  "final_composition": {
+    "criterion_order": [
+      "C1",
+      "C2",
+      "C3",
+      "C4",
+      "C5",
+      "C6",
+      "C7"
+    ],
+    "failure_precedence": [
+      "FAIL",
+      "BLOCKED",
+      "PASS"
+    ],
+    "operator": "required-criterion-conjunction",
+    "pass_condition": "Every required criterion reports PASS under this exact contract revision."
+  },
+  "governing_authorities": [
+    "Certify campaigns and evidence through exact manifests, complete completeness proofs, and append-only validity selection",
+    "Define completeness as exact snapshot-bound set ratios",
+    "Regex Conformance Foundation Specification",
+    "Use immutable lineage-aware universe snapshots and qualified certification claims",
+    "Use latest stable patch or update as the active representative of each release line"
+  ],
+  "identity_schema_family_id": "rcid:v1:schema-family:u7:01a079d7-bff3-79f7-bd14-3184c831b9f5",
+  "identity_schema_version": "1.0.0",
+  "implementation_bindings": [
+    {
+      "relative_path": "schemas/json/certification-authority-index.schema.json",
+      "sha256": "cf18c6d8f4b4a204280afdf719b81c900b678b1975e88d691b6d284833a6d8c4"
+    },
+    {
+      "relative_path": "schemas/json/certification-contract.schema.json",
+      "sha256": "28907bde28a394544d05bc99b598c3dec41402d73ce6050adb5edc79c14d1fbf"
+    },
+    {
+      "relative_path": "schemas/json/certification-input-set.schema.json",
+      "sha256": "b58f4f72a23a2662ffa934bbaf2f2aec7515e22c1566fdf633da472951dd3d20"
+    },
+    {
+      "relative_path": "schemas/json/certification-predicate-fixtures.schema.json",
+      "sha256": "833cdc065630a148996a8aabed5c26540ea9c4e1e345a67d54d3f90e681e8f46"
+    },
+    {
+      "relative_path": "schemas/json/certification-report.schema.json",
+      "sha256": "bee9b09a7b42c9fed0d92390283eaedf99aaf18b2f24b9abaf6a4be6ca7bad76"
+    },
+    {
+      "relative_path": "schemas/tooling/python/regex_conformance_schema/certification.py",
+      "sha256": "88be1331e573b9c2711c862ae576969474ae916c1e37517cd903d5fb73ac9f0a"
+    },
+    {
+      "relative_path": "schemas/tooling/python/regex_conformance_schema/execution_provenance.py",
+      "sha256": "92f6fa913e0cfcd2dc3199d67e4210d17f4696dc453b0e3568f071053e7595c9"
+    },
+    {
+      "relative_path": "schemas/tooling/python/regex_conformance_schema/scientific_identity.py",
+      "sha256": "9a0bee09b4043c214f2508c26c7e5e5b40794b95ae68601e6f41cd43553226da"
+    }
+  ],
+  "result_states": {
+    "BLOCKED": "The predicate lacks complete authoritative prerequisites and makes no semantic failure claim.",
+    "FAIL": "The inputs are sufficient to prove the predicate false or invalid.",
+    "PASS": "The predicate is true over complete admissible inputs."
+  },
+  "schema_version": "certification-contract.v1",
+  "supersession_and_revocation": {
+    "authority_location": "separate-certification-authority-index",
+    "historical_reports_immutable": true,
+    "revocation_triggers": [
+      "Referenced evidence is proven corrupt or invalid.",
+      "A referenced canonical artifact is invalidated.",
+      "A certification-predicate or evaluator defect is confirmed.",
+      "The prior governed scope no longer represents current authority."
+    ],
+    "supersession_triggers": [
+      "A newer canonical semantic snapshot, universe/profile registry, requirement set, evidence contract, or certification contract becomes current authority.",
+      "A newer certification report covers the same governed scope under current inputs."
+    ]
+  }
+}

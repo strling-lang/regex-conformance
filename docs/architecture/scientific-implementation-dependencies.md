@@ -74,9 +74,17 @@ measurements preserve result-signature agreement without premature flakiness
 adjudication. See
 [Physical-attempt and terminal-outcome provenance](execution-provenance.md).
 
-The next dependency is to express the certification conditions as
-machine-readable predicates over freshly recomputed repository and evidence
-state.
+Certification conditions are now versioned machine-readable predicates over
+freshly recomputed repository and evidence state. The evaluator binds exact
+input artifacts and derivation revisions, evaluates C1-C7 independently as
+`PASS`, `FAIL`, or `BLOCKED`, and requires the full conjunction for final
+certification. Supersession and revocation advance through a separate
+append-only authority index without rewriting historical reports. See the
+[certification contract](../../certification/README.md).
+
+With the irreversible identity, assertion-derivation, execution-provenance,
+and certification foundations complete, the next dependency is the focused
+foundation acceptance review before researched semantic reconstruction begins.
 
 ### Complete the semantic knowledge architecture
 

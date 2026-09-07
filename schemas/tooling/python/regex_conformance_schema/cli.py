@@ -8,9 +8,12 @@ import sys
 from pathlib import Path
 
 from .errors import ConformanceDataError
+from .certification import (
+    materialize_repository_certification,
+    verify_repository_certification,
+)
 from .derivation import CATALOG_PATH as DERIVATION_CATALOG_PATH
 from .derivation import SCHEMA_PATH as DERIVATION_SCHEMA_PATH
-from .derivation import verify_catalog as verify_derivation_catalog
 from .execution_provenance import verify_repository_execution_provenance
 from .fixtures import materialize_manifest, verify_manifest
 from .identity import NamespaceRegistry, build_content_identity, generate_assigned_id
@@ -32,6 +35,8 @@ def parser() -> argparse.ArgumentParser:
     top.add_argument("--root", help="repository root (normally auto-detected)")
     commands = top.add_subparsers(dest="command", required=True)
     commands.add_parser("validate-repository")
+    commands.add_parser("verify-certification")
+    commands.add_parser("materialize-certification")
     verify = commands.add_parser("verify-fixtures")
     verify.add_argument("manifest", nargs="?", default="tests/fixtures/identity/manifest.json")
     materialize = commands.add_parser("materialize-fixtures")
@@ -78,10 +83,14 @@ def run(argv: list[str] | None = None) -> int:
                 {
                     "ok": True,
                     **counts,
-                    **verify_derivation_catalog(root, derivation_catalog),
                     **verify_repository_execution_provenance(root),
+                    **verify_repository_certification(root),
                 }
             )
+        elif arguments.command == "verify-certification":
+            _emit({"ok": True, **verify_repository_certification(root)})
+        elif arguments.command == "materialize-certification":
+            _emit({"ok": True, **materialize_repository_certification(root)})
         elif arguments.command == "verify-fixtures":
             _emit({"ok": True, **verify_manifest(root, root / arguments.manifest)})
         elif arguments.command == "materialize-fixtures":

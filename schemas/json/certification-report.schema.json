@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/certification-report.schema.json",
+  "title": "Regex Conformance Certification Evaluation Report v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "authority_status",
+    "certification_eligible",
+    "contract_digest_sha256",
+    "contract_id",
+    "criteria",
+    "final_state",
+    "input_set_digest_sha256",
+    "input_set_id",
+    "input_artifacts",
+    "identity_schema_family_id",
+    "identity_schema_version",
+    "report_digest_sha256",
+    "report_id",
+    "schema_version",
+    "scope_kind"
+  ],
+  "properties": {
+    "schema_version": {"const": "certification-report.v1"},
+    "identity_schema_family_id": {"const": "rcid:v1:schema-family:u7:01a079d7-bff3-79f7-bd14-3184c831b9f5"},
+    "identity_schema_version": {"const": "1.0.0"},
+    "report_id": {"type": "string", "pattern": "^rcid:v1:certification-report:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "report_digest_sha256": {"$ref": "#/$defs/digest"},
+    "contract_id": {"type": "string", "pattern": "^rcid:v1:certification-definition:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "contract_digest_sha256": {"$ref": "#/$defs/digest"},
+    "input_set_id": {"type": "string", "pattern": "^rcid:v1:certification-input-set:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "input_set_digest_sha256": {"$ref": "#/$defs/digest"},
+    "input_artifacts": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/inputArtifact"}},
+    "scope_kind": {"enum": ["certification-candidate", "current-repository", "validation-fixture"]},
+    "authority_status": {"enum": ["evaluation-only", "eligible-for-issuance", "validation-fixture"]},
+    "certification_eligible": {"type": "boolean"},
+    "criteria": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "items": {"$ref": "#/$defs/criterionResult"}
+    },
+    "final_state": {"$ref": "#/$defs/state"}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "state": {"enum": ["BLOCKED", "FAIL", "PASS"]},
+    "inputArtifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["artifact_class", "artifact_id", "authority_status", "relative_path", "sha256"],
+      "properties": {
+        "artifact_class": {"type": "string", "minLength": 1},
+        "artifact_id": {"type": ["string", "null"]},
+        "authority_status": {"enum": ["canonical", "historical", "planning-only", "qualification-only", "validation-fixture"]},
+        "relative_path": {"type": "string", "minLength": 1},
+        "sha256": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "diagnostic": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "message"],
+      "properties": {
+        "code": {"type": "string", "pattern": "^[a-z0-9-]+$"},
+        "message": {"type": "string", "minLength": 1},
+        "member_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+      }
+    },
+    "criterionResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "admitted_derivation_classes_used",
+        "criterion_id",
+        "denominator_count",
+        "denominator_members_sha256",
+        "diagnostics",
+        "evidence_references",
+        "exact_ratio",
+        "numerator_count",
+        "numerator_members_sha256",
+        "predicate_version",
+        "predicate_digest_sha256",
+        "status"
+      ],
+      "properties": {
+        "criterion_id": {"enum": ["C1", "C2", "C3", "C4", "C5", "C6", "C7"]},
+        "predicate_version": {"const": "1.0.0"},
+        "predicate_digest_sha256": {"$ref": "#/$defs/digest"},
+        "status": {"$ref": "#/$defs/state"},
+        "numerator_count": {"type": ["integer", "null"], "minimum": 0},
+        "denominator_count": {"type": ["integer", "null"], "minimum": 0},
+        "numerator_members_sha256": {"anyOf": [{"$ref": "#/$defs/digest"}, {"type": "null"}]},
+        "denominator_members_sha256": {"anyOf": [{"$ref": "#/$defs/digest"}, {"type": "null"}]},
+        "exact_ratio": {"type": ["string", "null"], "pattern": "^[0-9]+/[0-9]+$"},
+        "admitted_derivation_classes_used": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "evidence_references": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "diagnostics": {"type": "array", "items": {"$ref": "#/$defs/diagnostic"}}
+      }
+    }
+  }
+}

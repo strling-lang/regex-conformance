@@ -24,6 +24,11 @@ certified. Environment smoke observations establish executable identity only;
 no repository observation is a conformance result yet, and no production
 evidence campaign is authorized merely by this certification.
 
+The versioned full-data certification evaluator currently reports C1-C3 and
+C5-C7 `BLOCKED`, C4 `FAIL` at `0/9506`, and final state `FAIL`. No authoritative
+full-corpus certification has been issued. See the [machine-readable
+certification contract](certification/README.md).
+
 The declared-cutoff semantic corpus contains 251 canonical features at digest
 `350bfea4c3da07b3426d885aa8ff645ac55539bbb1294a2ea35dd5319541d6c7`.
 Its complete bounded execution forecast uses the anomaly-complete,
