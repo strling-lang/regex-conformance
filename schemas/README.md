@@ -129,6 +129,17 @@ content-derived method revisions, rejects dangling or stale references and
 inappropriate gate strength, reconciles declared counts with named
 populations, and requires deterministic complete inventory coverage.
 
+`json/execution-provenance-policy.schema.json`,
+`json/physical-attempt-evidence-v2.schema.json`,
+`json/terminal-observation-content-v2.schema.json`,
+`json/logical-execution-disposition.schema.json`, and
+`json/execution-lineage-set.schema.json` define the prospective attempt and
+terminal-outcome lineage. Cross-artifact validation enforces immediate
+predecessors, checkpoint agreement, exact execution context, closed reset and
+retry policy, fail-closed target attribution, first-terminal anti-laundering,
+content-derived observation identity, repeat-signature grouping, and precise
+population counts.
+
 `json/scientific-identity-catalog.schema.json` and the semantic identity
 validator define the permanent assigned-ID lock over current features,
 variants, modifiers, operations, manifestations, interactions, obligations,

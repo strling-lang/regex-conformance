@@ -1,0 +1,1226 @@
+{
+  "campaign_manifest_id": "rcid:v1:campaign-manifest:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+  "count_derivation_revision_id": "rcid:v1:assertion-derivation-revision:h:jcs-sha256-v1:df951ea724e09fa6126b85a43613d7fe41e558c51a6197d72a2792a1aed8b95f",
+  "counts": {
+    "inconclusive_attempt_count": 3,
+    "logical_execution_count": 5,
+    "physical_attempt_count": 8,
+    "recovered_attempt_count": 1,
+    "repeat_measurement_attempt_count": 1,
+    "retry_attempt_count": 2,
+    "terminal_attempt_count": 5,
+    "terminal_observation_count": 5
+  },
+  "execution_policy_revision_sha256": "c0095c600d03cc7f17012990d46e54b3e874a8f2cae4aa1a052f9953637b0a3a",
+  "lineage_set_sha256": "21f309e2b846a4d62184419e4780d630bbfb484a7498fc08a3bc91282359d852",
+  "lineages": [
+    {
+      "attempts": [
+        {
+          "attempt_ordinal": 1,
+          "attempt_purpose": "initial",
+          "checkpoint_context": {
+            "controller_session_id": "reference-session-1",
+            "predecessor_checkpoint_sha256": null,
+            "recovery_action": "start",
+            "start_checkpoint_sha256": "00000000000000000000000000000000000000000000000000000000000003e9",
+            "start_state": "running"
+          },
+          "ended_at": "2026-09-06T12:01:01Z",
+          "execution_context": {
+            "adapter_release_id": "rcid:v1:adapter-release:u7:019ffdee-0000-7000-8000-000000000001",
+            "adapter_release_manifest_id": "rcid:v1:adapter-release-manifest:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "applicability_coordinate_id": "rcid:v1:applicability-coordinate:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "campaign_id": "rcid:v1:campaign:u7:019ffdee-0000-7000-8000-000000000001",
+            "campaign_manifest_id": "rcid:v1:campaign-manifest:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "control_plane_revision_sha256": "0000000000000000000000000000000000000000000000000000000000000002",
+            "environment_fingerprint_id": "rcid:v1:environment-fingerprint:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "environment_realization_id": "rcid:v1:environment-realization:u7:019ffdee-0000-7000-8000-000000000001",
+            "execution_policy_revision_sha256": "c0095c600d03cc7f17012990d46e54b3e874a8f2cae4aa1a052f9953637b0a3a",
+            "execution_shard_id": "rcid:v1:shard:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "harness_revision_sha256": "0000000000000000000000000000000000000000000000000000000000000003",
+            "partition_id": null,
+            "profile_revision_id": "rcid:v1:profile-revision:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "protocol_revision_id": "rcid:v1:adapter-protocol-revision:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "target_release_revision_id": "rcid:v1:release-revision:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "vector_revision_id": "rcid:v1:vector-revision:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "work_unit_id": "rcid:v1:shard:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000065"
+          },
+          "expected_intermittence": {
+            "declared": false,
+            "source_reference": null
+          },
+          "logical_execution_id": "rcid:v1:logical-execution:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+          "physical_run_id": "rcid:v1:physical-run:u7:019ffdee-0000-7000-8000-000000000001",
+          "physical_telemetry_references": [
+            {
+              "category": "physical-telemetry",
+              "relative_path": "physical-telemetry/sha256/0000000000000000000000000000000000000000000000000000000000000001.json",
+              "sha256": "0000000000000000000000000000000000000000000000000000000000000001",
+              "size_bytes": 1
+            }
+          ],
+          "predecessor_physical_run_id": null,
+          "repeat": null,
+          "reset": {
+            "evidence_references": [],
+            "reason_code": "initial-state",
+            "scope": "none"
+          },
+          "resource_budget": {
+            "cpu_time_ms": 500,
+            "memory_bytes": 67108864,
+            "process_count": 4,
+            "stderr_bytes": 65536,
+            "stdout_bytes": 65536,
+            "wall_time_ms": 1000
+          },
+          "retry": null,
+          "schema_version": "physical-attempt-evidence.v2",
+          "started_at": "2026-09-06T12:01:00Z",
+          "terminality": {
+            "disposition": "terminal-scientific-observation",
+            "fault_attribution": {
+              "attribution_layer": "target",
+              "evidence_reference": null,
+              "reason_code": "bounded-target-evidence",
+              "target_attributable": true
+            },
+            "observation_complete": true,
+            "outcome_class": "match",
+            "produced_observation_id": "rcid:v1:observation:u7:019ffdee-0000-7000-8000-000000000001",
+            "protocol_status": {
+              "last_checkpoint": "target-response-complete",
+              "state": "valid"
+            },
+            "protocol_valid": true,
+            "scientific_result_signature": {
+              "algorithm": "rfc8785-sha256-v1",
+              "basis": "outcome-class-and-semantic-result",
+              "sha256": "ca01757df60734eabb5ef43c7d4674ee2a5bec519409a15c0ac746c291194cf1"
+            },
+            "semantic_result": {
+              "match": true,
+              "spans": [
+                [
+                  0,
+                  1
+                ]
+              ]
+            },
+            "target_process_status": {
+              "exit_code": 0,
+              "resource_limit": null,
+              "signal": null,
+              "target_started": true,
+              "timeout_source": null
+            }
+          }
+        }
+      ],
+      "disposition": {
+        "attempt_set_sha256": "18138773297e9f4e95ef32420be39bc9ee65005fc78592d75a2fa5cd9cd0ccbe",
+        "attempts_total": 1,
+        "distinct_terminal_result_signature_count": 1,
+        "inconclusive_attempt_count": 0,
+        "last_attempt_id": "rcid:v1:physical-run:u7:019ffdee-0000-7000-8000-000000000001",
+        "logical_execution_id": "rcid:v1:logical-execution:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+        "observation_ids": [
+          "rcid:v1:observation:u7:019ffdee-0000-7000-8000-000000000001"
+        ],
+        "recovered_attempt_count": 0,
+        "repeat_measurement_attempt_count": 0,
+        "retry_attempt_count": 0,
+        "retry_budget_exhausted": false,
+        "satisfaction_attempt_id": "rcid:v1:physical-run:u7:019ffdee-0000-7000-8000-000000000001",
+        "satisfaction_observation_id": "rcid:v1:observation:u7:019ffdee-0000-7000-8000-000000000001",
+        "schema_version": "logical-execution-disposition.v1",
+        "status": "satisfied",
+        "terminal_attempt_count": 1,
+        "terminal_result_signatures": [
+          {
+            "observation_count": 1,
+            "observation_ids": [
+              "rcid:v1:observation:u7:019ffdee-0000-7000-8000-000000000001"
+            ],
+            "sha256": "ca01757df60734eabb5ef43c7d4674ee2a5bec519409a15c0ac746c291194cf1"
+          }
+        ],
+        "unresolved_reason": null
+      },
+      "logical_execution_id": "rcid:v1:logical-execution:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+      "observations": [
+        {
+          "attempt_set_reference": {
+            "attempt_set_sha256": "18138773297e9f4e95ef32420be39bc9ee65005fc78592d75a2fa5cd9cd0ccbe",
+            "attempts_total": 1
+          },
+          "campaign_manifest_id": "rcid:v1:campaign-manifest:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+          "derivation_revision_ids": [],
+          "fault_attribution": {
+            "attribution_layer": "target",
+            "evidence_reference": null,
+            "reason_code": "bounded-target-evidence",
+            "target_attributable": true
+          },
+          "logical_execution_id": "rcid:v1:logical-execution:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+          "observation_complete": true,
+          "observation_content_id": "rcid:v1:observation-content:h:jcs-sha256-v1:1bfeabfde928be2459a22b2d08b3e87668683cb49c2a5ff6164978d23f0be8ee",
+          "observation_id": "rcid:v1:observation:u7:019ffdee-0000-7000-8000-000000000001",
+          "outcome_class": "match",
+          "physical_telemetry_references": [
+            {
+              "category": "physical-telemetry",
+              "relative_path": "physical-telemetry/sha256/0000000000000000000000000000000000000000000000000000000000000001.json",
+              "sha256": "0000000000000000000000000000000000000000000000000000000000000001",
+              "size_bytes": 1
+            }
+          ],
+          "protocol_valid": true,
+          "result_signature": {
+            "algorithm": "rfc8785-sha256-v1",
+            "basis": "outcome-class-and-semantic-result",
+            "sha256": "ca01757df60734eabb5ef43c7d4674ee2a5bec519409a15c0ac746c291194cf1"
+          },
+          "schema_version": "terminal-observation-content.v2",
+          "semantic_result": {
+            "match": true,
+            "spans": [
+              [
+                0,
+                1
+              ]
+            ]
+          },
+          "terminal_attempt_id": "rcid:v1:physical-run:u7:019ffdee-0000-7000-8000-000000000001"
+        }
+      ]
+    },
+    {
+      "attempts": [
+        {
+          "attempt_ordinal": 1,
+          "attempt_purpose": "initial",
+          "checkpoint_context": {
+            "controller_session_id": "reference-session-2",
+            "predecessor_checkpoint_sha256": null,
+            "recovery_action": "start",
+            "start_checkpoint_sha256": "00000000000000000000000000000000000000000000000000000000000003ea",
+            "start_state": "running"
+          },
+          "ended_at": "2026-09-06T12:02:01Z",
+          "execution_context": {
+            "adapter_release_id": "rcid:v1:adapter-release:u7:019ffdee-0000-7000-8000-000000000001",
+            "adapter_release_manifest_id": "rcid:v1:adapter-release-manifest:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "applicability_coordinate_id": "rcid:v1:applicability-coordinate:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000002",
+            "campaign_id": "rcid:v1:campaign:u7:019ffdee-0000-7000-8000-000000000001",
+            "campaign_manifest_id": "rcid:v1:campaign-manifest:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "control_plane_revision_sha256": "0000000000000000000000000000000000000000000000000000000000000002",
+            "environment_fingerprint_id": "rcid:v1:environment-fingerprint:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "environment_realization_id": "rcid:v1:environment-realization:u7:019ffdee-0000-7000-8000-000000000001",
+            "execution_policy_revision_sha256": "c0095c600d03cc7f17012990d46e54b3e874a8f2cae4aa1a052f9953637b0a3a",
+            "execution_shard_id": "rcid:v1:shard:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000002",
+            "harness_revision_sha256": "0000000000000000000000000000000000000000000000000000000000000003",
+            "partition_id": null,
+            "profile_revision_id": "rcid:v1:profile-revision:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "protocol_revision_id": "rcid:v1:adapter-protocol-revision:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "target_release_revision_id": "rcid:v1:release-revision:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "vector_revision_id": "rcid:v1:vector-revision:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000002",
+            "work_unit_id": "rcid:v1:shard:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000066"
+          },
+          "expected_intermittence": {
+            "declared": false,
+            "source_reference": null
+          },
+          "logical_execution_id": "rcid:v1:logical-execution:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000002",
+          "physical_run_id": "rcid:v1:physical-run:u7:019ffdee-0000-7000-8000-000000000002",
+          "physical_telemetry_references": [
+            {
+              "category": "physical-telemetry",
+              "relative_path": "physical-telemetry/sha256/0000000000000000000000000000000000000000000000000000000000000002.json",
+              "sha256": "0000000000000000000000000000000000000000000000000000000000000002",
+              "size_bytes": 1
+            }
+          ],
+          "predecessor_physical_run_id": null,
+          "repeat": null,
+          "reset": {
+            "evidence_references": [],
+            "reason_code": "initial-state",
+            "scope": "none"
+          },
+          "resource_budget": {
+            "cpu_time_ms": 500,
+            "memory_bytes": 67108864,
+            "process_count": 4,
+            "stderr_bytes": 65536,
+            "stdout_bytes": 65536,
+            "wall_time_ms": 1000
+          },
+          "retry": null,
+          "schema_version": "physical-attempt-evidence.v2",
+          "started_at": "2026-09-06T12:02:00Z",
+          "terminality": {
+            "disposition": "inconclusive-attempt",
+            "fault_attribution": {
+              "attribution_layer": "supervisor",
+              "evidence_reference": {
+                "category": "fault-attribution",
+                "relative_path": "fault-attribution/sha256/0000000000000000000000000000000000000000000000000000000000000002.json",
+                "sha256": "0000000000000000000000000000000000000000000000000000000000000002",
+                "size_bytes": 1
+              },
+              "reason_code": "interrupted-uncommitted",
+              "target_attributable": false
+            },
+            "observation_complete": false,
+            "outcome_class": "interrupted-uncommitted",
+            "produced_observation_id": null,
+            "protocol_status": {
+              "last_checkpoint": "target-invocation-started",
+              "state": "missing"
+            },
+            "protocol_valid": false,
+            "scientific_result_signature": null,
+            "semantic_result": null,
+            "target_process_status": {
+              "exit_code": null,
+              "resource_limit": null,
+              "signal": null,
+              "target_started": true,
+              "timeout_source": null
+            }
+          }
+        },
+        {
+          "attempt_ordinal": 2,
+          "attempt_purpose": "recovery-retry",
+          "checkpoint_context": {
+            "controller_session_id": "reference-session-2",
+            "predecessor_checkpoint_sha256": "00000000000000000000000000000000000000000000000000000000000003ea",
+            "recovery_action": "retry",
+            "start_checkpoint_sha256": "00000000000000000000000000000000000000000000000000000000000003eb",
+            "start_state": "running"
+          },
+          "ended_at": "2026-09-06T12:03:01Z",
+          "execution_context": {
+            "adapter_release_id": "rcid:v1:adapter-release:u7:019ffdee-0000-7000-8000-000000000001",
+            "adapter_release_manifest_id": "rcid:v1:adapter-release-manifest:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "applicability_coordinate_id": "rcid:v1:applicability-coordinate:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000002",
+            "campaign_id": "rcid:v1:campaign:u7:019ffdee-0000-7000-8000-000000000001",
+            "campaign_manifest_id": "rcid:v1:campaign-manifest:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "control_plane_revision_sha256": "0000000000000000000000000000000000000000000000000000000000000002",
+            "environment_fingerprint_id": "rcid:v1:environment-fingerprint:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "environment_realization_id": "rcid:v1:environment-realization:u7:019ffdee-0000-7000-8000-000000000001",
+            "execution_policy_revision_sha256": "c0095c600d03cc7f17012990d46e54b3e874a8f2cae4aa1a052f9953637b0a3a",
+            "execution_shard_id": "rcid:v1:shard:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000002",
+            "harness_revision_sha256": "0000000000000000000000000000000000000000000000000000000000000003",
+            "partition_id": null,
+            "profile_revision_id": "rcid:v1:profile-revision:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "protocol_revision_id": "rcid:v1:adapter-protocol-revision:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "target_release_revision_id": "rcid:v1:release-revision:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "vector_revision_id": "rcid:v1:vector-revision:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000002",
+            "work_unit_id": "rcid:v1:shard:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000066"
+          },
+          "expected_intermittence": {
+            "declared": false,
+            "source_reference": null
+          },
+          "logical_execution_id": "rcid:v1:logical-execution:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000002",
+          "physical_run_id": "rcid:v1:physical-run:u7:019ffdee-0000-7000-8000-000000000003",
+          "physical_telemetry_references": [
+            {
+              "category": "physical-telemetry",
+              "relative_path": "physical-telemetry/sha256/0000000000000000000000000000000000000000000000000000000000000003.json",
+              "sha256": "0000000000000000000000000000000000000000000000000000000000000003",
+              "size_bytes": 1
+            }
+          ],
+          "predecessor_physical_run_id": "rcid:v1:physical-run:u7:019ffdee-0000-7000-8000-000000000002",
+          "repeat": null,
+          "reset": {
+            "evidence_references": [
+              {
+                "category": "reset-evidence",
+                "relative_path": "reset-evidence/sha256/0000000000000000000000000000000000000000000000000000000000000003.json",
+                "sha256": "0000000000000000000000000000000000000000000000000000000000000003",
+                "size_bytes": 1
+              }
+            ],
+            "reason_code": "interrupted-target-invocation",
+            "scope": "target-process"
+          },
+          "resource_budget": {
+            "cpu_time_ms": 500,
+            "memory_bytes": 67108864,
+            "process_count": 4,
+            "stderr_bytes": 65536,
+            "stdout_bytes": 65536,
+            "wall_time_ms": 1000
+          },
+          "retry": {
+            "authorization_kind": "automatic",
+            "policy_revision_sha256": "c0095c600d03cc7f17012990d46e54b3e874a8f2cae4aa1a052f9953637b0a3a",
+            "policy_rule": "interrupted-target-invocation",
+            "reason_code": "interrupted-target-invocation"
+          },
+          "schema_version": "physical-attempt-evidence.v2",
+          "started_at": "2026-09-06T12:03:00Z",
+          "terminality": {
+            "disposition": "terminal-scientific-observation",
+            "fault_attribution": {
+              "attribution_layer": "target",
+              "evidence_reference": null,
+              "reason_code": "bounded-target-evidence",
+              "target_attributable": true
+            },
+            "observation_complete": true,
+            "outcome_class": "compile-rejection",
+            "produced_observation_id": "rcid:v1:observation:u7:019ffdee-0000-7000-8000-000000000003",
+            "protocol_status": {
+              "last_checkpoint": "target-response-complete",
+              "state": "valid"
+            },
+            "protocol_valid": true,
+            "scientific_result_signature": {
+              "algorithm": "rfc8785-sha256-v1",
+              "basis": "outcome-class-and-semantic-result",
+              "sha256": "9d5145a71d3f709b2c9317710a5412144503f358d71455ab2eeda8db5aef4478"
+            },
+            "semantic_result": {
+              "compile_status": "rejected",
+              "error_code": "E_PATTERN"
+            },
+            "target_process_status": {
+              "exit_code": 0,
+              "resource_limit": null,
+              "signal": null,
+              "target_started": true,
+              "timeout_source": null
+            }
+          }
+        }
+      ],
+      "disposition": {
+        "attempt_set_sha256": "fe08608ed211f74f911354a2d0f61c8257511810591bc96fe7a2ea267e4d5661",
+        "attempts_total": 2,
+        "distinct_terminal_result_signature_count": 1,
+        "inconclusive_attempt_count": 1,
+        "last_attempt_id": "rcid:v1:physical-run:u7:019ffdee-0000-7000-8000-000000000003",
+        "logical_execution_id": "rcid:v1:logical-execution:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000002",
+        "observation_ids": [
+          "rcid:v1:observation:u7:019ffdee-0000-7000-8000-000000000003"
+        ],
+        "recovered_attempt_count": 1,
+        "repeat_measurement_attempt_count": 0,
+        "retry_attempt_count": 1,
+        "retry_budget_exhausted": false,
+        "satisfaction_attempt_id": "rcid:v1:physical-run:u7:019ffdee-0000-7000-8000-000000000003",
+        "satisfaction_observation_id": "rcid:v1:observation:u7:019ffdee-0000-7000-8000-000000000003",
+        "schema_version": "logical-execution-disposition.v1",
+        "status": "satisfied",
+        "terminal_attempt_count": 1,
+        "terminal_result_signatures": [
+          {
+            "observation_count": 1,
+            "observation_ids": [
+              "rcid:v1:observation:u7:019ffdee-0000-7000-8000-000000000003"
+            ],
+            "sha256": "9d5145a71d3f709b2c9317710a5412144503f358d71455ab2eeda8db5aef4478"
+          }
+        ],
+        "unresolved_reason": null
+      },
+      "logical_execution_id": "rcid:v1:logical-execution:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000002",
+      "observations": [
+        {
+          "attempt_set_reference": {
+            "attempt_set_sha256": "fe08608ed211f74f911354a2d0f61c8257511810591bc96fe7a2ea267e4d5661",
+            "attempts_total": 2
+          },
+          "campaign_manifest_id": "rcid:v1:campaign-manifest:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+          "derivation_revision_ids": [],
+          "fault_attribution": {
+            "attribution_layer": "target",
+            "evidence_reference": null,
+            "reason_code": "bounded-target-evidence",
+            "target_attributable": true
+          },
+          "logical_execution_id": "rcid:v1:logical-execution:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000002",
+          "observation_complete": true,
+          "observation_content_id": "rcid:v1:observation-content:h:jcs-sha256-v1:ec845acfea19116c1fc08224fad41d539095997b99278a49d01505477b7e3101",
+          "observation_id": "rcid:v1:observation:u7:019ffdee-0000-7000-8000-000000000003",
+          "outcome_class": "compile-rejection",
+          "physical_telemetry_references": [
+            {
+              "category": "physical-telemetry",
+              "relative_path": "physical-telemetry/sha256/0000000000000000000000000000000000000000000000000000000000000003.json",
+              "sha256": "0000000000000000000000000000000000000000000000000000000000000003",
+              "size_bytes": 1
+            }
+          ],
+          "protocol_valid": true,
+          "result_signature": {
+            "algorithm": "rfc8785-sha256-v1",
+            "basis": "outcome-class-and-semantic-result",
+            "sha256": "9d5145a71d3f709b2c9317710a5412144503f358d71455ab2eeda8db5aef4478"
+          },
+          "schema_version": "terminal-observation-content.v2",
+          "semantic_result": {
+            "compile_status": "rejected",
+            "error_code": "E_PATTERN"
+          },
+          "terminal_attempt_id": "rcid:v1:physical-run:u7:019ffdee-0000-7000-8000-000000000003"
+        }
+      ]
+    },
+    {
+      "attempts": [
+        {
+          "attempt_ordinal": 1,
+          "attempt_purpose": "initial",
+          "checkpoint_context": {
+            "controller_session_id": "reference-session-3",
+            "predecessor_checkpoint_sha256": null,
+            "recovery_action": "start",
+            "start_checkpoint_sha256": "00000000000000000000000000000000000000000000000000000000000003ec",
+            "start_state": "running"
+          },
+          "ended_at": "2026-09-06T12:04:01Z",
+          "execution_context": {
+            "adapter_release_id": "rcid:v1:adapter-release:u7:019ffdee-0000-7000-8000-000000000001",
+            "adapter_release_manifest_id": "rcid:v1:adapter-release-manifest:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "applicability_coordinate_id": "rcid:v1:applicability-coordinate:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000003",
+            "campaign_id": "rcid:v1:campaign:u7:019ffdee-0000-7000-8000-000000000001",
+            "campaign_manifest_id": "rcid:v1:campaign-manifest:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "control_plane_revision_sha256": "0000000000000000000000000000000000000000000000000000000000000002",
+            "environment_fingerprint_id": "rcid:v1:environment-fingerprint:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "environment_realization_id": "rcid:v1:environment-realization:u7:019ffdee-0000-7000-8000-000000000001",
+            "execution_policy_revision_sha256": "c0095c600d03cc7f17012990d46e54b3e874a8f2cae4aa1a052f9953637b0a3a",
+            "execution_shard_id": "rcid:v1:shard:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000003",
+            "harness_revision_sha256": "0000000000000000000000000000000000000000000000000000000000000003",
+            "partition_id": null,
+            "profile_revision_id": "rcid:v1:profile-revision:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "protocol_revision_id": "rcid:v1:adapter-protocol-revision:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "target_release_revision_id": "rcid:v1:release-revision:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "vector_revision_id": "rcid:v1:vector-revision:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000003",
+            "work_unit_id": "rcid:v1:shard:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000067"
+          },
+          "expected_intermittence": {
+            "declared": false,
+            "source_reference": null
+          },
+          "logical_execution_id": "rcid:v1:logical-execution:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000003",
+          "physical_run_id": "rcid:v1:physical-run:u7:019ffdee-0000-7000-8000-000000000004",
+          "physical_telemetry_references": [
+            {
+              "category": "physical-telemetry",
+              "relative_path": "physical-telemetry/sha256/0000000000000000000000000000000000000000000000000000000000000004.json",
+              "sha256": "0000000000000000000000000000000000000000000000000000000000000004",
+              "size_bytes": 1
+            }
+          ],
+          "predecessor_physical_run_id": null,
+          "repeat": null,
+          "reset": {
+            "evidence_references": [],
+            "reason_code": "initial-state",
+            "scope": "none"
+          },
+          "resource_budget": {
+            "cpu_time_ms": 500,
+            "memory_bytes": 67108864,
+            "process_count": 4,
+            "stderr_bytes": 65536,
+            "stdout_bytes": 65536,
+            "wall_time_ms": 1000
+          },
+          "retry": null,
+          "schema_version": "physical-attempt-evidence.v2",
+          "started_at": "2026-09-06T12:04:00Z",
+          "terminality": {
+            "disposition": "terminal-scientific-observation",
+            "fault_attribution": {
+              "attribution_layer": "target",
+              "evidence_reference": {
+                "category": "fault-attribution",
+                "relative_path": "fault-attribution/sha256/0000000000000000000000000000000000000000000000000000000000000004.json",
+                "sha256": "0000000000000000000000000000000000000000000000000000000000000004",
+                "size_bytes": 1
+              },
+              "reason_code": "bounded-target-evidence",
+              "target_attributable": true
+            },
+            "observation_complete": true,
+            "outcome_class": "target-crash",
+            "produced_observation_id": "rcid:v1:observation:u7:019ffdee-0000-7000-8000-000000000004",
+            "protocol_status": {
+              "last_checkpoint": "target-invocation-started",
+              "state": "missing"
+            },
+            "protocol_valid": false,
+            "scientific_result_signature": {
+              "algorithm": "rfc8785-sha256-v1",
+              "basis": "outcome-class-and-semantic-result",
+              "sha256": "a8e3396ff0d2054b9610d149b1d1f728464a1109b7e64b9137ae3d26411ad97d"
+            },
+            "semantic_result": {
+              "signal": "SIGSEGV"
+            },
+            "target_process_status": {
+              "exit_code": null,
+              "resource_limit": null,
+              "signal": "SIGSEGV",
+              "target_started": true,
+              "timeout_source": null
+            }
+          }
+        }
+      ],
+      "disposition": {
+        "attempt_set_sha256": "aa8462bae1a7350dba92da86cb9f1a0842a97f8be7ec615e8394b8d998386622",
+        "attempts_total": 1,
+        "distinct_terminal_result_signature_count": 1,
+        "inconclusive_attempt_count": 0,
+        "last_attempt_id": "rcid:v1:physical-run:u7:019ffdee-0000-7000-8000-000000000004",
+        "logical_execution_id": "rcid:v1:logical-execution:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000003",
+        "observation_ids": [
+          "rcid:v1:observation:u7:019ffdee-0000-7000-8000-000000000004"
+        ],
+        "recovered_attempt_count": 0,
+        "repeat_measurement_attempt_count": 0,
+        "retry_attempt_count": 0,
+        "retry_budget_exhausted": false,
+        "satisfaction_attempt_id": "rcid:v1:physical-run:u7:019ffdee-0000-7000-8000-000000000004",
+        "satisfaction_observation_id": "rcid:v1:observation:u7:019ffdee-0000-7000-8000-000000000004",
+        "schema_version": "logical-execution-disposition.v1",
+        "status": "satisfied",
+        "terminal_attempt_count": 1,
+        "terminal_result_signatures": [
+          {
+            "observation_count": 1,
+            "observation_ids": [
+              "rcid:v1:observation:u7:019ffdee-0000-7000-8000-000000000004"
+            ],
+            "sha256": "a8e3396ff0d2054b9610d149b1d1f728464a1109b7e64b9137ae3d26411ad97d"
+          }
+        ],
+        "unresolved_reason": null
+      },
+      "logical_execution_id": "rcid:v1:logical-execution:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000003",
+      "observations": [
+        {
+          "attempt_set_reference": {
+            "attempt_set_sha256": "aa8462bae1a7350dba92da86cb9f1a0842a97f8be7ec615e8394b8d998386622",
+            "attempts_total": 1
+          },
+          "campaign_manifest_id": "rcid:v1:campaign-manifest:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+          "derivation_revision_ids": [],
+          "fault_attribution": {
+            "attribution_layer": "target",
+            "evidence_reference": {
+              "category": "fault-attribution",
+              "relative_path": "fault-attribution/sha256/0000000000000000000000000000000000000000000000000000000000000004.json",
+              "sha256": "0000000000000000000000000000000000000000000000000000000000000004",
+              "size_bytes": 1
+            },
+            "reason_code": "bounded-target-evidence",
+            "target_attributable": true
+          },
+          "logical_execution_id": "rcid:v1:logical-execution:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000003",
+          "observation_complete": true,
+          "observation_content_id": "rcid:v1:observation-content:h:jcs-sha256-v1:bb27455bcd471fa041c8cd44443fbd537a375adc12c0222a7be8b095dd421939",
+          "observation_id": "rcid:v1:observation:u7:019ffdee-0000-7000-8000-000000000004",
+          "outcome_class": "target-crash",
+          "physical_telemetry_references": [
+            {
+              "category": "physical-telemetry",
+              "relative_path": "physical-telemetry/sha256/0000000000000000000000000000000000000000000000000000000000000004.json",
+              "sha256": "0000000000000000000000000000000000000000000000000000000000000004",
+              "size_bytes": 1
+            }
+          ],
+          "protocol_valid": false,
+          "result_signature": {
+            "algorithm": "rfc8785-sha256-v1",
+            "basis": "outcome-class-and-semantic-result",
+            "sha256": "a8e3396ff0d2054b9610d149b1d1f728464a1109b7e64b9137ae3d26411ad97d"
+          },
+          "schema_version": "terminal-observation-content.v2",
+          "semantic_result": {
+            "signal": "SIGSEGV"
+          },
+          "terminal_attempt_id": "rcid:v1:physical-run:u7:019ffdee-0000-7000-8000-000000000004"
+        }
+      ]
+    },
+    {
+      "attempts": [
+        {
+          "attempt_ordinal": 1,
+          "attempt_purpose": "initial",
+          "checkpoint_context": {
+            "controller_session_id": "reference-session-4",
+            "predecessor_checkpoint_sha256": null,
+            "recovery_action": "start",
+            "start_checkpoint_sha256": "00000000000000000000000000000000000000000000000000000000000003ed",
+            "start_state": "running"
+          },
+          "ended_at": "2026-09-06T12:05:01Z",
+          "execution_context": {
+            "adapter_release_id": "rcid:v1:adapter-release:u7:019ffdee-0000-7000-8000-000000000001",
+            "adapter_release_manifest_id": "rcid:v1:adapter-release-manifest:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "applicability_coordinate_id": "rcid:v1:applicability-coordinate:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000004",
+            "campaign_id": "rcid:v1:campaign:u7:019ffdee-0000-7000-8000-000000000001",
+            "campaign_manifest_id": "rcid:v1:campaign-manifest:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "control_plane_revision_sha256": "0000000000000000000000000000000000000000000000000000000000000002",
+            "environment_fingerprint_id": "rcid:v1:environment-fingerprint:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "environment_realization_id": "rcid:v1:environment-realization:u7:019ffdee-0000-7000-8000-000000000001",
+            "execution_policy_revision_sha256": "c0095c600d03cc7f17012990d46e54b3e874a8f2cae4aa1a052f9953637b0a3a",
+            "execution_shard_id": "rcid:v1:shard:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000004",
+            "harness_revision_sha256": "0000000000000000000000000000000000000000000000000000000000000003",
+            "partition_id": null,
+            "profile_revision_id": "rcid:v1:profile-revision:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "protocol_revision_id": "rcid:v1:adapter-protocol-revision:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "target_release_revision_id": "rcid:v1:release-revision:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "vector_revision_id": "rcid:v1:vector-revision:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000004",
+            "work_unit_id": "rcid:v1:shard:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000068"
+          },
+          "expected_intermittence": {
+            "declared": false,
+            "source_reference": null
+          },
+          "logical_execution_id": "rcid:v1:logical-execution:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000004",
+          "physical_run_id": "rcid:v1:physical-run:u7:019ffdee-0000-7000-8000-000000000005",
+          "physical_telemetry_references": [
+            {
+              "category": "physical-telemetry",
+              "relative_path": "physical-telemetry/sha256/0000000000000000000000000000000000000000000000000000000000000005.json",
+              "sha256": "0000000000000000000000000000000000000000000000000000000000000005",
+              "size_bytes": 1
+            }
+          ],
+          "predecessor_physical_run_id": null,
+          "repeat": null,
+          "reset": {
+            "evidence_references": [],
+            "reason_code": "initial-state",
+            "scope": "none"
+          },
+          "resource_budget": {
+            "cpu_time_ms": 500,
+            "memory_bytes": 67108864,
+            "process_count": 4,
+            "stderr_bytes": 65536,
+            "stdout_bytes": 65536,
+            "wall_time_ms": 1000
+          },
+          "retry": null,
+          "schema_version": "physical-attempt-evidence.v2",
+          "started_at": "2026-09-06T12:05:00Z",
+          "terminality": {
+            "disposition": "inconclusive-attempt",
+            "fault_attribution": {
+              "attribution_layer": "protocol",
+              "evidence_reference": {
+                "category": "fault-attribution",
+                "relative_path": "fault-attribution/sha256/0000000000000000000000000000000000000000000000000000000000000005.json",
+                "sha256": "0000000000000000000000000000000000000000000000000000000000000005",
+                "size_bytes": 1
+              },
+              "reason_code": "malformed-adapter-response",
+              "target_attributable": false
+            },
+            "observation_complete": false,
+            "outcome_class": "malformed-adapter-response",
+            "produced_observation_id": null,
+            "protocol_status": {
+              "last_checkpoint": "target-invocation-started",
+              "state": "malformed"
+            },
+            "protocol_valid": false,
+            "scientific_result_signature": null,
+            "semantic_result": null,
+            "target_process_status": {
+              "exit_code": null,
+              "resource_limit": null,
+              "signal": null,
+              "target_started": true,
+              "timeout_source": null
+            }
+          }
+        },
+        {
+          "attempt_ordinal": 2,
+          "attempt_purpose": "automatic-retry",
+          "checkpoint_context": {
+            "controller_session_id": "reference-session-4",
+            "predecessor_checkpoint_sha256": "00000000000000000000000000000000000000000000000000000000000003ed",
+            "recovery_action": "retry",
+            "start_checkpoint_sha256": "00000000000000000000000000000000000000000000000000000000000003ee",
+            "start_state": "running"
+          },
+          "ended_at": "2026-09-06T12:06:01Z",
+          "execution_context": {
+            "adapter_release_id": "rcid:v1:adapter-release:u7:019ffdee-0000-7000-8000-000000000001",
+            "adapter_release_manifest_id": "rcid:v1:adapter-release-manifest:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "applicability_coordinate_id": "rcid:v1:applicability-coordinate:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000004",
+            "campaign_id": "rcid:v1:campaign:u7:019ffdee-0000-7000-8000-000000000001",
+            "campaign_manifest_id": "rcid:v1:campaign-manifest:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "control_plane_revision_sha256": "0000000000000000000000000000000000000000000000000000000000000002",
+            "environment_fingerprint_id": "rcid:v1:environment-fingerprint:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "environment_realization_id": "rcid:v1:environment-realization:u7:019ffdee-0000-7000-8000-000000000001",
+            "execution_policy_revision_sha256": "c0095c600d03cc7f17012990d46e54b3e874a8f2cae4aa1a052f9953637b0a3a",
+            "execution_shard_id": "rcid:v1:shard:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000004",
+            "harness_revision_sha256": "0000000000000000000000000000000000000000000000000000000000000003",
+            "partition_id": null,
+            "profile_revision_id": "rcid:v1:profile-revision:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "protocol_revision_id": "rcid:v1:adapter-protocol-revision:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "target_release_revision_id": "rcid:v1:release-revision:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "vector_revision_id": "rcid:v1:vector-revision:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000004",
+            "work_unit_id": "rcid:v1:shard:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000068"
+          },
+          "expected_intermittence": {
+            "declared": false,
+            "source_reference": null
+          },
+          "logical_execution_id": "rcid:v1:logical-execution:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000004",
+          "physical_run_id": "rcid:v1:physical-run:u7:019ffdee-0000-7000-8000-000000000006",
+          "physical_telemetry_references": [
+            {
+              "category": "physical-telemetry",
+              "relative_path": "physical-telemetry/sha256/0000000000000000000000000000000000000000000000000000000000000006.json",
+              "sha256": "0000000000000000000000000000000000000000000000000000000000000006",
+              "size_bytes": 1
+            }
+          ],
+          "predecessor_physical_run_id": "rcid:v1:physical-run:u7:019ffdee-0000-7000-8000-000000000005",
+          "repeat": null,
+          "reset": {
+            "evidence_references": [
+              {
+                "category": "reset-evidence",
+                "relative_path": "reset-evidence/sha256/0000000000000000000000000000000000000000000000000000000000000006.json",
+                "sha256": "0000000000000000000000000000000000000000000000000000000000000006",
+                "size_bytes": 1
+              }
+            ],
+            "reason_code": "malformed-adapter-response",
+            "scope": "adapter-process"
+          },
+          "resource_budget": {
+            "cpu_time_ms": 500,
+            "memory_bytes": 67108864,
+            "process_count": 4,
+            "stderr_bytes": 65536,
+            "stdout_bytes": 65536,
+            "wall_time_ms": 1000
+          },
+          "retry": {
+            "authorization_kind": "automatic",
+            "policy_revision_sha256": "c0095c600d03cc7f17012990d46e54b3e874a8f2cae4aa1a052f9953637b0a3a",
+            "policy_rule": "malformed-adapter-response",
+            "reason_code": "malformed-adapter-response"
+          },
+          "schema_version": "physical-attempt-evidence.v2",
+          "started_at": "2026-09-06T12:06:00Z",
+          "terminality": {
+            "disposition": "inconclusive-attempt",
+            "fault_attribution": {
+              "attribution_layer": "protocol",
+              "evidence_reference": {
+                "category": "fault-attribution",
+                "relative_path": "fault-attribution/sha256/0000000000000000000000000000000000000000000000000000000000000006.json",
+                "sha256": "0000000000000000000000000000000000000000000000000000000000000006",
+                "size_bytes": 1
+              },
+              "reason_code": "malformed-adapter-response",
+              "target_attributable": false
+            },
+            "observation_complete": false,
+            "outcome_class": "malformed-adapter-response",
+            "produced_observation_id": null,
+            "protocol_status": {
+              "last_checkpoint": "target-invocation-started",
+              "state": "malformed"
+            },
+            "protocol_valid": false,
+            "scientific_result_signature": null,
+            "semantic_result": null,
+            "target_process_status": {
+              "exit_code": null,
+              "resource_limit": null,
+              "signal": null,
+              "target_started": true,
+              "timeout_source": null
+            }
+          }
+        }
+      ],
+      "disposition": {
+        "attempt_set_sha256": "1b8bbe22d4e87985f0771a408789123533393f2db2aa41c9c79388335994884f",
+        "attempts_total": 2,
+        "distinct_terminal_result_signature_count": 0,
+        "inconclusive_attempt_count": 2,
+        "last_attempt_id": "rcid:v1:physical-run:u7:019ffdee-0000-7000-8000-000000000006",
+        "logical_execution_id": "rcid:v1:logical-execution:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000004",
+        "observation_ids": [],
+        "recovered_attempt_count": 0,
+        "repeat_measurement_attempt_count": 0,
+        "retry_attempt_count": 1,
+        "retry_budget_exhausted": true,
+        "satisfaction_attempt_id": null,
+        "satisfaction_observation_id": null,
+        "schema_version": "logical-execution-disposition.v1",
+        "status": "unresolved",
+        "terminal_attempt_count": 0,
+        "terminal_result_signatures": [],
+        "unresolved_reason": "retry-budget-exhausted"
+      },
+      "logical_execution_id": "rcid:v1:logical-execution:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000004",
+      "observations": []
+    },
+    {
+      "attempts": [
+        {
+          "attempt_ordinal": 1,
+          "attempt_purpose": "initial",
+          "checkpoint_context": {
+            "controller_session_id": "reference-session-5",
+            "predecessor_checkpoint_sha256": null,
+            "recovery_action": "start",
+            "start_checkpoint_sha256": "00000000000000000000000000000000000000000000000000000000000003ef",
+            "start_state": "running"
+          },
+          "ended_at": "2026-09-06T12:07:01Z",
+          "execution_context": {
+            "adapter_release_id": "rcid:v1:adapter-release:u7:019ffdee-0000-7000-8000-000000000001",
+            "adapter_release_manifest_id": "rcid:v1:adapter-release-manifest:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "applicability_coordinate_id": "rcid:v1:applicability-coordinate:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000005",
+            "campaign_id": "rcid:v1:campaign:u7:019ffdee-0000-7000-8000-000000000001",
+            "campaign_manifest_id": "rcid:v1:campaign-manifest:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "control_plane_revision_sha256": "0000000000000000000000000000000000000000000000000000000000000002",
+            "environment_fingerprint_id": "rcid:v1:environment-fingerprint:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "environment_realization_id": "rcid:v1:environment-realization:u7:019ffdee-0000-7000-8000-000000000001",
+            "execution_policy_revision_sha256": "c0095c600d03cc7f17012990d46e54b3e874a8f2cae4aa1a052f9953637b0a3a",
+            "execution_shard_id": "rcid:v1:shard:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000005",
+            "harness_revision_sha256": "0000000000000000000000000000000000000000000000000000000000000003",
+            "partition_id": null,
+            "profile_revision_id": "rcid:v1:profile-revision:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "protocol_revision_id": "rcid:v1:adapter-protocol-revision:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "target_release_revision_id": "rcid:v1:release-revision:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "vector_revision_id": "rcid:v1:vector-revision:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000005",
+            "work_unit_id": "rcid:v1:shard:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000069"
+          },
+          "expected_intermittence": {
+            "declared": false,
+            "source_reference": null
+          },
+          "logical_execution_id": "rcid:v1:logical-execution:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000005",
+          "physical_run_id": "rcid:v1:physical-run:u7:019ffdee-0000-7000-8000-000000000007",
+          "physical_telemetry_references": [
+            {
+              "category": "physical-telemetry",
+              "relative_path": "physical-telemetry/sha256/0000000000000000000000000000000000000000000000000000000000000007.json",
+              "sha256": "0000000000000000000000000000000000000000000000000000000000000007",
+              "size_bytes": 1
+            }
+          ],
+          "predecessor_physical_run_id": null,
+          "repeat": null,
+          "reset": {
+            "evidence_references": [],
+            "reason_code": "initial-state",
+            "scope": "none"
+          },
+          "resource_budget": {
+            "cpu_time_ms": 500,
+            "memory_bytes": 67108864,
+            "process_count": 4,
+            "stderr_bytes": 65536,
+            "stdout_bytes": 65536,
+            "wall_time_ms": 1000
+          },
+          "retry": null,
+          "schema_version": "physical-attempt-evidence.v2",
+          "started_at": "2026-09-06T12:07:00Z",
+          "terminality": {
+            "disposition": "terminal-scientific-observation",
+            "fault_attribution": {
+              "attribution_layer": "target",
+              "evidence_reference": null,
+              "reason_code": "bounded-target-evidence",
+              "target_attributable": true
+            },
+            "observation_complete": true,
+            "outcome_class": "no-match",
+            "produced_observation_id": "rcid:v1:observation:u7:019ffdee-0000-7000-8000-000000000007",
+            "protocol_status": {
+              "last_checkpoint": "target-response-complete",
+              "state": "valid"
+            },
+            "protocol_valid": true,
+            "scientific_result_signature": {
+              "algorithm": "rfc8785-sha256-v1",
+              "basis": "outcome-class-and-semantic-result",
+              "sha256": "953e3217499c6945defcaa5c7927ff27ca8ff0c2110081e8b4f302f08b96f43c"
+            },
+            "semantic_result": {
+              "match": false
+            },
+            "target_process_status": {
+              "exit_code": 0,
+              "resource_limit": null,
+              "signal": null,
+              "target_started": true,
+              "timeout_source": null
+            }
+          }
+        },
+        {
+          "attempt_ordinal": 2,
+          "attempt_purpose": "qualification-repeat",
+          "checkpoint_context": {
+            "controller_session_id": "reference-session-5",
+            "predecessor_checkpoint_sha256": "00000000000000000000000000000000000000000000000000000000000003ef",
+            "recovery_action": "repeat",
+            "start_checkpoint_sha256": "00000000000000000000000000000000000000000000000000000000000003f0",
+            "start_state": "running"
+          },
+          "ended_at": "2026-09-06T12:08:01Z",
+          "execution_context": {
+            "adapter_release_id": "rcid:v1:adapter-release:u7:019ffdee-0000-7000-8000-000000000001",
+            "adapter_release_manifest_id": "rcid:v1:adapter-release-manifest:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "applicability_coordinate_id": "rcid:v1:applicability-coordinate:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000005",
+            "campaign_id": "rcid:v1:campaign:u7:019ffdee-0000-7000-8000-000000000001",
+            "campaign_manifest_id": "rcid:v1:campaign-manifest:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "control_plane_revision_sha256": "0000000000000000000000000000000000000000000000000000000000000002",
+            "environment_fingerprint_id": "rcid:v1:environment-fingerprint:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "environment_realization_id": "rcid:v1:environment-realization:u7:019ffdee-0000-7000-8000-000000000001",
+            "execution_policy_revision_sha256": "c0095c600d03cc7f17012990d46e54b3e874a8f2cae4aa1a052f9953637b0a3a",
+            "execution_shard_id": "rcid:v1:shard:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000005",
+            "harness_revision_sha256": "0000000000000000000000000000000000000000000000000000000000000003",
+            "partition_id": null,
+            "profile_revision_id": "rcid:v1:profile-revision:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "protocol_revision_id": "rcid:v1:adapter-protocol-revision:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "target_release_revision_id": "rcid:v1:release-revision:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+            "vector_revision_id": "rcid:v1:vector-revision:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000005",
+            "work_unit_id": "rcid:v1:shard:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000069"
+          },
+          "expected_intermittence": {
+            "declared": true,
+            "source_reference": {
+              "category": "repeat-authorization",
+              "relative_path": "repeat-authorization/sha256/0000000000000000000000000000000000000000000000000000000000000008.json",
+              "sha256": "0000000000000000000000000000000000000000000000000000000000000008",
+              "size_bytes": 1
+            }
+          },
+          "logical_execution_id": "rcid:v1:logical-execution:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000005",
+          "physical_run_id": "rcid:v1:physical-run:u7:019ffdee-0000-7000-8000-000000000008",
+          "physical_telemetry_references": [
+            {
+              "category": "physical-telemetry",
+              "relative_path": "physical-telemetry/sha256/0000000000000000000000000000000000000000000000000000000000000008.json",
+              "sha256": "0000000000000000000000000000000000000000000000000000000000000008",
+              "size_bytes": 1
+            }
+          ],
+          "predecessor_physical_run_id": "rcid:v1:physical-run:u7:019ffdee-0000-7000-8000-000000000007",
+          "repeat": {
+            "authorization_kind": "qualification-specific",
+            "policy_revision_sha256": "c0095c600d03cc7f17012990d46e54b3e874a8f2cae4aa1a052f9953637b0a3a",
+            "policy_rule": "qualification-repeat",
+            "reason_code": "qualification-repeat",
+            "terminal_predecessor_observation_id": "rcid:v1:observation:u7:019ffdee-0000-7000-8000-000000000007"
+          },
+          "reset": {
+            "evidence_references": [
+              {
+                "category": "reset-evidence",
+                "relative_path": "reset-evidence/sha256/0000000000000000000000000000000000000000000000000000000000000008.json",
+                "sha256": "0000000000000000000000000000000000000000000000000000000000000008",
+                "size_bytes": 1
+              }
+            ],
+            "reason_code": "qualification-repeat",
+            "scope": "target-process"
+          },
+          "resource_budget": {
+            "cpu_time_ms": 500,
+            "memory_bytes": 67108864,
+            "process_count": 4,
+            "stderr_bytes": 65536,
+            "stdout_bytes": 65536,
+            "wall_time_ms": 1000
+          },
+          "retry": null,
+          "schema_version": "physical-attempt-evidence.v2",
+          "started_at": "2026-09-06T12:08:00Z",
+          "terminality": {
+            "disposition": "terminal-scientific-observation",
+            "fault_attribution": {
+              "attribution_layer": "target",
+              "evidence_reference": null,
+              "reason_code": "bounded-target-evidence",
+              "target_attributable": true
+            },
+            "observation_complete": true,
+            "outcome_class": "match",
+            "produced_observation_id": "rcid:v1:observation:u7:019ffdee-0000-7000-8000-000000000008",
+            "protocol_status": {
+              "last_checkpoint": "target-response-complete",
+              "state": "valid"
+            },
+            "protocol_valid": true,
+            "scientific_result_signature": {
+              "algorithm": "rfc8785-sha256-v1",
+              "basis": "outcome-class-and-semantic-result",
+              "sha256": "ca01757df60734eabb5ef43c7d4674ee2a5bec519409a15c0ac746c291194cf1"
+            },
+            "semantic_result": {
+              "match": true,
+              "spans": [
+                [
+                  0,
+                  1
+                ]
+              ]
+            },
+            "target_process_status": {
+              "exit_code": 0,
+              "resource_limit": null,
+              "signal": null,
+              "target_started": true,
+              "timeout_source": null
+            }
+          }
+        }
+      ],
+      "disposition": {
+        "attempt_set_sha256": "177771ecbd865b384276bfa26bdad6a8c36ca41b8b7b2fba7b8d25f0e61801bf",
+        "attempts_total": 2,
+        "distinct_terminal_result_signature_count": 2,
+        "inconclusive_attempt_count": 0,
+        "last_attempt_id": "rcid:v1:physical-run:u7:019ffdee-0000-7000-8000-000000000008",
+        "logical_execution_id": "rcid:v1:logical-execution:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000005",
+        "observation_ids": [
+          "rcid:v1:observation:u7:019ffdee-0000-7000-8000-000000000007",
+          "rcid:v1:observation:u7:019ffdee-0000-7000-8000-000000000008"
+        ],
+        "recovered_attempt_count": 0,
+        "repeat_measurement_attempt_count": 1,
+        "retry_attempt_count": 0,
+        "retry_budget_exhausted": false,
+        "satisfaction_attempt_id": "rcid:v1:physical-run:u7:019ffdee-0000-7000-8000-000000000007",
+        "satisfaction_observation_id": "rcid:v1:observation:u7:019ffdee-0000-7000-8000-000000000007",
+        "schema_version": "logical-execution-disposition.v1",
+        "status": "satisfied",
+        "terminal_attempt_count": 2,
+        "terminal_result_signatures": [
+          {
+            "observation_count": 1,
+            "observation_ids": [
+              "rcid:v1:observation:u7:019ffdee-0000-7000-8000-000000000007"
+            ],
+            "sha256": "953e3217499c6945defcaa5c7927ff27ca8ff0c2110081e8b4f302f08b96f43c"
+          },
+          {
+            "observation_count": 1,
+            "observation_ids": [
+              "rcid:v1:observation:u7:019ffdee-0000-7000-8000-000000000008"
+            ],
+            "sha256": "ca01757df60734eabb5ef43c7d4674ee2a5bec519409a15c0ac746c291194cf1"
+          }
+        ],
+        "unresolved_reason": null
+      },
+      "logical_execution_id": "rcid:v1:logical-execution:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000005",
+      "observations": [
+        {
+          "attempt_set_reference": {
+            "attempt_set_sha256": "800e4a99dc87040d7caaae7b030e6554fa8ce4f868352536be0382d8ccddbeac",
+            "attempts_total": 1
+          },
+          "campaign_manifest_id": "rcid:v1:campaign-manifest:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+          "derivation_revision_ids": [],
+          "fault_attribution": {
+            "attribution_layer": "target",
+            "evidence_reference": null,
+            "reason_code": "bounded-target-evidence",
+            "target_attributable": true
+          },
+          "logical_execution_id": "rcid:v1:logical-execution:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000005",
+          "observation_complete": true,
+          "observation_content_id": "rcid:v1:observation-content:h:jcs-sha256-v1:91688551054d3c4e45738ca4f260acf7292bc32fe1f91170a400af01f8fe4fdf",
+          "observation_id": "rcid:v1:observation:u7:019ffdee-0000-7000-8000-000000000007",
+          "outcome_class": "no-match",
+          "physical_telemetry_references": [
+            {
+              "category": "physical-telemetry",
+              "relative_path": "physical-telemetry/sha256/0000000000000000000000000000000000000000000000000000000000000007.json",
+              "sha256": "0000000000000000000000000000000000000000000000000000000000000007",
+              "size_bytes": 1
+            }
+          ],
+          "protocol_valid": true,
+          "result_signature": {
+            "algorithm": "rfc8785-sha256-v1",
+            "basis": "outcome-class-and-semantic-result",
+            "sha256": "953e3217499c6945defcaa5c7927ff27ca8ff0c2110081e8b4f302f08b96f43c"
+          },
+          "schema_version": "terminal-observation-content.v2",
+          "semantic_result": {
+            "match": false
+          },
+          "terminal_attempt_id": "rcid:v1:physical-run:u7:019ffdee-0000-7000-8000-000000000007"
+        },
+        {
+          "attempt_set_reference": {
+            "attempt_set_sha256": "177771ecbd865b384276bfa26bdad6a8c36ca41b8b7b2fba7b8d25f0e61801bf",
+            "attempts_total": 2
+          },
+          "campaign_manifest_id": "rcid:v1:campaign-manifest:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000001",
+          "derivation_revision_ids": [],
+          "fault_attribution": {
+            "attribution_layer": "target",
+            "evidence_reference": null,
+            "reason_code": "bounded-target-evidence",
+            "target_attributable": true
+          },
+          "logical_execution_id": "rcid:v1:logical-execution:h:jcs-sha256-v1:0000000000000000000000000000000000000000000000000000000000000005",
+          "observation_complete": true,
+          "observation_content_id": "rcid:v1:observation-content:h:jcs-sha256-v1:ce2d81899243bec83e19a3c85f432a9bde60179e8a70492c2354437a80323d61",
+          "observation_id": "rcid:v1:observation:u7:019ffdee-0000-7000-8000-000000000008",
+          "outcome_class": "match",
+          "physical_telemetry_references": [
+            {
+              "category": "physical-telemetry",
+              "relative_path": "physical-telemetry/sha256/0000000000000000000000000000000000000000000000000000000000000008.json",
+              "sha256": "0000000000000000000000000000000000000000000000000000000000000008",
+              "size_bytes": 1
+            }
+          ],
+          "protocol_valid": true,
+          "result_signature": {
+            "algorithm": "rfc8785-sha256-v1",
+            "basis": "outcome-class-and-semantic-result",
+            "sha256": "ca01757df60734eabb5ef43c7d4674ee2a5bec519409a15c0ac746c291194cf1"
+          },
+          "schema_version": "terminal-observation-content.v2",
+          "semantic_result": {
+            "match": true,
+            "spans": [
+              [
+                0,
+                1
+              ]
+            ]
+          },
+          "terminal_attempt_id": "rcid:v1:physical-run:u7:019ffdee-0000-7000-8000-000000000008"
+        }
+      ]
+    }
+  ],
+  "schema_version": "execution-lineage-set.v1"
+}

@@ -1,0 +1,411 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/physical-attempt-evidence-v2.schema.json",
+  "title": "Immutable Physical Attempt Evidence v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "attempt_ordinal",
+    "attempt_purpose",
+    "checkpoint_context",
+    "ended_at",
+    "execution_context",
+    "expected_intermittence",
+    "logical_execution_id",
+    "physical_run_id",
+    "physical_telemetry_references",
+    "predecessor_physical_run_id",
+    "repeat",
+    "reset",
+    "resource_budget",
+    "retry",
+    "schema_version",
+    "started_at",
+    "terminality"
+  ],
+  "properties": {
+    "attempt_ordinal": {"type": "integer", "minimum": 1},
+    "attempt_purpose": {
+      "enum": [
+        "automatic-retry",
+        "initial",
+        "operator-remeasurement",
+        "qualification-repeat",
+        "recovery-retry",
+        "recovery-validation"
+      ]
+    },
+    "checkpoint_context": {"$ref": "#/$defs/checkpointContext"},
+    "ended_at": {"$ref": "#/$defs/instant"},
+    "execution_context": {"$ref": "#/$defs/executionContext"},
+    "expected_intermittence": {"$ref": "#/$defs/expectedIntermittence"},
+    "logical_execution_id": {"$ref": "#/$defs/logicalExecution"},
+    "physical_run_id": {"$ref": "#/$defs/physicalRun"},
+    "physical_telemetry_references": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/artifactReference"}
+    },
+    "predecessor_physical_run_id": {
+      "oneOf": [{"$ref": "#/$defs/physicalRun"}, {"type": "null"}]
+    },
+    "repeat": {
+      "oneOf": [{"$ref": "#/$defs/repeat"}, {"type": "null"}]
+    },
+    "reset": {"$ref": "#/$defs/reset"},
+    "resource_budget": {"$ref": "#/$defs/resourceBudget"},
+    "retry": {
+      "oneOf": [{"$ref": "#/$defs/retry"}, {"type": "null"}]
+    },
+    "schema_version": {"const": "physical-attempt-evidence.v2"},
+    "started_at": {"$ref": "#/$defs/instant"},
+    "terminality": {"$ref": "#/$defs/terminality"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"attempt_purpose": {"const": "initial"}}},
+      "then": {
+        "properties": {
+          "attempt_ordinal": {"const": 1},
+          "predecessor_physical_run_id": {"type": "null"},
+          "repeat": {"type": "null"},
+          "retry": {"type": "null"}
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "attempt_purpose": {"enum": ["automatic-retry", "recovery-retry"]}
+        }
+      },
+      "then": {
+        "properties": {
+          "predecessor_physical_run_id": {"$ref": "#/$defs/physicalRun"},
+          "repeat": {"type": "null"},
+          "retry": {"$ref": "#/$defs/retry"}
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "attempt_purpose": {
+            "enum": ["operator-remeasurement", "qualification-repeat", "recovery-validation"]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "predecessor_physical_run_id": {"$ref": "#/$defs/physicalRun"},
+          "repeat": {"$ref": "#/$defs/repeat"},
+          "retry": {"type": "null"}
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "adapterRelease": {"type": "string", "pattern": "^rcid:v1:adapter-release:u7:[0-9a-f-]{36}$"},
+    "adapterReleaseManifest": {"type": "string", "pattern": "^rcid:v1:adapter-release-manifest:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "applicabilityCoordinate": {"type": "string", "pattern": "^rcid:v1:applicability-coordinate:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "artifactReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["category", "relative_path", "sha256", "size_bytes"],
+      "properties": {
+        "category": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+        "relative_path": {"type": "string", "minLength": 1, "maxLength": 2048},
+        "sha256": {"$ref": "#/$defs/digest"},
+        "size_bytes": {"type": "integer", "minimum": 1}
+      }
+    },
+    "campaign": {"type": "string", "pattern": "^rcid:v1:campaign:u7:[0-9a-f-]{36}$"},
+    "campaignManifest": {"type": "string", "pattern": "^rcid:v1:campaign-manifest:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "checkpointContext": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "controller_session_id",
+        "predecessor_checkpoint_sha256",
+        "recovery_action",
+        "start_checkpoint_sha256",
+        "start_state"
+      ],
+      "properties": {
+        "controller_session_id": {"type": "string", "minLength": 1, "maxLength": 256},
+        "predecessor_checkpoint_sha256": {
+          "oneOf": [{"$ref": "#/$defs/digest"}, {"type": "null"}]
+        },
+        "recovery_action": {"enum": ["continue", "repeat", "retry", "start"]},
+        "start_checkpoint_sha256": {"$ref": "#/$defs/digest"},
+        "start_state": {"enum": ["environment-ready", "leased", "running"]}
+      }
+    },
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "environmentFingerprint": {"type": "string", "pattern": "^rcid:v1:environment-fingerprint:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "environmentRealization": {"type": "string", "pattern": "^rcid:v1:environment-realization:u7:[0-9a-f-]{36}$"},
+    "executionContext": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "adapter_release_id",
+        "adapter_release_manifest_id",
+        "applicability_coordinate_id",
+        "campaign_id",
+        "campaign_manifest_id",
+        "control_plane_revision_sha256",
+        "environment_fingerprint_id",
+        "environment_realization_id",
+        "execution_policy_revision_sha256",
+        "execution_shard_id",
+        "harness_revision_sha256",
+        "partition_id",
+        "profile_revision_id",
+        "protocol_revision_id",
+        "target_release_revision_id",
+        "vector_revision_id",
+        "work_unit_id"
+      ],
+      "properties": {
+        "adapter_release_id": {"$ref": "#/$defs/adapterRelease"},
+        "adapter_release_manifest_id": {"$ref": "#/$defs/adapterReleaseManifest"},
+        "applicability_coordinate_id": {"$ref": "#/$defs/applicabilityCoordinate"},
+        "campaign_id": {"$ref": "#/$defs/campaign"},
+        "campaign_manifest_id": {"$ref": "#/$defs/campaignManifest"},
+        "control_plane_revision_sha256": {"$ref": "#/$defs/digest"},
+        "environment_fingerprint_id": {"$ref": "#/$defs/environmentFingerprint"},
+        "environment_realization_id": {"$ref": "#/$defs/environmentRealization"},
+        "execution_policy_revision_sha256": {"$ref": "#/$defs/digest"},
+        "execution_shard_id": {"$ref": "#/$defs/shard"},
+        "harness_revision_sha256": {"$ref": "#/$defs/digest"},
+        "partition_id": {"oneOf": [{"$ref": "#/$defs/shard"}, {"type": "null"}]},
+        "profile_revision_id": {"$ref": "#/$defs/profileRevision"},
+        "protocol_revision_id": {"$ref": "#/$defs/protocolRevision"},
+        "target_release_revision_id": {"$ref": "#/$defs/releaseRevision"},
+        "vector_revision_id": {"$ref": "#/$defs/vectorRevision"},
+        "work_unit_id": {"$ref": "#/$defs/shard"}
+      }
+    },
+    "expectedIntermittence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["declared", "source_reference"],
+      "properties": {
+        "declared": {"type": "boolean"},
+        "source_reference": {
+          "oneOf": [{"$ref": "#/$defs/artifactReference"}, {"type": "null"}]
+        }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"declared": {"const": true}}},
+          "then": {"properties": {"source_reference": {"$ref": "#/$defs/artifactReference"}}}
+        },
+        {
+          "if": {"properties": {"declared": {"const": false}}},
+          "then": {"properties": {"source_reference": {"type": "null"}}}
+        }
+      ]
+    },
+    "faultAttribution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["attribution_layer", "evidence_reference", "reason_code", "target_attributable"],
+      "properties": {
+        "attribution_layer": {
+          "enum": ["adapter", "environment", "network", "protocol", "storage", "supervisor", "target", "unknown", "worker"]
+        },
+        "evidence_reference": {
+          "oneOf": [{"$ref": "#/$defs/artifactReference"}, {"type": "null"}]
+        },
+        "reason_code": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+        "target_attributable": {"type": "boolean"}
+      }
+    },
+    "instant": {"type": "string", "format": "date-time", "maxLength": 64},
+    "logicalExecution": {"type": "string", "pattern": "^rcid:v1:logical-execution:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "observation": {"type": "string", "pattern": "^rcid:v1:observation:u7:[0-9a-f-]{36}$"},
+    "physicalRun": {"type": "string", "pattern": "^rcid:v1:physical-run:u7:[0-9a-f-]{36}$"},
+    "processStatus": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["exit_code", "resource_limit", "signal", "target_started", "timeout_source"],
+      "properties": {
+        "exit_code": {"type": ["integer", "null"]},
+        "resource_limit": {"type": ["string", "null"], "maxLength": 128},
+        "signal": {"type": ["string", "null"], "maxLength": 128},
+        "target_started": {"type": "boolean"},
+        "timeout_source": {"type": ["string", "null"], "maxLength": 128}
+      }
+    },
+    "profileRevision": {"type": "string", "pattern": "^rcid:v1:profile-revision:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "protocolRevision": {"type": "string", "pattern": "^rcid:v1:adapter-protocol-revision:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "protocolStatus": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["last_checkpoint", "state"],
+      "properties": {
+        "last_checkpoint": {"enum": ["not-applicable", "target-invocation-started", "target-not-started", "target-response-complete"]},
+        "state": {"enum": ["malformed", "missing", "not-applicable", "valid"]}
+      }
+    },
+    "releaseRevision": {"type": "string", "pattern": "^rcid:v1:release-revision:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "repeat": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["authorization_kind", "policy_revision_sha256", "policy_rule", "reason_code", "terminal_predecessor_observation_id"],
+      "properties": {
+        "authorization_kind": {"enum": ["operator-authorized", "qualification-specific"]},
+        "policy_revision_sha256": {"$ref": "#/$defs/digest"},
+        "policy_rule": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+        "reason_code": {"enum": ["operator-remeasurement", "qualification-repeat", "recovery-validation"]},
+        "terminal_predecessor_observation_id": {"$ref": "#/$defs/observation"}
+      }
+    },
+    "reset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidence_references", "reason_code", "scope"],
+      "properties": {
+        "evidence_references": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/artifactReference"}
+        },
+        "reason_code": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+        "scope": {
+          "enum": ["adapter-process", "container", "environment-processes", "environment-realization", "none", "target-process"]
+        }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"scope": {"const": "none"}}},
+          "then": {"properties": {"evidence_references": {"maxItems": 0}}}
+        },
+        {
+          "if": {"not": {"properties": {"scope": {"const": "none"}}}},
+          "then": {"properties": {"evidence_references": {"minItems": 1}}}
+        }
+      ]
+    },
+    "resourceBudget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cpu_time_ms", "memory_bytes", "process_count", "stderr_bytes", "stdout_bytes", "wall_time_ms"],
+      "properties": {
+        "cpu_time_ms": {"type": ["integer", "null"], "minimum": 1},
+        "memory_bytes": {"type": ["integer", "null"], "minimum": 1},
+        "process_count": {"type": "integer", "minimum": 1},
+        "stderr_bytes": {"type": "integer", "minimum": 1},
+        "stdout_bytes": {"type": "integer", "minimum": 1},
+        "wall_time_ms": {"type": "integer", "minimum": 1}
+      }
+    },
+    "resultSignature": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["algorithm", "basis", "sha256"],
+      "properties": {
+        "algorithm": {"const": "rfc8785-sha256-v1"},
+        "basis": {"const": "outcome-class-and-semantic-result"},
+        "sha256": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "retry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["authorization_kind", "policy_rule", "policy_revision_sha256", "reason_code"],
+      "properties": {
+        "authorization_kind": {"enum": ["automatic", "operator-authorized", "qualification-specific"]},
+        "policy_rule": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+        "policy_revision_sha256": {"$ref": "#/$defs/digest"},
+        "reason_code": {
+          "enum": [
+            "adapter-process-failure",
+            "environment-realization-failure",
+            "interrupted-target-invocation",
+            "lost-unattributed-response",
+            "malformed-adapter-response",
+            "network-before-target",
+            "worker-supervisor-failure"
+          ]
+        }
+      }
+    },
+    "shard": {"type": "string", "pattern": "^rcid:v1:shard:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "terminality": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "disposition",
+        "fault_attribution",
+        "observation_complete",
+        "outcome_class",
+        "produced_observation_id",
+        "protocol_status",
+        "protocol_valid",
+        "scientific_result_signature",
+        "semantic_result",
+        "target_process_status"
+      ],
+      "properties": {
+        "disposition": {"enum": ["inconclusive-attempt", "terminal-scientific-observation"]},
+        "fault_attribution": {"$ref": "#/$defs/faultAttribution"},
+        "observation_complete": {"type": "boolean"},
+        "outcome_class": {
+          "enum": [
+            "adapter-process-failure",
+            "compile-rejection",
+            "environment-realization-failure",
+            "inconclusive-attribution",
+            "interrupted-uncommitted",
+            "lost-unattributed-response",
+            "malformed-adapter-response",
+            "match",
+            "network-failure",
+            "no-match",
+            "storage-publication-failure",
+            "supervisor-failure",
+            "target-crash",
+            "target-error",
+            "target-resource-limit",
+            "target-timeout",
+            "unsupported"
+          ]
+        },
+        "produced_observation_id": {"oneOf": [{"$ref": "#/$defs/observation"}, {"type": "null"}]},
+        "protocol_status": {"$ref": "#/$defs/protocolStatus"},
+        "protocol_valid": {"type": "boolean"},
+        "scientific_result_signature": {"oneOf": [{"$ref": "#/$defs/resultSignature"}, {"type": "null"}]},
+        "semantic_result": {"type": ["object", "null"]},
+        "target_process_status": {"$ref": "#/$defs/processStatus"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"disposition": {"const": "terminal-scientific-observation"}}},
+          "then": {
+            "properties": {
+              "fault_attribution": {"properties": {"target_attributable": {"const": true}}},
+              "observation_complete": {"const": true},
+              "produced_observation_id": {"$ref": "#/$defs/observation"},
+              "scientific_result_signature": {"$ref": "#/$defs/resultSignature"},
+              "semantic_result": {"type": "object"}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"disposition": {"const": "inconclusive-attempt"}}},
+          "then": {
+            "properties": {
+              "observation_complete": {"const": false},
+              "produced_observation_id": {"type": "null"},
+              "scientific_result_signature": {"type": "null"},
+              "semantic_result": {"type": "null"}
+            }
+          }
+        }
+      ]
+    },
+    "vectorRevision": {"type": "string", "pattern": "^rcid:v1:vector-revision:h:jcs-sha256-v1:[0-9a-f]{64}$"}
+  }
+}

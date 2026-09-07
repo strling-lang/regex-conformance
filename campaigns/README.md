@@ -14,6 +14,12 @@ The deliberate-fault qualification surface classifies target timeout and crash s
 
 The restart/resume qualification surface repeatedly interrupts the small-scale campaign across every durable boundary. It preserves old attempts, creates distinct retry runs, and treats only a verified manifest commit as durable logical completion; see docs/campaigns/restart-resume.md.
 
+New campaign evidence uses the prospective execution-lineage contract: every
+retry binds its inconclusive predecessor, authorizing policy and reset proof;
+every terminal observation binds its producing attempt; and the first terminal
+evidence cannot be replaced by a later preferred result. See
+`docs/architecture/execution-provenance.md`.
+
 The evidence verification qualification seeds 18 malformed, truncated, substituted,
 semantically impossible, and reconciliation-invalid object variants. Every variant
 is immutably quarantined and excluded from warehouse admission while its clean

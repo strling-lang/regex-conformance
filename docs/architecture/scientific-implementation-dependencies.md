@@ -66,10 +66,17 @@ facet expansion and legacy fixed audit prose prove structural construction,
 not independent semantic completeness. See
 [Generated assertion derivation contract](generated-assertion-derivations.md).
 
-The next dependency is for physical attempts to expose sufficient reset,
-retry, environment, and terminal-outcome provenance. The certification
-conditions then become machine-readable predicates over freshly recomputed
-repository and evidence state.
+Physical attempts now expose digest-bound reset, retry, environment,
+checkpoint, resource-budget, fault-attribution, and terminal-outcome
+provenance. Terminal observations bind their producing attempt and ordered
+attempt set, retries cannot launder away terminal evidence, and repeat
+measurements preserve result-signature agreement without premature flakiness
+adjudication. See
+[Physical-attempt and terminal-outcome provenance](execution-provenance.md).
+
+The next dependency is to express the certification conditions as
+machine-readable predicates over freshly recomputed repository and evidence
+state.
 
 ### Complete the semantic knowledge architecture
 

@@ -39,6 +39,12 @@ constant by construction, or a manual decision. This metadata does not enter
 the scientific entity identities. See
 [Generated assertion derivation contract](generated-assertion-derivations.md).
 
+Prospective execution evidence follows the digest-bound physical-attempt and
+terminal-outcome contract. An observation binds its producing attempt and the
+ordered attempt prefix; the logical disposition binds the complete attempt set
+and retains the first terminal evidence as satisfaction authority. See
+[Physical-attempt and terminal-outcome provenance](execution-provenance.md).
+
 ## Tracked authored sources
 
 - `registries/profiles/`, `vectors/definitions/`, `applicability/policies/`, and
@@ -67,6 +73,7 @@ diff. Fixtures are not production observations or published evidence.
 | --- | --- | --- | --- |
 | Frozen semantic products plus the permanent identity lock | `tools/identity/freeze_scientific_identities.py` | `registries/identity/scientific-identities.v1.json` | typed namespace validation, source reconciliation, immutable fingerprint history, lineage graph, key ownership, retirement and reuse checks, and catalog digest |
 | Generated assertion inventory | `tools/provenance/compile_generated_assertion_derivations.py` | `registries/provenance/generated-assertion-derivations.v1.json` | exact source digests, assertion coverage, class-specific metadata, typed handles and content-derived revisions, evidence-strength gates, count/population reconciliation, and deterministic canonical bytes |
+| Prospective execution-lineage contract | `tools/provenance/compile_execution_provenance.py` | digest-bound retry policy plus `tests/fixtures/provenance/execution-lineages.v1.json` | terminality, retry/reset authorization, immediate predecessor and checkpoint linkage, result signatures, anti-laundering, population-explicit counts, typed identities, and deterministic canonical bytes |
 | Declared-cutoff semantic census, frozen profile bounds, and certified Evidence Pack v3 measurement | `tools/semantics/compile_semantic_baseline.py` | semantic-corpus snapshot, executable ontology projection, vector-requirement ledger, and `reports/scale/regex-semantic-denominator-forecast.json` | schema validation, candidate conservation, feature/relation integrity, declared facet-template structural closure, deterministic bounded applicability expansion, denominator arithmetic, content digests, fail-closed capacity gate, and derivation-strength validation |
 | First vertical-slice definition, profiles, vectors, applicability, schemas | `tools/campaigns/compile_vertical_slice.py` | `campaigns/compiled/first-vertical-slice.v1.json` | repository validation and campaign tests |
 | Small-scale qualification inputs | `tools/campaigns/compile_small_scale.py` | `campaigns/compiled/small-scale-qualification.v1.json`; `reports/small-scale/qualification-coverage.json` | compiler read-after-write checks and `test_small_scale_qualification.py` |
@@ -121,6 +128,10 @@ target execution.
   checkpoints/reports, and diagnostics remain outside Git.
 - Physical attempts are append-only operational/evidence records. A retry adds
   an attempt while retaining the same logical-execution identity.
+- New terminal observations bind the exact producing attempt and its committed
+  attempt prefix. Inconclusive infrastructure attempts produce no scientific
+  observation; authorized repeats retain every terminal signature without
+  making a flakiness judgment.
 - Raw observations and evidence objects are immutable and content-addressed.
   Infrastructure failures stay distinct from target timeout, crash, rejection,
   match, or no-match observations.

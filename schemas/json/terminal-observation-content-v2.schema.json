@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/terminal-observation-content-v2.schema.json",
+  "title": "Immutable Terminal Observation Content v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "attempt_set_reference",
+    "campaign_manifest_id",
+    "derivation_revision_ids",
+    "fault_attribution",
+    "logical_execution_id",
+    "observation_complete",
+    "observation_content_id",
+    "observation_id",
+    "outcome_class",
+    "physical_telemetry_references",
+    "protocol_valid",
+    "result_signature",
+    "schema_version",
+    "semantic_result",
+    "terminal_attempt_id"
+  ],
+  "properties": {
+    "attempt_set_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["attempt_set_sha256", "attempts_total"],
+      "properties": {
+        "attempt_set_sha256": {"$ref": "#/$defs/digest"},
+        "attempts_total": {"type": "integer", "minimum": 1}
+      }
+    },
+    "campaign_manifest_id": {"$ref": "#/$defs/campaignManifest"},
+    "derivation_revision_ids": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/derivationRevision"}
+    },
+    "fault_attribution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["attribution_layer", "evidence_reference", "reason_code", "target_attributable"],
+      "properties": {
+        "attribution_layer": {"const": "target"},
+        "evidence_reference": {
+          "oneOf": [{"$ref": "#/$defs/artifactReference"}, {"type": "null"}]
+        },
+        "reason_code": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+        "target_attributable": {"const": true}
+      }
+    },
+    "logical_execution_id": {"$ref": "#/$defs/logicalExecution"},
+    "observation_complete": {"const": true},
+    "observation_content_id": {"$ref": "#/$defs/observationContent"},
+    "observation_id": {"$ref": "#/$defs/observation"},
+    "outcome_class": {
+      "enum": [
+        "compile-rejection",
+        "match",
+        "no-match",
+        "target-crash",
+        "target-error",
+        "target-resource-limit",
+        "target-timeout",
+        "unsupported"
+      ]
+    },
+    "physical_telemetry_references": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/artifactReference"}
+    },
+    "protocol_valid": {"type": "boolean"},
+    "result_signature": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["algorithm", "basis", "sha256"],
+      "properties": {
+        "algorithm": {"const": "rfc8785-sha256-v1"},
+        "basis": {"const": "outcome-class-and-semantic-result"},
+        "sha256": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "schema_version": {"const": "terminal-observation-content.v2"},
+    "semantic_result": {"type": "object"},
+    "terminal_attempt_id": {"$ref": "#/$defs/physicalRun"}
+  },
+  "$defs": {
+    "artifactReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["category", "relative_path", "sha256", "size_bytes"],
+      "properties": {
+        "category": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+        "relative_path": {"type": "string", "minLength": 1, "maxLength": 2048},
+        "sha256": {"$ref": "#/$defs/digest"},
+        "size_bytes": {"type": "integer", "minimum": 1}
+      }
+    },
+    "campaignManifest": {"type": "string", "pattern": "^rcid:v1:campaign-manifest:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "derivationRevision": {"type": "string", "pattern": "^rcid:v1:assertion-derivation-revision:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "logicalExecution": {"type": "string", "pattern": "^rcid:v1:logical-execution:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "observation": {"type": "string", "pattern": "^rcid:v1:observation:u7:[0-9a-f-]{36}$"},
+    "observationContent": {"type": "string", "pattern": "^rcid:v1:observation-content:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "physicalRun": {"type": "string", "pattern": "^rcid:v1:physical-run:u7:[0-9a-f-]{36}$"}
+  }
+}

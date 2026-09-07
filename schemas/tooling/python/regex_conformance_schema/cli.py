@@ -11,6 +11,7 @@ from .errors import ConformanceDataError
 from .derivation import CATALOG_PATH as DERIVATION_CATALOG_PATH
 from .derivation import SCHEMA_PATH as DERIVATION_SCHEMA_PATH
 from .derivation import verify_catalog as verify_derivation_catalog
+from .execution_provenance import verify_repository_execution_provenance
 from .fixtures import materialize_manifest, verify_manifest
 from .identity import NamespaceRegistry, build_content_identity, generate_assigned_id
 from .jsonio import canonical_bytes, load_strict
@@ -78,6 +79,7 @@ def run(argv: list[str] | None = None) -> int:
                     "ok": True,
                     **counts,
                     **verify_derivation_catalog(root, derivation_catalog),
+                    **verify_repository_execution_provenance(root),
                 }
             )
         elif arguments.command == "verify-fixtures":

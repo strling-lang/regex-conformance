@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/logical-execution-disposition.schema.json",
+  "title": "Logical Execution Disposition v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "attempt_set_sha256",
+    "attempts_total",
+    "distinct_terminal_result_signature_count",
+    "inconclusive_attempt_count",
+    "last_attempt_id",
+    "logical_execution_id",
+    "observation_ids",
+    "recovered_attempt_count",
+    "repeat_measurement_attempt_count",
+    "retry_attempt_count",
+    "retry_budget_exhausted",
+    "satisfaction_attempt_id",
+    "satisfaction_observation_id",
+    "schema_version",
+    "status",
+    "terminal_attempt_count",
+    "terminal_result_signatures",
+    "unresolved_reason"
+  ],
+  "properties": {
+    "attempt_set_sha256": {"$ref": "#/$defs/digest"},
+    "attempts_total": {"type": "integer", "minimum": 1},
+    "distinct_terminal_result_signature_count": {"type": "integer", "minimum": 0},
+    "inconclusive_attempt_count": {"type": "integer", "minimum": 0},
+    "last_attempt_id": {"$ref": "#/$defs/physicalRun"},
+    "logical_execution_id": {"$ref": "#/$defs/logicalExecution"},
+    "observation_ids": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/observation"}
+    },
+    "recovered_attempt_count": {"type": "integer", "minimum": 0},
+    "repeat_measurement_attempt_count": {"type": "integer", "minimum": 0},
+    "retry_attempt_count": {"type": "integer", "minimum": 0},
+    "retry_budget_exhausted": {"type": "boolean"},
+    "satisfaction_attempt_id": {"oneOf": [{"$ref": "#/$defs/physicalRun"}, {"type": "null"}]},
+    "satisfaction_observation_id": {"oneOf": [{"$ref": "#/$defs/observation"}, {"type": "null"}]},
+    "schema_version": {"const": "logical-execution-disposition.v1"},
+    "status": {"enum": ["satisfied", "unresolved"]},
+    "terminal_attempt_count": {"type": "integer", "minimum": 0},
+    "terminal_result_signatures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["observation_count", "observation_ids", "sha256"],
+        "properties": {
+          "observation_count": {"type": "integer", "minimum": 1},
+          "observation_ids": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {"$ref": "#/$defs/observation"}
+          },
+          "sha256": {"$ref": "#/$defs/digest"}
+        }
+      }
+    },
+    "unresolved_reason": {
+      "oneOf": [
+        {"enum": ["nonretryable-inconclusive", "retry-budget-exhausted", "retry-not-attempted"]},
+        {"type": "null"}
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"status": {"const": "satisfied"}}},
+      "then": {
+        "properties": {
+          "observation_ids": {"minItems": 1},
+          "satisfaction_attempt_id": {"$ref": "#/$defs/physicalRun"},
+          "satisfaction_observation_id": {"$ref": "#/$defs/observation"},
+          "terminal_attempt_count": {"minimum": 1},
+          "terminal_result_signatures": {"minItems": 1},
+          "unresolved_reason": {"type": "null"}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"status": {"const": "unresolved"}}},
+      "then": {
+        "properties": {
+          "distinct_terminal_result_signature_count": {"const": 0},
+          "observation_ids": {"maxItems": 0},
+          "satisfaction_attempt_id": {"type": "null"},
+          "satisfaction_observation_id": {"type": "null"},
+          "terminal_attempt_count": {"const": 0},
+          "terminal_result_signatures": {"maxItems": 0},
+          "unresolved_reason": {"type": "string"}
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "logicalExecution": {"type": "string", "pattern": "^rcid:v1:logical-execution:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "observation": {"type": "string", "pattern": "^rcid:v1:observation:u7:[0-9a-f-]{36}$"},
+    "physicalRun": {"type": "string", "pattern": "^rcid:v1:physical-run:u7:[0-9a-f-]{36}$"}
+  }
+}

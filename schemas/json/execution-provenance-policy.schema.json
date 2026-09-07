@@ -1,0 +1,244 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/execution-provenance-policy.schema.json",
+  "title": "Execution Provenance and Retry Policy v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "anti_laundering",
+    "compatibility",
+    "policy_key",
+    "policy_revision_sha256",
+    "reporting_populations",
+    "repeat_rules",
+    "reset_scopes",
+    "retry_rules",
+    "schema_version",
+    "terminality"
+  ],
+  "properties": {
+    "anti_laundering": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["automatic_retry_after_terminal_forbidden", "first_terminal_evidence_is_retained"],
+      "properties": {
+        "automatic_retry_after_terminal_forbidden": {"const": true},
+        "first_terminal_evidence_is_retained": {"const": true}
+      }
+    },
+    "compatibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "historical_contracts",
+        "historical_records_rewritten",
+        "migration_rule",
+        "prospective_contracts",
+        "route_by_schema_version"
+      ],
+      "properties": {
+        "historical_contracts": {
+          "type": "array",
+          "minItems": 4,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/historicalContract"}
+        },
+        "historical_records_rewritten": {"const": false},
+        "migration_rule": {"const": "prospective-versioned-no-rewrite"},
+        "prospective_contracts": {
+          "const": [
+            "execution-lineage-set.v1",
+            "logical-execution-disposition.v1",
+            "physical-attempt-evidence.v2",
+            "terminal-observation-content.v2"
+          ]
+        },
+        "route_by_schema_version": {"const": true}
+      }
+    },
+    "policy_key": {"const": "fail-closed-execution-lineage"},
+    "policy_revision_sha256": {"$ref": "#/$defs/digest"},
+    "reporting_populations": {
+      "const": [
+        "inconclusive_attempt_count",
+        "logical_execution_count",
+        "physical_attempt_count",
+        "recovered_attempt_count",
+        "repeat_measurement_attempt_count",
+        "retry_attempt_count",
+        "terminal_attempt_count",
+        "terminal_observation_count"
+      ]
+    },
+    "repeat_rules": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {"$ref": "#/$defs/repeatRule"}
+    },
+    "reset_scopes": {
+      "const": [
+        "adapter-process",
+        "container",
+        "environment-processes",
+        "environment-realization",
+        "none",
+        "target-process"
+      ]
+    },
+    "retry_rules": {
+      "type": "array",
+      "minItems": 9,
+      "maxItems": 9,
+      "items": {"$ref": "#/$defs/retryRule"}
+    },
+    "schema_version": {"const": "execution-provenance-policy.v1"},
+    "terminality": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "inconclusive_outcome_classes",
+        "process_symptom_alone_is_terminal",
+        "terminal_outcome_classes"
+      ],
+      "properties": {
+        "inconclusive_outcome_classes": {
+          "const": [
+            "adapter-process-failure",
+            "environment-realization-failure",
+            "inconclusive-attribution",
+            "interrupted-uncommitted",
+            "lost-unattributed-response",
+            "malformed-adapter-response",
+            "network-failure",
+            "storage-publication-failure",
+            "supervisor-failure"
+          ]
+        },
+        "process_symptom_alone_is_terminal": {"const": false},
+        "terminal_outcome_classes": {
+          "const": [
+            "compile-rejection",
+            "match",
+            "no-match",
+            "target-crash",
+            "target-error",
+            "target-resource-limit",
+            "target-timeout",
+            "unsupported"
+          ]
+        }
+      }
+    }
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "environmentRequirement": {"enum": ["new-allowed", "same"]},
+    "historicalContract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema_path", "schema_sha256", "schema_version"],
+      "properties": {
+        "schema_path": {"type": "string", "pattern": "^schemas/json/[a-z0-9-]+\\.schema\\.json$"},
+        "schema_sha256": {"$ref": "#/$defs/digest"},
+        "schema_version": {"type": "string", "minLength": 1, "maxLength": 128}
+      }
+    },
+    "repeatRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "authorization_kinds",
+        "environment_realization_requirement",
+        "maximum_additional_attempts",
+        "reason_code",
+        "required_reset_scope"
+      ],
+      "properties": {
+        "authorization_kinds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"enum": ["operator-authorized", "qualification-specific"]}
+        },
+        "environment_realization_requirement": {"const": "same"},
+        "maximum_additional_attempts": {"type": "integer", "minimum": 1, "maximum": 4},
+        "reason_code": {
+          "enum": ["operator-remeasurement", "qualification-repeat", "recovery-validation"]
+        },
+        "required_reset_scope": {"$ref": "#/$defs/resetScope"}
+      }
+    },
+    "resetScope": {
+      "enum": [
+        "adapter-process",
+        "container",
+        "environment-processes",
+        "environment-realization",
+        "none",
+        "target-process"
+      ]
+    },
+    "retryRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "authorization_kinds",
+        "environment_realization_requirement",
+        "exhausted_disposition",
+        "maximum_attempts",
+        "reason_code",
+        "required_reset_scope",
+        "retry_permitted",
+        "scientific_confidence_effect"
+      ],
+      "properties": {
+        "authorization_kinds": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"enum": ["automatic", "operator-authorized", "qualification-specific"]}
+        },
+        "environment_realization_requirement": {"$ref": "#/$defs/environmentRequirement"},
+        "exhausted_disposition": {"enum": ["continue-publication", "unresolved"]},
+        "maximum_attempts": {"type": "integer", "minimum": 1, "maximum": 3},
+        "reason_code": {
+          "enum": [
+            "adapter-process-failure",
+            "environment-realization-failure",
+            "inconclusive-attribution",
+            "interrupted-target-invocation",
+            "lost-unattributed-response",
+            "malformed-adapter-response",
+            "network-before-target",
+            "storage-publication-failure",
+            "worker-supervisor-failure"
+          ]
+        },
+        "required_reset_scope": {"$ref": "#/$defs/resetScope"},
+        "retry_permitted": {"type": "boolean"},
+        "scientific_confidence_effect": {"const": "none-retry-resolves-uncertainty-only"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"retry_permitted": {"const": false}}},
+          "then": {
+            "properties": {
+              "authorization_kinds": {"maxItems": 0},
+              "maximum_attempts": {"const": 1}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"retry_permitted": {"const": true}}},
+          "then": {
+            "properties": {
+              "authorization_kinds": {"minItems": 1},
+              "exhausted_disposition": {"const": "unresolved"},
+              "maximum_attempts": {"minimum": 2}
+            }
+          }
+        }
+      ]
+    }
+  }
+}

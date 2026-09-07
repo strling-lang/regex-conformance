@@ -1,0 +1,226 @@
+{
+  "anti_laundering": {
+    "automatic_retry_after_terminal_forbidden": true,
+    "first_terminal_evidence_is_retained": true
+  },
+  "compatibility": {
+    "historical_contracts": [
+      {
+        "schema_path": "schemas/json/evidence-pack-v2-manifest.schema.json",
+        "schema_sha256": "9bb72a4d8ef33fe9f5d80e5e9dfee5feb6b139a4cc9105d590ca49c0e564b183",
+        "schema_version": "evidence-pack-manifest.v2"
+      },
+      {
+        "schema_path": "schemas/json/evidence-pack-v3-manifest.schema.json",
+        "schema_sha256": "cf13b4ac6bd65bc611bef443a0700226dbc9cb3a3e686e42170c6bf95549c62c",
+        "schema_version": "evidence-pack-manifest.v3"
+      },
+      {
+        "schema_path": "schemas/json/observation-content.schema.json",
+        "schema_sha256": "81f338f7175415c2357c8054a931732eb2f8170486184b915c4925dfcefa4c2e",
+        "schema_version": "observation-content.v1"
+      },
+      {
+        "schema_path": "schemas/json/physical-attempt-evidence.schema.json",
+        "schema_sha256": "ab82894fb906c3828be381c0f87de5738a9cf669fabd07ecdd1edbafc4076669",
+        "schema_version": "physical-attempt-evidence.v1"
+      }
+    ],
+    "historical_records_rewritten": false,
+    "migration_rule": "prospective-versioned-no-rewrite",
+    "prospective_contracts": [
+      "execution-lineage-set.v1",
+      "logical-execution-disposition.v1",
+      "physical-attempt-evidence.v2",
+      "terminal-observation-content.v2"
+    ],
+    "route_by_schema_version": true
+  },
+  "policy_key": "fail-closed-execution-lineage",
+  "policy_revision_sha256": "c0095c600d03cc7f17012990d46e54b3e874a8f2cae4aa1a052f9953637b0a3a",
+  "repeat_rules": [
+    {
+      "authorization_kinds": [
+        "operator-authorized"
+      ],
+      "environment_realization_requirement": "same",
+      "maximum_additional_attempts": 2,
+      "reason_code": "operator-remeasurement",
+      "required_reset_scope": "target-process"
+    },
+    {
+      "authorization_kinds": [
+        "qualification-specific"
+      ],
+      "environment_realization_requirement": "same",
+      "maximum_additional_attempts": 2,
+      "reason_code": "qualification-repeat",
+      "required_reset_scope": "target-process"
+    },
+    {
+      "authorization_kinds": [
+        "qualification-specific"
+      ],
+      "environment_realization_requirement": "same",
+      "maximum_additional_attempts": 1,
+      "reason_code": "recovery-validation",
+      "required_reset_scope": "none"
+    }
+  ],
+  "reporting_populations": [
+    "inconclusive_attempt_count",
+    "logical_execution_count",
+    "physical_attempt_count",
+    "recovered_attempt_count",
+    "repeat_measurement_attempt_count",
+    "retry_attempt_count",
+    "terminal_attempt_count",
+    "terminal_observation_count"
+  ],
+  "reset_scopes": [
+    "adapter-process",
+    "container",
+    "environment-processes",
+    "environment-realization",
+    "none",
+    "target-process"
+  ],
+  "retry_rules": [
+    {
+      "authorization_kinds": [
+        "automatic",
+        "operator-authorized"
+      ],
+      "environment_realization_requirement": "same",
+      "exhausted_disposition": "unresolved",
+      "maximum_attempts": 3,
+      "reason_code": "adapter-process-failure",
+      "required_reset_scope": "adapter-process",
+      "retry_permitted": true,
+      "scientific_confidence_effect": "none-retry-resolves-uncertainty-only"
+    },
+    {
+      "authorization_kinds": [
+        "automatic",
+        "operator-authorized"
+      ],
+      "environment_realization_requirement": "new-allowed",
+      "exhausted_disposition": "unresolved",
+      "maximum_attempts": 2,
+      "reason_code": "environment-realization-failure",
+      "required_reset_scope": "environment-realization",
+      "retry_permitted": true,
+      "scientific_confidence_effect": "none-retry-resolves-uncertainty-only"
+    },
+    {
+      "authorization_kinds": [],
+      "environment_realization_requirement": "same",
+      "exhausted_disposition": "unresolved",
+      "maximum_attempts": 1,
+      "reason_code": "inconclusive-attribution",
+      "required_reset_scope": "none",
+      "retry_permitted": false,
+      "scientific_confidence_effect": "none-retry-resolves-uncertainty-only"
+    },
+    {
+      "authorization_kinds": [
+        "automatic",
+        "qualification-specific"
+      ],
+      "environment_realization_requirement": "same",
+      "exhausted_disposition": "unresolved",
+      "maximum_attempts": 3,
+      "reason_code": "interrupted-target-invocation",
+      "required_reset_scope": "target-process",
+      "retry_permitted": true,
+      "scientific_confidence_effect": "none-retry-resolves-uncertainty-only"
+    },
+    {
+      "authorization_kinds": [
+        "automatic",
+        "operator-authorized"
+      ],
+      "environment_realization_requirement": "same",
+      "exhausted_disposition": "unresolved",
+      "maximum_attempts": 2,
+      "reason_code": "lost-unattributed-response",
+      "required_reset_scope": "target-process",
+      "retry_permitted": true,
+      "scientific_confidence_effect": "none-retry-resolves-uncertainty-only"
+    },
+    {
+      "authorization_kinds": [
+        "automatic",
+        "operator-authorized"
+      ],
+      "environment_realization_requirement": "same",
+      "exhausted_disposition": "unresolved",
+      "maximum_attempts": 2,
+      "reason_code": "malformed-adapter-response",
+      "required_reset_scope": "adapter-process",
+      "retry_permitted": true,
+      "scientific_confidence_effect": "none-retry-resolves-uncertainty-only"
+    },
+    {
+      "authorization_kinds": [
+        "automatic",
+        "operator-authorized"
+      ],
+      "environment_realization_requirement": "same",
+      "exhausted_disposition": "unresolved",
+      "maximum_attempts": 2,
+      "reason_code": "network-before-target",
+      "required_reset_scope": "none",
+      "retry_permitted": true,
+      "scientific_confidence_effect": "none-retry-resolves-uncertainty-only"
+    },
+    {
+      "authorization_kinds": [],
+      "environment_realization_requirement": "same",
+      "exhausted_disposition": "continue-publication",
+      "maximum_attempts": 1,
+      "reason_code": "storage-publication-failure",
+      "required_reset_scope": "none",
+      "retry_permitted": false,
+      "scientific_confidence_effect": "none-retry-resolves-uncertainty-only"
+    },
+    {
+      "authorization_kinds": [
+        "automatic",
+        "operator-authorized"
+      ],
+      "environment_realization_requirement": "same",
+      "exhausted_disposition": "unresolved",
+      "maximum_attempts": 3,
+      "reason_code": "worker-supervisor-failure",
+      "required_reset_scope": "environment-processes",
+      "retry_permitted": true,
+      "scientific_confidence_effect": "none-retry-resolves-uncertainty-only"
+    }
+  ],
+  "schema_version": "execution-provenance-policy.v1",
+  "terminality": {
+    "inconclusive_outcome_classes": [
+      "adapter-process-failure",
+      "environment-realization-failure",
+      "inconclusive-attribution",
+      "interrupted-uncommitted",
+      "lost-unattributed-response",
+      "malformed-adapter-response",
+      "network-failure",
+      "storage-publication-failure",
+      "supervisor-failure"
+    ],
+    "process_symptom_alone_is_terminal": false,
+    "terminal_outcome_classes": [
+      "compile-rejection",
+      "match",
+      "no-match",
+      "target-crash",
+      "target-error",
+      "target-resource-limit",
+      "target-timeout",
+      "unsupported"
+    ]
+  }
+}
