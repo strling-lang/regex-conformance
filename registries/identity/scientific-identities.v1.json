@@ -606,6 +606,21 @@
       "status": "active"
     },
     {
+      "canonical_key": "feature.captured-substring-assertion",
+      "entity_class": "feature",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:feature:u7:01a07d96-a5ba-7c43-adbe-d4431091ca13",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "74d8e548fab8bd8798054489eace751a13525ae3dbdeb2cd3c11bb8c7e36bebd",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
       "canonical_key": "feature.character-category-class",
       "entity_class": "feature",
       "former_keys": [],
@@ -1011,6 +1026,21 @@
       "status": "active"
     },
     {
+      "canonical_key": "feature.empty-language-atom",
+      "entity_class": "feature",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:feature:u7:01a07d96-a5ba-7b0c-a19d-745fb6c403b1",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "50002fad72d5eaea152c226f084d0642abd55e69ac9ca9a5d9bf1f9d72c978a2",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
       "canonical_key": "feature.empty-pattern",
       "entity_class": "feature",
       "former_keys": [],
@@ -1034,6 +1064,21 @@
         {
           "effective_date": "2026-09-06",
           "fingerprint_sha256": "5664f5d6dc455688cd4f2b71451489e980f6444c0285e04d4b006788a49fd4bb",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "feature.enumerated-unicode-property-value",
+      "entity_class": "feature",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:feature:u7:01a07d96-a5ba-7328-ab58-0160468bd22d",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "9bc76fa8d2f4926f8a8a35b910f9fa4fdaeed0b197b40958fb5a46c757a6d384",
           "lineage_record_id": null
         }
       ],
@@ -1079,6 +1124,51 @@
         {
           "effective_date": "2026-09-06",
           "fingerprint_sha256": "f7d79a65df416248507ea61581805aaace16c67a6bc6ece44ec700401f32fc05",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "feature.expression-complement",
+      "entity_class": "feature",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:feature:u7:01a07d96-a5ba-7f07-934c-56aa99928105",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "e261326674fe67a641436e7afbca1030b86383896499a2d44dd737ca5f0f0107",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "feature.expression-difference",
+      "entity_class": "feature",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:feature:u7:01a07d96-a5ba-7d58-85e3-3751d5b0fc38",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "4374909e4f8e752f4f0e577d69f99ae526cdd07514c77949731f43041c72be09",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "feature.expression-intersection",
+      "entity_class": "feature",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:feature:u7:01a07d96-a5ba-7ce0-8b99-da81e1c170ce",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "eb7ba9adeecf10662916c2417ccc832dc404adc31fcd97ec73b8bd03fc0983f2",
           "lineage_record_id": null
         }
       ],
@@ -1319,6 +1409,21 @@
         {
           "effective_date": "2026-09-06",
           "fingerprint_sha256": "0953ccccbc285e477d94a1024825034a65290c8c457c578f4bd9d881b3f37361",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "feature.inline-modifier-directive",
+      "entity_class": "feature",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:feature:u7:01a07d96-a5ba-7f8e-b3a9-9ee8aab24afd",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "2d63804a5a7c4ffaf5b485c30643914bf5d33bcbcd0cb0544a880427e252e365",
           "lineage_record_id": null
         }
       ],
@@ -1926,6 +2031,21 @@
       "status": "active"
     },
     {
+      "canonical_key": "feature.named-automaton-reference",
+      "entity_class": "feature",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:feature:u7:01a07d96-a5ba-7139-9ccc-b6394949e515",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "b049c743db1700661bc93a6dd55f02704dbec6c1b9bbc4a93d14eeb5bddbaf43",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
       "canonical_key": "feature.named-backreference",
       "entity_class": "feature",
       "former_keys": [],
@@ -2076,6 +2196,21 @@
       "status": "active"
     },
     {
+      "canonical_key": "feature.non-atomic-positive-lookbehind",
+      "entity_class": "feature",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:feature:u7:01a07d96-a5ba-78d9-aa07-a6cc812a4b79",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "365300a91ef35facca5c914dfe54d80755f29a865d1168e9d2d85693a28e7aa4",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
       "canonical_key": "feature.non-word-boundary",
       "entity_class": "feature",
       "former_keys": [],
@@ -2181,6 +2316,21 @@
       "status": "active"
     },
     {
+      "canonical_key": "feature.numeric-interval-language-atom",
+      "entity_class": "feature",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:feature:u7:01a07d96-a5ba-7d28-bf0e-9cb0e509b33b",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "225a65ae338ece23947be383841f8c3045739db70251782aa39d45a39d552bde",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
       "canonical_key": "feature.numeric-subroutine-call",
       "entity_class": "feature",
       "former_keys": [],
@@ -2189,6 +2339,36 @@
         {
           "effective_date": "2026-09-06",
           "fingerprint_sha256": "ec9afc8cf5c9d04314e94e3d4392e63d3ca1613bf5405ae49b8c604789cb6f49",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "feature.numeric-unicode-code-point-escape",
+      "entity_class": "feature",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:feature:u7:01a07d96-a5ba-7758-9bd6-915ab0d89f6f",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "99d0548a8f8f5f82a5414de9d57bb901d951293f3f4a7c84da32270bfb64619d",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "feature.numeric-unicode-property-value",
+      "entity_class": "feature",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:feature:u7:01a07d96-a5ba-7906-b6b2-610cae4563e7",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "468a933c425996a132e6b921be57009fb2464d5b7d4420037f0bbdb0b424aadd",
           "lineage_record_id": null
         }
       ],
@@ -2511,6 +2691,21 @@
       "status": "active"
     },
     {
+      "canonical_key": "feature.recursion-level-qualified-backreference",
+      "entity_class": "feature",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:feature:u7:01a07d96-a5ba-7979-b752-7b0d629dd9bf",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "85ea04ee22db19ae40524b905b6d876a47f7b4568c1a6307ea6d1cdc492e84b4",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
       "canonical_key": "feature.recursion-returned-captures",
       "entity_class": "feature",
       "former_keys": [],
@@ -2804,6 +2999,21 @@
         {
           "effective_date": "2026-09-06",
           "fingerprint_sha256": "c9e72fe5f97f90fe86aa98ccccc11d374a54aceb125bfe30046c7994725d0681",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "feature.scoped-modifier-group",
+      "entity_class": "feature",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:feature:u7:01a07d96-a5ba-77ef-ba1a-aaa4de119c8f",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "b861fbebe873b6e73c2b3b9a7102f84c75e719afa14fbfdd397da3859a48955e",
           "lineage_record_id": null
         }
       ],
@@ -3261,6 +3471,21 @@
       "status": "active"
     },
     {
+      "canonical_key": "feature.typed-capture-result-shape",
+      "entity_class": "feature",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:feature:u7:01a07d96-a5ba-7ae3-8a36-3506030c5990",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "8aab4075b3dd3d4a3cf1867990d42175aee1ae6ea316cd14ffa8fc835b1ab255",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
       "canonical_key": "feature.unbounded-negative-lookbehind",
       "entity_class": "feature",
       "former_keys": [],
@@ -3381,6 +3606,21 @@
       "status": "active"
     },
     {
+      "canonical_key": "feature.unicode-line-break-boundary",
+      "entity_class": "feature",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:feature:u7:01a07d96-a5ba-77fe-822c-5b1e6e140ab4",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "0eee41ca765b526ea1e64d0128bf7abe9e83ad400376077c5547df7f97bb01bf",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
       "canonical_key": "feature.unicode-property-alias",
       "entity_class": "feature",
       "former_keys": [],
@@ -3494,6 +3734,21 @@
         {
           "effective_date": "2026-09-06",
           "fingerprint_sha256": "b487ad04b14b74c9faa0b8dccb2e99b5fb89751470245f712418e608aa42d968",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "feature.universal-language-atom",
+      "entity_class": "feature",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:feature:u7:01a07d96-a5ba-77d9-b8a8-961b5b266bb2",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "1fff1f595e9f2591bf0546669dd45d39f4d54ede0aecf0c5f922decdd09fed61",
           "lineage_record_id": null
         }
       ],
@@ -4461,6 +4716,21 @@
       "status": "active"
     },
     {
+      "canonical_key": "manifestation.captured-substring-assertion.pcre2-pattern",
+      "entity_class": "manifestation",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:manifestation:u7:01a07d96-a5ba-7c64-ae97-8fd635f9f8ad",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "8787d66febe6743850df7349e4541a8784b0bdc34d5318c22f9b5c062fb7cc80",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
       "canonical_key": "manifestation.character-category-class.vim-regex",
       "entity_class": "manifestation",
       "former_keys": [],
@@ -4956,6 +5226,21 @@
       "status": "active"
     },
     {
+      "canonical_key": "manifestation.empty-language-atom.lucene-regexp",
+      "entity_class": "manifestation",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:manifestation:u7:01a07d96-a5ba-7cd1-b41e-7303bc1ae603",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "070f39a4666787459c57d92c3285661786732a2c44519a32c163713c541c1eef",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
       "canonical_key": "manifestation.empty-pattern.posix-regex",
       "entity_class": "manifestation",
       "former_keys": [],
@@ -4979,6 +5264,21 @@
         {
           "effective_date": "2026-09-06",
           "fingerprint_sha256": "1a454bedec311c63d9476082b1e82a9f0e3fd3b31f775ca86b2529646923f4d9",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "manifestation.enumerated-unicode-property-value.unicode-tr18",
+      "entity_class": "manifestation",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:manifestation:u7:01a07d96-a5ba-7fe6-be69-50cd24eed8cb",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "a9a372ea15aa29d1d2fa1327ea4dafec7a8c3604201bb05bdfccd61033fd7b9e",
           "lineage_record_id": null
         }
       ],
@@ -5024,6 +5324,51 @@
         {
           "effective_date": "2026-09-06",
           "fingerprint_sha256": "648c098a0d5727a8ae42d695ebe6dfd77f8a45acf7b2c8ed6ff3dd38ab04f109",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "manifestation.expression-complement.lucene-regexp",
+      "entity_class": "manifestation",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:manifestation:u7:01a07d96-a5bb-7526-91d1-c5f8bbc88a7c",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "4397726702d434014ec0069607ba70aebbe6b45d06e3656b5721c0ff90f34a58",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "manifestation.expression-difference.smtlib-unicode-strings",
+      "entity_class": "manifestation",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:manifestation:u7:01a07d96-a5bb-7169-88aa-0852917ff9b7",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "6afc048614c8f9522c95c823a8e1780fe623c6a543dd84d0e3f1dd12760422b5",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "manifestation.expression-intersection.lucene-regexp",
+      "entity_class": "manifestation",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:manifestation:u7:01a07d96-a5bb-7591-9a8b-ea06090c6769",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "2b6be1df9871fb19eedaddfb14bd81da1808fb3f0d2c0bdeab71c5cbba004f23",
           "lineage_record_id": null
         }
       ],
@@ -5294,6 +5639,21 @@
         {
           "effective_date": "2026-09-06",
           "fingerprint_sha256": "5f591020d624c326101a1342cb4a64c4e4c5f64671d92dea64725162beda651e",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "manifestation.inline-modifier-directive.pcre2-pattern",
+      "entity_class": "manifestation",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:manifestation:u7:01a07d96-a5bb-7c81-9bf0-92876c1314bc",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "b71a4f46c6f262bb9fbc0888e9b32ca2a3009799c2265c1e9c7ece3d2cab329c",
           "lineage_record_id": null
         }
       ],
@@ -6006,6 +6366,21 @@
       "status": "active"
     },
     {
+      "canonical_key": "manifestation.named-automaton-reference.lucene-regexp",
+      "entity_class": "manifestation",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:manifestation:u7:01a07d96-a5bb-7e98-a4aa-ca6c0a4de010",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "6442a37b355a73d637afc8193861f1c473b08746023de3fa74130743af7eee7e",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
       "canonical_key": "manifestation.named-backreference.pcre2-pattern",
       "entity_class": "manifestation",
       "former_keys": [],
@@ -6201,6 +6576,21 @@
       "status": "active"
     },
     {
+      "canonical_key": "manifestation.non-atomic-positive-lookbehind.pcre2-pattern",
+      "entity_class": "manifestation",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:manifestation:u7:01a07d96-a5bb-7e5c-8c2c-b773b8709ca6",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "5ef6a660c1add5d736dd27c4c431ddac118c7a376ea7b1307a31f3bd07f3ac95",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
       "canonical_key": "manifestation.non-word-boundary.posix-regex",
       "entity_class": "manifestation",
       "former_keys": [],
@@ -6321,6 +6711,21 @@
       "status": "active"
     },
     {
+      "canonical_key": "manifestation.numeric-interval-language-atom.lucene-regexp",
+      "entity_class": "manifestation",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:manifestation:u7:01a07d96-a5bb-711b-95b8-06ae759068ec",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "6edc7b8a4e1fb505e346fe6b4eee1dfea80652ba51fbbf95535c7ea79280b71f",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
       "canonical_key": "manifestation.numeric-subroutine-call.pcre2-pattern",
       "entity_class": "manifestation",
       "former_keys": [],
@@ -6329,6 +6734,36 @@
         {
           "effective_date": "2026-09-06",
           "fingerprint_sha256": "9dac800ef62af5c1e4eccc3688122e8907269cfeed1315e7358593de50ea9f1a",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "manifestation.numeric-unicode-code-point-escape.unicode-tr18",
+      "entity_class": "manifestation",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:manifestation:u7:01a07d96-a5bb-753a-b51e-ee3bac685a0c",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "74df3702c8e5d1a28bd39ee25de379b2d1289f379969fe16fda8a53b4b7b5335",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "manifestation.numeric-unicode-property-value.unicode-tr18",
+      "entity_class": "manifestation",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:manifestation:u7:01a07d96-a5bb-7036-8622-5b83f05c1eef",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "45c2538609260a094a12bec76317ee0b64837e68dce81957e5e37d055d32aac5",
           "lineage_record_id": null
         }
       ],
@@ -6786,6 +7221,21 @@
       "status": "active"
     },
     {
+      "canonical_key": "manifestation.recursion-level-qualified-backreference.oniguruma-syntax",
+      "entity_class": "manifestation",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:manifestation:u7:01a07d96-a5bb-746e-bdf8-f0255c6babce",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "044b8eba17e1a8c8b04858c68a290bc9cdf3b6ab9ae36120f73c1a09717f7a92",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
       "canonical_key": "manifestation.recursion-returned-captures.pcre2-pattern",
       "entity_class": "manifestation",
       "former_keys": [],
@@ -6951,6 +7401,21 @@
       "status": "active"
     },
     {
+      "canonical_key": "manifestation.replacement-numbered-group.java-dollar",
+      "entity_class": "manifestation",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:manifestation:u7:01a07dcf-731f-756f-84b1-18984f4dae53",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "a36a156a4995386538a8b631f698505dc25c9fabd4692bf3ec93ed8556eeea56",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
       "canonical_key": "manifestation.replacement-numbered-group.pcre2-api",
       "entity_class": "manifestation",
       "former_keys": [],
@@ -6959,6 +7424,36 @@
         {
           "effective_date": "2026-09-06",
           "fingerprint_sha256": "7e5764d6e17f4d904077dd42c302aa13d67c404bbce40b33233ffea402c787c2",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "manifestation.replacement-numbered-group.python-backslash",
+      "entity_class": "manifestation",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:manifestation:u7:01a07dcf-731f-74a9-b8e5-f9100cb4a7c8",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "9983e7fdd912ed10266dd3842f3a917ad15569077a7c379a40adf48099a0f104",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "manifestation.replacement-numbered-group.python-g",
+      "entity_class": "manifestation",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:manifestation:u7:01a07dcf-731f-7650-a56b-641ede13ed76",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "82b8f32d9c7d7e4bd8e99dab8c2caff5877a49cf0a6e6e65d863a54df8cde20f",
           "lineage_record_id": null
         }
       ],
@@ -7139,6 +7634,21 @@
         {
           "effective_date": "2026-09-06",
           "fingerprint_sha256": "22930140ac069912c49178788398a1bb646331518b56ff3b701b6419369a8df0",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "manifestation.scoped-modifier-group.pcre2-pattern",
+      "entity_class": "manifestation",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:manifestation:u7:01a07d96-a5bb-7ea0-93ff-babd2f0506df",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "af0891abf8c23bfe6b2833490453b2cfc5f7b00b2d48ac7be819e0d16b9afd61",
           "lineage_record_id": null
         }
       ],
@@ -7701,6 +8211,21 @@
       "status": "active"
     },
     {
+      "canonical_key": "manifestation.typed-capture-result-shape.swift-regex-type",
+      "entity_class": "manifestation",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:manifestation:u7:01a07d96-a5bb-74d8-a56b-a2a833c366cf",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "936cf0b0a6c84f33ba85a347de6925eb47deb6607ce1fd2b1b6727181bf578d7",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
       "canonical_key": "manifestation.unbounded-negative-lookbehind.python-regex",
       "entity_class": "manifestation",
       "former_keys": [],
@@ -7881,6 +8406,21 @@
       "status": "active"
     },
     {
+      "canonical_key": "manifestation.unicode-line-break-boundary.unicode-tr14",
+      "entity_class": "manifestation",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:manifestation:u7:01a07d96-a5bb-702f-9f8b-4f09568dcfb5",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "5ae2218211e98888a956947d654abfad3dca57091ba6682900e22b20dbc909f7",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
       "canonical_key": "manifestation.unicode-property-alias.unicode-tr18",
       "entity_class": "manifestation",
       "former_keys": [],
@@ -8039,6 +8579,21 @@
         {
           "effective_date": "2026-09-06",
           "fingerprint_sha256": "b3670cc9ef3e0b045c8de5e7683a91b7065d56067f90e1c9d6579c6b0f992720",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "manifestation.universal-language-atom.lucene-regexp",
+      "entity_class": "manifestation",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:manifestation:u7:01a07d96-a5bb-7e0f-8c4f-ee80e1d52821",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "953cbf810adc7917bf9413c4ef1fa5d556dc10fcf78f7e840fb7b37824e184ca",
           "lineage_record_id": null
         }
       ],
@@ -189591,6 +190146,51 @@
       "status": "active"
     },
     {
+      "canonical_key": "operation.deserialize-pattern",
+      "entity_class": "operation",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:operation:u7:01a07d96-a5bb-7161-b9fc-8bdc293868f0",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "ca3148866f93d443d58a4b50b53b4b7dba1c4f0c9bcf40994c245a84a4e6e3cf",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "operation.escape-pattern",
+      "entity_class": "operation",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:operation:u7:01a07d96-a5bb-76df-bc0b-ead9cf7839ab",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "1fdcc64fde1bb6fb24e5e449112b0291eba2a06762ab4680f68643088a7d8ace",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "operation.escape-replacement",
+      "entity_class": "operation",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:operation:u7:01a07d96-a5bb-75f2-8492-01d4e004e98b",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "8bf8288e6df1c08c99d01cb50439c7e35462883a8d574ea8301fa98811114b37",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
       "canonical_key": "operation.expand-replacement",
       "entity_class": "operation",
       "former_keys": [],
@@ -189659,6 +190259,21 @@
         {
           "effective_date": "2026-09-06",
           "fingerprint_sha256": "1a688c00e12a808d373151637621b7cffd1e9d56783df27126e99289fe37de71",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "operation.inspect-pattern",
+      "entity_class": "operation",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:operation:u7:01a07d96-a5bb-71ce-8f57-087d5e1b9c9a",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "3e144f207380134cdba7d60e89dc9de5bd9db0fe5c9d773d84a73bf8f2fa9d27",
           "lineage_record_id": null
         }
       ],
@@ -189786,6 +190401,21 @@
       "status": "active"
     },
     {
+      "canonical_key": "operation.serialize-pattern",
+      "entity_class": "operation",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:operation:u7:01a07d96-a5bb-7d2a-b10a-2c169d1e1bf5",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "ca9b32eec5f81d2b5466342ae58ba0fe3a3017ddb0b247a86a68f4d04047e91c",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
       "canonical_key": "operation.set-match",
       "entity_class": "operation",
       "former_keys": [],
@@ -189809,6 +190439,96 @@
         {
           "effective_date": "2026-09-06",
           "fingerprint_sha256": "b9a40f293cde5c87f7587565bd8d88ef7fc8e9caf3369cd17a22fad9e3a650d8",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "operation.stream-close",
+      "entity_class": "operation",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:operation:u7:01a07d96-a5bb-7a04-9af7-ce68e754d8ec",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "1cc3c29215a4ec737a85b46067981b9c35741951df7266736ec2675500000c8a",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "operation.stream-compress",
+      "entity_class": "operation",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:operation:u7:01a07d96-a5bb-7c6f-9b65-1074cb533673",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "86ff6d9196d2f6153ad3cb4596f8d37e08af96f8268c3920fb7e17f3a7beee42",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "operation.stream-copy",
+      "entity_class": "operation",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:operation:u7:01a07d96-a5bb-7211-8e97-c90be4e03480",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "e4caaa0ad53f25e9fd90d90b00499e25849a4b057c9d6f9bb7121503e43d8919",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "operation.stream-expand",
+      "entity_class": "operation",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:operation:u7:01a07d96-a5bb-70de-8cc0-d6ae9028143c",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "98e098c3a9973c9ecd294d3bc2b23452c9be295034bd9f334309155cdb1628db",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "operation.stream-open",
+      "entity_class": "operation",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:operation:u7:01a07d96-a5bb-7423-b9b0-1a7f06ca870b",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "c908d85d3f63bd2c366da79eb20d624cc2a0bd233ca8e9074373292e309ee830",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "operation.stream-reset",
+      "entity_class": "operation",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:operation:u7:01a07d96-a5bb-7237-9b1c-48c1023d50b7",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "24dc771d84a45d745bf739615be3b51df447ff0a8db3f4226ae2998fa7df1bda",
           "lineage_record_id": null
         }
       ],
@@ -189854,6 +190574,231 @@
         {
           "effective_date": "2026-09-06",
           "fingerprint_sha256": "914c9bff97fcca3dbce9267a17027a7353bbb7bcde91c9879d1b95be85cf9e34",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "facet.capture",
+      "entity_class": "semantic-facet",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:semantic-facet:u7:01a07d96-a5bb-7cb5-8307-67a7f6e9bd10",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "528d18c3cd17e46acbc43e196ab6fa694f1755cb2a722b2317e82a4ab89e208f",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "facet.complexity-guarantee",
+      "entity_class": "semantic-facet",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:semantic-facet:u7:01a07d96-a5bb-7c18-8700-bb361458b6d8",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "36b7407c4397199f72049ff97403746ff66efd9d14827002444e6257537ad240",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "facet.core-match",
+      "entity_class": "semantic-facet",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:semantic-facet:u7:01a07d96-a5bb-7cad-a66c-fb28ba334b6b",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "69af32de78c9674cc385e2d9a17f0939b7c9d78d3ebb73619673cf30dd3e704a",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "facet.error-diagnostics",
+      "entity_class": "semantic-facet",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:semantic-facet:u7:01a07d96-a5bb-79d7-a627-016ed27fe059",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "5061fe046e9f8d95172eb5dbd30b284c55b54bd3a6b757b742dd914bdefab5b9",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "facet.host-api",
+      "entity_class": "semantic-facet",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:semantic-facet:u7:01a07d96-a5bb-7aaf-aae2-3f9dd227d12c",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "da5c6cb8816f4fad8cad98b320dceea86e317f1823cda2bd0ecd4a5af6088ce2",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "facet.interaction-composition",
+      "entity_class": "semantic-facet",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:semantic-facet:u7:01a07d96-a5bb-7148-9138-5ee6f8bc4cd4",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "49f14c59d1b45f5fc40051e6b73077cca1fd111699a80763e269f7bd8f5a3b7a",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "facet.option-state",
+      "entity_class": "semantic-facet",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:semantic-facet:u7:01a07d96-a5bb-7db6-868a-5171e2ca4a2b",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "9653c3b74d63c1453716c107b87292bae89ad0810b73e56cac3f8d57fc816b0e",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "facet.phase",
+      "entity_class": "semantic-facet",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:semantic-facet:u7:01a07d96-a5bb-7a99-9255-0b1f30a2ba53",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "b6b147260625c395667e99c795fc5cce32155a6b355009febc43481d2c02b42a",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "facet.replacement",
+      "entity_class": "semantic-facet",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:semantic-facet:u7:01a07d96-a5bb-781a-89ce-54c734e47d06",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "89b2c1fd8cef25d4a6c10f50e1d62450598554da9f3eec5b52af05583061950f",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "facet.resource-termination",
+      "entity_class": "semantic-facet",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:semantic-facet:u7:01a07d96-a5bb-7142-8af3-3d9c34241949",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "4b1cdefaedd2e4fce1b1f305f93bff86a02e7ae4d798332bfb8a07a824fec1e9",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "facet.search-boundary",
+      "entity_class": "semantic-facet",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:semantic-facet:u7:01a07d96-a5bb-7587-ad69-78494b93d3c2",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "94839e8694484996762058a47ad429c784643812193895a280ed6c73b0f21d94",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "facet.security-context",
+      "entity_class": "semantic-facet",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:semantic-facet:u7:01a07d96-a5bb-7828-a76b-790b135d55bc",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "087d3fd6dadd1a7339ecaa5d1e57fd5f666fa190593e1aeffb4517f465ca10bb",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "facet.syntax",
+      "entity_class": "semantic-facet",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:semantic-facet:u7:01a07d96-a5bb-736a-b64a-98a6e3d35e3d",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "5ad7dee01e0b8b7c6dc7cb0596a3f2c29473f5d1fce7873328c63aa7ac1319c7",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "facet.unicode-encoding",
+      "entity_class": "semantic-facet",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:semantic-facet:u7:01a07d96-a5bb-7af8-a56d-ba15dc4ef87c",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "537d23685e00485c3485ab3e729bffef61c6cbfb42469d0e58a7e5e1bb75d24d",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "facet.version-platform-differential",
+      "entity_class": "semantic-facet",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:semantic-facet:u7:01a07d96-a5bb-748d-80c0-5f8862d8c1a0",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "6a4697a92feda4fedd98954ae710c0c0b3aebd44ff741c9089a36eae6426d6c7",
           "lineage_record_id": null
         }
       ],
@@ -332871,6 +333816,81 @@
       "status": "active"
     },
     {
+      "canonical_key": "variant.inline-modifier-directive.exclusive-domain",
+      "entity_class": "semantic-variant",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:semantic-variant:u7:01a07d96-a5bb-7aaf-9345-2fb1bb14ef3e",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "25569f8c8cfcaa885772d8166fd9731155fd805a3b87a97698d22b4c08b66977",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "variant.inline-modifier-directive.group-tail",
+      "entity_class": "semantic-variant",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:semantic-variant:u7:01a07d96-a5bb-70ed-9bb0-44a7db592b65",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "f3237aea8401e547b00bb218f4f7e5a27bc9ac27757f7131c370dcc05aedf452",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "variant.inline-modifier-directive.leading-global",
+      "entity_class": "semantic-variant",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:semantic-variant:u7:01a07d96-a5bb-711c-87bb-65476897833b",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "5df5cdcf64fe3a3a453e624c04662d539cceb7521d72e56b37d0db3893615ee3",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "variant.inline-modifier-directive.reset-default",
+      "entity_class": "semantic-variant",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:semantic-variant:u7:01a07d96-a5bb-755e-a6a9-473109ad99f5",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "d24f7fb5469b985495d16b5162dd79834a4a946d8aef11621a1cfb1ace1c84d8",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "variant.inline-modifier-directive.unset",
+      "entity_class": "semantic-variant",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:semantic-variant:u7:01a07d96-a5bb-796b-ac2b-e542e328c3f1",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-07",
+          "fingerprint_sha256": "e14f6de46d2af5d05d2e49eb9a0c090ee670e4e9f28be9382fc3362689de0f28",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
       "canonical_key": "variant.leftmost-longest-match.ordered-submatch-longest",
       "entity_class": "semantic-variant",
       "former_keys": [],
@@ -335391,25 +336411,26 @@
       "status": "active"
     }
   ],
-  "catalog_digest_sha256": "fd03b75bc88720a448cf4c5a1e8f598d2c2635d5293244b9217dabcffe36f2db",
+  "catalog_digest_sha256": "a53122eb1371b485cdb597d73e6a6f7bad2b62772073240cff41624275060e97",
   "counts": {
-    "active": 22359,
+    "active": 22427,
     "by_class": {
-      "feature": 251,
-      "manifestation": 304,
+      "feature": 268,
+      "manifestation": 324,
       "modifier": 32,
       "obligation": 12048,
-      "operation": 22,
+      "operation": 33,
+      "semantic-facet": 15,
       "semantic-requirement": 9506,
-      "semantic-variant": 88,
+      "semantic-variant": 93,
       "typed-interaction": 108
     },
     "historical": 0,
     "lineage_records": 0,
-    "total": 22359
+    "total": 22427
   },
   "lineage_records": [],
-  "namespace_registry": "registries/identity/namespaces.v2.json",
+  "namespace_registry": "registries/identity/namespaces.v3.json",
   "schema_version": "scientific-identity-catalog.v1",
   "source_artifacts": [
     {
@@ -335418,8 +336439,8 @@
       "role": "semantic-projection"
     },
     {
-      "artifact_id": "regex-semantic-features-2026-08-22.sha256-350bfea4c3da07b3426d885aa8ff645ac55539bbb1294a2ea35dd5319541d6c7",
-      "digest_sha256": "350bfea4c3da07b3426d885aa8ff645ac55539bbb1294a2ea35dd5319541d6c7",
+      "artifact_id": "rcid:v1:ontology-snapshot:h:jcs-sha256-v1:787cee25f0557ac042ea126f1afa219e537c119b4f3f007b19b471e8c2443d1c",
+      "digest_sha256": "453bd4019673e03944bd846a1897128956f9cac73b712bdb82e9942da9f1caf7",
       "role": "semantic-snapshot"
     },
     {

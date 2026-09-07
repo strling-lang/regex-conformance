@@ -7,6 +7,7 @@ second program authority.
 - [Repository layout and traceability](repository-layout.md)
 - [Scientific identity and migration contract](scientific-identities.md)
 - [Researched feature semantics](researched-feature-semantics.md)
+- [Semantic architecture dispositions](semantic-architecture-dispositions.md)
 - [Generated assertion derivation contract](generated-assertion-derivations.md)
 - [Physical-attempt and terminal-outcome provenance](execution-provenance.md)
 - [Machine-readable certification contract](../../certification/README.md)

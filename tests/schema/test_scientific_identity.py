@@ -45,18 +45,19 @@ class ScientificIdentityTests(unittest.TestCase):
     def test_current_catalog_is_complete_and_locked(self) -> None:
         self.assertEqual(
             verify_catalog(ROOT),
-            {"scientific_identities": 22359, "scientific_lineage_records": 0},
+            {"scientific_identities": 22427, "scientific_lineage_records": 0},
         )
         self.assertEqual(
             self.catalog["counts"]["by_class"],
             {
-                "feature": 251,
-                "manifestation": 304,
+                "feature": 268,
+                "manifestation": 324,
                 "modifier": 32,
                 "obligation": 12048,
-                "operation": 22,
+                "operation": 33,
+                "semantic-facet": 15,
                 "semantic-requirement": 9506,
-                "semantic-variant": 88,
+                "semantic-variant": 93,
                 "typed-interaction": 108,
             },
         )

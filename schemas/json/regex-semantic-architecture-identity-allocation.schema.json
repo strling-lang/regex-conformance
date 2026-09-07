@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/regex-semantic-architecture-identity-allocation.schema.json",
+  "title": "Assigned identities for the semantic-architecture disposition",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "allocated_on", "allocations"],
+  "properties": {
+    "schema_version": {"const": "regex-semantic-architecture-identity-allocation.v1"},
+    "allocated_on": {"type": "string", "format": "date"},
+    "allocations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["entity_class", "canonical_key", "assigned_id"],
+        "properties": {
+          "entity_class": {"enum": ["candidate", "feature", "manifestation", "operation", "schema-family", "semantic-facet", "semantic-variant"]},
+          "canonical_key": {"type": "string", "minLength": 1},
+          "assigned_id": {"type": "string", "pattern": "^rcid:v1:[a-z][a-z0-9]*(?:-[a-z0-9]+)*:u7:[0-9a-f-]{36}$"}
+        }
+      }
+    }
+  }
+}

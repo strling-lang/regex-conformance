@@ -4,8 +4,8 @@
     "program_authority": "The canonical program workspace owns governance intent, accepted decisions, and amendments requiring Program Owner authority.",
     "repository_authority": "This versioned contract, its schemas, evaluator, fixtures, and deterministic reports own the exact executable predicates."
   },
-  "contract_digest_sha256": "ed0c3db8560926e55d8642343a4557d565386264cb55fc95718dea8cfd0cf871",
-  "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:c4e37ec6c122d758f71e6000fb708dd72ef8b9e2d948813919d1c3ddf15f1bfa",
+  "contract_digest_sha256": "0e07e326f4f997f4315d2371567eae801ae8ec1434ef14279086300e9a0363a1",
+  "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:d91ea1f51e902e8740f201683c4a6761cd4619503af8b3cde926eebfda716b60",
   "contract_key": "regex-conformance-completeness",
   "contract_version": "1.0.0",
   "criteria": [
@@ -510,7 +510,7 @@
     },
     {
       "relative_path": "schemas/tooling/python/regex_conformance_schema/scientific_identity.py",
-      "sha256": "9a0bee09b4043c214f2508c26c7e5e5b40794b95ae68601e6f41cd43553226da"
+      "sha256": "cf2efb383d06d6b77a900c1bf1a9efb8d76a4dffb65a97a5ccb67885d2a9d8ef"
     }
   ],
   "result_states": {

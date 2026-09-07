@@ -13,7 +13,7 @@
       "expected_final_state": "BLOCKED",
       "input_set": {
         "authority_claim_requested": false,
-        "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:c4e37ec6c122d758f71e6000fb708dd72ef8b9e2d948813919d1c3ddf15f1bfa",
+        "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:d91ea1f51e902e8740f201683c4a6761cd4619503af8b3cde926eebfda716b60",
         "criteria": {
           "C1": {
             "blockers": [],
@@ -403,8 +403,8 @@
         },
         "identity_schema_family_id": "rcid:v1:schema-family:u7:01a079d7-bff3-79f7-bd14-3184c831b9f5",
         "identity_schema_version": "1.0.0",
-        "input_set_digest_sha256": "f637aa068529279abb39c803a6f03cb7931a9c7e0662534fe665f192610f4626",
-        "input_set_id": "rcid:v1:certification-input-set:h:jcs-sha256-v1:3c65ed0b57e7e60cf36d686b5f6eebe56e99e5dea9cb33dc667a4d320bdb1dc2",
+        "input_set_digest_sha256": "1bd7f65d85140614d47348584979d3701c87fa169cdcc097dcf28bd54573e40e",
+        "input_set_id": "rcid:v1:certification-input-set:h:jcs-sha256-v1:23ef4132b0f91ce42d2e29c0d1997bd846c50cffe0273f20ab3feb6225eb1e35",
         "schema_version": "certification-input-set.v1",
         "scope_kind": "validation-fixture",
         "source_artifacts": []
@@ -424,7 +424,7 @@
       "expected_final_state": "FAIL",
       "input_set": {
         "authority_claim_requested": false,
-        "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:c4e37ec6c122d758f71e6000fb708dd72ef8b9e2d948813919d1c3ddf15f1bfa",
+        "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:d91ea1f51e902e8740f201683c4a6761cd4619503af8b3cde926eebfda716b60",
         "criteria": {
           "C1": {
             "blockers": [],
@@ -827,8 +827,8 @@
         },
         "identity_schema_family_id": "rcid:v1:schema-family:u7:01a079d7-bff3-79f7-bd14-3184c831b9f5",
         "identity_schema_version": "1.0.0",
-        "input_set_digest_sha256": "29d18478fbccba7ccb01172ad1b9515d949814fa92954adde8ff883da871744f",
-        "input_set_id": "rcid:v1:certification-input-set:h:jcs-sha256-v1:66a88ff7572fe5db43f1d3e8ae1d6bd334135384ba6d55585a9520d66ea91b97",
+        "input_set_digest_sha256": "4a2e632eb953969371f7d28e79429acef7d54b6f99c5e7a0a19ed24d1e931c00",
+        "input_set_id": "rcid:v1:certification-input-set:h:jcs-sha256-v1:c8791a4d8532dce3205d813c5208eb5d89f9541fa213f3cb78074a12cea6a170",
         "schema_version": "certification-input-set.v1",
         "scope_kind": "validation-fixture",
         "source_artifacts": []
@@ -848,7 +848,7 @@
       "expected_final_state": "FAIL",
       "input_set": {
         "authority_claim_requested": false,
-        "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:c4e37ec6c122d758f71e6000fb708dd72ef8b9e2d948813919d1c3ddf15f1bfa",
+        "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:d91ea1f51e902e8740f201683c4a6761cd4619503af8b3cde926eebfda716b60",
         "criteria": {
           "C1": {
             "blockers": [],
@@ -1251,8 +1251,8 @@
         },
         "identity_schema_family_id": "rcid:v1:schema-family:u7:01a079d7-bff3-79f7-bd14-3184c831b9f5",
         "identity_schema_version": "1.0.0",
-        "input_set_digest_sha256": "19b581cef5c832db3072875873a9b0e3a6588732e82d9cf122d23bda928efd8b",
-        "input_set_id": "rcid:v1:certification-input-set:h:jcs-sha256-v1:8f657ffa97ec0ea50a78bdfb635d257525fd2dd55020839103ef3d766c0be729",
+        "input_set_digest_sha256": "8b33d910d1cd47e82f28efa2d0969c2dc1f9271932f100087f1f600b973e0157",
+        "input_set_id": "rcid:v1:certification-input-set:h:jcs-sha256-v1:d937ff57966683eeb8007d2493119faa6a909ff2cb6a63fa2dddfcff8f08f71b",
         "schema_version": "certification-input-set.v1",
         "scope_kind": "validation-fixture",
         "source_artifacts": []
@@ -1272,7 +1272,7 @@
       "expected_final_state": "FAIL",
       "input_set": {
         "authority_claim_requested": false,
-        "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:c4e37ec6c122d758f71e6000fb708dd72ef8b9e2d948813919d1c3ddf15f1bfa",
+        "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:d91ea1f51e902e8740f201683c4a6761cd4619503af8b3cde926eebfda716b60",
         "criteria": {
           "C1": {
             "blockers": [],
@@ -1675,8 +1675,8 @@
         },
         "identity_schema_family_id": "rcid:v1:schema-family:u7:01a079d7-bff3-79f7-bd14-3184c831b9f5",
         "identity_schema_version": "1.0.0",
-        "input_set_digest_sha256": "374e9096f40b265da1eb56bf5c0a12468415742755938d5339ccf5ca546a7183",
-        "input_set_id": "rcid:v1:certification-input-set:h:jcs-sha256-v1:cb32c277f6245e4192c63c024f481ee6656ee157020ae819683d4e575f9868ed",
+        "input_set_digest_sha256": "aab8bd98579313c7b33d8e5e0f77290f2a0dd8729c46570578b231b02d61d3ad",
+        "input_set_id": "rcid:v1:certification-input-set:h:jcs-sha256-v1:b77bc2a0aaa8cc721eb07cec56d805dfc1a0af22698beb7b82da38258747004d",
         "schema_version": "certification-input-set.v1",
         "scope_kind": "validation-fixture",
         "source_artifacts": []
@@ -1696,7 +1696,7 @@
       "expected_final_state": "FAIL",
       "input_set": {
         "authority_claim_requested": false,
-        "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:c4e37ec6c122d758f71e6000fb708dd72ef8b9e2d948813919d1c3ddf15f1bfa",
+        "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:d91ea1f51e902e8740f201683c4a6761cd4619503af8b3cde926eebfda716b60",
         "criteria": {
           "C1": {
             "blockers": [],
@@ -2099,8 +2099,8 @@
         },
         "identity_schema_family_id": "rcid:v1:schema-family:u7:01a079d7-bff3-79f7-bd14-3184c831b9f5",
         "identity_schema_version": "1.0.0",
-        "input_set_digest_sha256": "6b94a20d1e3e0419d57b9d39ff8c76f89ae62e11944138ae97f563ecb4a37244",
-        "input_set_id": "rcid:v1:certification-input-set:h:jcs-sha256-v1:27660c29e4dd92a8285ff2ac03d7eb90122ae54e380e907e295ddf84e4585110",
+        "input_set_digest_sha256": "e1477a3ecd29a8c2a880afc2a6eca6b1e691d2aee7b04d7dcdb9216f35e06807",
+        "input_set_id": "rcid:v1:certification-input-set:h:jcs-sha256-v1:f970e997e6c00342a43617d6181aaa3479254a6842c7703ab4382cc0c48981f8",
         "schema_version": "certification-input-set.v1",
         "scope_kind": "validation-fixture",
         "source_artifacts": []
@@ -2120,7 +2120,7 @@
       "expected_final_state": "FAIL",
       "input_set": {
         "authority_claim_requested": false,
-        "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:c4e37ec6c122d758f71e6000fb708dd72ef8b9e2d948813919d1c3ddf15f1bfa",
+        "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:d91ea1f51e902e8740f201683c4a6761cd4619503af8b3cde926eebfda716b60",
         "criteria": {
           "C1": {
             "blockers": [],
@@ -2567,8 +2567,8 @@
         },
         "identity_schema_family_id": "rcid:v1:schema-family:u7:01a079d7-bff3-79f7-bd14-3184c831b9f5",
         "identity_schema_version": "1.0.0",
-        "input_set_digest_sha256": "d6aba33b5165a6cb452b12b1d1e83a35c1baf9d21a23f186edc88ab876103050",
-        "input_set_id": "rcid:v1:certification-input-set:h:jcs-sha256-v1:fd117157fb96949985f202f8af0d0608ac47a908104af46f0c19598290fefac0",
+        "input_set_digest_sha256": "549408b472a26ee4a5ae989f1edf6320c00f364fbd4551bc0c54548fbb0ae796",
+        "input_set_id": "rcid:v1:certification-input-set:h:jcs-sha256-v1:fabed771e1ec2008216410f6339491c07769c71c748df3d5502283e8be044faf",
         "schema_version": "certification-input-set.v1",
         "scope_kind": "validation-fixture",
         "source_artifacts": []
@@ -2588,7 +2588,7 @@
       "expected_final_state": "FAIL",
       "input_set": {
         "authority_claim_requested": false,
-        "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:c4e37ec6c122d758f71e6000fb708dd72ef8b9e2d948813919d1c3ddf15f1bfa",
+        "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:d91ea1f51e902e8740f201683c4a6761cd4619503af8b3cde926eebfda716b60",
         "criteria": {
           "C1": {
             "blockers": [],
@@ -2991,8 +2991,8 @@
         },
         "identity_schema_family_id": "rcid:v1:schema-family:u7:01a079d7-bff3-79f7-bd14-3184c831b9f5",
         "identity_schema_version": "1.0.0",
-        "input_set_digest_sha256": "c381813c59751f3d022d727e9e75a2c14f86430f6f692f626b58feb12b4bf27e",
-        "input_set_id": "rcid:v1:certification-input-set:h:jcs-sha256-v1:41004c725b16cfa76a35a6a7d2d5b9fc32c05fdfaa268078517b06630ea39a6c",
+        "input_set_digest_sha256": "1d04b57586d716e209928a1254a7c29b6c0bfdf8479bfbca37193035a126543f",
+        "input_set_id": "rcid:v1:certification-input-set:h:jcs-sha256-v1:2c0edb73bc4ab4c555ed47248a9836b410363d6d12942d2879a67a66fb973e90",
         "schema_version": "certification-input-set.v1",
         "scope_kind": "validation-fixture",
         "source_artifacts": []
@@ -3012,7 +3012,7 @@
       "expected_final_state": "FAIL",
       "input_set": {
         "authority_claim_requested": false,
-        "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:c4e37ec6c122d758f71e6000fb708dd72ef8b9e2d948813919d1c3ddf15f1bfa",
+        "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:d91ea1f51e902e8740f201683c4a6761cd4619503af8b3cde926eebfda716b60",
         "criteria": {
           "C1": {
             "blockers": [],
@@ -3415,8 +3415,8 @@
         },
         "identity_schema_family_id": "rcid:v1:schema-family:u7:01a079d7-bff3-79f7-bd14-3184c831b9f5",
         "identity_schema_version": "1.0.0",
-        "input_set_digest_sha256": "820a2876b03bcaf0a67d284944ac439c225eeca3085e99a16846de264ffe8990",
-        "input_set_id": "rcid:v1:certification-input-set:h:jcs-sha256-v1:1b95fa59a23b11185cc46e361880ba3e5c84c8cc736fa067d60c0d463eb979d5",
+        "input_set_digest_sha256": "cddd68323942bdb28f68723d752af76a24812d930bc45c4c6303c748189e8fed",
+        "input_set_id": "rcid:v1:certification-input-set:h:jcs-sha256-v1:2bffdf2dd76c4f5b5e685f5e1b539d7b6719538548002005db38d6012ad65368",
         "schema_version": "certification-input-set.v1",
         "scope_kind": "validation-fixture",
         "source_artifacts": []
@@ -3436,7 +3436,7 @@
       "expected_final_state": "PASS",
       "input_set": {
         "authority_claim_requested": false,
-        "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:c4e37ec6c122d758f71e6000fb708dd72ef8b9e2d948813919d1c3ddf15f1bfa",
+        "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:d91ea1f51e902e8740f201683c4a6761cd4619503af8b3cde926eebfda716b60",
         "criteria": {
           "C1": {
             "blockers": [],
@@ -3832,8 +3832,8 @@
         },
         "identity_schema_family_id": "rcid:v1:schema-family:u7:01a079d7-bff3-79f7-bd14-3184c831b9f5",
         "identity_schema_version": "1.0.0",
-        "input_set_digest_sha256": "8c5f2c21436aca4c69d193cf6ac73d5f00532a48f7a64b164cc9fd287427d19f",
-        "input_set_id": "rcid:v1:certification-input-set:h:jcs-sha256-v1:5b26e0bec3e2af9c8719f172657f67329b5e4b673ada02d8ada0225071e9c2d8",
+        "input_set_digest_sha256": "9b47756c3b329afbb72ce919cedcd5aa2757380bb270eb145ae126dcaa54ba0b",
+        "input_set_id": "rcid:v1:certification-input-set:h:jcs-sha256-v1:45286a4bf0a87337ead00e1cd338ffeff9d1889579edb7875c6bacfe90a8dd9b",
         "schema_version": "certification-input-set.v1",
         "scope_kind": "validation-fixture",
         "source_artifacts": []
@@ -3853,7 +3853,7 @@
       "expected_final_state": "FAIL",
       "input_set": {
         "authority_claim_requested": false,
-        "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:c4e37ec6c122d758f71e6000fb708dd72ef8b9e2d948813919d1c3ddf15f1bfa",
+        "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:d91ea1f51e902e8740f201683c4a6761cd4619503af8b3cde926eebfda716b60",
         "criteria": {
           "C1": {
             "blockers": [],
@@ -4256,8 +4256,8 @@
         },
         "identity_schema_family_id": "rcid:v1:schema-family:u7:01a079d7-bff3-79f7-bd14-3184c831b9f5",
         "identity_schema_version": "1.0.0",
-        "input_set_digest_sha256": "a2075523dc3eba40cc9206dca67509666adf9ef27f519a75c5c9f85f9832638e",
-        "input_set_id": "rcid:v1:certification-input-set:h:jcs-sha256-v1:8923bc55c6779d7361eb2994a7e68963d17f7512c05ed82423c3bc89d1fc6d1e",
+        "input_set_digest_sha256": "7a033c7f56d0186871640cda0934fc167633597ba45de75edb079b130d6d742d",
+        "input_set_id": "rcid:v1:certification-input-set:h:jcs-sha256-v1:86bd14049c30acb71e2c400bf346ae54378bc183d1f160b3a108c4a9c234323d",
         "schema_version": "certification-input-set.v1",
         "scope_kind": "validation-fixture",
         "source_artifacts": []
@@ -4277,7 +4277,7 @@
       "expected_final_state": "FAIL",
       "input_set": {
         "authority_claim_requested": false,
-        "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:c4e37ec6c122d758f71e6000fb708dd72ef8b9e2d948813919d1c3ddf15f1bfa",
+        "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:d91ea1f51e902e8740f201683c4a6761cd4619503af8b3cde926eebfda716b60",
         "criteria": {
           "C1": {
             "blockers": [],
@@ -4680,8 +4680,8 @@
         },
         "identity_schema_family_id": "rcid:v1:schema-family:u7:01a079d7-bff3-79f7-bd14-3184c831b9f5",
         "identity_schema_version": "1.0.0",
-        "input_set_digest_sha256": "6f7e3c3c9a6b047032931580d929bc6e73483f79eac2f83f8f02af0fb4c74450",
-        "input_set_id": "rcid:v1:certification-input-set:h:jcs-sha256-v1:7dd75fa891b6df1f9cbb770e5ec31201043d4c04ae00a74c28490eccd4dfe492",
+        "input_set_digest_sha256": "24e36efae836527e33a2db5f739ff8c67977759b5cc07e7a4c6f091fd40d7405",
+        "input_set_id": "rcid:v1:certification-input-set:h:jcs-sha256-v1:db40f296a4d0b951821c18661d11316e62b5298156bbdcf9e6b1e3d83ec25918",
         "schema_version": "certification-input-set.v1",
         "scope_kind": "validation-fixture",
         "source_artifacts": []
@@ -4701,7 +4701,7 @@
       "expected_final_state": "PASS",
       "input_set": {
         "authority_claim_requested": false,
-        "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:c4e37ec6c122d758f71e6000fb708dd72ef8b9e2d948813919d1c3ddf15f1bfa",
+        "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:d91ea1f51e902e8740f201683c4a6761cd4619503af8b3cde926eebfda716b60",
         "criteria": {
           "C1": {
             "blockers": [],
@@ -5104,8 +5104,8 @@
         },
         "identity_schema_family_id": "rcid:v1:schema-family:u7:01a079d7-bff3-79f7-bd14-3184c831b9f5",
         "identity_schema_version": "1.0.0",
-        "input_set_digest_sha256": "3df67fae47187126d267513b6ce62763327b922bc2a187cdc3b3720e68aaa04f",
-        "input_set_id": "rcid:v1:certification-input-set:h:jcs-sha256-v1:f44b81c7228cf144a16577ea46f117fc52eb7e6d1292b4cdc5229c36d558e3c8",
+        "input_set_digest_sha256": "ceea1c6eb62b66fe7f00e301386d88fd105e2d2209edb4c3003a618ff17fe226",
+        "input_set_id": "rcid:v1:certification-input-set:h:jcs-sha256-v1:8cc16abcea1c4c6286e8954487cf56d8e24e8d4992b58e63dc390e93c3fe5396",
         "schema_version": "certification-input-set.v1",
         "scope_kind": "validation-fixture",
         "source_artifacts": []
@@ -5125,7 +5125,7 @@
       "expected_final_state": "FAIL",
       "input_set": {
         "authority_claim_requested": false,
-        "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:c4e37ec6c122d758f71e6000fb708dd72ef8b9e2d948813919d1c3ddf15f1bfa",
+        "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:d91ea1f51e902e8740f201683c4a6761cd4619503af8b3cde926eebfda716b60",
         "criteria": {
           "C1": {
             "blockers": [],
@@ -5529,8 +5529,8 @@
         },
         "identity_schema_family_id": "rcid:v1:schema-family:u7:01a079d7-bff3-79f7-bd14-3184c831b9f5",
         "identity_schema_version": "1.0.0",
-        "input_set_digest_sha256": "473f1bd183f616544e0df6388f318f834eddfd58a2945eac5d504d3ac4457da7",
-        "input_set_id": "rcid:v1:certification-input-set:h:jcs-sha256-v1:3b506dcceb5c3c2f549c28a099f21b5ec688b5ad27725d6a453613510f5c92fa",
+        "input_set_digest_sha256": "02024d4234d7a31a5fe75921fe5fd8e50b2d89a957052efdbabdefb6b586b2c5",
+        "input_set_id": "rcid:v1:certification-input-set:h:jcs-sha256-v1:ced1fe958edfbefd906c379587bdce83f7fd2719439ac17386eedca94c8b80c7",
         "schema_version": "certification-input-set.v1",
         "scope_kind": "validation-fixture",
         "source_artifacts": []
@@ -5550,7 +5550,7 @@
       "expected_final_state": "FAIL",
       "input_set": {
         "authority_claim_requested": false,
-        "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:c4e37ec6c122d758f71e6000fb708dd72ef8b9e2d948813919d1c3ddf15f1bfa",
+        "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:d91ea1f51e902e8740f201683c4a6761cd4619503af8b3cde926eebfda716b60",
         "criteria": {
           "C1": {
             "blockers": [],
@@ -5997,8 +5997,8 @@
         },
         "identity_schema_family_id": "rcid:v1:schema-family:u7:01a079d7-bff3-79f7-bd14-3184c831b9f5",
         "identity_schema_version": "1.0.0",
-        "input_set_digest_sha256": "d6aba33b5165a6cb452b12b1d1e83a35c1baf9d21a23f186edc88ab876103050",
-        "input_set_id": "rcid:v1:certification-input-set:h:jcs-sha256-v1:fd117157fb96949985f202f8af0d0608ac47a908104af46f0c19598290fefac0",
+        "input_set_digest_sha256": "549408b472a26ee4a5ae989f1edf6320c00f364fbd4551bc0c54548fbb0ae796",
+        "input_set_id": "rcid:v1:certification-input-set:h:jcs-sha256-v1:fabed771e1ec2008216410f6339491c07769c71c748df3d5502283e8be044faf",
         "schema_version": "certification-input-set.v1",
         "scope_kind": "validation-fixture",
         "source_artifacts": []
@@ -6018,7 +6018,7 @@
       "expected_final_state": "FAIL",
       "input_set": {
         "authority_claim_requested": false,
-        "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:c4e37ec6c122d758f71e6000fb708dd72ef8b9e2d948813919d1c3ddf15f1bfa",
+        "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:d91ea1f51e902e8740f201683c4a6761cd4619503af8b3cde926eebfda716b60",
         "criteria": {
           "C1": {
             "blockers": [],
@@ -6425,8 +6425,8 @@
         },
         "identity_schema_family_id": "rcid:v1:schema-family:u7:01a079d7-bff3-79f7-bd14-3184c831b9f5",
         "identity_schema_version": "1.0.0",
-        "input_set_digest_sha256": "6ae2184f71c8fbf12236193813e084815e680f49147e7ee89760e99802744cf7",
-        "input_set_id": "rcid:v1:certification-input-set:h:jcs-sha256-v1:5d1ece8b03ab634c221f3dbf459fede39f678cde81d182efdf3b95632d09d661",
+        "input_set_digest_sha256": "1897d9e8188af46eaec32327e29fd9b32e990bde81cb7bc61bb615ffecb25046",
+        "input_set_id": "rcid:v1:certification-input-set:h:jcs-sha256-v1:02fc87acac95e4049ab88d26425863b8d46edba1247027f48f5fac690178be31",
         "schema_version": "certification-input-set.v1",
         "scope_kind": "validation-fixture",
         "source_artifacts": []
@@ -6446,7 +6446,7 @@
       "expected_final_state": "PASS",
       "input_set": {
         "authority_claim_requested": false,
-        "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:c4e37ec6c122d758f71e6000fb708dd72ef8b9e2d948813919d1c3ddf15f1bfa",
+        "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:d91ea1f51e902e8740f201683c4a6761cd4619503af8b3cde926eebfda716b60",
         "criteria": {
           "C1": {
             "blockers": [],
@@ -6945,8 +6945,8 @@
         },
         "identity_schema_family_id": "rcid:v1:schema-family:u7:01a079d7-bff3-79f7-bd14-3184c831b9f5",
         "identity_schema_version": "1.0.0",
-        "input_set_digest_sha256": "6fb9f96e8690f055b7dba7aa1b283a53ddcb7deb9e42802dd441dcfcfadc6bc0",
-        "input_set_id": "rcid:v1:certification-input-set:h:jcs-sha256-v1:67d9bcc50d50a2735fa0c642e0b0788f114e0661e03c5cbef78247ba16018141",
+        "input_set_digest_sha256": "f6ef90860d88f0f99520bd1f9bb72a8aba53337986a87b1523179ad4523d813a",
+        "input_set_id": "rcid:v1:certification-input-set:h:jcs-sha256-v1:f77dd332f3edab1612d11e79020d8bb8fe12f56cc3608ee7144045be476ae92e",
         "schema_version": "certification-input-set.v1",
         "scope_kind": "validation-fixture",
         "source_artifacts": []
@@ -6966,7 +6966,7 @@
       "expected_final_state": "PASS",
       "input_set": {
         "authority_claim_requested": false,
-        "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:c4e37ec6c122d758f71e6000fb708dd72ef8b9e2d948813919d1c3ddf15f1bfa",
+        "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:d91ea1f51e902e8740f201683c4a6761cd4619503af8b3cde926eebfda716b60",
         "criteria": {
           "C1": {
             "blockers": [],
@@ -7404,8 +7404,8 @@
         },
         "identity_schema_family_id": "rcid:v1:schema-family:u7:01a079d7-bff3-79f7-bd14-3184c831b9f5",
         "identity_schema_version": "1.0.0",
-        "input_set_digest_sha256": "80fb38347b155f3a1c6657b1999d30c7b5cbafe9b8e201294b917244b99d2f73",
-        "input_set_id": "rcid:v1:certification-input-set:h:jcs-sha256-v1:2c80cfe7824235567a39898522de8edac5bbedb02583bab29506f3d7de02add4",
+        "input_set_digest_sha256": "a165fdcda0faf2abd87be77c99a0645f983e2d91b135875040b91405c1799d82",
+        "input_set_id": "rcid:v1:certification-input-set:h:jcs-sha256-v1:4b4cc902abd306bb66bb20c56e2b2713b6f8ec8d91bae287cfd3582abaed5412",
         "schema_version": "certification-input-set.v1",
         "scope_kind": "validation-fixture",
         "source_artifacts": []
@@ -7413,8 +7413,8 @@
       "name": "valid-split-disposition"
     }
   ],
-  "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:c4e37ec6c122d758f71e6000fb708dd72ef8b9e2d948813919d1c3ddf15f1bfa",
-  "fixture_digest_sha256": "8976aa385a1f9212c68385bf34078bbc16bf37cb6ff6f59d16083acfa35f74c3",
+  "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:d91ea1f51e902e8740f201683c4a6761cd4619503af8b3cde926eebfda716b60",
+  "fixture_digest_sha256": "f81d90c3310b8bfa0c4a26f4edb26b931f7b3bfdd0f35063043474cd5625b293",
   "schema_version": "certification-predicate-fixtures.v1",
   "supersession_fixture": {
     "authority_index": {
@@ -7431,7 +7431,7 @@
           "successor_certification_id": "rcid:v1:certification:u7:01a079d7-f747-7d05-8468-8338e45adca4"
         }
       ],
-      "authority_index_sha256": "d312646cd85e6a92321d9afb5ee98a2847fdd129a3fbe8cbe8c49b6b1fb62222",
+      "authority_index_sha256": "1c10957b62c34bbd523db620cf42fc8723f496075bb23dac6d26b1da3e4950b4",
       "certifications": [
         {
           "certification_id": "rcid:v1:certification:u7:01a079d7-da99-7a6a-bcb8-b7bc94e534d5",
@@ -7452,8 +7452,8 @@
       ],
       "current_certification_id": "rcid:v1:certification:u7:01a079d7-f747-7d05-8468-8338e45adca4",
       "current_contract": {
-        "contract_digest_sha256": "ed0c3db8560926e55d8642343a4557d565386264cb55fc95718dea8cfd0cf871",
-        "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:c4e37ec6c122d758f71e6000fb708dd72ef8b9e2d948813919d1c3ddf15f1bfa",
+        "contract_digest_sha256": "0e07e326f4f997f4315d2371567eae801ae8ec1434ef14279086300e9a0363a1",
+        "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:d91ea1f51e902e8740f201683c4a6761cd4619503af8b3cde926eebfda716b60",
         "contract_version": "1.0.0"
       },
       "current_evaluation": {

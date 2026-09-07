@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/regex-semantic-candidate-disposition-ledger.schema.json",
+  "title": "Semantic architecture candidate disposition ledger",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "published_on", "method", "predecessor_snapshot", "candidates", "counts", "ledger_id", "ledger_digest_sha256"],
+  "properties": {
+    "schema_version": {"const": "regex-semantic-candidate-disposition-ledger.v1"},
+    "published_on": {"type": "string", "format": "date"},
+    "method": {"type": "object", "required": ["derivation_id", "source_priority", "exhaustiveness_rule"], "additionalProperties": true},
+    "predecessor_snapshot": {"type": "object", "required": ["snapshot_id", "snapshot_digest_sha256", "path"], "additionalProperties": true},
+    "candidates": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/candidate"}},
+    "counts": {"type": "object", "required": ["total", "by_class", "by_disposition", "blocking_unresolved"], "additionalProperties": true},
+    "ledger_id": {"$ref": "#/$defs/contentId"},
+    "ledger_digest_sha256": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "contentId": {"type": "string", "pattern": "^rcid:v1:finding-revision:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["candidate_id", "candidate_key", "candidate_class", "description", "evidence_source_ids", "current_corpus_relationship", "scientific_distinctness", "disposition", "rationale", "implementation_consequence", "identity_consequence", "downstream_consequence", "blocking"],
+      "properties": {
+        "candidate_id": {"type": "string", "pattern": "^rcid:v1:candidate:u7:"},
+        "candidate_key": {"type": "string", "pattern": "^candidate\\."},
+        "candidate_class": {"enum": ["facet/dimension", "operation", "canonical feature", "semantic variant", "manifestation", "modifier", "source authority", "taxonomy correction"]},
+        "description": {"type": "string", "minLength": 1},
+        "evidence_source_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "current_corpus_relationship": {"type": "string", "minLength": 1},
+        "scientific_distinctness": {"type": "string", "minLength": 1},
+        "disposition": {"enum": ["accept-canonical", "accept-as-variant", "accept-as-manifestation", "accept-as-operation", "accept-as-facet", "accept-as-source", "already-covered", "alias-or-terminology", "profile-specific-not-canonical", "implementation-specific", "out-of-scope", "insufficient-evidence", "defer-to-profile-architecture", "defer-to-oracle-adjudication", "defer-to-execution-resource-architecture", "reject"]},
+        "rationale": {"type": "string", "minLength": 1},
+        "implementation_consequence": {"type": "string", "minLength": 1},
+        "identity_consequence": {"type": "string", "minLength": 1},
+        "downstream_consequence": {"type": "string", "minLength": 1},
+        "blocking": {"type": "boolean"}
+      }
+    }
+  }
+}

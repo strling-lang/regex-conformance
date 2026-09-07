@@ -16,7 +16,7 @@
   ],
   "properties": {
     "schema_version": {"const": "scientific-identity-catalog.v1"},
-    "namespace_registry": {"const": "registries/identity/namespaces.v2.json"},
+    "namespace_registry": {"const": "registries/identity/namespaces.v3.json"},
     "adoption": {
       "type": "object",
       "additionalProperties": false,
@@ -111,6 +111,7 @@
             "modifier",
             "obligation",
             "operation",
+            "semantic-facet",
             "semantic-requirement",
             "semantic-variant",
             "typed-interaction"

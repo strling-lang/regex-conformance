@@ -206,7 +206,7 @@ class ExecutionProvenanceTests(unittest.TestCase):
         self.assertEqual(canonical_bytes(first), canonical_bytes(self.fixture))
         self.assertEqual(
             verify_identity_catalog(ROOT),
-            {"scientific_identities": 22359, "scientific_lineage_records": 0},
+            {"scientific_identities": 22427, "scientific_lineage_records": 0},
         )
         self.assertGreater(verify_derivation_catalog(ROOT)["generated_assertion_groups"], 0)
 

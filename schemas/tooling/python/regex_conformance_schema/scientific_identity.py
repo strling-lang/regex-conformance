@@ -16,7 +16,7 @@ from .profile import IdentityProfile
 
 
 CATALOG_PATH = Path("registries/identity/scientific-identities.v1.json")
-NAMESPACE_PATH = Path("registries/identity/namespaces.v2.json")
+NAMESPACE_PATH = Path("registries/identity/namespaces.v3.json")
 LINEAGE_PROFILE_PATH = Path("schemas/identity-profiles/scientific-lineage.v1.json")
 LINEAGE_SCHEMA_FAMILY_ID = (
     "rcid:v1:schema-family:u7:01a0779c-531b-71f6-a7eb-f93664268dd2"
@@ -27,11 +27,21 @@ ENTITY_NAMESPACES = {
     "modifier": "modifier",
     "obligation": "obligation",
     "operation": "operation",
+    "semantic-facet": "semantic-facet",
     "semantic-requirement": "semantic-requirement",
     "semantic-variant": "semantic-variant",
     "typed-interaction": "semantic-interaction",
 }
 ACTIVE = "active"
+LEGACY_SEMANTIC_SNAPSHOT_PATH = Path(
+    "semantic-corpus/snapshots/regex-semantic-features-2026-08-22.v1.json"
+)
+CURRENT_SEMANTIC_SNAPSHOT_PATH = Path(
+    "semantic-corpus/snapshots/regex-semantic-features-2026-09-07.v3.json"
+)
+SEMANTIC_ARCHITECTURE_ALLOCATION_PATH = Path(
+    "semantic-corpus/research/semantic-architecture-identities-2026-09-07.v1.json"
+)
 SAFE_INTEGER_LIMIT = 9_007_199_254_740_991
 SUPERSESSION_KINDS = {
     "merged-from",
@@ -246,12 +256,7 @@ def normalize_predicate(value: Any) -> Any:
 
 
 def collect_descriptors(root: Path) -> tuple[list[ScientificDescriptor], list[dict[str, Any]]]:
-    corpus = load_strict(
-        root
-        / "semantic-corpus"
-        / "snapshots"
-        / "regex-semantic-features-2026-08-22.v1.json"
-    )
+    corpus = load_strict(root / LEGACY_SEMANTIC_SNAPSHOT_PATH)
     projection = load_strict(
         root
         / "ontology"
@@ -314,6 +319,42 @@ def collect_descriptors(root: Path) -> tuple[list[ScientificDescriptor], list[di
         )
         for item in requirements["requirements"]
     )
+    current_path = root / CURRENT_SEMANTIC_SNAPSHOT_PATH
+    current = load_strict(current_path) if current_path.is_file() else corpus
+    existing_keys = {item.key for item in descriptors}
+    if current_path.is_file():
+        additions: list[ScientificDescriptor] = []
+        additions.extend(
+            ScientificDescriptor("semantic-facet", item["facet_id"], "semantic-snapshot", item)
+            for item in current["semantic_facets"]
+        )
+        additions.extend(
+            ScientificDescriptor("operation", item["operation_id"], "semantic-snapshot", item)
+            for item in current["operations"]
+            if item["operation_id"] not in existing_keys
+        )
+        for feature in current["features"]:
+            if feature["feature_id"] not in existing_keys:
+                additions.append(
+                    ScientificDescriptor("feature", feature["feature_id"], "semantic-snapshot", feature)
+                )
+            for variant in feature["semantic_variants"]:
+                if variant["variant_id"] not in existing_keys:
+                    additions.append(
+                        ScientificDescriptor(
+                            "semantic-variant",
+                            variant["variant_id"],
+                            "semantic-snapshot",
+                            variant,
+                            feature["feature_id"],
+                        )
+                    )
+        additions.extend(
+            ScientificDescriptor("manifestation", item["manifestation_id"], "semantic-snapshot", item)
+            for item in current["manifestations"]
+            if item["manifestation_id"] not in existing_keys
+        )
+        descriptors.extend(additions)
     descriptors.sort(key=lambda item: (item.entity_class, item.key))
     keys = [item.key for item in descriptors]
     if len(keys) != len(set(keys)):
@@ -321,8 +362,10 @@ def collect_descriptors(root: Path) -> tuple[list[ScientificDescriptor], list[di
     sources = [
         {
             "role": "semantic-snapshot",
-            "artifact_id": corpus["snapshot_id"],
-            "digest_sha256": corpus["corpus_digest_sha256"],
+            "artifact_id": current["snapshot_id"],
+            "digest_sha256": current.get(
+                "snapshot_digest_sha256", current.get("corpus_digest_sha256")
+            ),
         },
         {
             "role": "semantic-projection",
@@ -375,6 +418,19 @@ def scientific_basis(
 ) -> dict[str, Any]:
     item = descriptor.record
     entity_class = descriptor.entity_class
+    if "identity_basis" in item:
+        basis = canonical_nested_value(item["identity_basis"])
+        if entity_class == "semantic-variant" and descriptor.parent_key:
+            basis = {
+                **basis,
+                "parent_feature_id": _reference(descriptor.parent_key, identities),
+            }
+        return basis
+    if entity_class == "semantic-facet":
+        return {
+            "domain": sorted(item["domain"]),
+            "applicability": item["applicability"],
+        }
     if entity_class == "feature":
         return {
             "feature_class": item["feature_class"],
@@ -672,12 +728,23 @@ def initialize_catalog(root: Path, *, effective_date: str) -> dict[str, Any]:
             ),
         }
     owners = _owner_index(bindings)
+    allocated: dict[tuple[str, str], str] = {}
+    allocation_path = root / SEMANTIC_ARCHITECTURE_ALLOCATION_PATH
+    if allocation_path.is_file():
+        allocation = load_strict(allocation_path)
+        allocated = {
+            (item["entity_class"], item["canonical_key"]): item["assigned_id"]
+            for item in allocation["allocations"]
+        }
     for descriptor in descriptors:
         if descriptor.key in owners:
             continue
         namespace = ENTITY_NAMESPACES[descriptor.entity_class]
+        scientific_id = allocated.get((descriptor.entity_class, descriptor.key))
+        if scientific_id is None:
+            scientific_id = generate_assigned_id(registry, "rcid", namespace)
         binding = {
-            "scientific_id": generate_assigned_id(registry, "rcid", namespace),
+            "scientific_id": scientific_id,
             "entity_class": descriptor.entity_class,
             "canonical_key": descriptor.key,
             "former_keys": [],

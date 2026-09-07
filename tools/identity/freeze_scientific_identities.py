@@ -18,6 +18,7 @@ from regex_conformance_schema.jsonio import load_strict  # noqa: E402
 from regex_conformance_schema.schema import validate_instance  # noqa: E402
 from regex_conformance_schema.scientific_identity import (  # noqa: E402
     CATALOG_PATH,
+    NAMESPACE_PATH,
     initialize_catalog,
     verify_catalog,
 )
@@ -39,9 +40,9 @@ def main() -> int:
     else:
         catalog = load_strict(ROOT / CATALOG_PATH)
     validate_instance(
-        load_strict(ROOT / "registries" / "identity" / "namespaces.v2.json"),
+        load_strict(ROOT / NAMESPACE_PATH),
         load_strict(ROOT / "schemas" / "json" / "namespace-registry.schema.json"),
-        source="registries/identity/namespaces.v2.json",
+        source=NAMESPACE_PATH.as_posix(),
     )
     validate_instance(
         catalog,

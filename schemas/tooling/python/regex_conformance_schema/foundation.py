@@ -821,8 +821,11 @@ def _verified_foundation_counts(root: Path) -> tuple[dict[str, Any], dict[str, A
 
 def _foundation_checks(root: Path, manifest: dict[str, Any]) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]]]:
     identity_counts, derivation_counts, execution_counts, certification_counts = _verified_foundation_counts(root)
-    if identity_counts["scientific_identities"] != 22359:
-        fail("foundation-identity-population", "accepted scientific identity population is not 22,359")
+    if identity_counts["scientific_identities"] < 22359:
+        fail(
+            "foundation-identity-population",
+            "current scientific identity population dropped below the accepted 22,359-identity foundation baseline",
+        )
     if load_strict(root / CURRENT_REPORT_PATH)["final_state"] != "FAIL":
         fail("foundation-scientific-certification-state", "current scientific certification state unexpectedly changed")
     bypasses = scan_certification_bypasses(root)

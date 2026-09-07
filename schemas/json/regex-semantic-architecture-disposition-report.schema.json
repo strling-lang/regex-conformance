@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/regex-semantic-architecture-disposition-report.schema.json",
+  "title": "Semantic architecture disposition report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "published_on", "candidate_ledger", "semantic_snapshot", "candidate_counts", "architecture_counts", "identity_effects", "source_coverage", "derivation_coverage", "unresolved", "denominator_boundary", "result", "derivation_id", "report_id", "report_digest_sha256"],
+  "properties": {
+    "schema_version": {"const": "regex-semantic-architecture-disposition-report.v1"},
+    "published_on": {"type": "string", "format": "date"},
+    "candidate_ledger": {"type": "object"},
+    "semantic_snapshot": {"type": "object"},
+    "candidate_counts": {"type": "object"},
+    "architecture_counts": {"type": "object"},
+    "identity_effects": {"type": "object"},
+    "source_coverage": {"type": "object"},
+    "derivation_coverage": {"type": "object"},
+    "unresolved": {"type": "object"},
+    "denominator_boundary": {"type": "object"},
+    "result": {"enum": ["PASS", "FAIL"]},
+    "derivation_id": {"type": "string", "pattern": "^rcid:v1:assertion-derivation:u7:"},
+    "report_id": {"type": "string", "pattern": "^rcid:v1:trust-assessment:h:jcs-sha256-v1:"},
+    "report_digest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

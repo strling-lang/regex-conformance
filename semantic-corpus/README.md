@@ -25,13 +25,22 @@ validated and provenance-bound. Nine provisional bridge identities that are no
 longer recoverable remain explicit unresolved candidates; they were not guessed
 from names or memory.
 
-## Canonical researched snapshot
+## Canonical expanded researched snapshot
 
 The current semantic knowledge authority is
+[`snapshots/regex-semantic-features-2026-09-07.v3.json`](snapshots/regex-semantic-features-2026-09-07.v3.json).
+It retains the 251 researched predecessor features and adds evidence-backed
+facets, operations, sources, variants, 20 manifestations, and 17 canonical
+features after explicitly dispositioning 73 omission and correction
+candidates. Its candidate ledger is
+[`research/regex-semantic-architecture-candidates-2026-09-07.v1.json`](research/regex-semantic-architecture-candidates-2026-09-07.v1.json).
+See [Semantic architecture dispositions](../docs/architecture/semantic-architecture-dispositions.md).
+
+The predecessor researched snapshot is
 [`snapshots/regex-semantic-features-2026-09-07.v2.json`](snapshots/regex-semantic-features-2026-09-07.v2.json).
-It reconstructs all 251 accepted features with structured, source-bound
+It reconstructed all 251 accepted features with structured, source-bound
 semantics while retaining their permanent scientific identities. Its research
-ledger is
+ledger remains
 [`research/regex-semantic-feature-research-2026-09-07.v1.json`](research/regex-semantic-feature-research-2026-09-07.v1.json).
 See [Researched feature semantics](../docs/architecture/researched-feature-semantics.md)
 for the knowledge-state, scope, evidence, identity, and regeneration contracts.
@@ -56,6 +65,7 @@ campaign.
 ```sh
 python tools/semantics/compile_semantic_baseline.py --check
 python tools/semantics/compile_researched_semantics.py --check
+python tools/semantics/compile_semantic_architecture.py --check
 ```
 
 The predecessor compiler's generated products are:
@@ -77,6 +87,10 @@ The researched-semantics compiler publishes only a successor snapshot, its
 research ledger, and a research-completeness report. It deliberately does not
 regenerate the predecessor projection, obligation templates, requirement
 ledger, or denominator forecast.
+
+The semantic-architecture compiler publishes the next successor snapshot,
+candidate ledger, typed identity allocation, and disposition report. It also
+leaves the predecessor denominator artifacts byte-identical.
 
 Published semantic artifacts remain immutable. The companion derivation
 inventory records that legacy fixed audit, discovery, facility-reconciliation,

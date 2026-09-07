@@ -1,8 +1,8 @@
 {
   "authority_status": "evaluation-only",
   "certification_eligible": false,
-  "contract_digest_sha256": "ed0c3db8560926e55d8642343a4557d565386264cb55fc95718dea8cfd0cf871",
-  "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:c4e37ec6c122d758f71e6000fb708dd72ef8b9e2d948813919d1c3ddf15f1bfa",
+  "contract_digest_sha256": "0e07e326f4f997f4315d2371567eae801ae8ec1434ef14279086300e9a0363a1",
+  "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:d91ea1f51e902e8740f201683c4a6761cd4619503af8b3cde926eebfda716b60",
   "criteria": [
     {
       "admitted_derivation_classes_used": [],
@@ -172,7 +172,7 @@
       "artifact_id": null,
       "authority_status": "canonical",
       "relative_path": "registries/identity/scientific-identities.v1.json",
-      "sha256": "e851472f4ea43cb8b7d7ae4f15d036c8b9635cf014b1a916afd212b7aec22a17"
+      "sha256": "be474b900c0c61951cfba16679b0327b84abb448555d755a10471a2dbe7545c8"
     },
     {
       "artifact_class": "profile-registry-slice",
@@ -210,10 +210,10 @@
       "sha256": "a03feacf51bf3af241a7ab4fe0ea74bd29981670de93ec3d880a27516232cca7"
     }
   ],
-  "input_set_digest_sha256": "5c38202bdde95c0b07a4f5bc16b31be50c93d53dee89b45d8c97500bd44e35cc",
-  "input_set_id": "rcid:v1:certification-input-set:h:jcs-sha256-v1:dc893e81267e0c5af7cd30a45d0aaaaa1921dc9ee9836a78319d7515fcc7ac8d",
-  "report_digest_sha256": "7ceed685bbfa532a55d35ab1fc9d45392c6eaff8f9cadac028788972fb843cce",
-  "report_id": "rcid:v1:certification-report:h:jcs-sha256-v1:dc743163d75f19b41c5730ba3e98f1ac386233266a6810577e19af12faa839d3",
+  "input_set_digest_sha256": "68b218c6d9a879d115d068d516cf04a1f090ac5eaedb02824d2ea9e8f2a0b60a",
+  "input_set_id": "rcid:v1:certification-input-set:h:jcs-sha256-v1:04505f1402991a39b84d0046eace88831f0b8e3d8a139d5f682caa55c028f4f2",
+  "report_digest_sha256": "1b91d3e7daa2bbc5358119d9e3d12be1d4566dc9a6bcf1649ae430928e25a6be",
+  "report_id": "rcid:v1:certification-report:h:jcs-sha256-v1:2357412937a2a741af307ec72f084201d10206cc20268ea73c2ae4ed17b1b1d4",
   "schema_version": "certification-report.v1",
   "scope_kind": "current-repository"
 }

@@ -54,8 +54,8 @@ identity where that stronger existing contract applies.
 ### Freeze identities and certification predicates
 
 Immutable scientific identity and migration rules are now frozen. The existing
-typed identity architecture remains authoritative; 22,359 current semantic
-entities have permanent bindings, while vector revisions and applicability
+typed identity architecture remains authoritative; the accepted 22,359-entity
+foundation baseline has permanent bindings, while vector revisions and applicability
 coordinates retain content-derived identity. See
 [Scientific identity and migration contract](scientific-identities.md).
 
@@ -97,11 +97,17 @@ feature, variant, and manifestation identities were retained, while the
 accepted pre-redesign obligation and requirement artifacts remain unchanged.
 See [Researched feature semantics](researched-feature-semantics.md).
 
-The next dependency is to review the declared-cutoff universe for missing
-features, facets, operations, and sources, adding phase, complexity, security,
-or other dimensions only when their scientific consequences are explicit. An
-adversarial review must disposition every candidate and establish the next
-frozen semantic cutoff.
+The architecture omission review has now dispositioned 73 candidates and
+published a successor with 268 features, 93 variants, 324 manifestations, 33
+operations, 15 semantic facets, and 59 source identities. Phase, documented
+complexity guarantees, and security/trust context are structured dimensions;
+vendor spellings remain manifestations or profile facts. See
+[Semantic architecture dispositions](semantic-architecture-dispositions.md).
+
+The next dependency is a separate adversarial exhaustion review that challenges
+the candidate search itself and freezes the final semantic cutoff. The
+predecessor 12,048 obligations and 9,506 requirements remain unchanged until
+that review closes.
 
 ### Derive the true obligation denominator
 

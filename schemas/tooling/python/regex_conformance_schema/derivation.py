@@ -17,7 +17,7 @@ from .profile import IdentityProfile
 
 
 CATALOG_PATH = Path("registries/provenance/generated-assertion-derivations.v1.json")
-NAMESPACE_PATH = Path("registries/identity/namespaces.v2.json")
+NAMESPACE_PATH = Path("registries/identity/namespaces.v3.json")
 PROFILE_PATH = Path("schemas/identity-profiles/generated-assertion-derivation.v1.json")
 SCHEMA_PATH = Path("schemas/json/generated-assertion-derivation-catalog.schema.json")
 SCHEMA_FAMILY_ID = "rcid:v1:schema-family:u7:01a07849-7262-7b95-8255-9fb7fc5bf310"
@@ -98,6 +98,7 @@ DERIVATION_IDS = {
     "manual-registry-decision": "rcid:v1:assertion-derivation:u7:01a07849-7263-7a47-adb6-32ef7f4fb541",
     "certification-predicate-calculation": "rcid:v1:assertion-derivation:u7:01a079d7-da99-7de8-a311-4e0196c5e676",
     "researched-feature-semantics": "rcid:v1:assertion-derivation:u7:01a07cfa-78e3-7de8-9559-e045f4e27cc0",
+    "semantic-architecture-disposition": "rcid:v1:assertion-derivation:u7:01a07d86-1c67-7e4e-9237-baaaf44f8639",
 }
 
 ALLOWED_GATES_BY_CLASS = {
@@ -497,6 +498,51 @@ def _derivation_specs(root: Path) -> list[dict[str, Any]]:
             "notes": "Governance state is not an observed runtime fact.",
         },
         {
+            "key": "semantic-architecture-disposition",
+            "title": "Primary-source semantic architecture candidate disposition",
+            "derivation_class": "research-derived",
+            "method_key": "semantic-architecture-candidate-disposition",
+            "method_version": "1.0.0",
+            "input_references": [
+                "semantic-corpus/snapshots/regex-semantic-features-2026-09-07.v2.json",
+                "semantic-corpus/research/regex-semantic-architecture-candidates-2026-09-07.v1.json",
+            ],
+            "authority_references": [
+                "source-id:lucene-regexp",
+                "source-id:smtlib-unicode-strings",
+                "source-id:swift-regex-type",
+                "source-id:unicode-tr14",
+                "source-id:unicode-uax44",
+                "source-id:pcre2-serialization",
+                "source-id:pcre2-pattern-info",
+                "source-id:perl-regex-escapes",
+            ],
+            "allowed_gate_kinds": [
+                "independent-discovery",
+                "independent-evidence",
+                "semantic-completeness",
+            ],
+            "independent_evidence": True,
+            "metadata": {
+                "kind": "research-derived",
+                "methodology": "Compare the researched feature corpus, operations, facets, source families and deferred audit findings against proposition-scoped primary authorities; accept only materially distinct semantics and retain a terminal disposition for every candidate.",
+                "research_artifact_ref": "semantic-corpus/research/regex-semantic-architecture-candidates-2026-09-07.v1.json",
+                "source_references": [
+                    "source-id:lucene-regexp",
+                    "source-id:smtlib-unicode-strings",
+                    "source-id:swift-regex-type",
+                    "source-id:swift-regex-builder",
+                    "source-id:swift-regex-literals",
+                    "source-id:unicode-tr14",
+                    "source-id:unicode-uax44",
+                    "source-id:pcre2-serialization",
+                    "source-id:pcre2-pattern-info",
+                    "source-id:perl-regex-escapes",
+                ],
+            },
+            "notes": "Candidate disposition is evidence for model scope, not proof that the following adversarial semantic-universe audit is exhaustive.",
+        },
+        {
             "key": "certification-predicate-calculation",
             "title": "Versioned certification predicate evaluation",
             "derivation_class": "calculation",
@@ -741,6 +787,72 @@ def _artifact_specs() -> tuple[ArtifactSpec, ...]:
             ),
             coverage_selectors=("/",),
             schema_reference="schemas/json/regex-semantic-research-completeness.schema.json",
+        ),
+        ArtifactSpec(
+            "semantic-corpus/research/semantic-architecture-identities-2026-09-07.v1.json",
+            "identity-lock",
+            "current-generated",
+            ("tools/semantics/compile_semantic_architecture.py",),
+            (
+                _b("/", "manual-registry-decision", "governance", "One-time typed assigned identity allocation for accepted entities and reviewed candidates."),
+            ),
+            coverage_selectors=("/allocations",),
+            schema_reference="schemas/json/regex-semantic-architecture-identity-allocation.schema.json",
+        ),
+        ArtifactSpec(
+            "semantic-corpus/research/regex-semantic-architecture-candidates-2026-09-07.v1.json",
+            "governed-registry",
+            "current-generated",
+            ("tools/semantics/compile_semantic_architecture.py",),
+            (
+                _b("/", "semantic-architecture-disposition", "scientific", "Primary-source candidate evidence, distinctness analysis, disposition and downstream consequence."),
+                _b("/counts", "reconciliation-calculation", "reconciliation", "Counts calculated from the exact candidate population."),
+                _b("/predecessor_snapshot", "artifact-measurement", "measurement", "Measured predecessor snapshot identity and digest."),
+            ),
+            coverage_selectors=("/candidates", "/counts", "/predecessor_snapshot"),
+            count_contracts=(
+                _c("/counts/total", "collection-length", ["/candidates"], "semantic architecture candidates", "Exact candidate collection length."),
+                _c("/counts/blocking_unresolved", "matching-value-count", ["/candidates/*/blocking"], "blocking candidate dispositions", "Count explicit blocking flags.", values=[True]),
+            ),
+            schema_reference="schemas/json/regex-semantic-candidate-disposition-ledger.schema.json",
+        ),
+        ArtifactSpec(
+            "semantic-corpus/snapshots/regex-semantic-features-2026-09-07.v3.json",
+            "semantic-snapshot",
+            "current-generated",
+            ("tools/semantics/compile_semantic_architecture.py",),
+            (
+                _b("/", "semantic-architecture-disposition", "scientific", "Researched successor semantics and source-bound accepted architecture additions."),
+                _b("/authority", "manual-registry-decision", "governance", "Repository authority and explicit denominator boundary."),
+                _b("/predecessor", "artifact-measurement", "measurement", "Measured predecessor snapshot identity and digest."),
+                _b("/candidate_ledger", "artifact-measurement", "measurement", "Exact candidate-ledger identity and digest."),
+                _b("/counts", "reconciliation-calculation", "reconciliation", "Counts calculated from exact successor collections."),
+            ),
+            coverage_selectors=("/",),
+            count_contracts=(
+                _c("/counts/canonical_features", "collection-length", ["/features"], "canonical semantic features", "Exact feature collection length."),
+                _c("/counts/semantic_variants", "sum-collection-lengths", ["/features/*/semantic_variants"], "semantic variants", "Sum every feature's variant collection."),
+                _c("/counts/syntax_manifestations", "collection-length", ["/manifestations"], "syntax and API manifestations", "Exact manifestation collection length."),
+                _c("/counts/modifiers", "collection-length", ["/modifiers"], "modifier records", "Exact modifier collection length."),
+                _c("/counts/operations", "collection-length", ["/operations"], "canonical host operations", "Exact operation collection length."),
+                _c("/counts/semantic_facets", "collection-length", ["/semantic_facets"], "semantic dimensions", "Exact facet collection length."),
+                _c("/counts/source_identities", "collection-length", ["/sources"], "source authority records", "Exact source collection length."),
+            ),
+            schema_reference="schemas/json/regex-semantic-corpus-v3.schema.json",
+        ),
+        ArtifactSpec(
+            "reports/semantics/semantic-architecture-disposition-2026-09-07.v1.json",
+            "audit-or-reconciliation-report",
+            "current-generated",
+            ("tools/semantics/compile_semantic_architecture.py",),
+            (
+                _b("/", "reconciliation-calculation", "audit", "Deterministic reconciliation of the candidate ledger, successor semantic snapshot and denominator boundary."),
+                _b("/derivation_id", "semantic-architecture-disposition", "scientific", "Exact research method underlying the semantic architecture conclusions."),
+                _b("/source_coverage", "semantic-architecture-disposition", "scientific", "Proposition-scoped primary-source coverage finding."),
+                _b("/denominator_boundary/artifact_sha256", "artifact-measurement", "measurement", "Measured byte digests for immutable predecessor denominator artifacts."),
+            ),
+            coverage_selectors=("/",),
+            schema_reference="schemas/json/regex-semantic-architecture-disposition-report.schema.json",
         ),
         ArtifactSpec(
             "ontology/projections/regex-semantic-projection-2026-08-22.v1.json",

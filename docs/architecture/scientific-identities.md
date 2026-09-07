@@ -86,7 +86,7 @@ Semantic binding, reuse, fingerprint, and lineage validation are implemented
 by `scientific_identity.py`. Schemas remain structural authority; the semantic
 validators add namespace, graph, content, and cross-artifact invariants.
 
-## Locked semantic entities
+## Accepted foundation baseline and additive successor
 
 The first catalog generation binds the existing corpus without changing its
 ontology:
@@ -102,6 +102,12 @@ ontology:
 | Obligation | 12,048 |
 | Semantic requirement | 9,506 |
 | **Total** | **22,359** |
+
+The expanded researched semantic architecture preserves every baseline binding
+and adds 68 typed identities: 15 semantic facets, 11 operations, 17 features,
+5 semantic variants, and 20 manifestations. The current lock therefore
+contains 22,427 identities. The table above remains the accepted foundation
+baseline; additive versioned evolution does not rewrite it.
 
 Each binding records its current key, former keys, status, source role, and an
 append-only semantic-fingerprint history. The fingerprint excludes display

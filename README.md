@@ -35,9 +35,12 @@ foundation acceptance. This qualifies the machinery for versioned semantic
 reconstruction while leaving the non-passing full-data result above unchanged.
 See the [scientific foundation](docs/architecture/scientific-foundation.md).
 
-The current semantic knowledge snapshot reconstructs all 251 accepted features
-with source-bound, structured semantics while preserving their scientific
-identities. The predecessor snapshot at digest
+The current semantic knowledge snapshot retains the 251 researched predecessor
+features and expands the source-bound architecture to 268 features, 93
+variants, 324 manifestations, 33 operations, 15 semantic facets, and 59 source
+identities. Seventy-three omission and correction candidates have explicit
+evidence-backed dispositions; a separate adversarial exhaustion review remains
+before the semantic universe is frozen. The original predecessor snapshot at digest
 `350bfea4c3da07b3426d885aa8ff645ac55539bbb1294a2ea35dd5319541d6c7`
 continues to bind the unchanged 12,048 obligations, 9,506 requirements, and
 bounded execution forecast until the dedicated obligation-derivation work
@@ -48,7 +51,8 @@ waits for derived obligations, oracle and applicability contracts, and an
 empirically frozen profile universe. No full conformance campaign has run. See
 the [researched feature semantics](docs/architecture/researched-feature-semantics.md)
 and [scientific implementation dependency
-architecture](docs/architecture/scientific-implementation-dependencies.md).
+architecture](docs/architecture/scientific-implementation-dependencies.md)
+and [semantic architecture dispositions](docs/architecture/semantic-architecture-dispositions.md).
 
 Program planning, dependencies, decisions, risks, and certification gates are
 maintained in the canonical [STRling Regex Conformance Program][program-hub].

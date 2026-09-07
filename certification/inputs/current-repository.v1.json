@@ -1,6 +1,6 @@
 {
   "authority_claim_requested": false,
-  "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:c4e37ec6c122d758f71e6000fb708dd72ef8b9e2d948813919d1c3ddf15f1bfa",
+  "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:d91ea1f51e902e8740f201683c4a6761cd4619503af8b3cde926eebfda716b60",
   "criteria": {
     "C1": {
       "blockers": [
@@ -123,8 +123,8 @@
   },
   "identity_schema_family_id": "rcid:v1:schema-family:u7:01a079d7-bff3-79f7-bd14-3184c831b9f5",
   "identity_schema_version": "1.0.0",
-  "input_set_digest_sha256": "5c38202bdde95c0b07a4f5bc16b31be50c93d53dee89b45d8c97500bd44e35cc",
-  "input_set_id": "rcid:v1:certification-input-set:h:jcs-sha256-v1:dc893e81267e0c5af7cd30a45d0aaaaa1921dc9ee9836a78319d7515fcc7ac8d",
+  "input_set_digest_sha256": "68b218c6d9a879d115d068d516cf04a1f090ac5eaedb02824d2ea9e8f2a0b60a",
+  "input_set_id": "rcid:v1:certification-input-set:h:jcs-sha256-v1:04505f1402991a39b84d0046eace88831f0b8e3d8a139d5f682caa55c028f4f2",
   "schema_version": "certification-input-set.v1",
   "scope_kind": "current-repository",
   "source_artifacts": [
@@ -140,7 +140,7 @@
       "artifact_id": null,
       "authority_status": "canonical",
       "relative_path": "registries/identity/scientific-identities.v1.json",
-      "sha256": "e851472f4ea43cb8b7d7ae4f15d036c8b9635cf014b1a916afd212b7aec22a17"
+      "sha256": "be474b900c0c61951cfba16679b0327b84abb448555d755a10471a2dbe7545c8"
     },
     {
       "artifact_class": "profile-registry-slice",
