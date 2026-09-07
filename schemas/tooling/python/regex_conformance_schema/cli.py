@@ -15,6 +15,11 @@ from .certification import (
 from .derivation import CATALOG_PATH as DERIVATION_CATALOG_PATH
 from .derivation import SCHEMA_PATH as DERIVATION_SCHEMA_PATH
 from .execution_provenance import verify_repository_execution_provenance
+from .foundation import (
+    materialize_foundation,
+    verify_current_foundation,
+    verify_foundation_history,
+)
 from .fixtures import materialize_manifest, verify_manifest
 from .identity import NamespaceRegistry, build_content_identity, generate_assigned_id
 from .jsonio import canonical_bytes, load_strict
@@ -37,6 +42,9 @@ def parser() -> argparse.ArgumentParser:
     commands.add_parser("validate-repository")
     commands.add_parser("verify-certification")
     commands.add_parser("materialize-certification")
+    commands.add_parser("verify-foundation")
+    commands.add_parser("verify-foundation-history")
+    commands.add_parser("materialize-foundation")
     verify = commands.add_parser("verify-fixtures")
     verify.add_argument("manifest", nargs="?", default="tests/fixtures/identity/manifest.json")
     materialize = commands.add_parser("materialize-fixtures")
@@ -85,12 +93,19 @@ def run(argv: list[str] | None = None) -> int:
                     **counts,
                     **verify_repository_execution_provenance(root),
                     **verify_repository_certification(root),
+                    **verify_foundation_history(root),
                 }
             )
         elif arguments.command == "verify-certification":
             _emit({"ok": True, **verify_repository_certification(root)})
         elif arguments.command == "materialize-certification":
             _emit({"ok": True, **materialize_repository_certification(root)})
+        elif arguments.command == "verify-foundation":
+            _emit({"ok": True, **verify_current_foundation(root)})
+        elif arguments.command == "verify-foundation-history":
+            _emit({"ok": True, **verify_foundation_history(root)})
+        elif arguments.command == "materialize-foundation":
+            _emit({"ok": True, **materialize_foundation(root)})
         elif arguments.command == "verify-fixtures":
             _emit({"ok": True, **verify_manifest(root, root / arguments.manifest)})
         elif arguments.command == "materialize-fixtures":

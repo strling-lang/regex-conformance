@@ -9,5 +9,6 @@ second program authority.
 - [Generated assertion derivation contract](generated-assertion-derivations.md)
 - [Physical-attempt and terminal-outcome provenance](execution-provenance.md)
 - [Machine-readable certification contract](../../certification/README.md)
+- [Scientific identity and certification foundation](scientific-foundation.md)
 - [Scientific implementation dependencies](scientific-implementation-dependencies.md)
 - [Telemetry calibration and hard containment](telemetry-containment.md)

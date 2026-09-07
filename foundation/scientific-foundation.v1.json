@@ -1,0 +1,457 @@
+{
+  "acceptance_date": "2026-09-07",
+  "acceptance_implementation": [
+    {
+      "relative_path": "schemas/tooling/python/regex_conformance_schema/foundation.py",
+      "role": "foundation-evaluator",
+      "sha256": "d3da9efc06d0fd1e53f820916a4cc25ed8d95d500d7316d2d7de5c2f26275c08"
+    },
+    {
+      "relative_path": "tools/foundation/certify.py",
+      "role": "foundation-tool",
+      "sha256": "4c7fa0f706ff82eed02ff3f23fe8bf8078c3193aa708d5d7f52dc8976e8c0776"
+    },
+    {
+      "relative_path": "schemas/json/scientific-foundation-manifest.schema.json",
+      "role": "foundation-manifest-schema",
+      "sha256": "c6bc1187d0d6ea6a52817b6d9ed8e7bc8f27fffa902ddfca3c9933e662a2c0b8"
+    },
+    {
+      "relative_path": "schemas/json/scientific-foundation-acceptance.schema.json",
+      "role": "foundation-acceptance-schema",
+      "sha256": "982a3233831c6011e37e84c4d7f8a18d180aa8ecc8d4040f8f633b0588862402"
+    },
+    {
+      "relative_path": "tests/schema/test_scientific_foundation.py",
+      "role": "foundation-tests",
+      "sha256": "6bf188c924d57a4fd4c5f195d2f99968a004c0f358258016b3646cba66ecce3e"
+    }
+  ],
+  "accepted_source_repository_sha": "167ebd5c55065f33191fe5843be902db53f3187e",
+  "assertion_derivations": [
+    {
+      "binding_key": "acceptance-conjunction",
+      "derivation_class": "calculation",
+      "derivation_revision_id": "rcid:v1:assertion-derivation-revision:h:jcs-sha256-v1:7d21a8b8642147067b8865bd7506e5c93c6d67310d0691cbb39ca563b473c945",
+      "method_key": "certification-predicate-evaluation"
+    },
+    {
+      "binding_key": "authority-boundary",
+      "derivation_class": "manual-decision",
+      "derivation_revision_id": "rcid:v1:assertion-derivation-revision:h:jcs-sha256-v1:e4b6b65e2f04765113d8b24604d12fd45d8fc467d986b057f5e76ff1265879de",
+      "method_key": "governed-registry-selection"
+    },
+    {
+      "binding_key": "bound-artifact-digests",
+      "derivation_class": "measurement",
+      "derivation_revision_id": "rcid:v1:assertion-derivation-revision:h:jcs-sha256-v1:04c2f809a2a755f7e96221bc5914b4fd9b699b421390dc65a14b5ed5ae2304eb",
+      "method_key": "qualified-artifact-measurement"
+    }
+  ],
+  "authority_matrix": [
+    {
+      "canonical_owner": "scientific-identity",
+      "consumes_from": [],
+      "decision_domain": "scientific-entity-identity",
+      "enforcement": "Typed namespace, content constructor, scientific catalog, and lineage validation are authoritative; consumers may only reference their results.",
+      "forbidden_alternate_owners": [
+        "certification-predicates",
+        "execution-provenance",
+        "generated-assertion-derivation"
+      ],
+      "question": "What scientific entity or immutable artifact is this?"
+    },
+    {
+      "canonical_owner": "generated-assertion-derivation",
+      "consumes_from": [
+        "scientific-identity"
+      ],
+      "decision_domain": "generated-assertion-justification",
+      "enforcement": "Certification admits or rejects catalogued strength but cannot reclassify a derivation.",
+      "forbidden_alternate_owners": [
+        "certification-predicates",
+        "execution-provenance"
+      ],
+      "question": "Why is a generated assertion justified, and at what evidence strength?"
+    },
+    {
+      "canonical_owner": "execution-provenance",
+      "consumes_from": [
+        "generated-assertion-derivation",
+        "scientific-identity"
+      ],
+      "decision_domain": "physical-execution-truth",
+      "enforcement": "Attempt lineage and terminality are validated once; certification consumes the logical disposition instead of reconstructing process symptoms.",
+      "forbidden_alternate_owners": [
+        "certification-predicates"
+      ],
+      "question": "What physically happened, and did it produce target-attributable terminal evidence?"
+    },
+    {
+      "canonical_owner": "certification-predicates",
+      "consumes_from": [
+        "execution-provenance",
+        "generated-assertion-derivation",
+        "scientific-identity"
+      ],
+      "decision_domain": "governed-certification-status",
+      "enforcement": "Only the versioned predicate evaluator can produce an authoritative C1-C7 result; campaign and qualification reports remain scope-limited inputs.",
+      "forbidden_alternate_owners": [],
+      "question": "Does explicit evidence satisfy a governed certification criterion?"
+    }
+  ],
+  "claim_authority": {
+    "authoritative_full_certification": "The versioned certification predicate evaluator and its authority index.",
+    "development_probe": "A fixture or probe result with no authoritative certification effect.",
+    "narrow_qualification": "A scope-bound environment, adapter, evidence, storage, or campaign report that does not claim full C1-C7 status."
+  },
+  "deferred_findings": [
+    {
+      "classification": "resolved-by-foundation",
+      "destination": "accepted-foundation",
+      "finding": "Canonical ownership of identity, assertion justification, execution truth, and certification truth"
+    },
+    {
+      "classification": "resolved-by-foundation",
+      "destination": "accepted-foundation",
+      "finding": "Certification-bypass and generated-evidence-strength ambiguity"
+    },
+    {
+      "classification": "correctly-deferred-to-semantic-reconstruction",
+      "destination": "semantic-knowledge-work",
+      "finding": "Feature-specific semantic research and justified ontology corrections"
+    },
+    {
+      "classification": "correctly-deferred-to-later-architecture",
+      "destination": "denominator-work",
+      "finding": "True obligation-denominator derivation"
+    },
+    {
+      "classification": "correctly-deferred-to-later-architecture",
+      "destination": "adjudication-work",
+      "finding": "Oracle, applicability, claims, waiver, and adjudication semantics"
+    },
+    {
+      "classification": "correctly-deferred-to-later-architecture",
+      "destination": "profile-universe-work",
+      "finding": "Empirical profile discrimination, richer reproducibility states, and exact profile-universe freeze"
+    },
+    {
+      "classification": "correctly-deferred-to-later-evidence-or-storage-work",
+      "destination": "evidence-storage-work",
+      "finding": "Production-distinct evidence capacity, diagnostics, sampling, and compact indexing"
+    },
+    {
+      "classification": "correctly-deferred-to-later-evidence-or-storage-work",
+      "destination": "evidence-storage-work",
+      "finding": "Attempt-provenance retained-byte impact"
+    },
+    {
+      "classification": "correctly-deferred-to-later-architecture",
+      "destination": "production-readiness-work",
+      "finding": "Final sustained production-architecture qualification"
+    }
+  ],
+  "foundation_manifest_digest_sha256": "5c75b1f79b89c55d81214a670e0ae0dc40e8d54b54ade1208061bbd4027187bc",
+  "foundation_manifest_id": "rcid:v1:artifact-set-manifest:h:jcs-sha256-v1:a6d3a33b0f7a390e24ad48fcebd997c8d92c8c43da6b3b224b6b654dcee7f81f",
+  "foundations": [
+    {
+      "artifacts": [
+        {
+          "relative_path": "certification/README.md",
+          "role": "certification-contract-documentation",
+          "sha256": "693611a4fcf57dcfd14d5a822066f6f476ee2a0c7956d9d89de3f6e0403b4796"
+        },
+        {
+          "relative_path": "certification/contracts/regex-conformance-certification.v1.json",
+          "role": "certification-contract",
+          "sha256": "8208eeaa370989fa9872425c2227c230210cb15854768c5a34b2f148a3318793"
+        },
+        {
+          "relative_path": "schemas/tooling/python/regex_conformance_schema/certification.py",
+          "role": "certification-evaluator",
+          "sha256": "88be1331e573b9c2711c862ae576969474ae916c1e37517cd903d5fb73ac9f0a"
+        },
+        {
+          "relative_path": "certification/inputs/current-repository.v1.json",
+          "role": "certification-input",
+          "sha256": "6f65fb17d68caf699530a3279126e2ace76f24a88177bd50bbd91c3bc6d733ac"
+        },
+        {
+          "relative_path": "certification/reports/current-repository.v1.json",
+          "role": "certification-report",
+          "sha256": "f9a3e322afa2c6a336c841ed8c7f0b296d7f254206cbfc1b2495655ad7d35350"
+        },
+        {
+          "relative_path": "certification/current-authority.v1.json",
+          "role": "certification-authority",
+          "sha256": "9d9253947d693caa3e78c0a13f0b6ae750dc9c75f197b85ec4851d9e186474b3"
+        },
+        {
+          "relative_path": "tests/fixtures/certification/certification-predicates.v1.json",
+          "role": "certification-fixtures",
+          "sha256": "820eb45aeb83e3d6c62a3d961fecc692ed132f227ace9c9301089a8c32baab9f"
+        },
+        {
+          "relative_path": "schemas/json/certification-contract.schema.json",
+          "role": "certification-contract-schema",
+          "sha256": "28907bde28a394544d05bc99b598c3dec41402d73ce6050adb5edc79c14d1fbf"
+        },
+        {
+          "relative_path": "schemas/json/certification-input-set.schema.json",
+          "role": "certification-input-schema",
+          "sha256": "b58f4f72a23a2662ffa934bbaf2f2aec7515e22c1566fdf633da472951dd3d20"
+        },
+        {
+          "relative_path": "schemas/json/certification-report.schema.json",
+          "role": "certification-report-schema",
+          "sha256": "bee9b09a7b42c9fed0d92390283eaedf99aaf18b2f24b9abaf6a4be6ca7bad76"
+        },
+        {
+          "relative_path": "schemas/json/certification-authority-index.schema.json",
+          "role": "certification-authority-schema",
+          "sha256": "cf18c6d8f4b4a204280afdf719b81c900b678b1975e88d691b6d284833a6d8c4"
+        }
+      ],
+      "facts": [
+        {
+          "name": "contract-id",
+          "value": "rcid:v1:certification-definition:h:jcs-sha256-v1:c4e37ec6c122d758f71e6000fb708dd72ef8b9e2d948813919d1c3ddf15f1bfa"
+        },
+        {
+          "name": "contract-digest",
+          "value": "ed0c3db8560926e55d8642343a4557d565386264cb55fc95718dea8cfd0cf871"
+        },
+        {
+          "name": "contract-version",
+          "value": "1.0.0"
+        },
+        {
+          "name": "current-report-id",
+          "value": "rcid:v1:certification-report:h:jcs-sha256-v1:dc743163d75f19b41c5730ba3e98f1ac386233266a6810577e19af12faa839d3"
+        },
+        {
+          "name": "current-report-digest",
+          "value": "7ceed685bbfa532a55d35ab1fc9d45392c6eaff8f9cadac028788972fb843cce"
+        },
+        {
+          "name": "current-final-state",
+          "value": "FAIL"
+        }
+      ],
+      "foundation_key": "certification-predicates"
+    },
+    {
+      "artifacts": [
+        {
+          "relative_path": "docs/architecture/execution-provenance.md",
+          "role": "execution-contract",
+          "sha256": "07f5a99b54c20ea698a358b9b52d9d1b2bd016d8b5cfdc2abc89bc74cb3376e6"
+        },
+        {
+          "relative_path": "registries/provenance/execution-provenance-policy.v1.json",
+          "role": "execution-policy",
+          "sha256": "c37f10fc2f0347497df528783542edddc0c1e5e8b41f7e485c2be8a24c222e68"
+        },
+        {
+          "relative_path": "schemas/tooling/python/regex_conformance_schema/execution_provenance.py",
+          "role": "execution-validator",
+          "sha256": "92f6fa913e0cfcd2dc3199d67e4210d17f4696dc453b0e3568f071053e7595c9"
+        },
+        {
+          "relative_path": "schemas/json/physical-attempt-evidence-v2.schema.json",
+          "role": "attempt-schema",
+          "sha256": "e127f04a13d484a3b1f57fe3963d31bbb61a5b914695e4da2de4edc32342605c"
+        },
+        {
+          "relative_path": "schemas/json/terminal-observation-content-v2.schema.json",
+          "role": "terminal-observation-schema",
+          "sha256": "383f63fd66e1e8881ffedc2126fd2cb9ffcb9f99b88c8c6c86b33f2bf21e8fc1"
+        },
+        {
+          "relative_path": "schemas/json/logical-execution-disposition.schema.json",
+          "role": "logical-disposition-schema",
+          "sha256": "068434f2ddefeb77489c8d5cf7bfd77c37e455ccba5590db28963cac90f2e692"
+        },
+        {
+          "relative_path": "schemas/json/execution-lineage-set.schema.json",
+          "role": "lineage-set-schema",
+          "sha256": "2b3185d67b49e56bafcc5a50f8fe422ff57c4e1aebc7ebf445c6cd2c612ed56f"
+        },
+        {
+          "relative_path": "tests/fixtures/provenance/execution-lineages.v1.json",
+          "role": "lineage-fixture",
+          "sha256": "b7a43d70c271ed2f7ed432e1ef28539fff3ea7cb28bf246f5286ed4a290ac46f"
+        }
+      ],
+      "facts": [
+        {
+          "name": "policy-revision",
+          "value": "c0095c600d03cc7f17012990d46e54b3e874a8f2cae4aa1a052f9953637b0a3a"
+        },
+        {
+          "name": "historical-contract-count",
+          "value": 4
+        },
+        {
+          "name": "historical-records-rewritten",
+          "value": false
+        }
+      ],
+      "foundation_key": "execution-provenance"
+    },
+    {
+      "artifacts": [
+        {
+          "relative_path": "docs/architecture/generated-assertion-derivations.md",
+          "role": "derivation-contract",
+          "sha256": "86540ba682731a79c813fc0fe7c2f8bcc693c73e4e95740823d53c8a964d3b3a"
+        },
+        {
+          "relative_path": "registries/provenance/generated-assertion-derivations.v1.json",
+          "role": "derivation-catalog",
+          "sha256": "d1fc225669459380810c6bf1d3199beb923a02ebf9ddc134caa5096336a7d0f4"
+        },
+        {
+          "relative_path": "schemas/tooling/python/regex_conformance_schema/derivation.py",
+          "role": "derivation-validator",
+          "sha256": "346d002907bde905c4d07c685b030146e6ea699056836e80708e4e9952ede743"
+        },
+        {
+          "relative_path": "schemas/json/generated-assertion-derivation-catalog.schema.json",
+          "role": "derivation-schema",
+          "sha256": "faf4be999de8741e6337671a8543e5873ab543d0df83d4f82f14d243a9a730fd"
+        }
+      ],
+      "facts": [
+        {
+          "name": "catalog-digest",
+          "value": "e292e5fa6816614170628582ae15d5e296a76def264037fca3211f2896a80787"
+        },
+        {
+          "name": "inventoried-artifact-count",
+          "value": 41
+        },
+        {
+          "name": "assertion-group-count",
+          "value": 178
+        },
+        {
+          "name": "assertion-occurrence-count",
+          "value": 512768
+        }
+      ],
+      "foundation_key": "generated-assertion-derivation"
+    },
+    {
+      "artifacts": [
+        {
+          "relative_path": "docs/architecture/scientific-identities.md",
+          "role": "identity-contract",
+          "sha256": "b1a9fde51622af157c428f28ac03222ab45720a02d625851c12f3b0d54d6d522"
+        },
+        {
+          "relative_path": "registries/identity/scientific-identities.v1.json",
+          "role": "identity-lock",
+          "sha256": "e851472f4ea43cb8b7d7ae4f15d036c8b9635cf014b1a916afd212b7aec22a17"
+        },
+        {
+          "relative_path": "registries/identity/namespaces.v2.json",
+          "role": "namespace-registry",
+          "sha256": "1b7e6b034c563beeff829c6bf0297310406deab14ec688de4b1d51e38318092a"
+        },
+        {
+          "relative_path": "schemas/tooling/python/regex_conformance_schema/scientific_identity.py",
+          "role": "identity-validator",
+          "sha256": "9a0bee09b4043c214f2508c26c7e5e5b40794b95ae68601e6f41cd43553226da"
+        },
+        {
+          "relative_path": "schemas/json/scientific-identity-catalog.schema.json",
+          "role": "identity-lock-schema",
+          "sha256": "94287925c69ba83b1cd663a90081a00adc8618cdaf23fd3abf096961fb5eb055"
+        }
+      ],
+      "facts": [
+        {
+          "name": "catalog-digest",
+          "value": "fd03b75bc88720a448cf4c5a1e8f598d2c2635d5293244b9217dabcffe36f2db"
+        },
+        {
+          "name": "scientific-identity-count",
+          "value": 22359
+        },
+        {
+          "name": "lineage-record-count",
+          "value": 0
+        }
+      ],
+      "foundation_key": "scientific-identity"
+    }
+  ],
+  "historical_compatibility": {
+    "historical_records_rewritten": false,
+    "migration_rule": "prospective-versioned-no-rewrite",
+    "schema_contracts": [
+      {
+        "schema_path": "schemas/json/evidence-pack-v2-manifest.schema.json",
+        "schema_sha256": "9bb72a4d8ef33fe9f5d80e5e9dfee5feb6b139a4cc9105d590ca49c0e564b183",
+        "schema_version": "evidence-pack-manifest.v2"
+      },
+      {
+        "schema_path": "schemas/json/evidence-pack-v3-manifest.schema.json",
+        "schema_sha256": "cf13b4ac6bd65bc611bef443a0700226dbc9cb3a3e686e42170c6bf95549c62c",
+        "schema_version": "evidence-pack-manifest.v3"
+      },
+      {
+        "schema_path": "schemas/json/observation-content.schema.json",
+        "schema_sha256": "81f338f7175415c2357c8054a931732eb2f8170486184b915c4925dfcefa4c2e",
+        "schema_version": "observation-content.v1"
+      },
+      {
+        "schema_path": "schemas/json/physical-attempt-evidence.schema.json",
+        "schema_sha256": "ab82894fb906c3828be381c0f87de5738a9cf669fabd07ecdd1edbafc4076669",
+        "schema_version": "physical-attempt-evidence.v1"
+      }
+    ]
+  },
+  "hosted_validation_basis": {
+    "jobs": [
+      "first-end-to-end-campaign",
+      "minimal-adapter-certification",
+      "minimal-environment-certification",
+      "public-validation"
+    ],
+    "repository_sha": "167ebd5c55065f33191fe5843be902db53f3187e",
+    "status": "success",
+    "workflow_url": "https://github.com/strling-lang/regex-conformance/actions/runs/34086445673"
+  },
+  "identity_schema_family_id": "rcid:v1:schema-family:u7:01a07c22-29fd-789f-b6be-42074f88b6ba",
+  "identity_schema_version": "1.0.0",
+  "schema_version": "scientific-foundation-manifest.v1",
+  "scientific_input_baseline": {
+    "artifacts": [
+      {
+        "relative_path": "semantic-corpus/snapshots/regex-semantic-features-2026-08-22.v1.json",
+        "role": "accepted-scientific-input",
+        "sha256": "a1a684abea7cc5a5224b4f94004ee21f05efd2cf5306ce4711dcbe437ff84645"
+      },
+      {
+        "relative_path": "ontology/projections/regex-semantic-projection-2026-08-22.v1.json",
+        "role": "accepted-scientific-input",
+        "sha256": "b25fbeaf80fc8e77f92fb5b36a094896bf30e86d4550ad62982f80a028b605b2"
+      },
+      {
+        "relative_path": "vectors/requirements/regex-semantic-vector-requirements-2026-08-22.v1.json",
+        "role": "accepted-scientific-input",
+        "sha256": "a03feacf51bf3af241a7ab4fe0ea74bd29981670de93ec3d880a27516232cca7"
+      },
+      {
+        "relative_path": "reports/scale/regex-semantic-denominator-forecast.json",
+        "role": "accepted-scientific-input",
+        "sha256": "dab61b42376d757eadada26c31d8fb5c173a508bb6ce780e98a220449ce6e871"
+      }
+    ],
+    "scientific_identity_count": 22359,
+    "semantic_snapshot_identity": "regex-semantic-features-2026-08-22.sha256-350bfea4c3da07b3426d885aa8ff645ac55539bbb1294a2ea35dd5319541d6c7"
+  }
+}

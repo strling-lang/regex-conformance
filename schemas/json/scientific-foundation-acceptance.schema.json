@@ -1,0 +1,156 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/scientific-foundation-acceptance.schema.json",
+  "title": "Scientific identity and certification foundation acceptance v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "acceptance_report_digest_sha256",
+    "acceptance_report_id",
+    "accepted_source_repository_sha",
+    "assertion_derivations",
+    "checks",
+    "current_scientific_certification",
+    "deferred_finding_dispositions",
+    "foundation_acceptance",
+    "foundation_manifest_digest_sha256",
+    "foundation_manifest_id",
+    "hosted_validation_basis",
+    "identity_schema_family_id",
+    "identity_schema_version",
+    "integration_scenarios",
+    "migration_readiness",
+    "schema_version",
+    "scientific_input_change_count"
+  ],
+  "properties": {
+    "schema_version": {"const": "scientific-foundation-acceptance.v1"},
+    "identity_schema_family_id": {"const": "rcid:v1:schema-family:u7:01a07c22-29fd-789f-b6be-42074f88b6ba"},
+    "identity_schema_version": {"const": "1.0.0"},
+    "acceptance_report_id": {"type": "string", "pattern": "^rcid:v1:trust-assessment:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "acceptance_report_digest_sha256": {"$ref": "#/$defs/digest"},
+    "accepted_source_repository_sha": {"$ref": "#/$defs/gitSha"},
+    "assertion_derivations": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {"$ref": "#/$defs/derivationBinding"}
+    },
+    "checks": {
+      "type": "array",
+      "minItems": 12,
+      "maxItems": 12,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["check_id", "evidence", "status"],
+        "properties": {
+          "check_id": {"type": "string", "pattern": "^[a-z0-9-]+$"},
+          "evidence": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+          "status": {"const": "PASS"}
+        }
+      }
+    },
+    "current_scientific_certification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["certification_eligible", "contract_id", "criteria", "final_state", "report_digest_sha256", "report_id"],
+      "properties": {
+        "certification_eligible": {"const": false},
+        "contract_id": {"type": "string", "pattern": "^rcid:v1:certification-definition:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+        "criteria": {
+          "type": "array",
+          "minItems": 7,
+          "maxItems": 7,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["criterion_id", "status"],
+            "properties": {
+              "criterion_id": {"enum": ["C1", "C2", "C3", "C4", "C5", "C6", "C7"]},
+              "status": {"enum": ["BLOCKED", "FAIL", "PASS"]}
+            }
+          }
+        },
+        "final_state": {"enum": ["BLOCKED", "FAIL"]},
+        "report_digest_sha256": {"$ref": "#/$defs/digest"},
+        "report_id": {"type": "string", "pattern": "^rcid:v1:certification-report:h:jcs-sha256-v1:[0-9a-f]{64}$"}
+      }
+    },
+    "deferred_finding_dispositions": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {"type": "integer", "minimum": 1}
+    },
+    "foundation_acceptance": {"const": "PASS"},
+    "foundation_manifest_digest_sha256": {"$ref": "#/$defs/digest"},
+    "foundation_manifest_id": {"type": "string", "pattern": "^rcid:v1:artifact-set-manifest:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "hosted_validation_basis": {"$ref": "#/$defs/hostedValidation"},
+    "integration_scenarios": {
+      "type": "array",
+      "minItems": 12,
+      "items": {"$ref": "#/$defs/scenarioFacts"}
+    },
+    "migration_readiness": {
+      "type": "array",
+      "minItems": 11,
+      "maxItems": 11,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["evidence", "scenario", "status"],
+        "properties": {
+          "evidence": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+          "scenario": {"type": "string", "pattern": "^[a-z0-9-]+$"},
+          "status": {"const": "PASS"}
+        }
+      }
+    },
+    "scientific_input_change_count": {"const": 0}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "gitSha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "derivationBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["binding_key", "derivation_class", "derivation_revision_id", "method_key"],
+      "properties": {
+        "binding_key": {"type": "string", "pattern": "^[a-z0-9-]+$"},
+        "derivation_class": {"enum": ["calculation", "manual-decision", "measurement"]},
+        "derivation_revision_id": {"type": "string", "pattern": "^rcid:v1:assertion-derivation-revision:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+        "method_key": {"type": "string", "pattern": "^[a-z0-9-]+$"}
+      }
+    },
+    "fact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "value"],
+      "properties": {
+        "name": {"type": "string", "pattern": "^[a-z0-9-]+$"},
+        "value": {"type": ["boolean", "integer", "string"]}
+      }
+    },
+    "scenarioFacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["facts", "scenario", "status"],
+      "properties": {
+        "facts": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/fact"}},
+        "scenario": {"type": "string", "pattern": "^[a-z0-9-]+$"},
+        "status": {"const": "PASS"}
+      }
+    },
+    "hostedValidation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["jobs", "repository_sha", "status", "workflow_url"],
+      "properties": {
+        "jobs": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^[a-z0-9-]+$"}},
+        "repository_sha": {"$ref": "#/$defs/gitSha"},
+        "status": {"const": "success"},
+        "workflow_url": {"type": "string", "format": "uri"}
+      }
+    }
+  }
+}

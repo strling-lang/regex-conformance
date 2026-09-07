@@ -82,9 +82,12 @@ certification. Supersession and revocation advance through a separate
 append-only authority index without rewriting historical reports. See the
 [certification contract](../../certification/README.md).
 
-With the irreversible identity, assertion-derivation, execution-provenance,
-and certification foundations complete, the next dependency is the focused
-foundation acceptance review before researched semantic reconstruction begins.
+The four foundations now pass their focused integration acceptance. The
+[scientific foundation manifest and acceptance report](scientific-foundation.md)
+bind their exact digests, non-overlapping authority matrix, cross-contract
+adversarial cases, immutable-history rules, and semantic-migration simulations.
+This acceptance remains distinct from full data certification, which is still
+non-passing. The next dependency is researched semantic reconstruction.
 
 ### Complete the semantic knowledge architecture
 

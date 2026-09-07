@@ -1,0 +1,226 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/scientific-foundation-manifest.schema.json",
+  "title": "Scientific identity and certification foundation manifest v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "acceptance_date",
+    "acceptance_implementation",
+    "accepted_source_repository_sha",
+    "assertion_derivations",
+    "authority_matrix",
+    "claim_authority",
+    "deferred_findings",
+    "foundation_manifest_digest_sha256",
+    "foundation_manifest_id",
+    "foundations",
+    "historical_compatibility",
+    "hosted_validation_basis",
+    "identity_schema_family_id",
+    "identity_schema_version",
+    "schema_version",
+    "scientific_input_baseline"
+  ],
+  "properties": {
+    "schema_version": {"const": "scientific-foundation-manifest.v1"},
+    "acceptance_implementation": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "items": {"$ref": "#/$defs/artifactReference"}
+    },
+    "identity_schema_family_id": {"const": "rcid:v1:schema-family:u7:01a07c22-29fd-789f-b6be-42074f88b6ba"},
+    "identity_schema_version": {"const": "1.0.0"},
+    "foundation_manifest_id": {"$ref": "#/$defs/manifestId"},
+    "foundation_manifest_digest_sha256": {"$ref": "#/$defs/digest"},
+    "accepted_source_repository_sha": {"$ref": "#/$defs/gitSha"},
+    "acceptance_date": {"type": "string", "format": "date"},
+    "assertion_derivations": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {"$ref": "#/$defs/derivationBinding"}
+    },
+    "authority_matrix": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {"$ref": "#/$defs/authorityRow"}
+    },
+    "claim_authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["authoritative_full_certification", "development_probe", "narrow_qualification"],
+      "properties": {
+        "authoritative_full_certification": {"type": "string", "minLength": 1},
+        "development_probe": {"type": "string", "minLength": 1},
+        "narrow_qualification": {"type": "string", "minLength": 1}
+      }
+    },
+    "deferred_findings": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["classification", "destination", "finding"],
+        "properties": {
+          "finding": {"type": "string", "minLength": 1},
+          "classification": {
+            "enum": [
+              "correctly-deferred-to-later-architecture",
+              "correctly-deferred-to-later-evidence-or-storage-work",
+              "correctly-deferred-to-semantic-reconstruction",
+              "obsolete-or-superseded",
+              "program-owner-decision",
+              "resolved-by-foundation"
+            ]
+          },
+          "destination": {
+            "enum": [
+              "accepted-foundation",
+              "adjudication-work",
+              "denominator-work",
+              "evidence-storage-work",
+              "production-readiness-work",
+              "profile-universe-work",
+              "semantic-knowledge-work"
+            ]
+          }
+        }
+      }
+    },
+    "foundations": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["artifacts", "facts", "foundation_key"],
+        "properties": {
+          "foundation_key": {
+            "enum": [
+              "certification-predicates",
+              "execution-provenance",
+              "generated-assertion-derivation",
+              "scientific-identity"
+            ]
+          },
+          "artifacts": {
+            "type": "array",
+            "minItems": 1,
+            "items": {"$ref": "#/$defs/artifactReference"}
+          },
+          "facts": {
+            "type": "array",
+            "minItems": 1,
+            "items": {"$ref": "#/$defs/fact"}
+          }
+        }
+      }
+    },
+    "historical_compatibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["historical_records_rewritten", "migration_rule", "schema_contracts"],
+      "properties": {
+        "historical_records_rewritten": {"const": false},
+        "migration_rule": {"const": "prospective-versioned-no-rewrite"},
+        "schema_contracts": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["schema_path", "schema_sha256", "schema_version"],
+            "properties": {
+              "schema_path": {"$ref": "#/$defs/path"},
+              "schema_sha256": {"$ref": "#/$defs/digest"},
+              "schema_version": {"type": "string", "minLength": 1}
+            }
+          }
+        }
+      }
+    },
+    "hosted_validation_basis": {"$ref": "#/$defs/hostedValidation"},
+    "scientific_input_baseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["artifacts", "scientific_identity_count", "semantic_snapshot_identity"],
+      "properties": {
+        "artifacts": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": {"$ref": "#/$defs/artifactReference"}
+        },
+        "scientific_identity_count": {"const": 22359},
+        "semantic_snapshot_identity": {"type": "string", "minLength": 1}
+      }
+    }
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "gitSha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "path": {"type": "string", "minLength": 1, "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"},
+    "manifestId": {"type": "string", "pattern": "^rcid:v1:artifact-set-manifest:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "derivationRevisionId": {"type": "string", "pattern": "^rcid:v1:assertion-derivation-revision:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "artifactReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["relative_path", "role", "sha256"],
+      "properties": {
+        "relative_path": {"$ref": "#/$defs/path"},
+        "role": {"type": "string", "pattern": "^[a-z0-9-]+$"},
+        "sha256": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "derivationBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["binding_key", "derivation_class", "derivation_revision_id", "method_key"],
+      "properties": {
+        "binding_key": {"type": "string", "pattern": "^[a-z0-9-]+$"},
+        "derivation_class": {"enum": ["calculation", "manual-decision", "measurement"]},
+        "derivation_revision_id": {"$ref": "#/$defs/derivationRevisionId"},
+        "method_key": {"type": "string", "pattern": "^[a-z0-9-]+$"}
+      }
+    },
+    "authorityRow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["canonical_owner", "consumes_from", "decision_domain", "enforcement", "forbidden_alternate_owners", "question"],
+      "properties": {
+        "canonical_owner": {"type": "string", "pattern": "^[a-z0-9-]+$"},
+        "consumes_from": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[a-z0-9-]+$"}},
+        "decision_domain": {"type": "string", "pattern": "^[a-z0-9-]+$"},
+        "enforcement": {"type": "string", "minLength": 1},
+        "forbidden_alternate_owners": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[a-z0-9-]+$"}},
+        "question": {"type": "string", "minLength": 1}
+      }
+    },
+    "fact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "value"],
+      "properties": {
+        "name": {"type": "string", "pattern": "^[a-z0-9-]+$"},
+        "value": {"type": ["boolean", "integer", "string"]}
+      }
+    },
+    "hostedValidation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["jobs", "repository_sha", "status", "workflow_url"],
+      "properties": {
+        "jobs": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^[a-z0-9-]+$"}},
+        "repository_sha": {"$ref": "#/$defs/gitSha"},
+        "status": {"const": "success"},
+        "workflow_url": {"type": "string", "format": "uri", "pattern": "^https://github\\.com/strling-lang/regex-conformance/actions/runs/[0-9]+$"}
+      }
+    }
+  }
+}

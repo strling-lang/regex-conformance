@@ -1,0 +1,513 @@
+{
+  "acceptance_report_digest_sha256": "82518fe2d3a6aafe07981a0753f13449a37abdc9792e7d8adfe771a4e729f0db",
+  "acceptance_report_id": "rcid:v1:trust-assessment:h:jcs-sha256-v1:8841ed39055bc93706e2e11c38d4a745efa673032416fddeda073f0bb359c84a",
+  "accepted_source_repository_sha": "167ebd5c55065f33191fe5843be902db53f3187e",
+  "assertion_derivations": [
+    {
+      "binding_key": "acceptance-conjunction",
+      "derivation_class": "calculation",
+      "derivation_revision_id": "rcid:v1:assertion-derivation-revision:h:jcs-sha256-v1:7d21a8b8642147067b8865bd7506e5c93c6d67310d0691cbb39ca563b473c945",
+      "method_key": "certification-predicate-evaluation"
+    },
+    {
+      "binding_key": "authority-boundary",
+      "derivation_class": "manual-decision",
+      "derivation_revision_id": "rcid:v1:assertion-derivation-revision:h:jcs-sha256-v1:e4b6b65e2f04765113d8b24604d12fd45d8fc467d986b057f5e76ff1265879de",
+      "method_key": "governed-registry-selection"
+    },
+    {
+      "binding_key": "bound-artifact-digests",
+      "derivation_class": "measurement",
+      "derivation_revision_id": "rcid:v1:assertion-derivation-revision:h:jcs-sha256-v1:04c2f809a2a755f7e96221bc5914b4fd9b699b421390dc65a14b5ed5ae2304eb",
+      "method_key": "qualified-artifact-measurement"
+    }
+  ],
+  "checks": [
+    {
+      "check_id": "authority-matrix",
+      "evidence": [
+        "four decision domains have one canonical owner each"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check_id": "certification-bypass-audit",
+      "evidence": [
+        "no authoritative report marker or full C1-C7 PASS claim escaped its governed surface"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check_id": "certification-contract",
+      "evidence": [
+        "criteria=7",
+        "state=FAIL"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check_id": "cross-contract-identity",
+      "evidence": [
+        "all typed references and content-derived report identities validated"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check_id": "derivation-catalog",
+      "evidence": [
+        "artifacts=41",
+        "groups=178"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check_id": "deterministic-regeneration",
+      "evidence": [
+        "foundation manifest and report rebuild byte-identically"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check_id": "execution-provenance",
+      "evidence": [
+        "logical-executions=5",
+        "physical-attempts=8"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check_id": "foundation-manifest-closure",
+      "evidence": [
+        "5c75b1f79b89c55d81214a670e0ae0dc40e8d54b54ade1208061bbd4027187bc"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check_id": "historical-compatibility",
+      "evidence": [
+        "four historical execution/evidence schemas retain exact digests",
+        "historical records rewritten=false"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check_id": "identity-lock",
+      "evidence": [
+        "identities=22359",
+        "lineage=0"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check_id": "integration-scenarios",
+      "evidence": [
+        "execution=6",
+        "integrity=6"
+      ],
+      "status": "PASS"
+    },
+    {
+      "check_id": "scientific-input-baseline",
+      "evidence": [
+        "a1a684abea7cc5a5224b4f94004ee21f05efd2cf5306ce4711dcbe437ff84645",
+        "b25fbeaf80fc8e77f92fb5b36a094896bf30e86d4550ad62982f80a028b605b2",
+        "a03feacf51bf3af241a7ab4fe0ea74bd29981670de93ec3d880a27516232cca7",
+        "dab61b42376d757eadada26c31d8fb5c173a508bb6ce780e98a220449ce6e871"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "current_scientific_certification": {
+    "certification_eligible": false,
+    "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:c4e37ec6c122d758f71e6000fb708dd72ef8b9e2d948813919d1c3ddf15f1bfa",
+    "criteria": [
+      {
+        "criterion_id": "C1",
+        "status": "BLOCKED"
+      },
+      {
+        "criterion_id": "C2",
+        "status": "BLOCKED"
+      },
+      {
+        "criterion_id": "C3",
+        "status": "BLOCKED"
+      },
+      {
+        "criterion_id": "C4",
+        "status": "FAIL"
+      },
+      {
+        "criterion_id": "C5",
+        "status": "BLOCKED"
+      },
+      {
+        "criterion_id": "C6",
+        "status": "BLOCKED"
+      },
+      {
+        "criterion_id": "C7",
+        "status": "BLOCKED"
+      }
+    ],
+    "final_state": "FAIL",
+    "report_digest_sha256": "7ceed685bbfa532a55d35ab1fc9d45392c6eaff8f9cadac028788972fb843cce",
+    "report_id": "rcid:v1:certification-report:h:jcs-sha256-v1:dc743163d75f19b41c5730ba3e98f1ac386233266a6810577e19af12faa839d3"
+  },
+  "deferred_finding_dispositions": {
+    "correctly-deferred-to-later-architecture": 4,
+    "correctly-deferred-to-later-evidence-or-storage-work": 2,
+    "correctly-deferred-to-semantic-reconstruction": 1,
+    "resolved-by-foundation": 2
+  },
+  "foundation_acceptance": "PASS",
+  "foundation_manifest_digest_sha256": "5c75b1f79b89c55d81214a670e0ae0dc40e8d54b54ade1208061bbd4027187bc",
+  "foundation_manifest_id": "rcid:v1:artifact-set-manifest:h:jcs-sha256-v1:a6d3a33b0f7a390e24ad48fcebd997c8d92c8c43da6b3b224b6b654dcee7f81f",
+  "hosted_validation_basis": {
+    "jobs": [
+      "first-end-to-end-campaign",
+      "minimal-adapter-certification",
+      "minimal-environment-certification",
+      "public-validation"
+    ],
+    "repository_sha": "167ebd5c55065f33191fe5843be902db53f3187e",
+    "status": "success",
+    "workflow_url": "https://github.com/strling-lang/regex-conformance/actions/runs/34086445673"
+  },
+  "identity_schema_family_id": "rcid:v1:schema-family:u7:01a07c22-29fd-789f-b6be-42074f88b6ba",
+  "identity_schema_version": "1.0.0",
+  "integration_scenarios": [
+    {
+      "facts": [
+        {
+          "name": "physical-attempts",
+          "value": 1
+        },
+        {
+          "name": "logical-completion-credit",
+          "value": 1
+        },
+        {
+          "name": "c5-status",
+          "value": "PASS"
+        },
+        {
+          "name": "c5-ratio",
+          "value": "1/1"
+        }
+      ],
+      "scenario": "one-terminal-attempt",
+      "status": "PASS"
+    },
+    {
+      "facts": [
+        {
+          "name": "physical-attempts",
+          "value": 2
+        },
+        {
+          "name": "logical-completion-credit",
+          "value": 1
+        },
+        {
+          "name": "c5-status",
+          "value": "PASS"
+        },
+        {
+          "name": "c5-ratio",
+          "value": "1/1"
+        }
+      ],
+      "scenario": "retry-after-inconclusive",
+      "status": "PASS"
+    },
+    {
+      "facts": [
+        {
+          "name": "physical-attempts",
+          "value": 2
+        },
+        {
+          "name": "logical-completion-credit",
+          "value": 0
+        },
+        {
+          "name": "c5-status",
+          "value": "FAIL"
+        },
+        {
+          "name": "c5-ratio",
+          "value": "0/1"
+        }
+      ],
+      "scenario": "retry-exhaustion",
+      "status": "PASS"
+    },
+    {
+      "facts": [
+        {
+          "name": "physical-attempts",
+          "value": 2
+        },
+        {
+          "name": "logical-completion-credit",
+          "value": 1
+        },
+        {
+          "name": "c5-status",
+          "value": "PASS"
+        },
+        {
+          "name": "c5-ratio",
+          "value": "1/1"
+        }
+      ],
+      "scenario": "repeat-measurement",
+      "status": "PASS"
+    },
+    {
+      "facts": [
+        {
+          "name": "target-attributable",
+          "value": true
+        },
+        {
+          "name": "logical-completion-credit",
+          "value": 1
+        },
+        {
+          "name": "c5-status",
+          "value": "PASS"
+        },
+        {
+          "name": "c5-ratio",
+          "value": "1/1"
+        }
+      ],
+      "scenario": "target-crash",
+      "status": "PASS"
+    },
+    {
+      "facts": [
+        {
+          "name": "target-attributable",
+          "value": false
+        },
+        {
+          "name": "logical-completion-credit",
+          "value": 0
+        },
+        {
+          "name": "c5-status",
+          "value": "FAIL"
+        },
+        {
+          "name": "c5-ratio",
+          "value": "0/1"
+        }
+      ],
+      "scenario": "adapter-crash",
+      "status": "PASS"
+    },
+    {
+      "facts": [
+        {
+          "name": "detector-code",
+          "value": "reused-scientific-id"
+        },
+        {
+          "name": "c6-status",
+          "value": "FAIL"
+        },
+        {
+          "name": "other-criteria-reportable",
+          "value": true
+        }
+      ],
+      "scenario": "identity-mismatch",
+      "status": "PASS"
+    },
+    {
+      "facts": [
+        {
+          "name": "detector-code",
+          "value": "dangling-derivation-reference"
+        },
+        {
+          "name": "c6-status",
+          "value": "FAIL"
+        },
+        {
+          "name": "other-criteria-reportable",
+          "value": true
+        }
+      ],
+      "scenario": "dangling-derivation",
+      "status": "PASS"
+    },
+    {
+      "facts": [
+        {
+          "name": "detector-code",
+          "value": "invalid-attempt-predecessor"
+        },
+        {
+          "name": "c6-status",
+          "value": "FAIL"
+        },
+        {
+          "name": "other-criteria-reportable",
+          "value": true
+        }
+      ],
+      "scenario": "broken-attempt-predecessor",
+      "status": "PASS"
+    },
+    {
+      "facts": [
+        {
+          "name": "detector-code",
+          "value": "missing-terminal-observation"
+        },
+        {
+          "name": "c6-status",
+          "value": "FAIL"
+        },
+        {
+          "name": "other-criteria-reportable",
+          "value": true
+        }
+      ],
+      "scenario": "observation-wrong-attempt",
+      "status": "PASS"
+    },
+    {
+      "facts": [
+        {
+          "name": "detector-code",
+          "value": "stale-certification-source"
+        },
+        {
+          "name": "c6-status",
+          "value": "FAIL"
+        },
+        {
+          "name": "other-criteria-reportable",
+          "value": true
+        }
+      ],
+      "scenario": "certification-input-digest-drift",
+      "status": "PASS"
+    },
+    {
+      "facts": [
+        {
+          "name": "detector-code",
+          "value": "artifact-digest-mismatch"
+        },
+        {
+          "name": "c6-status",
+          "value": "FAIL"
+        },
+        {
+          "name": "other-criteria-reportable",
+          "value": true
+        }
+      ],
+      "scenario": "evidence-object-digest-mismatch",
+      "status": "PASS"
+    }
+  ],
+  "migration_readiness": [
+    {
+      "evidence": [
+        "scientific identity retained",
+        "former key remains resolvable"
+      ],
+      "scenario": "feature-rename",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "scientific identity retained",
+        "presentation relocation excluded from fingerprint"
+      ],
+      "scenario": "feature-category-move",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "semantic fingerprint changed",
+        "successor identity required"
+      ],
+      "scenario": "feature-semantic-correction",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "predecessor preserved",
+        "two successor identities validated"
+      ],
+      "scenario": "feature-split",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "predecessors preserved",
+        "distinct merged successor validated"
+      ],
+      "scenario": "feature-merge",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "historical obligation remains resolvable: rcid:v1:obligation:u7:01a077a2-0915-721f-89cd-963f02cee80c",
+        "deprecation lineage validated"
+      ],
+      "scenario": "obligation-removal",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "new typed identity validated: rcid:v1:obligation:u7:019ffeff-0000-7000-8000-ffffffffffff",
+        "existing identity population unchanged"
+      ],
+      "scenario": "new-obligation",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "contained scientific fingerprints unchanged",
+        "enclosing artifact may change independently"
+      ],
+      "scenario": "generator-reorder",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "stable handle retained: rcid:v1:assertion-derivation:u7:01a079d7-da99-7de8-a311-4e0196c5e676",
+        "revision changed from rcid:v1:assertion-derivation-revision:h:jcs-sha256-v1:7d21a8b8642147067b8865bd7506e5c93c6d67310d0691cbb39ca563b473c945 to rcid:v1:assertion-derivation-revision:h:jcs-sha256-v1:c1bc7b6f43b96a2e3d90de07b318f660ba3d0aee5d22a2ce45e8b204ff899172"
+      ],
+      "scenario": "derivation-method-revision",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "new input and report identities produced",
+        "historical report bytes unchanged"
+      ],
+      "scenario": "semantic-snapshot-successor",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "v1 remains rcid:v1:certification-definition:h:jcs-sha256-v1:c4e37ec6c122d758f71e6000fb708dd72ef8b9e2d948813919d1c3ddf15f1bfa",
+        "current authority may advance to rcid:v1:certification-definition:h:jcs-sha256-v1:a8520abd9ccffedc76c5803e6c06ed4c72eb4c4d8b35da817147b1b8d7bda4ae"
+      ],
+      "scenario": "certification-contract-successor",
+      "status": "PASS"
+    }
+  ],
+  "schema_version": "scientific-foundation-acceptance.v1",
+  "scientific_input_change_count": 0
+}

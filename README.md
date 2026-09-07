@@ -29,6 +29,12 @@ C5-C7 `BLOCKED`, C4 `FAIL` at `0/9506`, and final state `FAIL`. No authoritative
 full-corpus certification has been issued. See the [machine-readable
 certification contract](certification/README.md).
 
+The identity, generated-assertion derivation, physical-attempt provenance, and
+machine-readable certification systems pass their integrated scientific
+foundation acceptance. This qualifies the machinery for versioned semantic
+reconstruction while leaving the non-passing full-data result above unchanged.
+See the [scientific foundation](docs/architecture/scientific-foundation.md).
+
 The declared-cutoff semantic corpus contains 251 canonical features at digest
 `350bfea4c3da07b3426d885aa8ff645ac55539bbb1294a2ea35dd5319541d6c7`.
 Its complete bounded execution forecast uses the anomaly-complete,
