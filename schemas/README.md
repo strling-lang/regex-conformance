@@ -120,6 +120,13 @@ profile-allocation, denominator arithmetic, and digest checks that cannot be
 expressed as independent JSON fields. Those construction checks are not
 independent evidence of researched semantic completeness.
 
+`json/regex-semantic-corpus-v2.schema.json` governs the researched semantic
+successor, together with its normalized feature research ledger and
+deterministic research-completeness report. These schemas make semantic state,
+scope, source binding, derivation, and stable scientific identity explicit;
+they do not regenerate the accepted obligation or vector-requirement
+populations.
+
 `json/generated-assertion-derivation-catalog.schema.json` defines the shared
 provenance contract for assertion-like generated fields. It requires
 class-specific metadata for measurement, calculation, research-derived,

@@ -1,0 +1,15 @@
+{
+  "profile_version": "1.0.0",
+  "root": {
+    "additional_properties": false,
+    "kind": "object",
+    "properties": {
+      "artifact_digest_sha256": {
+        "kind": "digest"
+      }
+    },
+    "required": [
+      "artifact_digest_sha256"
+    ]
+  }
+}

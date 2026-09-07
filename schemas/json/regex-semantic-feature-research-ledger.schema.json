@@ -1,0 +1,145 @@
+{
+  "$id": "https://strling.dev/regex-conformance/schemas/regex-semantic-feature-research-ledger/1.0.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "type": "object",
+  "required": [
+    "schema_version",
+    "published_on",
+    "declared_semantic_cutoff",
+    "predecessor",
+    "research_standard",
+    "semantic_rules",
+    "feature_research",
+    "baseline_template_debt",
+    "counts",
+    "research_ledger_id",
+    "research_ledger_digest_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": "regex-semantic-feature-research-ledger.v1"},
+    "published_on": {"$ref": "#/$defs/date"},
+    "declared_semantic_cutoff": {"$ref": "#/$defs/date"},
+    "predecessor": {"$ref": "#/$defs/predecessor"},
+    "research_standard": {"type": "object", "minProperties": 5},
+    "semantic_rules": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/rule"}
+    },
+    "feature_research": {
+      "type": "array",
+      "minItems": 251,
+      "maxItems": 251,
+      "items": {"$ref": "#/$defs/research"}
+    },
+    "baseline_template_debt": {"type": "object", "minProperties": 7},
+    "counts": {
+      "additionalProperties": false,
+      "type": "object",
+      "required": ["features_researched", "fields_reviewed", "legacy_dimensions_audited", "semantic_rules", "source_identities_used", "blocking_unresolved_questions"],
+      "properties": {
+        "features_researched": {"const": 251},
+        "fields_reviewed": {"const": 2510},
+        "legacy_dimensions_audited": {"const": 4769},
+        "semantic_rules": {"type": "integer", "minimum": 1},
+        "source_identities_used": {"type": "integer", "minimum": 1},
+        "blocking_unresolved_questions": {"type": "integer", "minimum": 0}
+      }
+    },
+    "research_ledger_id": {"$ref": "#/$defs/rcid"},
+    "research_ledger_digest_sha256": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "date": {"type": "string", "format": "date", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "rcid": {"type": "string", "pattern": "^rcid:v1:[a-z0-9-]+:(?:u7|h):"},
+    "token": {"type": "string", "pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)*$"},
+    "state": {"enum": ["known", "no-feature-specific-implication", "not-applicable", "implementation-defined", "intentionally-under-specified", "unresolved"]},
+    "scope": {"enum": ["canonical-invariant", "manifestation-specific", "variant-specific", "profile-dependent", "operation-specific"]},
+    "stringArray": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "predecessor": {
+      "additionalProperties": false,
+      "type": "object",
+      "required": ["path", "snapshot_id", "corpus_digest_sha256", "artifact_sha256"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "snapshot_id": {"type": "string", "minLength": 1},
+        "corpus_digest_sha256": {"$ref": "#/$defs/digest"},
+        "artifact_sha256": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "rule": {
+      "additionalProperties": false,
+      "type": "object",
+      "required": ["rule_id", "state", "scope", "research_conclusion", "source_binding", "derivation_id"],
+      "properties": {
+        "rule_id": {"type": "string", "pattern": "^semantic-rule\\."},
+        "state": {"$ref": "#/$defs/state"},
+        "scope": {"$ref": "#/$defs/scope"},
+        "research_conclusion": {"type": "string", "minLength": 1},
+        "source_binding": {"type": "string", "minLength": 1},
+        "derivation_id": {"$ref": "#/$defs/rcid"}
+      }
+    },
+    "finding": {
+      "additionalProperties": false,
+      "type": "object",
+      "required": ["field", "rule_id", "state", "scope"],
+      "properties": {
+        "field": {"type": "string", "pattern": "^[a-z0-9]+(?:[_-][a-z0-9]+)*$"},
+        "rule_id": {"type": "string", "pattern": "^semantic-rule\\."},
+        "state": {"$ref": "#/$defs/state"},
+        "scope": {"$ref": "#/$defs/scope"}
+      }
+    },
+    "question": {
+      "additionalProperties": false,
+      "type": "object",
+      "required": ["question", "blocking", "evidence_reviewed"],
+      "properties": {
+        "question": {"type": "string", "minLength": 1},
+        "blocking": {"type": "boolean"},
+        "evidence_reviewed": {"$ref": "#/$defs/stringArray"}
+      }
+    },
+    "legacyAudit": {
+      "additionalProperties": false,
+      "type": "object",
+      "required": ["dimension", "classification"],
+      "properties": {
+        "dimension": {"type": "string", "pattern": "^[a-z0-9]+(?:[_-][a-z0-9]+)*$"},
+        "classification": {
+          "enum": [
+            "genuinely-feature-specific",
+            "generic-but-scientifically-correct",
+            "templated-and-insufficient",
+            "unsupported-by-evidence",
+            "incorrectly-stated",
+            "structurally-not-applicable",
+            "unknown-or-unresolved"
+          ]
+        }
+      }
+    },
+    "research": {
+      "additionalProperties": false,
+      "type": "object",
+      "required": ["feature_id", "scientific_id", "fields_reviewed", "legacy_field_audit", "source_ids", "material_findings", "unresolved_questions", "identity_disposition", "semantic_revision_outcome", "review_method", "derivation_id"],
+      "properties": {
+        "feature_id": {"type": "string", "pattern": "^feature\\."},
+        "scientific_id": {"$ref": "#/$defs/rcid"},
+        "fields_reviewed": {"type": "array", "minItems": 10, "maxItems": 10, "uniqueItems": true, "items": {"type": "string", "pattern": "^[a-z0-9]+(?:[_-][a-z0-9]+)*$"}},
+        "legacy_field_audit": {"type": "array", "minItems": 19, "maxItems": 19, "items": {"$ref": "#/$defs/legacyAudit"}},
+        "source_ids": {"$ref": "#/$defs/stringArray"},
+        "material_findings": {"type": "array", "minItems": 10, "maxItems": 10, "items": {"$ref": "#/$defs/finding"}},
+        "unresolved_questions": {"type": "array", "items": {"$ref": "#/$defs/question"}},
+        "identity_disposition": {"const": "retained-same-scientific-concept"},
+        "semantic_revision_outcome": {"const": "source-bound-enrichment"},
+        "review_method": {"type": "string", "minLength": 1},
+        "derivation_id": {"$ref": "#/$defs/rcid"}
+      }
+    }
+  }
+}

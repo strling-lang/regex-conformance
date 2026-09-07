@@ -97,6 +97,7 @@ DERIVATION_IDS = {
     "facet-template-construction": "rcid:v1:assertion-derivation:u7:01a07849-7263-7c28-a56f-103c3b1f15c8",
     "manual-registry-decision": "rcid:v1:assertion-derivation:u7:01a07849-7263-7a47-adb6-32ef7f4fb541",
     "certification-predicate-calculation": "rcid:v1:assertion-derivation:u7:01a079d7-da99-7de8-a311-4e0196c5e676",
+    "researched-feature-semantics": "rcid:v1:assertion-derivation:u7:01a07cfa-78e3-7de8-9559-e045f4e27cc0",
 }
 
 ALLOWED_GATES_BY_CLASS = {
@@ -181,6 +182,16 @@ def _c(
 def _derivation_specs(root: Path) -> list[dict[str, Any]]:
     semantic = load_strict(root / "semantic-corpus/snapshots/regex-semantic-features-2026-08-22.v1.json")
     source_references = sorted(f"source-id:{item['source_id']}" for item in semantic["sources"])
+    researched_ledger = load_strict(
+        root / "semantic-corpus/research/regex-semantic-feature-research-2026-09-07.v1.json"
+    )
+    researched_source_references = sorted(
+        {
+            f"source-id:{source_id}"
+            for feature in researched_ledger["feature_research"]
+            for source_id in feature["source_ids"]
+        }
+    )
     return [
         {
             "key": "semantic-counts",
@@ -217,6 +228,30 @@ def _derivation_specs(root: Path) -> list[dict[str, Any]]:
                 "methodology": "Apply the snapshot's candidate, identity, source-priority, and disposition rules to its bound source identities.",
             },
             "notes": "The sources and reviewed methodology, not generator repetition, are the evidence basis.",
+        },
+        {
+            "key": "researched-feature-semantics",
+            "title": "Feature-by-feature primary-source semantic reconstruction",
+            "derivation_class": "research-derived",
+            "method_key": "feature-semantic-source-reconstruction",
+            "method_version": "2.0.0",
+            "input_references": [
+                "semantic-corpus/snapshots/regex-semantic-features-2026-08-22.v1.json",
+                "semantic-corpus/research/regex-semantic-feature-research-2026-09-07.v1.json",
+            ],
+            "authority_references": researched_source_references,
+            "allowed_gate_kinds": [
+                "independent-evidence",
+                "semantic-completeness",
+            ],
+            "independent_evidence": True,
+            "metadata": {
+                "kind": "research-derived",
+                "source_references": researched_source_references,
+                "research_artifact_ref": "semantic-corpus/research/regex-semantic-feature-research-2026-09-07.v1.json",
+                "methodology": "Review every accepted feature against its exact primary or official source identities; classify each semantic dimension, isolate variant and manifestation behavior, and record unsupported claims as unresolved rather than infer them from cross-engine consensus.",
+            },
+            "notes": "Shared rules acquire scientific force only through an explicit feature-level applicability decision and source binding in the research ledger.",
         },
         {
             "key": "legacy-construction-claims",
@@ -645,6 +680,67 @@ def _artifact_specs() -> tuple[ArtifactSpec, ...]:
             ),
             count_contracts=SEMANTIC_COUNTS,
             schema_reference="schemas/json/regex-semantic-corpus.schema.json",
+        ),
+        ArtifactSpec(
+            "semantic-corpus/research/regex-semantic-feature-research-2026-09-07.v1.json",
+            "audit-or-reconciliation-report",
+            "historical-immutable",
+            ("tools/semantics/compile_researched_semantics.py",),
+            (
+                _b("/", "researched-feature-semantics", "scientific", "Feature-by-feature primary-source research decisions, explicit semantic states, and identity dispositions."),
+                _b("/predecessor", "artifact-measurement", "measurement", "Measured identity and byte digest of the immutable predecessor snapshot."),
+                _b("/research_standard", "manual-registry-decision", "governance", "Governed source hierarchy, uncertainty, variant-isolation, and manifestation-isolation policy."),
+                _b("/baseline_template_debt", "reconciliation-calculation", "audit", "Deterministic measurement of repeated legacy field values and assertion populations."),
+                _b("/counts", "reconciliation-calculation", "coverage", "Counts calculated from the exact research, rule, field, source, and unresolved-question populations."),
+            ),
+            coverage_selectors=("/",),
+            count_contracts=(
+                _c("/counts/features_researched", "collection-length", ["/feature_research"], "feature research records", "Exact feature-research collection length."),
+                _c("/counts/fields_reviewed", "sum-collection-lengths", ["/feature_research/*/fields_reviewed"], "reviewed feature-field decisions", "Sum of the explicit field lists on all feature research records."),
+                _c("/counts/legacy_dimensions_audited", "sum-collection-lengths", ["/feature_research/*/legacy_field_audit"], "predecessor semantic dimensions audited", "Sum of the explicit predecessor audit rows on all feature research records."),
+                _c("/counts/semantic_rules", "collection-length", ["/semantic_rules"], "shared researched semantic rules", "Exact rule collection length."),
+                _c("/counts/blocking_unresolved_questions", "matching-value-count", ["/feature_research/*/unresolved_questions/*/blocking"], "blocking unresolved semantic questions", "Count explicit blocking flags only.", values=[True]),
+            ),
+            schema_reference="schemas/json/regex-semantic-feature-research-ledger.schema.json",
+        ),
+        ArtifactSpec(
+            "semantic-corpus/snapshots/regex-semantic-features-2026-09-07.v2.json",
+            "semantic-snapshot",
+            "historical-immutable",
+            ("tools/semantics/compile_researched_semantics.py",),
+            (
+                _b("/", "researched-feature-semantics", "scientific", "Source-bound successor semantics over the unchanged accepted feature identities."),
+                _b("/authority", "manual-registry-decision", "governance", "Repository authority, identity ownership, isolation rules, and obligation boundary."),
+                _b("/predecessor", "artifact-measurement", "measurement", "Measured identity and byte digest of the immutable predecessor snapshot."),
+                _b("/research_ledger", "artifact-measurement", "measurement", "Content identity and digest of the exact research ledger."),
+                _b("/sources", "external-restatement", "scientific", "Qualified external source records carried forward without changing publisher authority."),
+                _b("/counts", "reconciliation-calculation", "coverage", "Counts calculated from exact successor collections and dispositions."),
+            ),
+            coverage_selectors=("/",),
+            count_contracts=(
+                _c("/counts/canonical_features", "collection-length", ["/features"], "canonical successor features", "Exact feature collection length."),
+                _c("/counts/semantic_variants", "sum-collection-lengths", ["/features/*/semantic_variants"], "source-bound semantic variants", "Sum every feature's variant collection."),
+                _c("/counts/syntax_manifestations", "collection-length", ["/manifestations"], "source-bound syntax and API manifestations", "Exact manifestation collection length."),
+                _c("/counts/source_identities", "collection-length", ["/sources"], "source registry records", "Exact source collection length."),
+                _c("/counts/semantic_assertions", "sum-collection-lengths", ["/features/*/semantic_assertions"], "structured feature semantic assertions", "Sum every feature's semantic assertion map."),
+                _c("/counts/retained_feature_identities", "matching-value-count", ["/features/*/identity_disposition/kind"], "features retaining their scientific identity", "Count explicit retained dispositions.", values=["retained"]),
+                _c("/counts/successor_feature_identities", "matching-value-count", ["/features/*/identity_disposition/kind"], "features requiring successor scientific identities", "Count explicit successor dispositions.", values=["successor"]),
+            ),
+            schema_reference="schemas/json/regex-semantic-corpus-v2.schema.json",
+        ),
+        ArtifactSpec(
+            "reports/semantics/researched-feature-semantics-2026-09-07.v1.json",
+            "audit-or-reconciliation-report",
+            "historical-immutable",
+            ("tools/semantics/compile_researched_semantics.py",),
+            (
+                _b("/", "reconciliation-calculation", "audit", "Deterministic research-completeness and compatibility report over the ledger and successor snapshot."),
+                _b("/evidence/derivation_id", "researched-feature-semantics", "scientific", "Exact research method binding for the successor semantic assertions."),
+                _b("/derivation_id", "researched-feature-semantics", "scientific", "Exact research method binding for the report's semantic conclusions."),
+                _b("/legacy_artifact_compatibility/artifact_sha256", "artifact-measurement", "measurement", "Measured byte digests of the immutable pre-redesign snapshot, projection, requirement ledger, and denominator."),
+            ),
+            coverage_selectors=("/",),
+            schema_reference="schemas/json/regex-semantic-research-completeness.schema.json",
         ),
         ArtifactSpec(
             "ontology/projections/regex-semantic-projection-2026-08-22.v1.json",

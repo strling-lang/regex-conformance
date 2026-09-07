@@ -8,7 +8,7 @@ program workspace.
 
 ## Rebaseline boundary
 
-The declared-cutoff semantic snapshot remains the current canonical researched
+The declared-cutoff semantic snapshot remains the immutable pre-redesign
 baseline. It contains 251 features at digest
 `350bfea4c3da07b3426d885aa8ff645ac55539bbb1294a2ea35dd5319541d6c7`.
 Its projection contains 12,048 obligation templates, of which 9,506 currently
@@ -91,11 +91,17 @@ non-passing. The next dependency is researched semantic reconstruction.
 
 ### Complete the semantic knowledge architecture
 
-Replace template-like fields with researched, source-bound semantics. Review
-the declared-cutoff universe for missing features, facets, operations, and
-sources, adding phase, complexity, security, or other dimensions only when
-their scientific consequences are explicit. An adversarial review must
-disposition every candidate and establish the next frozen semantic cutoff.
+The existing 251 features now have a content-addressed successor snapshot with
+feature-specific, source-bound semantics and explicit knowledge states. All
+feature, variant, and manifestation identities were retained, while the
+accepted pre-redesign obligation and requirement artifacts remain unchanged.
+See [Researched feature semantics](researched-feature-semantics.md).
+
+The next dependency is to review the declared-cutoff universe for missing
+features, facets, operations, and sources, adding phase, complexity, security,
+or other dimensions only when their scientific consequences are explicit. An
+adversarial review must disposition every candidate and establish the next
+frozen semantic cutoff.
 
 ### Derive the true obligation denominator
 

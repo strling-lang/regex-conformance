@@ -1,0 +1,28 @@
+{
+  "$id": "https://strling.dev/regex-conformance/schemas/regex-semantic-research-completeness/1.0.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "type": "object",
+  "required": ["schema_version", "published_on", "research_ledger_id", "research_ledger_digest_sha256", "semantic_snapshot_id", "semantic_snapshot_digest_sha256", "completion", "semantic_state_counts", "semantic_scope_counts", "evidence", "identity", "legacy_artifact_compatibility", "derivation_id", "report_id", "report_digest_sha256"],
+  "properties": {
+    "schema_version": {"const": "regex-semantic-research-completeness.v1"},
+    "published_on": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
+    "research_ledger_id": {"$ref": "#/$defs/rcid"},
+    "research_ledger_digest_sha256": {"$ref": "#/$defs/digest"},
+    "semantic_snapshot_id": {"$ref": "#/$defs/rcid"},
+    "semantic_snapshot_digest_sha256": {"$ref": "#/$defs/digest"},
+    "completion": {"type": "object", "minProperties": 10},
+    "semantic_state_counts": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+    "semantic_scope_counts": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+    "evidence": {"type": "object", "minProperties": 4},
+    "identity": {"type": "object", "minProperties": 3},
+    "legacy_artifact_compatibility": {"type": "object", "minProperties": 5},
+    "derivation_id": {"$ref": "#/$defs/rcid"},
+    "report_id": {"$ref": "#/$defs/rcid"},
+    "report_digest_sha256": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "rcid": {"type": "string", "pattern": "^rcid:v1:[a-z0-9-]+:(?:u7|h):"}
+  }
+}

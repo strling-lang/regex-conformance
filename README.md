@@ -35,16 +35,19 @@ foundation acceptance. This qualifies the machinery for versioned semantic
 reconstruction while leaving the non-passing full-data result above unchanged.
 See the [scientific foundation](docs/architecture/scientific-foundation.md).
 
-The declared-cutoff semantic corpus contains 251 canonical features at digest
-`350bfea4c3da07b3426d885aa8ff645ac55539bbb1294a2ea35dd5319541d6c7`.
-Its complete bounded execution forecast uses the anomaly-complete,
-routine-process-summary Evidence Pack v3 contract and passes the 8 GB
-soft stop at 7,452,076,843 conservative retained bytes. Its 9,506 minimum
-vector requirements are a preserved planning baseline rather than the final
-scientific denominator. Broad vector authoring now waits for researched
-feature semantics, derived obligations, oracle and applicability contracts,
-and an empirically frozen profile universe. No full conformance campaign has
-run. See the [scientific implementation dependency
+The current semantic knowledge snapshot reconstructs all 251 accepted features
+with source-bound, structured semantics while preserving their scientific
+identities. The predecessor snapshot at digest
+`350bfea4c3da07b3426d885aa8ff645ac55539bbb1294a2ea35dd5319541d6c7`
+continues to bind the unchanged 12,048 obligations, 9,506 requirements, and
+bounded execution forecast until the dedicated obligation-derivation work
+supersedes them. That historical forecast uses the anomaly-complete,
+routine-process-summary Evidence Pack v3 contract and passes the 8 GB soft stop
+at 7,452,076,843 conservative retained bytes. Broad vector authoring still
+waits for derived obligations, oracle and applicability contracts, and an
+empirically frozen profile universe. No full conformance campaign has run. See
+the [researched feature semantics](docs/architecture/researched-feature-semantics.md)
+and [scientific implementation dependency
 architecture](docs/architecture/scientific-implementation-dependencies.md).
 
 Program planning, dependencies, decisions, risks, and certification gates are

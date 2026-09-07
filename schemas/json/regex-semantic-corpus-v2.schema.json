@@ -1,0 +1,105 @@
+{
+  "$id": "https://strling.dev/regex-conformance/schemas/regex-semantic-corpus/2.0.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "type": "object",
+  "required": ["schema_version", "published_on", "declared_semantic_cutoff", "status", "authority", "predecessor", "research_ledger", "sources", "features", "manifestations", "carried_forward_by_reference", "counts", "snapshot_id", "snapshot_digest_sha256"],
+  "properties": {
+    "schema_version": {"const": "regex-semantic-corpus.v2"},
+    "published_on": {"$ref": "#/$defs/date"},
+    "declared_semantic_cutoff": {"$ref": "#/$defs/date"},
+    "status": {"const": "canonical-researched-successor"},
+    "authority": {"type": "object", "minProperties": 6},
+    "predecessor": {"type": "object", "minProperties": 4},
+    "research_ledger": {"type": "object", "minProperties": 3},
+    "sources": {"type": "array", "minItems": 1, "items": {"type": "object", "minProperties": 8}},
+    "features": {"type": "array", "minItems": 251, "maxItems": 251, "items": {"$ref": "#/$defs/feature"}},
+    "manifestations": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/manifestation"}},
+    "carried_forward_by_reference": {"type": "object", "minProperties": 4},
+    "counts": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}, "minProperties": 7},
+    "snapshot_id": {"$ref": "#/$defs/rcid"},
+    "snapshot_digest_sha256": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "date": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "rcid": {"type": "string", "pattern": "^rcid:v1:[a-z0-9-]+:(?:u7|h):"},
+    "stringArray": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "state": {"enum": ["known", "no-feature-specific-implication", "not-applicable", "implementation-defined", "intentionally-under-specified", "unresolved"]},
+    "scope": {"enum": ["canonical-invariant", "manifestation-specific", "variant-specific", "profile-dependent", "operation-specific"]},
+    "assertion": {
+      "additionalProperties": false,
+      "type": "object",
+      "required": ["field", "state", "scope", "rule_id", "statement", "source_ids", "derivation_id", "derivation_class"],
+      "properties": {
+        "field": {"type": "string", "minLength": 1},
+        "state": {"$ref": "#/$defs/state"},
+        "scope": {"$ref": "#/$defs/scope"},
+        "rule_id": {"type": "string", "pattern": "^semantic-rule\\."},
+        "statement": {"type": "string", "minLength": 1},
+        "source_ids": {"$ref": "#/$defs/stringArray"},
+        "derivation_id": {"$ref": "#/$defs/rcid"},
+        "derivation_class": {"const": "research-derived"}
+      }
+    },
+    "variant": {
+      "additionalProperties": false,
+      "type": "object",
+      "required": ["variant_id", "scientific_id", "name", "semantic_assertion"],
+      "properties": {
+        "variant_id": {"type": "string", "pattern": "^variant\\."},
+        "scientific_id": {"$ref": "#/$defs/rcid"},
+        "name": {"type": "string", "minLength": 1},
+        "semantic_assertion": {"$ref": "#/$defs/assertion"}
+      }
+    },
+    "feature": {
+      "additionalProperties": false,
+      "type": "object",
+      "required": ["feature_id", "scientific_id", "semantic_revision", "canonical_name", "aliases", "historical_names", "category", "feature_class", "prerequisite_feature_ids", "modifier_ids", "semantic_variants", "typed_relations", "manifestation_ids", "abstract_grammar_form", "supported_operation_ids", "semantic_assertions", "test_concepts", "unresolved_semantic_questions", "identity_disposition"],
+      "properties": {
+        "feature_id": {"type": "string", "pattern": "^feature\\."},
+        "scientific_id": {"$ref": "#/$defs/rcid"},
+        "semantic_revision": {"const": 2},
+        "canonical_name": {"type": "string", "minLength": 1},
+        "aliases": {"$ref": "#/$defs/stringArray"},
+        "historical_names": {"$ref": "#/$defs/stringArray"},
+        "category": {"type": "string", "minLength": 1},
+        "feature_class": {"type": "string", "minLength": 1},
+        "prerequisite_feature_ids": {"$ref": "#/$defs/stringArray"},
+        "modifier_ids": {"$ref": "#/$defs/stringArray"},
+        "semantic_variants": {"type": "array", "items": {"$ref": "#/$defs/variant"}},
+        "typed_relations": {"type": "array", "items": {"type": "object", "minProperties": 1}},
+        "manifestation_ids": {"$ref": "#/$defs/stringArray"},
+        "abstract_grammar_form": {"type": ["string", "null"]},
+        "supported_operation_ids": {"$ref": "#/$defs/stringArray"},
+        "semantic_assertions": {
+          "additionalProperties": {"$ref": "#/$defs/assertion"},
+          "minProperties": 10,
+          "maxProperties": 10,
+          "type": "object"
+        },
+        "test_concepts": {"type": "object", "minProperties": 6},
+        "unresolved_semantic_questions": {"$ref": "#/$defs/stringArray"},
+        "identity_disposition": {"type": "object", "minProperties": 3}
+      }
+    },
+    "manifestation": {
+      "type": "object",
+      "required": ["manifestation_id", "source_id", "kind", "syntax_or_api_form", "semantic_feature_id", "identity_note", "scientific_id", "semantic_scope", "canonical_semantics_owner", "derivation_id"],
+      "properties": {
+        "manifestation_id": {"type": "string", "pattern": "^manifestation\\."},
+        "source_id": {"type": "string", "minLength": 1},
+        "kind": {"type": "string", "minLength": 1},
+        "syntax_or_api_form": {"type": "string", "minLength": 1},
+        "semantic_feature_id": {"type": "string", "pattern": "^feature\\."},
+        "identity_note": {"type": "string", "minLength": 1},
+        "scientific_id": {"$ref": "#/$defs/rcid"},
+        "semantic_scope": {"const": "manifestation-specific"},
+        "canonical_semantics_owner": {"$ref": "#/$defs/rcid"},
+        "derivation_id": {"$ref": "#/$defs/rcid"}
+      },
+      "additionalProperties": false
+    }
+  }
+}

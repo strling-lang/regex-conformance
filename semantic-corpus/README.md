@@ -25,14 +25,25 @@ validated and provenance-bound. Nine provisional bridge identities that are no
 longer recoverable remain explicit unresolved candidates; they were not guessed
 from names or memory.
 
-## Frozen snapshot
+## Canonical researched snapshot
 
-The declared-cutoff snapshot is
+The current semantic knowledge authority is
+[`snapshots/regex-semantic-features-2026-09-07.v2.json`](snapshots/regex-semantic-features-2026-09-07.v2.json).
+It reconstructs all 251 accepted features with structured, source-bound
+semantics while retaining their permanent scientific identities. Its research
+ledger is
+[`research/regex-semantic-feature-research-2026-09-07.v1.json`](research/regex-semantic-feature-research-2026-09-07.v1.json).
+See [Researched feature semantics](../docs/architecture/researched-feature-semantics.md)
+for the knowledge-state, scope, evidence, identity, and regeneration contracts.
+
+## Accepted predecessor snapshot
+
+The original declared-cutoff snapshot is
 [`snapshots/regex-semantic-features-2026-08-22.v1.json`](snapshots/regex-semantic-features-2026-08-22.v1.json).
 Its semantic corpus digest is
 `350bfea4c3da07b3426d885aa8ff645ac55539bbb1294a2ea35dd5319541d6c7`.
 
-The snapshot is exhaustive to the strongest defensible 2026-08-22 cutoff. It
+That snapshot is exhaustive to the strongest defensible 2026-08-22 cutoff. It
 does not claim timeless omniscience. A successor is additive and versioned; do
 not mutate a published snapshot in place.
 
@@ -44,9 +55,10 @@ campaign.
 
 ```sh
 python tools/semantics/compile_semantic_baseline.py --check
+python tools/semantics/compile_researched_semantics.py --check
 ```
 
-The generated products are:
+The predecessor compiler's generated products are:
 
 - the semantic snapshot in this directory;
 - `ontology/projections/regex-semantic-projection-2026-08-22.v1.json`;
@@ -60,6 +72,11 @@ profile-bound allocation, arithmetic closure, content digests, and generated
 assertion derivations. Structural closure means that the compiler emitted the
 declared template; it is not evidence that the declared facets are a complete
 scientific model.
+
+The researched-semantics compiler publishes only a successor snapshot, its
+research ledger, and a research-completeness report. It deliberately does not
+regenerate the predecessor projection, obligation templates, requirement
+ledger, or denominator forecast.
 
 Published semantic artifacts remain immutable. The companion derivation
 inventory records that legacy fixed audit, discovery, facility-reconciliation,
