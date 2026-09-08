@@ -104,10 +104,17 @@ complexity guarantees, and security/trust context are structured dimensions;
 vendor spellings remain manifestations or profile facts. See
 [Semantic architecture dispositions](semantic-architecture-dispositions.md).
 
-The next dependency is a separate adversarial exhaustion review that challenges
-the candidate search itself and freezes the final semantic cutoff. The
-predecessor 12,048 obligations and 9,506 requirements remain unchanged until
-that review closes.
+The declared-cutoff adversarial review is now closed. Five independent search
+strategies revalidated every prior candidate, dispositioned 18 residual
+candidates, and published a frozen successor with 269 features, 60 source
+identities, and no blocking candidate or source orphan. See the [semantic universe
+freeze](semantic-universe-freeze.md). The predecessor 12,048 obligations and
+9,506 requirements remain unchanged.
+
+The next dependency is the semantic-knowledge acceptance gate. Obligation
+derivation remains blocked until that gate verifies the researched snapshot,
+candidate closure, source coverage, identities, derivations, determinism, and
+the unchanged predecessor denominator as one coherent input authority.
 
 ### Derive the true obligation denominator
 

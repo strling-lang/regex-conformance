@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/regex-semantic-universe-audit-plan.schema.json",
+  "title": "Declared-cutoff adversarial semantic-universe audit plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "cutoff", "claim", "scope", "source_classes", "strategies", "audit_populations", "test_corpora", "invalidation_conditions", "derivation_id", "plan_id", "plan_digest_sha256"],
+  "properties": {
+    "schema_version": {"const": "regex-semantic-universe-audit-plan.v1"},
+    "cutoff": {"type": "string", "format": "date-time"},
+    "claim": {"type": "string", "minLength": 1},
+    "scope": {"type": "object", "required": ["included", "excluded"], "additionalProperties": true},
+    "source_classes": {"type": "array", "minItems": 5, "uniqueItems": true, "items": {"type": "string"}},
+    "strategies": {"type": "array", "minItems": 3, "items": {"type": "object", "required": ["strategy_id", "method", "closure_rule"], "additionalProperties": true}},
+    "audit_populations": {"type": "object", "required": ["categories", "facets", "operations", "representative_systems", "prior_candidates"], "additionalProperties": true},
+    "test_corpora": {"type": "array", "minItems": 8, "items": {"type": "object", "required": ["name", "repository", "revision", "role", "areas_scanned"], "additionalProperties": false, "properties": {"name": {"type": "string"}, "repository": {"type": "string"}, "revision": {"type": "string", "pattern": "^[0-9a-f]{40}$"}, "role": {"const": "candidate-discovery"}, "areas_scanned": {"type": "array", "minItems": 1, "items": {"type": "string"}}}}},
+    "invalidation_conditions": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "derivation_id": {"type": "string", "pattern": "^rcid:v1:assertion-derivation:u7:"},
+    "plan_id": {"type": "string", "pattern": "^rcid:v1:scan-plan-revision:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "plan_digest_sha256": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {"digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+}

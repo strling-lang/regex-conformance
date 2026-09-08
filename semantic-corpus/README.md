@@ -25,16 +25,21 @@ validated and provenance-bound. Nine provisional bridge identities that are no
 longer recoverable remain explicit unresolved candidates; they were not guessed
 from names or memory.
 
-## Canonical expanded researched snapshot
+## Frozen declared-cutoff semantic snapshot
 
 The current semantic knowledge authority is
+[`snapshots/regex-semantic-features-2026-09-08.v4.json`](snapshots/regex-semantic-features-2026-09-08.v4.json).
+It contains 269 features after five independent adversarial search strategies
+revalidated all 73 prior candidates and dispositioned 18 newly discovered
+candidates. Its bounded cutoff, search plan, source coverage, negative space,
+and invalidation rules are closed by
+[`freeze/regex-semantic-universe-2026-09-08.v1.json`](freeze/regex-semantic-universe-2026-09-08.v1.json).
+See the [declared-cutoff semantic universe freeze](../docs/architecture/semantic-universe-freeze.md).
+
+The expanded researched predecessor remains
 [`snapshots/regex-semantic-features-2026-09-07.v3.json`](snapshots/regex-semantic-features-2026-09-07.v3.json).
-It retains the 251 researched predecessor features and adds evidence-backed
-facets, operations, sources, variants, 20 manifestations, and 17 canonical
-features after explicitly dispositioning 73 omission and correction
-candidates. Its candidate ledger is
-[`research/regex-semantic-architecture-candidates-2026-09-07.v1.json`](research/regex-semantic-architecture-candidates-2026-09-07.v1.json).
-See [Semantic architecture dispositions](../docs/architecture/semantic-architecture-dispositions.md).
+Its 268 features and 73-candidate architecture ledger remain immutable and
+resolvable. See [Semantic architecture dispositions](../docs/architecture/semantic-architecture-dispositions.md).
 
 The predecessor researched snapshot is
 [`snapshots/regex-semantic-features-2026-09-07.v2.json`](snapshots/regex-semantic-features-2026-09-07.v2.json).
@@ -66,6 +71,7 @@ campaign.
 python tools/semantics/compile_semantic_baseline.py --check
 python tools/semantics/compile_researched_semantics.py --check
 python tools/semantics/compile_semantic_architecture.py --check
+python tools/semantics/freeze_semantic_universe.py --check
 ```
 
 The predecessor compiler's generated products are:
@@ -91,6 +97,11 @@ ledger, or denominator forecast.
 The semantic-architecture compiler publishes the next successor snapshot,
 candidate ledger, typed identity allocation, and disposition report. It also
 leaves the predecessor denominator artifacts byte-identical.
+
+The semantic-universe freeze compiler publishes a final adversarial audit plan,
+revalidated candidate ledger, source-coverage report, frozen successor
+snapshot, freeze manifest, and current authority index. It adds no obligation
+or vector requirement and preserves every predecessor snapshot.
 
 Published semantic artifacts remain immutable. The companion derivation
 inventory records that legacy fixed audit, discovery, facility-reconciliation,

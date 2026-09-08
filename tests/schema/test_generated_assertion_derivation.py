@@ -80,10 +80,10 @@ class GeneratedAssertionDerivationTests(unittest.TestCase):
         derivation = self.derivations[summary["derivation_id"]]
         self.assertEqual(derivation["derivation_class"], "calculation")
         self.assertEqual(summary["derivation_revision_id"], derivation["derivation_revision_id"])
-        self.assertEqual(summary["inventoried_artifacts"], 48)
-        self.assertEqual(summary["assertion_groups"], 206)
-        self.assertEqual(summary["assertion_occurrences"], 607178)
-        self.assertEqual(summary["count_contracts"], 74)
+        self.assertEqual(summary["inventoried_artifacts"], 56)
+        self.assertEqual(summary["assertion_groups"], 226)
+        self.assertEqual(summary["assertion_occurrences"], 647448)
+        self.assertEqual(summary["count_contracts"], 84)
 
     def test_each_class_has_required_nonempty_metadata(self) -> None:
         records = {record["derivation_class"]: record for record in self.catalog["derivations"]}
@@ -259,7 +259,7 @@ class GeneratedAssertionDerivationTests(unittest.TestCase):
     def test_identity_lock_and_semantic_artifact_bytes_are_unchanged(self) -> None:
         self.assertEqual(
             verify_identity_catalog(ROOT),
-            {"scientific_identities": 22427, "scientific_lineage_records": 0},
+            {"scientific_identities": 22431, "scientific_lineage_records": 0},
         )
         expected = {
             SEMANTIC_SNAPSHOT: "a1a684abea7cc5a5224b4f94004ee21f05efd2cf5306ce4711dcbe437ff84645",

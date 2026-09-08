@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/regex-semantic-universe-audit-report.schema.json",
+  "title": "Adversarial semantic-universe audit report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "cutoff", "claim", "bound_artifacts", "audit_units", "candidate_yield", "semantic_population", "identity_change_summary", "overcount_review", "source_coverage", "freeze_invariants", "denominator_boundary", "unresolved", "result", "derivation_id", "report_id", "report_digest_sha256"],
+  "properties": {
+    "schema_version": {"const": "regex-semantic-universe-audit-report.v1"},
+    "cutoff": {"type": "string", "format": "date-time"},
+    "claim": {"type": "string"},
+    "bound_artifacts": {"type": "object"},
+    "audit_units": {"type": "object"},
+    "candidate_yield": {"type": "object", "required": ["newly_discovered", "by_strategy", "second_pass_new_material_candidates"], "additionalProperties": true},
+    "semantic_population": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["canonical_features", "operations", "semantic_facets", "source_identities", "semantic_variants", "syntax_manifestations", "modifiers", "typed_interactions"],
+      "properties": {
+        "canonical_features": {"const": 269},
+        "operations": {"const": 33},
+        "semantic_facets": {"const": 15},
+        "source_identities": {"const": 60},
+        "semantic_variants": {"const": 93},
+        "syntax_manifestations": {"const": 326},
+        "modifiers": {"const": 33},
+        "typed_interactions": {"const": 108}
+      }
+    },
+    "identity_change_summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["retained_feature_identities", "added_feature_identities", "added_modifier_identities", "added_manifestation_identities", "superseded_feature_identities", "merged_feature_identities", "retired_feature_identities", "lineage_transitions", "total_scientific_identity_additions"],
+      "properties": {
+        "retained_feature_identities": {"const": 268},
+        "added_feature_identities": {"const": 1},
+        "added_modifier_identities": {"const": 1},
+        "added_manifestation_identities": {"const": 2},
+        "superseded_feature_identities": {"const": 0},
+        "merged_feature_identities": {"const": 0},
+        "retired_feature_identities": {"const": 0},
+        "lineage_transitions": {"const": 0},
+        "total_scientific_identity_additions": {"const": 4}
+      }
+    },
+    "overcount_review": {"type": "array", "minItems": 1, "items": {"type": "object"}},
+    "source_coverage": {"type": "object"},
+    "freeze_invariants": {"type": "array", "minItems": 10, "items": {"type": "object", "required": ["invariant", "status", "evidence"], "additionalProperties": true}},
+    "denominator_boundary": {"type": "object", "required": ["obligation_templates", "vector_requirements", "artifact_sha256", "artifacts_unchanged"], "additionalProperties": true},
+    "unresolved": {"type": "object", "required": ["blocking", "non_blocking"], "additionalProperties": true},
+    "result": {"const": "PASS"},
+    "derivation_id": {"type": "string"},
+    "report_id": {"type": "string", "pattern": "^rcid:v1:trust-assessment:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "report_digest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

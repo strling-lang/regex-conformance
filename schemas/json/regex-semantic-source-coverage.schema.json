@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/regex-semantic-source-coverage.schema.json",
+  "title": "Feature-level primary-authority coverage for the semantic freeze",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "cutoff", "semantic_snapshot", "features", "summary", "derivation_id", "report_id", "report_digest_sha256"],
+  "properties": {
+    "schema_version": {"const": "regex-semantic-source-coverage.v1"},
+    "cutoff": {"type": "string", "format": "date-time"},
+    "semantic_snapshot": {"type": "object"},
+    "features": {"type": "array", "minItems": 269, "items": {"type": "object", "required": ["feature_id", "source_ids", "source_classes", "authorities", "source_orphan", "independent_corroboration", "qualification"], "additionalProperties": true}},
+    "summary": {"type": "object", "required": ["feature_count", "source_identity_count", "source_orphan_count", "secondary_only_count", "independently_corroborated_count", "single_authority_count", "by_source_class"], "additionalProperties": true},
+    "derivation_id": {"type": "string"},
+    "report_id": {"type": "string", "pattern": "^rcid:v1:finding-revision:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "report_digest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

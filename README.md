@@ -35,12 +35,11 @@ foundation acceptance. This qualifies the machinery for versioned semantic
 reconstruction while leaving the non-passing full-data result above unchanged.
 See the [scientific foundation](docs/architecture/scientific-foundation.md).
 
-The current semantic knowledge snapshot retains the 251 researched predecessor
-features and expands the source-bound architecture to 268 features, 93
-variants, 324 manifestations, 33 operations, 15 semantic facets, and 59 source
-identities. Seventy-three omission and correction candidates have explicit
-evidence-backed dispositions; a separate adversarial exhaustion review remains
-before the semantic universe is frozen. The original predecessor snapshot at digest
+The current declared-cutoff semantic snapshot contains 269 researched features,
+93 variants, 326 manifestations, 33 operations, 15 semantic facets, 33
+modifiers, and 60 source identities. Five independent adversarial search
+strategies revalidated 73 prior candidates and dispositioned 18 residual
+candidates with no blocking item or source orphan. The original predecessor snapshot at digest
 `350bfea4c3da07b3426d885aa8ff645ac55539bbb1294a2ea35dd5319541d6c7`
 continues to bind the unchanged 12,048 obligations, 9,506 requirements, and
 bounded execution forecast until the dedicated obligation-derivation work
@@ -53,6 +52,8 @@ the [researched feature semantics](docs/architecture/researched-feature-semantic
 and [scientific implementation dependency
 architecture](docs/architecture/scientific-implementation-dependencies.md)
 and [semantic architecture dispositions](docs/architecture/semantic-architecture-dispositions.md).
+The bounded freeze claim and its supersession rules are documented in the
+[semantic universe freeze](docs/architecture/semantic-universe-freeze.md).
 
 Program planning, dependencies, decisions, risks, and certification gates are
 maintained in the canonical [STRling Regex Conformance Program][program-hub].

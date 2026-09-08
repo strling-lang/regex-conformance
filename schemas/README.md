@@ -127,6 +127,13 @@ scope, source binding, derivation, and stable scientific identity explicit;
 they do not regenerate the accepted obligation or vector-requirement
 populations.
 
+`json/regex-semantic-corpus-v4.schema.json` and the semantic-universe audit,
+candidate, source-coverage, freeze-manifest, authority-index, and identity-
+allocation schemas govern the declared-cutoff freeze. The compiler adds
+cross-artifact candidate closure, source-orphan detection, duplicate ownership
+checks, parent/reference validation, bounded supersession semantics, and exact
+predecessor-denominator byte commitments.
+
 `json/generated-assertion-derivation-catalog.schema.json` defines the shared
 provenance contract for assertion-like generated fields. It requires
 class-specific metadata for measurement, calculation, research-derived,

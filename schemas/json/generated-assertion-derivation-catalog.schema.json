@@ -89,7 +89,10 @@
         "artifact_class": {
           "enum": [
                     "audit-or-reconciliation-report",
+                    "audit-plan",
                     "adapter-release-manifest",
+                    "artifact-set-manifest",
+                    "authority-index",
                     "campaign-plan",
                     "certification-authority-index",
                     "certification-contract",

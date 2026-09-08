@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/regex-semantic-corpus-v4.schema.json",
+  "title": "Declared-cutoff frozen regex semantic universe",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "published_on", "status", "authority", "predecessor", "audit_plan", "candidate_ledger", "sources", "semantic_facets", "operations", "modifiers", "features", "manifestations", "carried_forward_by_reference", "counts", "snapshot_id", "snapshot_digest_sha256"],
+  "properties": {
+    "schema_version": {"const": "regex-semantic-corpus.v4"},
+    "published_on": {"type": "string", "format": "date"},
+    "status": {"const": "frozen-declared-cutoff-semantic-universe"},
+    "authority": {"type": "object", "required": ["claim", "cutoff", "denominator_boundary"], "additionalProperties": true},
+    "predecessor": {"$ref": "#/$defs/artifactRef"},
+    "audit_plan": {"$ref": "#/$defs/artifactRef"},
+    "candidate_ledger": {"$ref": "#/$defs/artifactRef"},
+    "sources": {"type": "array", "minItems": 59, "items": {"type": "object", "required": ["source_id", "title", "url", "source_class", "authority", "scope", "version_or_revision", "retrieved_on", "normative"], "additionalProperties": true}},
+    "semantic_facets": {"type": "array", "minItems": 15, "items": {"type": "object", "required": ["facet_id", "scientific_id", "domain", "derivation_id", "source_ids"], "additionalProperties": true}},
+    "operations": {"type": "array", "minItems": 33, "items": {"type": "object", "required": ["operation_id", "scientific_id", "semantic_contract", "derivation_id", "source_ids"], "additionalProperties": true}},
+    "modifiers": {"type": "array", "minItems": 33, "items": {"type": "object", "required": ["modifier_id", "name", "semantic_effect"], "additionalProperties": true}},
+    "features": {"type": "array", "minItems": 269, "items": {"$ref": "#/$defs/feature"}},
+    "manifestations": {"type": "array", "minItems": 326, "items": {"type": "object", "required": ["manifestation_id", "scientific_id", "source_id", "semantic_feature_id", "syntax_or_api_form", "kind", "derivation_id"], "additionalProperties": true}},
+    "carried_forward_by_reference": {"type": "object", "additionalProperties": true},
+    "counts": {"type": "object", "required": ["canonical_features", "semantic_variants", "syntax_manifestations", "modifiers", "operations", "semantic_facets", "source_identities", "retained_feature_identities", "new_feature_identities"], "additionalProperties": true},
+    "snapshot_id": {"type": "string", "pattern": "^rcid:v1:ontology-snapshot:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "snapshot_digest_sha256": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "artifactRef": {"type": "object", "required": ["path", "id", "digest_sha256"], "additionalProperties": true},
+    "assertion": {"type": "object", "required": ["field", "state", "scope", "statement", "source_ids", "derivation_id", "derivation_class", "rule_id"], "additionalProperties": true},
+    "feature": {"type": "object", "required": ["feature_id", "scientific_id", "canonical_name", "category", "feature_class", "semantic_revision", "semantic_assertions", "supported_operation_ids", "semantic_variants", "manifestation_ids", "identity_basis", "identity_disposition"], "additionalProperties": true, "properties": {"feature_id": {"type": "string", "pattern": "^feature\\."}, "scientific_id": {"type": "string", "pattern": "^rcid:v1:feature:u7:"}, "semantic_revision": {"const": 4}, "semantic_assertions": {"type": "object", "minProperties": 10, "additionalProperties": {"$ref": "#/$defs/assertion"}}}}
+  }
+}

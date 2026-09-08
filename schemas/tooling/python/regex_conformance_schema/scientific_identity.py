@@ -37,10 +37,11 @@ LEGACY_SEMANTIC_SNAPSHOT_PATH = Path(
     "semantic-corpus/snapshots/regex-semantic-features-2026-08-22.v1.json"
 )
 CURRENT_SEMANTIC_SNAPSHOT_PATH = Path(
-    "semantic-corpus/snapshots/regex-semantic-features-2026-09-07.v3.json"
+    "semantic-corpus/snapshots/regex-semantic-features-2026-09-08.v4.json"
 )
-SEMANTIC_ARCHITECTURE_ALLOCATION_PATH = Path(
-    "semantic-corpus/research/semantic-architecture-identities-2026-09-07.v1.json"
+SEMANTIC_ARCHITECTURE_ALLOCATION_PATHS = (
+    Path("semantic-corpus/research/semantic-architecture-identities-2026-09-07.v1.json"),
+    Path("semantic-corpus/research/semantic-universe-freeze-identities-2026-09-08.v1.json"),
 )
 SAFE_INTEGER_LIMIT = 9_007_199_254_740_991
 SUPERSESSION_KINDS = {
@@ -332,6 +333,11 @@ def collect_descriptors(root: Path) -> tuple[list[ScientificDescriptor], list[di
             ScientificDescriptor("operation", item["operation_id"], "semantic-snapshot", item)
             for item in current["operations"]
             if item["operation_id"] not in existing_keys
+        )
+        additions.extend(
+            ScientificDescriptor("modifier", item["modifier_id"], "semantic-snapshot", item)
+            for item in current["modifiers"]
+            if item["modifier_id"] not in existing_keys
         )
         for feature in current["features"]:
             if feature["feature_id"] not in existing_keys:
@@ -729,13 +735,15 @@ def initialize_catalog(root: Path, *, effective_date: str) -> dict[str, Any]:
         }
     owners = _owner_index(bindings)
     allocated: dict[tuple[str, str], str] = {}
-    allocation_path = root / SEMANTIC_ARCHITECTURE_ALLOCATION_PATH
-    if allocation_path.is_file():
-        allocation = load_strict(allocation_path)
-        allocated = {
-            (item["entity_class"], item["canonical_key"]): item["assigned_id"]
-            for item in allocation["allocations"]
-        }
+    for relative_path in SEMANTIC_ARCHITECTURE_ALLOCATION_PATHS:
+        allocation_path = root / relative_path
+        if allocation_path.is_file():
+            allocation = load_strict(allocation_path)
+            allocated.update({
+                (item["entity_class"], item["canonical_key"]): item["assigned_id"]
+                for item in allocation["allocations"]
+                if item["entity_class"] in ENTITY_NAMESPACES
+            })
     for descriptor in descriptors:
         if descriptor.key in owners:
             continue

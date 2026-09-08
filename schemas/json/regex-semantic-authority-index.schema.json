@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/regex-semantic-authority-index.schema.json",
+  "title": "Current regex semantic authority index",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "updated_on", "current_snapshot", "freeze_manifest", "historical_snapshots", "denominator_authority", "index_id", "index_digest_sha256"],
+  "properties": {
+    "schema_version": {"const": "regex-semantic-authority-index.v1"},
+    "updated_on": {"type": "string", "format": "date"},
+    "current_snapshot": {"type": "object"},
+    "freeze_manifest": {"type": "object"},
+    "historical_snapshots": {"type": "array", "minItems": 3, "items": {"type": "object"}},
+    "denominator_authority": {"type": "object"},
+    "index_id": {"type": "string", "pattern": "^rcid:v1:finding-revision:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "index_digest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

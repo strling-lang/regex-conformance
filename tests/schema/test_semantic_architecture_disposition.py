@@ -97,7 +97,7 @@ class SemanticArchitectureDispositionTests(unittest.TestCase):
         self.assertEqual(len(after) - len(before), 17)
         self.assertEqual(
             verify_identity_catalog(ROOT),
-            {"scientific_identities": 22427, "scientific_lineage_records": 0},
+            {"scientific_identities": 22431, "scientific_lineage_records": 0},
         )
 
     def test_predecessor_denominator_artifacts_are_byte_identical(self) -> None:

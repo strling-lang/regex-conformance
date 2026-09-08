@@ -2316,6 +2316,21 @@
       "status": "active"
     },
     {
+      "canonical_key": "feature.numeric-escape-disambiguation",
+      "entity_class": "feature",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:feature:u7:01a07e69-dfbc-7180-b0f0-8307812b7f6a",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-08",
+          "fingerprint_sha256": "bf23425b8138e88c4670b60ac119b2747c9c81c8b508a79eae5d71d24d23c70b",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
       "canonical_key": "feature.numeric-interval-language-atom",
       "entity_class": "feature",
       "former_keys": [],
@@ -5646,6 +5661,21 @@
       "status": "active"
     },
     {
+      "canonical_key": "manifestation.inline-modifier-directive.pcre2-caseless-restrict",
+      "entity_class": "manifestation",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:manifestation:u7:01a07e69-dfbc-7815-9965-1c1dcb1502b2",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-08",
+          "fingerprint_sha256": "640d6b0aa96283299d2770bcae843648772f1eb840d8014f78e077c1eb873a8c",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
       "canonical_key": "manifestation.inline-modifier-directive.pcre2-pattern",
       "entity_class": "manifestation",
       "former_keys": [],
@@ -6704,6 +6734,21 @@
         {
           "effective_date": "2026-09-06",
           "fingerprint_sha256": "4bdbea65a3d564782fbb4a45695e7cc469bd7a3112409fb5cb6c32de2598a992",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "manifestation.numeric-escape-disambiguation.pcre2-pattern",
+      "entity_class": "manifestation",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:manifestation:u7:01a07e69-dfbc-70cc-a455-58818e5ee7c5",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-08",
+          "fingerprint_sha256": "a121cb7d55c855dee41af6080d520acfa0967ec1108a78eca479995fed8bf60d",
           "lineage_record_id": null
         }
       ],
@@ -8939,6 +8984,21 @@
         {
           "effective_date": "2026-09-06",
           "fingerprint_sha256": "bbb62fa77f73953313c2e286d3baec75b063b9b401a1fad86a58aac5815ac4a7",
+          "lineage_record_id": null
+        }
+      ],
+      "source_role": "semantic-snapshot",
+      "status": "active"
+    },
+    {
+      "canonical_key": "modifier.caseless-restrict",
+      "entity_class": "modifier",
+      "former_keys": [],
+      "scientific_id": "rcid:v1:modifier:u7:01a07e69-dfbc-72bd-98e1-4ef966f984af",
+      "semantic_fingerprint_history": [
+        {
+          "effective_date": "2026-09-08",
+          "fingerprint_sha256": "326ab4b8340830a4b014a8653d6d6cef22fe9d8b2fb12844a5373cb542dc3fa4",
           "lineage_record_id": null
         }
       ],
@@ -336411,13 +336471,13 @@
       "status": "active"
     }
   ],
-  "catalog_digest_sha256": "a53122eb1371b485cdb597d73e6a6f7bad2b62772073240cff41624275060e97",
+  "catalog_digest_sha256": "835b07e0b275c44d08366d26f6df9036ef76adabf7009a0ffa69ff698dc19005",
   "counts": {
-    "active": 22427,
+    "active": 22431,
     "by_class": {
-      "feature": 268,
-      "manifestation": 324,
-      "modifier": 32,
+      "feature": 269,
+      "manifestation": 326,
+      "modifier": 33,
       "obligation": 12048,
       "operation": 33,
       "semantic-facet": 15,
@@ -336427,7 +336487,7 @@
     },
     "historical": 0,
     "lineage_records": 0,
-    "total": 22427
+    "total": 22431
   },
   "lineage_records": [],
   "namespace_registry": "registries/identity/namespaces.v3.json",
@@ -336439,8 +336499,8 @@
       "role": "semantic-projection"
     },
     {
-      "artifact_id": "rcid:v1:ontology-snapshot:h:jcs-sha256-v1:787cee25f0557ac042ea126f1afa219e537c119b4f3f007b19b471e8c2443d1c",
-      "digest_sha256": "453bd4019673e03944bd846a1897128956f9cac73b712bdb82e9942da9f1caf7",
+      "artifact_id": "rcid:v1:ontology-snapshot:h:jcs-sha256-v1:4c9afcd3ea350a6f6c0a429d96fd6b10ca7d142300ce9a39e94809a1f383899e",
+      "digest_sha256": "e2c99c582ad9c8f2875060f9cb9d3ec0da8057f554ac09477f8e07b96da30b05",
       "role": "semantic-snapshot"
     },
     {

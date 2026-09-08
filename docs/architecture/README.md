@@ -8,6 +8,7 @@ second program authority.
 - [Scientific identity and migration contract](scientific-identities.md)
 - [Researched feature semantics](researched-feature-semantics.md)
 - [Semantic architecture dispositions](semantic-architecture-dispositions.md)
+- [Declared-cutoff semantic universe freeze](semantic-universe-freeze.md)
 - [Generated assertion derivation contract](generated-assertion-derivations.md)
 - [Physical-attempt and terminal-outcome provenance](execution-provenance.md)
 - [Machine-readable certification contract](../../certification/README.md)

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/regex-semantic-universe-freeze-manifest.schema.json",
+  "title": "Declared-cutoff semantic-universe freeze manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "cutoff", "claim", "scope", "bound_artifacts", "counts", "closure", "supersession", "denominator_boundary", "manifest_id", "manifest_digest_sha256"],
+  "properties": {
+    "schema_version": {"const": "regex-semantic-universe-freeze-manifest.v1"},
+    "cutoff": {"type": "string", "format": "date-time"},
+    "claim": {"type": "string"},
+    "scope": {"type": "object"},
+    "bound_artifacts": {"type": "array", "minItems": 5, "items": {"type": "object", "required": ["role", "path", "id", "digest_sha256"], "additionalProperties": true}},
+    "counts": {"type": "object"},
+    "closure": {"type": "object", "required": ["blocking_candidates", "source_orphans", "invariants_passed", "result"], "additionalProperties": true},
+    "supersession": {"type": "object", "required": ["rule", "invalidation_conditions"], "additionalProperties": true},
+    "denominator_boundary": {"type": "object"},
+    "manifest_id": {"type": "string", "pattern": "^rcid:v1:artifact-set-manifest:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "manifest_digest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}
