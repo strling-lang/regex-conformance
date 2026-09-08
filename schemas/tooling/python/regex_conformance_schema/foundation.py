@@ -200,13 +200,18 @@ ALLOWED_FULL_PASS_PREFIXES = (
     "foundation/",
     "tests/",
 )
-ALLOWED_FULL_PASS_PATHS = {"README.md"}
+ALLOWED_FULL_PASS_PATHS = {
+    "README.md",
+    "reports/semantics/semantic-knowledge-architecture-acceptance-2026-09-08.v1.json",
+}
 ALLOWED_FULL_PASS_SCHEMA_PATHS = {
     "schemas/json/certification-contract.schema.json",
     "schemas/json/certification-predicate-fixtures.schema.json",
     "schemas/json/scientific-foundation-acceptance.schema.json",
+    "schemas/json/semantic-knowledge-foundation-acceptance.schema.json",
     "schemas/tooling/python/regex_conformance_schema/certification.py",
     "schemas/tooling/python/regex_conformance_schema/foundation.py",
+    "schemas/tooling/python/regex_conformance_schema/semantic_foundation.py",
 }
 
 

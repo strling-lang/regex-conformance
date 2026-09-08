@@ -668,7 +668,6 @@ def build_acceptance_report(root: Path, manifest: dict[str, Any]) -> dict[str, A
         "denominator_baseline": {"artifacts_unchanged": denominator["artifact_sha256"] == DENOMINATOR_SHA256, **denominator},
         "current_scientific_certification": {
             "final_state": certification["final_state"],
-            "certification_eligible": certification["certification_eligible"],
             "criterion_states": criteria,
             "c4_completion": "0/9506",
         },

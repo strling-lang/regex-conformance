@@ -28,6 +28,7 @@ from regex_conformance_schema.semantic_foundation import (
     validate_acceptance_report,
     validate_manifest,
 )
+from regex_conformance_schema.foundation import scan_certification_bypasses
 
 
 class SemanticKnowledgeFoundationTests(unittest.TestCase):
@@ -58,6 +59,9 @@ class SemanticKnowledgeFoundationTests(unittest.TestCase):
         changed_denominator["denominator_baseline"]["artifact_sha256"]["vector_requirements"] = "0" * 64
         with self.assertRaises(ConformanceDataError):
             validate_manifest(ROOT, changed_denominator, verify_current_files=False)
+
+    def test_scoped_acceptance_report_does_not_bypass_certification_authority(self) -> None:
+        self.assertEqual(scan_certification_bypasses(ROOT), [])
 
     def test_source_orphan_and_template_regression_fail_closed(self) -> None:
         orphan = deepcopy(self.coverage)

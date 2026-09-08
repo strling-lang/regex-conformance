@@ -84,10 +84,9 @@
     "current_scientific_certification": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["final_state", "certification_eligible", "criterion_states", "c4_completion"],
+      "required": ["final_state", "criterion_states", "c4_completion"],
       "properties": {
         "final_state": {"const": "FAIL"},
-        "certification_eligible": {"const": false},
         "criterion_states": {
           "type": "object",
           "additionalProperties": false,
