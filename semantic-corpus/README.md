@@ -76,6 +76,7 @@ python tools/semantics/compile_researched_semantics.py --check
 python tools/semantics/compile_semantic_architecture.py --check
 python tools/semantics/freeze_semantic_universe.py --check
 python tools/semantics/certify_semantic_knowledge.py --check
+python tools/semantics/define_obligation_derivation.py --check
 ```
 
 The predecessor compiler's generated products are:
@@ -111,6 +112,13 @@ The semantic knowledge acceptance compiler publishes a content-derived
 foundation manifest and acceptance report. It validates integration and
 denominator readiness without emitting obligations or advancing denominator
 authority.
+
+The explainable-obligation compiler consumes that accepted semantic authority
+and publishes a versioned rule contract, a complete analysis of the predecessor
+fixed grid, and a non-authoritative dry run. It makes one explicit decision per
+feature/facet pair, binds conditions to scientific identities, and has no
+uniform fallback. Its analysis keys are not canonical obligation IDs, and it
+does not regenerate or supersede the predecessor denominator.
 
 Published semantic artifacts remain immutable. The companion derivation
 inventory records that legacy fixed audit, discovery, facility-reconciliation,

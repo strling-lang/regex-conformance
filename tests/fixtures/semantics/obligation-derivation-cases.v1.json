@@ -1,0 +1,19 @@
+{
+  "schema_version": "obligation-derivation-fixtures.v1",
+  "contract_path": "ontology/derivations/regex-obligation-derivation-rules-2026-09-08.v1.json",
+  "cases": [
+    {"case_id": "simple-feature-suppresses-capture", "feature_id": "feature.absent-expression", "facet_id": "facet.capture", "expected_decision": "not-required-by-feature-semantics", "expected_archetype_ids": [], "expected_question_type": "characterization-only"},
+    {"case_id": "capture-heavy-feature", "feature_id": "feature.capture-history", "facet_id": "facet.capture", "expected_decision": "required", "expected_archetype_ids": ["archetype.host-result"]},
+    {"case_id": "unicode-sensitive-feature", "feature_id": "feature.unicode-line-break-boundary", "facet_id": "facet.unicode-encoding", "expected_decision": "required", "expected_archetype_ids": ["archetype.alternative-semantic-mode", "archetype.boundary-behavior"]},
+    {"case_id": "replacement-only-feature", "feature_id": "feature.append-replacement-state", "facet_id": "facet.replacement", "expected_decision": "required", "expected_archetype_ids": ["archetype.repeated-iteration", "archetype.replacement-output"]},
+    {"case_id": "implementation-defined-is-conditional", "feature_id": "feature.atomic-group", "facet_id": "facet.capture", "expected_decision": "conditionally-required", "expected_archetype_ids": ["archetype.host-result"], "expected_question_type": "implementation-documentation-capable"},
+    {"case_id": "under-specified-is-characterization", "feature_id": "feature.absent-expression", "facet_id": "facet.capture", "semantic_state_overrides": [{"field": "capture_result", "state": "intentionally-under-specified", "scope": "canonical-invariant"}], "expected_decision": "required", "expected_archetype_ids": ["archetype.host-result"], "expected_question_type": "characterization-only"},
+    {"case_id": "unresolved-blocks-derivation", "feature_id": "feature.absent-expression", "facet_id": "facet.capture", "semantic_state_overrides": [{"field": "capture_result", "state": "unresolved", "scope": "canonical-invariant"}], "expected_decision": "blocked-by-unresolved-semantics", "expected_archetype_ids": [], "expected_question_type": "unresolved"},
+    {"case_id": "phase-sensitive-parse-behavior", "feature_id": "feature.numeric-escape-disambiguation", "facet_id": "facet.phase", "expected_decision": "conditionally-required", "expected_archetype_ids": ["archetype.phase-specific"]},
+    {"case_id": "documented-complexity-guarantee", "feature_id": "feature.linear-time-guarantee", "facet_id": "facet.complexity-guarantee", "expected_decision": "required", "expected_archetype_ids": ["archetype.complexity-guarantee"], "expected_question_type": "implementation-documentation-capable"},
+    {"case_id": "security-quoting-boundary", "feature_id": "feature.escaped-literal", "facet_id": "facet.security-context", "expected_decision": "conditionally-required", "expected_archetype_ids": ["archetype.security-boundary"]},
+    {"case_id": "streaming-state", "feature_id": "feature.streaming-match", "facet_id": "facet.phase", "expected_decision": "conditionally-required", "expected_archetype_ids": ["archetype.phase-specific"]},
+    {"case_id": "expression-algebra-core", "feature_id": "feature.expression-intersection", "facet_id": "facet.core-match", "expected_decision": "required", "expected_archetype_ids": ["archetype.defining-negative", "archetype.defining-positive"]},
+    {"case_id": "typed-interaction", "feature_id": "feature.assertion-conditional", "facet_id": "facet.interaction-composition", "expected_decision": "required", "expected_archetype_ids": ["archetype.interaction-specific"], "expected_question_type": "relational/metamorphic-candidate"}
+  ]
+}

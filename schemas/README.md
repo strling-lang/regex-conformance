@@ -143,6 +143,15 @@ the structured semantic states are sufficient inputs to successor obligation
 derivation, and preserves exact byte commitments to the predecessor
 obligation, requirement, projection, and forecast artifacts.
 
+The obligation-derivation schema family governs the typed identity allocation,
+versioned feature-specific rule contract, hand-reviewed representative
+fixtures, complete predecessor-case analysis, and non-authoritative all-feature
+dry run. Cross-artifact validation requires one explicit decision for every
+frozen feature/facet pair, closed semantic-state and capability-predicate
+vocabularies, scientific-identity references for conditional applicability,
+bounded variant and interaction attribution, no generic fallback, deterministic
+explanation traces, and byte-stable predecessor denominator artifacts.
+
 `json/generated-assertion-derivation-catalog.schema.json` defines the shared
 provenance contract for assertion-like generated fields. It requires
 class-specific metadata for measurement, calculation, research-derived,

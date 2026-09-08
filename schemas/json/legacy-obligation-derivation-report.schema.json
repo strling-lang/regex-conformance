@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/legacy-obligation-derivation-report.schema.json",
+  "title": "Legacy obligation derivation analysis",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "published_on", "classification", "source_projection", "current_semantic_authority", "rule_contract", "legacy_construction", "summary", "by_legacy_facet", "obligation_cases", "underrepresented_current_semantics", "denominator_boundary", "derivation_id", "derivation_revision_id", "report_id", "report_digest_sha256"],
+  "properties": {
+    "schema_version": {"const": "legacy-obligation-derivation-report.v1"},
+    "published_on": {"type": "string", "format": "date"},
+    "classification": {"type": "object", "additionalProperties": false, "required": ["historical_analysis_only", "predecessor_artifacts_modified", "new_denominator_authority"], "properties": {"historical_analysis_only": {"const": true}, "predecessor_artifacts_modified": {"const": false}, "new_denominator_authority": {"const": false}}},
+    "source_projection": {"type": "object", "required": ["path", "projection_id", "file_sha256", "obligation_count"], "properties": {"path": {"type": "string"}, "projection_id": {"type": "string"}, "file_sha256": {"$ref": "#/$defs/digest"}, "obligation_count": {"const": 12048}}, "additionalProperties": false},
+    "current_semantic_authority": {"type": "object", "minProperties": 3},
+    "rule_contract": {"type": "object", "minProperties": 3},
+    "legacy_construction": {"type": "object", "required": ["formula", "feature_count", "cases_per_feature", "facet_count", "obligation_count", "executable_requirement_count", "derivation_classes"], "properties": {"formula": {"type": "string"}, "feature_count": {"const": 251}, "cases_per_feature": {"const": 48}, "facet_count": {"const": 12}, "obligation_count": {"const": 12048}, "executable_requirement_count": {"const": 9506}, "derivation_classes": {"type": "array", "minItems": 1}}, "additionalProperties": false},
+    "summary": {"type": "object", "required": ["obligations_audited", "by_analysis_classification", "underrepresented_current_feature_facet_pairs"], "properties": {"obligations_audited": {"const": 12048}, "by_analysis_classification": {"type": "object", "minProperties": 1, "additionalProperties": {"type": "integer", "minimum": 0}}, "underrepresented_current_feature_facet_pairs": {"type": "integer", "minimum": 0}}, "additionalProperties": false},
+    "by_legacy_facet": {"type": "array", "minItems": 12, "maxItems": 12},
+    "obligation_cases": {"type": "array", "minItems": 12048, "maxItems": 12048, "items": {"type": "object", "additionalProperties": false, "required": ["legacy_obligation_id", "feature_id", "legacy_facet", "legacy_case", "legacy_classification", "current_facet_id", "analysis_classification", "current_rule_revision_id", "rationale"], "properties": {"legacy_obligation_id": {"type": "string", "pattern": "^obligation\\."}, "feature_id": {"type": "string", "pattern": "^feature\\."}, "legacy_facet": {"type": "string"}, "legacy_case": {"type": "string"}, "legacy_classification": {"type": "string"}, "current_facet_id": {"type": "string", "pattern": "^facet\\."}, "analysis_classification": {"enum": ["semantically-supported-by-current-frozen-input", "uniform-template-without-feature-specific-trigger", "ambiguous-historical-rationale"]}, "current_rule_revision_id": {"type": "string", "pattern": "^rcid:v1:applicability-rule-set:h:"}, "rationale": {"type": "string"}}}},
+    "underrepresented_current_semantics": {"type": "array", "items": {"type": "object", "required": ["feature_id", "facet_id", "provisional_obligation_count", "reason"], "properties": {"feature_id": {"type": "string"}, "facet_id": {"type": "string"}, "provisional_obligation_count": {"type": "integer", "minimum": 1}, "reason": {"type": "string"}}, "additionalProperties": false}},
+    "denominator_boundary": {"type": "object", "minProperties": 5},
+    "derivation_id": {"type": "string", "pattern": "^rcid:v1:assertion-derivation:u7:"},
+    "derivation_revision_id": {"type": "string", "pattern": "^rcid:v1:assertion-derivation-revision:h:"},
+    "report_id": {"type": "string", "pattern": "^rcid:v1:finding-revision:h:"},
+    "report_digest_sha256": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {"digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+}

@@ -100,6 +100,7 @@ DERIVATION_IDS = {
     "researched-feature-semantics": "rcid:v1:assertion-derivation:u7:01a07cfa-78e3-7de8-9559-e045f4e27cc0",
     "semantic-architecture-disposition": "rcid:v1:assertion-derivation:u7:01a07d86-1c67-7e4e-9237-baaaf44f8639",
     "semantic-universe-freeze": "rcid:v1:assertion-derivation:u7:01a07e69-dfbc-7506-91ad-45f3775dc29a",
+    "obligation-derivation": "rcid:v1:assertion-derivation:u7:01a08125-97ae-7633-b217-ca1d0fa22fbf",
 }
 
 ALLOWED_GATES_BY_CLASS = {
@@ -588,6 +589,31 @@ def _derivation_specs(root: Path) -> list[dict[str, Any]]:
             "notes": "The derivation supports only the versioned cutoff-and-methodology claim; it does not assert timeless completeness or regenerate the obligation denominator.",
         },
         {
+            "key": "obligation-derivation",
+            "title": "Feature-specific semantic obligation derivation",
+            "derivation_class": "calculation",
+            "method_key": "semantic-obligation-rule-evaluation",
+            "method_version": "1.0.0",
+            "input_references": [
+                "semantic-corpus/snapshots/regex-semantic-features-2026-09-08.v4.json",
+                "ontology/derivations/regex-obligation-derivation-rules-2026-09-08.v1.json",
+            ],
+            "authority_references": [
+                "semantic-corpus/foundation/semantic-knowledge-architecture.v1.json"
+            ],
+            "allowed_gate_kinds": ["forecast-calculation", "structural-integrity"],
+            "independent_evidence": False,
+            "metadata": {
+                "kind": "calculation",
+                "input_references": [
+                    "the exact frozen semantic assertions, facets, operations, variants, manifestations, modifiers and typed relations named by each rule"
+                ],
+                "procedure_ref": "schemas/tooling/python/regex_conformance_schema/obligation_derivation.py",
+                "formula": "Evaluate one explicit facet rule per feature, preserve structured semantic state, resolve only declared operation predicates, and emit required, conditional, suppressed, or blocked decisions without a generic fallback.",
+            },
+            "notes": "Rule evaluation explains a prospective obligation decision; it does not strengthen its semantic inputs or advance denominator authority.",
+        },
+        {
             "key": "certification-predicate-calculation",
             "title": "Versioned certification predicate evaluation",
             "derivation_class": "calculation",
@@ -1053,6 +1079,82 @@ def _artifact_specs() -> tuple[ArtifactSpec, ...]:
             ),
             coverage_selectors=("/",),
             schema_reference="schemas/json/semantic-knowledge-foundation-acceptance.schema.json",
+        ),
+        ArtifactSpec(
+            "ontology/derivations/obligation-derivation-identities-2026-09-08.v1.json",
+            "identity-lock",
+            "current-generated",
+            ("tools/semantics/define_obligation_derivation.py",),
+            (
+                _b("/allocations", "manual-registry-decision", "governance", "One-time typed allocation for the obligation-derivation method and artifact schema families."),
+            ),
+            coverage_selectors=("/allocations",),
+            schema_reference="schemas/json/obligation-derivation-allocation.schema.json",
+        ),
+        ArtifactSpec(
+            "ontology/derivations/regex-obligation-derivation-rules-2026-09-08.v1.json",
+            "governed-registry",
+            "current-generated",
+            ("tools/semantics/define_obligation_derivation.py",),
+            (
+                _b("/", "manual-registry-decision", "governance", "Accepted obligation question, state, facet, operation, interaction, and identity rules."),
+                _b("/semantic_authority", "artifact-measurement", "measurement", "Exact frozen semantic authority identity, digest, and populations."),
+                _b("/semantic_foundation", "artifact-measurement", "measurement", "Measured byte binding to the accepted semantic knowledge foundation."),
+                _b("/denominator_boundary/artifact_sha256", "artifact-measurement", "measurement", "Measured byte digests proving predecessor denominator immutability."),
+                _b("/contract_digest_sha256", "obligation-derivation", "validation", "Canonical digest of the rule contract content."),
+                _b("/contract_id", "obligation-derivation", "validation", "Content-derived rule-contract identity."),
+                _b("/facet_rules/*/rule_revision_id", "obligation-derivation", "validation", "Content-derived identity of each facet-rule revision."),
+                _b("/operation_rules/*/rule_revision_id", "obligation-derivation", "validation", "Content-derived identity of each operation-rule revision."),
+            ),
+            coverage_selectors=("/",),
+            schema_reference="schemas/json/obligation-derivation-contract.schema.json",
+        ),
+        ArtifactSpec(
+            "reports/semantics/legacy-obligation-derivation-analysis-2026-09-08.v1.json",
+            "audit-or-reconciliation-report",
+            "current-generated",
+            ("tools/semantics/define_obligation_derivation.py",),
+            (
+                _b("/", "obligation-derivation", "audit", "Deterministic per-obligation reconstruction of the predecessor fixed-grid rationale against frozen feature semantics."),
+                _b("/source_projection/file_sha256", "artifact-measurement", "measurement", "Measured byte digest of the immutable predecessor projection."),
+                _b("/denominator_boundary/artifact_sha256", "artifact-measurement", "measurement", "Measured byte digests proving predecessor denominator immutability."),
+                _b("/classification", "classification-guard", "structural", "Protective historical-analysis and non-authority declarations."),
+            ),
+            coverage_selectors=("/",),
+            count_contracts=(
+                _c("/summary/obligations_audited", "collection-length", ["/obligation_cases"], "legacy obligation cases", "Every predecessor obligation receives one analysis row."),
+                _c("/summary/underrepresented_current_feature_facet_pairs", "collection-length", ["/underrepresented_current_semantics"], "current feature/facet pairs absent from the predecessor grid", "Exact underrepresented collection length."),
+            ),
+            schema_reference="schemas/json/legacy-obligation-derivation-report.schema.json",
+        ),
+        ArtifactSpec(
+            "reports/semantics/obligation-derivation-dry-run-2026-09-08.v1.json",
+            "forecast",
+            "current-generated",
+            ("tools/semantics/define_obligation_derivation.py",),
+            (
+                _b("/", "obligation-derivation", "forecast", "Deterministic non-authoritative evaluation of every frozen feature/facet pair."),
+                _b("/semantic_authority", "artifact-measurement", "measurement", "Exact frozen semantic authority identity, digest, and feature population."),
+                _b("/denominator_boundary/artifact_sha256", "artifact-measurement", "measurement", "Measured byte digests proving predecessor denominator immutability."),
+                _b("/classification", "classification-guard", "structural", "Protective dry-run, non-authority, and non-execution declarations."),
+            ),
+            coverage_selectors=("/",),
+            count_contracts=(
+                _c("/summary/feature_count", "collection-length", ["/feature_results"], "frozen semantic features", "Every feature receives one summary row."),
+                _c("/summary/facet_decisions", "collection-length", ["/decisions"], "feature/facet decisions", "Every feature/facet pair receives exactly one decision."),
+            ),
+            schema_reference="schemas/json/obligation-derivation-dry-run.schema.json",
+        ),
+        ArtifactSpec(
+            "tests/fixtures/semantics/obligation-derivation-cases.v1.json",
+            "governed-registry",
+            "governed-registry",
+            ("governed-manual-entry",),
+            (
+                _b("/cases", "manual-registry-decision", "validation", "Hand-enumerated expected derivation decisions for representative real and adversarial semantic states."),
+            ),
+            coverage_selectors=("/cases",),
+            schema_reference="schemas/json/obligation-derivation-fixtures.schema.json",
         ),
         ArtifactSpec(
             "ontology/projections/regex-semantic-projection-2026-08-22.v1.json",

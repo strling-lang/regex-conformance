@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/obligation-derivation-fixtures.schema.json",
+  "title": "Hand-enumerated obligation derivation cases",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "contract_path", "cases"],
+  "properties": {
+    "schema_version": {"const": "obligation-derivation-fixtures.v1"},
+    "contract_path": {"type": "string"},
+    "cases": {"type": "array", "minItems": 11, "uniqueItems": true, "items": {"type": "object", "additionalProperties": false, "required": ["case_id", "feature_id", "facet_id", "expected_decision", "expected_archetype_ids"], "properties": {"case_id": {"type": "string"}, "feature_id": {"type": "string", "pattern": "^feature\\."}, "facet_id": {"type": "string", "pattern": "^facet\\."}, "semantic_state_overrides": {"type": "array", "items": {"type": "object", "additionalProperties": false, "required": ["field", "state"], "properties": {"field": {"type": "string"}, "state": {"enum": ["known", "no-feature-specific-implication", "not-applicable", "implementation-defined", "profile-dependent", "intentionally-under-specified", "unresolved"]}, "scope": {"type": "string"}}}}, "expected_decision": {"enum": ["required", "conditionally-required", "not-applicable", "not-required-by-feature-semantics", "blocked-by-unresolved-semantics"]}, "expected_archetype_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^archetype\\."}}, "expected_question_type": {"type": "string"}}}}
+  }
+}

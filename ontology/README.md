@@ -7,3 +7,5 @@ duplicate the canonical semantic taxonomy.
 - `snapshots/` — exact historical external and local source snapshot references
 - `crosswalks/` — durable local-to-snapshot reference mappings
 - `projections/` — content-derived executable feature/expectation projections
+- `derivations/` — versioned rules that explain prospective semantic
+  obligations without materializing or promoting a denominator

@@ -50,13 +50,14 @@ assertion must resolve to exactly one most-specific derivation. Count contracts
 separately name the declared field, counted population, input selectors,
 calculation rule, and resolution of any legacy ambiguity.
 
-At this revision the inventory covers all 41 tracked generated or governed
+At this revision the inventory covers all 64 tracked generated or governed
 assertion surfaces in the semantic snapshot/projection/requirement family,
 identity lock, universe and profile registries, adapter qualification
 manifests, sustained-qualification policy, campaign plans, scale and
 qualification reports, forecasts, downstream checkpoint index, and
-certification contract/input/report/authority/fixture family. It binds
-512,768 assertion occurrences through 178 shared groups and validates 53 count
+certification contract/input/report/authority/fixture family and the prospective
+obligation-rule contract, fixtures, legacy analysis, and dry-run report. It binds
+1,034,993 assertion occurrences through 255 shared groups and validates 88 count
 contracts. Of those occurrences, 270,682 are marked as having had legacy
 evidence-strength or counted-population ambiguity; the large majority are the
 uniform generated obligation template.

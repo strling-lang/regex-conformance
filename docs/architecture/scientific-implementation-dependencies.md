@@ -120,14 +120,19 @@ not full data certification and does not advance denominator authority.
 
 ### Derive the true obligation denominator
 
-The next dependency is to define the explainable rules that consume the frozen
-semantic states, facets, canonical operations, variants, manifestations, and
-typed relations.
+The explainable derivation contract now consumes the frozen semantic states,
+all canonical facets and operations, variants, manifestations, modifiers, and
+typed relations. It makes one explicit required, conditional, suppressed, or
+blocked decision for every feature/facet pair, uses scientific identities in
+profile predicates, and has no uniform fallback. Its all-feature analysis is a
+dry run and does not advance denominator authority. See
+[Explainable obligation derivation](explainable-obligation-derivation.md).
 
-Emit obligations from feature-specific semantic applicability instead of a
-uniform template product. Every emitted obligation must explain the semantic
-facts and rules that caused it to exist. Only then regenerate the requirement
-snapshot and lower, expected, and conservative denominator forecasts.
+The next dependency is to materialize the accepted obligation population,
+apply permanent obligation identities and lineage, generate the corresponding
+requirement snapshot, and update lower, expected, and conservative denominator
+forecasts. Each emitted obligation must retain the semantic facts and rule
+revision that caused it to exist.
 
 ### Establish oracle, applicability, and adjudication contracts
 
