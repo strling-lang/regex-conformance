@@ -184,6 +184,7 @@ FULL_PASS_MARKERS = (
 )
 ALLOWED_AUTHORITATIVE_MARKER_PATHS = {
     "certification/reports/current-repository.v1.json",
+    "certification/reports/current-repository-2026-09-08.v2.json",
     "registries/provenance/generated-assertion-derivations.v1.json",
     "schemas/json/scientific-foundation-acceptance.schema.json",
     "schemas/json/certification-report.schema.json",

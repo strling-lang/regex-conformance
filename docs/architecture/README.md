@@ -11,6 +11,7 @@ second program authority.
 - [Declared-cutoff semantic universe freeze](semantic-universe-freeze.md)
 - [Semantic knowledge architecture acceptance](semantic-knowledge-architecture.md)
 - [Explainable obligation derivation](explainable-obligation-derivation.md)
+- [Canonical semantic obligations and requirements](semantic-obligation-snapshots.md)
 - [Generated assertion derivation contract](generated-assertion-derivations.md)
 - [Physical-attempt and terminal-outcome provenance](execution-provenance.md)
 - [Machine-readable certification contract](../../certification/README.md)

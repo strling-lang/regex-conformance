@@ -1525,8 +1525,7 @@ def build_vector_requirements(projection: dict[str, Any]) -> dict[str, Any]:
         )
     existing_vector_paths = sorted(
         path.relative_to(ROOT).as_posix()
-        for path in (ROOT / "vectors").rglob("*.json")
-        if path != VECTOR_REQUIREMENTS_PATH
+        for path in (ROOT / "vectors" / "definitions").rglob("*.json")
     )
     artifact: dict[str, Any] = {
         "schema_version": VECTOR_REQUIREMENTS_SCHEMA,

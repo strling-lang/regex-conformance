@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/semantic-requirement-projection-v2.schema.json",
+  "title": "Semantic requirement projection v2",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "published_on", "authority_status", "semantic_snapshot", "obligation_snapshot", "requirement_snapshot", "counts", "features", "operations", "facets", "requirements", "profile_expansion", "projection_id", "projection_digest_sha256"],
+  "properties": {
+    "schema_version": {"const": "semantic-requirement-projection.v2"}, "published_on": {"type": "string", "format": "date"}, "authority_status": {"const": "current-semantic-denominator-input"},
+    "semantic_snapshot": {"type": "object"}, "obligation_snapshot": {"type": "object"}, "requirement_snapshot": {"type": "object"}, "counts": {"type": "object"},
+    "features": {"type": "array", "minItems": 269, "maxItems": 269, "items": {"type": "object"}}, "operations": {"type": "array", "minItems": 33, "maxItems": 33, "items": {"type": "object"}}, "facets": {"type": "array", "minItems": 15, "maxItems": 15, "items": {"type": "object"}},
+    "requirements": {"type": "array", "minItems": 1, "items": {"type": "object"}}, "profile_expansion": {"type": "object"},
+    "projection_id": {"type": "string", "pattern": "^rcid:v1:ontology-projection:h:"}, "projection_digest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

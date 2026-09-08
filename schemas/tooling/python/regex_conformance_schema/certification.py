@@ -25,9 +25,9 @@ from .schema import validate_instance
 from .scientific_identity import verify_catalog as verify_scientific_identity_catalog
 
 
-CONTRACT_PATH = Path("certification/contracts/regex-conformance-certification.v1.json")
-CURRENT_INPUT_PATH = Path("certification/inputs/current-repository.v1.json")
-CURRENT_REPORT_PATH = Path("certification/reports/current-repository.v1.json")
+CONTRACT_PATH = Path("certification/contracts/regex-conformance-certification.v1.1.json")
+CURRENT_INPUT_PATH = Path("certification/inputs/current-repository-2026-09-08.v2.json")
+CURRENT_REPORT_PATH = Path("certification/reports/current-repository-2026-09-08.v2.json")
 CURRENT_AUTHORITY_PATH = Path("certification/current-authority.v1.json")
 FIXTURE_PATH = Path("tests/fixtures/certification/certification-predicates.v1.json")
 NAMESPACE_PATH = Path("registries/identity/namespaces.v2.json")
@@ -265,7 +265,7 @@ def build_contract(root: Path) -> dict[str, Any]:
     body = {
         "schema_version": "certification-contract.v1",
         "contract_key": "regex-conformance-completeness",
-        "contract_version": "1.0.0",
+        "contract_version": "1.1.0",
         "governing_authorities": sorted(_authority_names()),
         "implementation_bindings": _implementation_bindings(root),
         "authority_boundary": {
@@ -380,7 +380,7 @@ def _finalize_input(root: Path, record: dict[str, Any]) -> dict[str, Any]:
 
 
 def build_current_input(root: Path, contract: dict[str, Any]) -> dict[str, Any]:
-    requirement_path = "vectors/requirements/regex-semantic-vector-requirements-2026-08-22.v1.json"
+    requirement_path = "vectors/requirements/regex-semantic-vector-requirements-2026-09-08.v2.json"
     identity_path = "registries/identity/scientific-identities.v1.json"
     universe_path = "registries/universe/full-known-universe-2026-08-15.v1.json"
     profile_path = "registries/profiles/vertical-slice-coordinates.v1.json"
@@ -391,7 +391,13 @@ def build_current_input(root: Path, contract: dict[str, Any]) -> dict[str, Any]:
     source_artifacts = [
         _artifact_reference(root, universe_path, "universe-planning-index", "planning-only"),
         _artifact_reference(root, identity_path, "scientific-identity-catalog", "canonical"),
-        _artifact_reference(root, requirement_path, "semantic-requirement-ledger", "canonical"),
+        _artifact_reference(
+            root,
+            requirement_path,
+            "semantic-requirement-ledger",
+            "canonical",
+            load_strict(root / requirement_path)["snapshot_id"],
+        ),
         _artifact_reference(root, profile_path, "profile-registry-slice", "qualification-only"),
         _artifact_reference(root, campaign_path, "campaign-plan", "qualification-only", campaign_manifest_id),
         _artifact_reference(root, execution_path, "execution-lineage-fixture", "validation-fixture"),
@@ -412,11 +418,13 @@ def build_current_input(root: Path, contract: dict[str, Any]) -> dict[str, Any]:
             sources=[profile_path],
         ),
         "C4": {
-            "input_mode": "semantic-vector-requirements-v1",
+            "input_mode": "semantic-requirement-snapshot-v1",
             "population_status": "complete",
             "source_artifact_refs": [identity_path, requirement_path],
             "derivation_revision_ids": sorted([
                 revisions["semantic-source-synthesis"],
+                revisions["semantic-obligation-rule-evaluation"],
+                revisions["semantic-denominator-materialization"],
                 revisions["vector-requirement-accounting"],
             ]),
             "blockers": [], "members": [], "lineage_set": None, "zero_result_manifest": None,
@@ -689,7 +697,8 @@ def _evaluate_c4_repository(root: Path, criterion: dict[str, Any], item: dict[st
         return _result(criterion, "BLOCKED", denominator=None, numerator=None, derivation_classes=classes, evidence=set(item["source_artifact_refs"]), diagnostics=diagnostics)
     ledger = load_strict(root / requirement_path)
     requirements = ledger["requirements"]
-    declared = ledger["counts"]["minimum_vector_definitions"]
+    successor = ledger.get("schema_version") == "semantic-requirement-snapshot.v1"
+    declared = ledger["counts"]["total"] if successor else ledger["counts"]["minimum_vector_definitions"]
     if declared != len(requirements):
         diagnostics.append({"code": "vector-requirement-count-mismatch", "message": "The declared vector-requirement count differs from its collection."})
     _verified_scientific_identity_catalog(root)
@@ -699,11 +708,15 @@ def _evaluate_c4_repository(root: Path, criterion: dict[str, Any], item: dict[st
     numerator: list[str] = []
     seen: set[str] = set()
     for requirement in requirements:
-        binding = by_key.get(requirement["requirement_id"])
+        requirement_key = requirement["requirement_key"] if successor else requirement["requirement_id"]
+        binding = by_key.get(requirement_key)
         if binding is None:
             diagnostics.append({"code": "semantic-identity-stale", "message": "A requirement has no frozen scientific identity."})
             continue
-        identifier = binding["scientific_id"]
+        identifier = requirement.get("scientific_id", binding["scientific_id"])
+        if identifier != binding["scientific_id"]:
+            diagnostics.append({"code": "semantic-identity-stale", "message": "A requirement scientific identity disagrees with the canonical catalog binding.", "member_ids": [identifier]})
+            continue
         if identifier in seen:
             diagnostics.append({"code": "duplicate-requirement-owner", "message": "Two requirements resolve to one scientific identity.", "member_ids": [identifier]})
             continue
@@ -761,7 +774,7 @@ def evaluate(root: Path, contract: dict[str, Any], input_set: dict[str, Any]) ->
                 derivation_classes=set(), evidence=set(item["source_artifact_refs"]),
                 diagnostics=deepcopy(item["blockers"]),
             ))
-        elif item["input_mode"] == "semantic-vector-requirements-v1" and criterion_id == "C4":
+        elif item["input_mode"] in {"semantic-vector-requirements-v1", "semantic-requirement-snapshot-v1"} and criterion_id == "C4":
             results.append(_evaluate_c4_repository(root, definition, item))
         elif item["input_mode"] == "execution-lineage-set-v1" and criterion_id == "C5":
             results.append(_evaluate_c5(root, definition, item))

@@ -77,6 +77,7 @@ python tools/semantics/compile_semantic_architecture.py --check
 python tools/semantics/freeze_semantic_universe.py --check
 python tools/semantics/certify_semantic_knowledge.py --check
 python tools/semantics/define_obligation_derivation.py --check
+python tools/semantics/generate_obligation_snapshots.py --check
 ```
 
 The predecessor compiler's generated products are:
@@ -119,6 +120,13 @@ fixed grid, and a non-authoritative dry run. It makes one explicit decision per
 feature/facet pair, binds conditions to scientific identities, and has no
 uniform fallback. Its analysis keys are not canonical obligation IDs, and it
 does not regenerate or supersede the predecessor denominator.
+
+The semantic-denominator materializer consumes those accepted decisions,
+allocates permanent obligation and requirement identities, and publishes the
+current 2,390-obligation / 3,378-requirement snapshots plus total predecessor
+reconciliation and a compact downstream projection. The original 12,048/9,506
+artifacts remain immutable historical authority for their own earlier reports.
+No concrete vector or profile-expanded coordinate is produced.
 
 Published semantic artifacts remain immutable. The companion derivation
 inventory records that legacy fixed audit, discovery, facility-reconciliation,

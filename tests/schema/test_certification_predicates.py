@@ -188,7 +188,7 @@ class CertificationPredicateTests(unittest.TestCase):
         self.assertEqual(self.current_report["final_state"], "FAIL")
         self.assertFalse(self.current_report["certification_eligible"])
         self.assertEqual(states["C4"]["status"], "FAIL")
-        self.assertEqual(states["C4"]["exact_ratio"], "0/9506")
+        self.assertEqual(states["C4"]["exact_ratio"], "0/3378")
         self.assertEqual(
             {criterion for criterion, result in states.items() if result["status"] == "BLOCKED"},
             {"C1", "C2", "C3", "C5", "C6", "C7"},
@@ -201,10 +201,10 @@ class CertificationPredicateTests(unittest.TestCase):
         self.assertEqual(
             verify_repository_certification(ROOT),
             {
-                "generated_assertion_artifacts": 64,
-                "generated_assertion_groups": 255,
-                "generated_assertion_occurrences": 1034993,
-                "generated_count_contracts": 88,
+                "generated_assertion_artifacts": 74,
+                "generated_assertion_groups": 267,
+                "generated_assertion_occurrences": 1674396,
+                "generated_count_contracts": 102,
                 "certification_contracts": 1,
                 "certification_criteria": 7,
                 "certification_fixtures": 17,

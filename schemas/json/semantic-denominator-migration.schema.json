@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/semantic-denominator-migration.schema.json",
+  "title": "Semantic denominator migration ledger",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "published_on", "predecessor", "successor", "counts", "obligation_migrations", "requirement_migrations", "new_obligation_origins", "new_requirement_origins", "derivation_id", "derivation_revision_id", "ledger_id", "ledger_digest_sha256"],
+  "properties": {
+    "schema_version": {"const": "semantic-denominator-migration.v1"}, "published_on": {"type": "string", "format": "date"},
+    "predecessor": {"type": "object"}, "successor": {"type": "object"}, "counts": {"type": "object"},
+    "obligation_migrations": {"type": "array", "minItems": 12048, "maxItems": 12048, "items": {"$ref": "#/$defs/migration"}},
+    "requirement_migrations": {"type": "array", "minItems": 9506, "maxItems": 9506, "items": {"$ref": "#/$defs/migration"}},
+    "new_obligation_origins": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/origin"}},
+    "new_requirement_origins": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/origin"}},
+    "derivation_id": {"$ref": "#/$defs/rcid"}, "derivation_revision_id": {"$ref": "#/$defs/rcid"}, "ledger_id": {"$ref": "#/$defs/rcid"}, "ledger_digest_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}, "rcid": {"type": "string", "pattern": "^rcid:v1:"},
+    "migration": {"type": "object", "additionalProperties": false, "required": ["predecessor_key", "predecessor_scientific_id", "disposition", "successor_keys", "successor_scientific_ids", "reason", "derivation_class"], "properties": {"predecessor_key": {"type": "string"}, "predecessor_scientific_id": {"$ref": "#/$defs/rcid"}, "disposition": {"enum": ["retained-scientific-identity", "semantically-equivalent-successor", "superseded", "split-into-successors", "merged-into-successor", "retired-no-researched-trigger", "historical-only-unmapped"]}, "successor_keys": {"type": "array", "uniqueItems": true, "items": {"type": "string"}}, "successor_scientific_ids": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/rcid"}}, "reason": {"type": "string", "minLength": 1}, "derivation_class": {"enum": ["calculation", "research-derived"]}}},
+    "origin": {"type": "object", "additionalProperties": false, "required": ["successor_key", "successor_scientific_id", "predecessor_scientific_ids", "origin", "reason"], "properties": {"successor_key": {"type": "string"}, "successor_scientific_id": {"$ref": "#/$defs/rcid"}, "predecessor_scientific_ids": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/rcid"}}, "origin": {"enum": ["retained", "successor", "split-successor", "merged-successor", "many-to-many-successor", "new-semantic-object"]}, "reason": {"type": "string", "minLength": 1}}}
+  }
+}

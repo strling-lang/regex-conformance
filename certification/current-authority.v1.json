@@ -1,17 +1,17 @@
 {
   "actions": [],
-  "authority_index_sha256": "45c15a0e281737a6d7d226d7d65499183d1252045d4fc4e366343a9076be1507",
+  "authority_index_sha256": "20eb8446dab003bfb4cc4dd9ac508f175ab4bef35f1e993f1dcba7b5efefa9e3",
   "certifications": [],
   "current_certification_id": null,
   "current_contract": {
-    "contract_digest_sha256": "674fe32fc9574dc30d29a5c0d7f499127f4c6b94d13e7687b91723c3d4a3ed93",
-    "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:dc77807d3037099ba23c0d2a6406d91fb491c084c0c3e936a14412fdc761cbc7",
-    "contract_version": "1.0.0"
+    "contract_digest_sha256": "6e61743353f548e3408ff290c31cb3cafd9f9aa7b43fd7f7446e38586970c85c",
+    "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:2a54c9284a498d7de25e2f4f46fc3236f4ae9c4a71340562a2663dd5d49154da",
+    "contract_version": "1.1.0"
   },
   "current_evaluation": {
     "final_state": "FAIL",
-    "report_digest_sha256": "42d033353dd70b1e1b78045b9fda57c86ed289a84de5f5ebe913be1aeddf2ab1",
-    "report_id": "rcid:v1:certification-report:h:jcs-sha256-v1:06ad3b15c0da83ea563f645fd6721b30f23b8cc131931115abf8b3247e0713ec"
+    "report_digest_sha256": "53b30f272b198ebc39331700c845d4e736dc6858520fa6e4d3e7023c3431f099",
+    "report_id": "rcid:v1:certification-report:h:jcs-sha256-v1:05600b98053b3344e8e623364371f2a6415090eb23e633d8deab912a5e37332d"
   },
   "schema_version": "certification-authority-index.v1"
 }

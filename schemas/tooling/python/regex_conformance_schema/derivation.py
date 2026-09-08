@@ -101,6 +101,7 @@ DERIVATION_IDS = {
     "semantic-architecture-disposition": "rcid:v1:assertion-derivation:u7:01a07d86-1c67-7e4e-9237-baaaf44f8639",
     "semantic-universe-freeze": "rcid:v1:assertion-derivation:u7:01a07e69-dfbc-7506-91ad-45f3775dc29a",
     "obligation-derivation": "rcid:v1:assertion-derivation:u7:01a08125-97ae-7633-b217-ca1d0fa22fbf",
+    "denominator-materialization": "rcid:v1:assertion-derivation:u7:01a08250-8e26-7ae3-aaf5-32e23ece7dbc",
 }
 
 ALLOWED_GATES_BY_CLASS = {
@@ -612,6 +613,32 @@ def _derivation_specs(root: Path) -> list[dict[str, Any]]:
                 "formula": "Evaluate one explicit facet rule per feature, preserve structured semantic state, resolve only declared operation predicates, and emit required, conditional, suppressed, or blocked decisions without a generic fallback.",
             },
             "notes": "Rule evaluation explains a prospective obligation decision; it does not strengthen its semantic inputs or advance denominator authority.",
+        },
+        {
+            "key": "denominator-materialization",
+            "title": "Canonical semantic denominator materialization",
+            "derivation_class": "calculation",
+            "method_key": "semantic-denominator-materialization",
+            "method_version": "1.0.0",
+            "input_references": [
+                "semantic-corpus/snapshots/regex-semantic-features-2026-09-08.v4.json",
+                "ontology/derivations/regex-obligation-derivation-rules-2026-09-08.v1.json",
+                "reports/semantics/obligation-derivation-dry-run-2026-09-08.v1.json",
+            ],
+            "authority_references": [
+                "semantic-corpus/foundation/semantic-knowledge-architecture.v1.json"
+            ],
+            "allowed_gate_kinds": ["arithmetic-closure", "structural-integrity"],
+            "independent_evidence": False,
+            "metadata": {
+                "kind": "calculation",
+                "input_references": [
+                    "the frozen semantic snapshot, accepted rule revisions, one-time typed identity allocation, predecessor denominator, and archetype polarity cardinality contract"
+                ],
+                "procedure_ref": "schemas/tooling/python/regex_conformance_schema/obligation_snapshots.py",
+                "formula": "Materialize one immutable obligation per accepted prospective scientific question, then one minimum requirement per archetype evidence role while preserving conditional predicates and predecessor lineage.",
+            },
+            "notes": "Materialization establishes current semantic-denominator authority; it does not author vectors, evaluate profiles, or provide empirical evidence.",
         },
         {
             "key": "certification-predicate-calculation",
@@ -1267,6 +1294,94 @@ def _artifact_specs() -> tuple[ArtifactSpec, ...]:
             schema_reference="schemas/json/qualification-profile-overlay.schema.json",
         ),
         ArtifactSpec(
+            "ontology/derivations/semantic-denominator-identities-2026-09-08.v1.json",
+            "identity-lock",
+            "governed-registry",
+            ("tools/semantics/generate_obligation_snapshots.py",),
+            (_b("/", "manual-registry-decision", "governance", "Reviewed one-time typed identity allocations; stable labels are not identity inputs."),),
+            coverage_selectors=("/fixed_allocations", "/entity_allocations"),
+            schema_reference="schemas/json/semantic-denominator-identity-allocation.schema.json",
+        ),
+        ArtifactSpec(
+            "ontology/obligations/regex-semantic-obligations-2026-09-08.v1.json",
+            "semantic-snapshot",
+            "current-generated",
+            ("tools/semantics/generate_obligation_snapshots.py",),
+            (_b("/", "denominator-materialization", "scientific", "Feature-specific rule evaluation, cardinality contract, stable allocation, and predecessor reconciliation."),),
+            coverage_selectors=("/counts", "/obligations"),
+            count_contracts=(
+                _c("/counts/total", "collection-length", ["/obligations"], "current semantic obligations", "Exact canonical obligation collection length."),
+                _c("/counts/required", "matching-value-count", ["/obligations/*/requirement_state"], "unconditional semantic obligations", "Count obligations whose derivation state is required.", values=["required"]),
+                _c("/counts/conditional", "matching-value-count", ["/obligations/*/requirement_state"], "conditional semantic obligations", "Count obligations retaining a capability predicate.", values=["conditionally-required"]),
+                _c("/counts/characterization", "matching-value-count", ["/obligations/*/evidence_mode"], "characterization semantic obligations", "Count obligations whose scientific question is non-normative characterization.", values=["characterization-only"]),
+            ),
+            schema_reference="schemas/json/semantic-obligation-snapshot.schema.json",
+        ),
+        ArtifactSpec(
+            "vectors/requirements/regex-semantic-vector-requirements-2026-09-08.v2.json",
+            "vector-requirement-ledger",
+            "current-generated",
+            ("tools/semantics/generate_obligation_snapshots.py",),
+            (_b("/", "denominator-materialization", "scientific", "Minimum attributable evidence requirements calculated from obligation archetype roles without creating concrete vectors."),),
+            coverage_selectors=("/counts", "/requirements"),
+            count_contracts=(
+                _c("/counts/total", "collection-length", ["/requirements"], "current semantic requirements", "Exact canonical requirement collection length."),
+                _c("/counts/required", "matching-value-count", ["/requirements/*/requirement_state"], "unconditional semantic requirements", "Count requirements whose obligation is required.", values=["required"]),
+                _c("/counts/conditional", "matching-value-count", ["/requirements/*/requirement_state"], "conditional semantic requirements", "Count requirements retaining a capability predicate.", values=["conditionally-required"]),
+                _c("/counts/characterization", "matching-value-count", ["/requirements/*/requirement_type"], "characterization-only semantic requirements", "Count explicitly non-normative requirements.", values=["characterization-only"]),
+                _c("/counts/missing_vector_definitions", "matching-value-count", ["/requirements/*/status"], "requirements without authored vectors", "Count requirements whose vector status remains missing.", values=["missing"]),
+            ),
+            schema_reference="schemas/json/semantic-requirement-snapshot.schema.json",
+        ),
+        ArtifactSpec(
+            "ontology/migrations/regex-semantic-denominator-2026-09-08.v1.json",
+            "audit-or-reconciliation-report",
+            "historical-immutable",
+            ("tools/semantics/generate_obligation_snapshots.py",),
+            (_b("/", "denominator-materialization", "reconciliation", "Total predecessor-to-successor reconciliation calculated from feature, facet, archetype, operation, and evidence-role correspondences."),),
+            coverage_selectors=("/counts", "/obligation_migrations", "/requirement_migrations", "/new_obligation_origins", "/new_requirement_origins"),
+            count_contracts=(
+                _c("/counts/obligation_migrations", "collection-length", ["/obligation_migrations"], "historical obligation migrations", "Every predecessor obligation receives exactly one migration row."),
+                _c("/counts/requirement_migrations", "collection-length", ["/requirement_migrations"], "historical requirement migrations", "Every predecessor requirement receives exactly one migration row."),
+                _c("/counts/new_obligation_objects", "collection-length", ["/new_obligation_origins"], "current obligation origins", "Every current obligation records its predecessor origin set."),
+                _c("/counts/new_requirement_objects", "collection-length", ["/new_requirement_origins"], "current requirement origins", "Every current requirement records its predecessor origin set."),
+            ),
+            schema_reference="schemas/json/semantic-denominator-migration.schema.json",
+        ),
+        ArtifactSpec(
+            "ontology/projections/regex-semantic-projection-2026-09-08.v2.json",
+            "semantic-projection",
+            "current-generated",
+            ("tools/semantics/generate_obligation_snapshots.py",),
+            (_b("/", "denominator-materialization", "scientific", "Deterministic compact projection of current obligation and requirement authority for vector, applicability, and profile consumers."),),
+            coverage_selectors=("/counts", "/features"),
+            count_contracts=(
+                _c("/counts/features", "collection-length", ["/features"], "projected features", "Exact feature projection length."),
+            ),
+            schema_reference="schemas/json/semantic-requirement-projection-v2.schema.json",
+        ),
+        ArtifactSpec(
+            "reports/semantics/semantic-denominator-materialization-2026-09-08.v1.json",
+            "audit-or-reconciliation-report",
+            "current-generated",
+            ("tools/semantics/generate_obligation_snapshots.py",),
+            (_b("/", "denominator-materialization", "reconciliation", "Deterministic counts, distributions, migration deltas, anomaly dispositions, and dry-run comparison."),),
+            coverage_selectors=("/summary", "/distribution", "/migration", "/dry_run_comparison", "/anomaly_checks", "/historical_immutability"),
+            schema_reference="schemas/json/semantic-denominator-materialization-report.schema.json",
+        ),
+        ArtifactSpec(
+            "ontology/authority/current-semantic-denominator.v1.json",
+            "authority-index",
+            "governed-registry",
+            ("tools/semantics/generate_obligation_snapshots.py",),
+            (
+                _b("/", "denominator-materialization", "reconciliation", "Digest-bound current obligation, requirement, projection, migration, report, and certification input references."),
+                _b("/governance", "manual-registry-decision", "governance", "Governed authority advancement after validation and explicit deferral of profile expansion."),
+            ),
+            coverage_selectors=("/current_authority", "/historical_predecessor", "/profile_expanded_denominator", "/governance"),
+            schema_reference="schemas/json/semantic-denominator-authority-index.schema.json",
+        ),
+        ArtifactSpec(
             "certification/contracts/regex-conformance-certification.v1.json",
             "certification-contract",
             "governed-registry",
@@ -1282,7 +1397,7 @@ def _artifact_specs() -> tuple[ArtifactSpec, ...]:
         ArtifactSpec(
             "certification/inputs/current-repository.v1.json",
             "certification-input-set",
-            "current-generated",
+            "historical-immutable",
             ("tools/certification/evaluate.py",),
             (
                 _b("/", "certification-predicate-calculation", "reconciliation", "Deterministic classification and digest binding of the repository's current canonical certification inputs."),
@@ -1294,11 +1409,45 @@ def _artifact_specs() -> tuple[ArtifactSpec, ...]:
         ArtifactSpec(
             "certification/reports/current-repository.v1.json",
             "certification-report",
-            "current-generated",
+            "historical-immutable",
             ("tools/certification/evaluate.py",),
             (
                 _b("/", "certification-predicate-calculation", "certification", "Deterministic per-criterion evaluation and final required-criterion conjunction over the bound input set."),
             ),
+            coverage_selectors=("/authority_status", "/certification_eligible", "/criteria", "/final_state"),
+            schema_reference="schemas/json/certification-report.schema.json",
+        ),
+        ArtifactSpec(
+            "certification/contracts/regex-conformance-certification.v1.1.json",
+            "certification-contract",
+            "governed-registry",
+            ("schemas/tooling/python/regex_conformance_schema/certification.py",),
+            (
+                _b("/", "manual-registry-decision", "governance", "Accepted predicate contract revision supporting the semantic-derived requirement snapshot input mode."),
+                _b("/contract_digest_sha256", "certification-predicate-calculation", "validation", "Canonical digest of the contract content excluding identity and digest fields."),
+                _b("/contract_id", "certification-predicate-calculation", "validation", "Content-derived certification-definition identity calculated from the contract digest."),
+            ),
+            coverage_selectors=("/criteria", "/final_composition", "/result_states", "/supersession_and_revocation"),
+            schema_reference="schemas/json/certification-contract.schema.json",
+        ),
+        ArtifactSpec(
+            "certification/inputs/current-repository-2026-09-08.v2.json",
+            "certification-input-set",
+            "current-generated",
+            ("tools/certification/evaluate.py",),
+            (
+                _b("/", "certification-predicate-calculation", "reconciliation", "Deterministic classification and digest binding of the repository's current canonical certification inputs."),
+                _b("/source_artifacts/*/sha256", "artifact-measurement", "measurement", "Measured byte digest of the exact referenced repository artifact."),
+            ),
+            coverage_selectors=("/criteria", "/source_artifacts"),
+            schema_reference="schemas/json/certification-input-set.schema.json",
+        ),
+        ArtifactSpec(
+            "certification/reports/current-repository-2026-09-08.v2.json",
+            "certification-report",
+            "current-generated",
+            ("tools/certification/evaluate.py",),
+            (_b("/", "certification-predicate-calculation", "certification", "Deterministic evaluation with C4 bound to the semantic-derived requirement snapshot."),),
             coverage_selectors=("/authority_status", "/certification_eligible", "/criteria", "/final_state"),
             schema_reference="schemas/json/certification-report.schema.json",
         ),

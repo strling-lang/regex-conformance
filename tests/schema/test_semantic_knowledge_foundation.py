@@ -122,13 +122,13 @@ class SemanticKnowledgeFoundationTests(unittest.TestCase):
         self.assertEqual(len(readiness["fixtures"]), 6)
         self.assertTrue(all(item["status"] == "PASS" for item in readiness["fixtures"]))
 
-    def test_manifest_and_report_regenerate_deterministically(self) -> None:
-        manifest = build_manifest(ROOT)
-        report = build_acceptance_report(ROOT, manifest)
+    def test_manifest_and_report_remain_valid_immutable_acceptance_evidence(self) -> None:
+        manifest = load_strict(ROOT / MANIFEST_PATH)
+        report = load_strict(ROOT / ACCEPTANCE_PATH)
+        validate_manifest(ROOT, manifest, verify_current_files=False)
+        validate_acceptance_report(ROOT, manifest, report)
         self.assertEqual((ROOT / MANIFEST_PATH).read_bytes(), canonical_bytes(manifest) + b"\n")
         self.assertEqual((ROOT / ACCEPTANCE_PATH).read_bytes(), canonical_bytes(report) + b"\n")
-        self.assertEqual(build_manifest(ROOT), manifest)
-        self.assertEqual(build_acceptance_report(ROOT, manifest), report)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/semantic-obligation-snapshot.schema.json",
+  "title": "Canonical semantic obligation snapshot",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "published_on", "authority_status", "semantic_authority", "rule_contract", "identity_allocation", "predecessor", "counts", "requirement_cardinality_contract", "obligations", "derivation_id", "derivation_revision_id", "snapshot_id", "snapshot_digest_sha256"],
+  "properties": {
+    "schema_version": {"const": "semantic-obligation-snapshot.v1"},
+    "published_on": {"type": "string", "format": "date"},
+    "authority_status": {"const": "current-canonical"},
+    "semantic_authority": {"$ref": "#/$defs/artifactBinding"},
+    "rule_contract": {"$ref": "#/$defs/artifactBinding"},
+    "identity_allocation": {"type": "object", "required": ["path", "file_sha256"], "additionalProperties": false, "properties": {"path": {"type": "string"}, "file_sha256": {"$ref": "#/$defs/sha256"}}},
+    "predecessor": {"type": "object", "required": ["path", "projection_id", "file_sha256", "obligation_count"], "additionalProperties": false, "properties": {"path": {"type": "string"}, "projection_id": {"type": "string"}, "file_sha256": {"$ref": "#/$defs/sha256"}, "obligation_count": {"const": 12048}}},
+    "counts": {"$ref": "#/$defs/counts"},
+    "requirement_cardinality_contract": {"$ref": "#/$defs/cardinalityContract"},
+    "obligations": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/obligation"}},
+    "derivation_id": {"$ref": "#/$defs/rcid"},
+    "derivation_revision_id": {"$ref": "#/$defs/rcid"},
+    "snapshot_id": {"$ref": "#/$defs/rcid"},
+    "snapshot_digest_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "rcid": {"type": "string", "pattern": "^rcid:v1:"},
+    "artifactBinding": {"type": "object", "additionalProperties": false, "required": ["path", "artifact_id", "digest_sha256"], "properties": {"path": {"type": "string"}, "artifact_id": {"type": "string"}, "digest_sha256": {"$ref": "#/$defs/sha256"}}},
+    "counts": {
+      "type": "object", "additionalProperties": false,
+      "required": ["total", "required", "conditional", "characterization", "by_facet", "by_archetype", "by_question_type"],
+      "properties": {
+        "total": {"type": "integer", "minimum": 1}, "required": {"type": "integer", "minimum": 0}, "conditional": {"type": "integer", "minimum": 0}, "characterization": {"type": "integer", "minimum": 0},
+        "by_facet": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+        "by_archetype": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+        "by_question_type": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}}
+      }
+    },
+    "cardinalityContract": {
+      "type": "object", "additionalProperties": false,
+      "required": ["rule_key", "rule_revision_id", "method", "archetype_roles"],
+      "properties": {
+        "rule_key": {"const": "requirement-cardinality.by-archetype-polarity.v1"}, "rule_revision_id": {"$ref": "#/$defs/rcid"}, "method": {"type": "string", "minLength": 1},
+        "archetype_roles": {"type": "array", "minItems": 1, "items": {"type": "object", "required": ["archetype_id", "roles", "rationale"], "additionalProperties": false, "properties": {"archetype_id": {"type": "string"}, "roles": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}}, "rationale": {"type": "string", "minLength": 1}}}}
+      }
+    },
+    "semanticAssertion": {
+      "type": "object", "additionalProperties": false,
+      "required": ["assertion_revision_id", "selector", "state", "scope", "derivation_id", "source_ids"],
+      "properties": {"assertion_revision_id": {"$ref": "#/$defs/rcid"}, "selector": {"type": "string"}, "state": {"type": "string"}, "scope": {"type": "string"}, "derivation_id": {"$ref": "#/$defs/rcid"}, "source_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}}}
+    },
+    "obligation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["obligation_key", "scientific_id", "identity_basis", "feature_id", "feature_scientific_id", "facet_id", "facet_scientific_id", "archetype_id", "question_type", "requirement_state", "evidence_mode", "operation_ids", "operation_scientific_ids", "profile_condition", "semantic_assertions", "source_semantic_assertion_ids", "interaction_basis", "semantic_variant_basis", "derivation", "explanation", "requirement_cardinality", "predecessor_scientific_ids", "lineage_disposition"],
+      "properties": {
+        "obligation_key": {"type": "string", "minLength": 1}, "scientific_id": {"type": "string", "pattern": "^rcid:v1:obligation:u7:"}, "identity_basis": {"type": "object"},
+        "feature_id": {"type": "string"}, "feature_scientific_id": {"$ref": "#/$defs/rcid"}, "facet_id": {"type": "string"}, "facet_scientific_id": {"$ref": "#/$defs/rcid"}, "archetype_id": {"type": "string"},
+        "question_type": {"enum": ["normative/conformance-capable", "implementation-documentation-capable", "characterization-only", "relational/metamorphic-candidate"]},
+        "requirement_state": {"enum": ["required", "conditionally-required"]}, "evidence_mode": {"enum": ["conformance-capable", "conditional-conformance", "characterization-only", "relational/metamorphic-candidate"]},
+        "operation_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}}, "operation_scientific_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/rcid"}},
+        "profile_condition": {"type": "object"}, "semantic_assertions": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/semanticAssertion"}}, "source_semantic_assertion_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/rcid"}},
+        "interaction_basis": {"type": ["object", "null"]}, "semantic_variant_basis": {"type": ["object", "null"]},
+        "derivation": {"type": "object", "required": ["rule_key", "rule_revision_id", "derivation_id", "derivation_revision_id"], "additionalProperties": false, "properties": {"rule_key": {"type": "string"}, "rule_revision_id": {"$ref": "#/$defs/rcid"}, "derivation_id": {"$ref": "#/$defs/rcid"}, "derivation_revision_id": {"$ref": "#/$defs/rcid"}}},
+        "explanation": {"type": "object", "required": ["reason", "chain"], "additionalProperties": false, "properties": {"reason": {"type": "string", "minLength": 1}, "chain": {"type": "array", "minItems": 6, "items": {"type": "string"}}}},
+        "requirement_cardinality": {"type": "object", "required": ["rule_revision_id", "minimum_requirements", "roles", "rationale"], "additionalProperties": false, "properties": {"rule_revision_id": {"$ref": "#/$defs/rcid"}, "minimum_requirements": {"type": "integer", "minimum": 1}, "roles": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}}, "rationale": {"type": "string", "minLength": 1}}},
+        "predecessor_scientific_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^rcid:v1:obligation:u7:"}},
+        "lineage_disposition": {"enum": ["retained", "successor", "split-successor", "merged-successor", "many-to-many-successor", "new-semantic-obligation"]}
+      }
+    }
+  }
+}

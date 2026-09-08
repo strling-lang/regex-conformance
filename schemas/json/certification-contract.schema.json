@@ -23,7 +23,7 @@
   "properties": {
     "schema_version": {"const": "certification-contract.v1"},
     "contract_key": {"const": "regex-conformance-completeness"},
-    "contract_version": {"const": "1.0.0"},
+    "contract_version": {"enum": ["1.0.0", "1.1.0"]},
     "identity_schema_family_id": {"const": "rcid:v1:schema-family:u7:01a079d7-bff3-79f7-bd14-3184c831b9f5"},
     "identity_schema_version": {"const": "1.0.0"},
     "contract_id": {"$ref": "#/$defs/certificationDefinitionId"},

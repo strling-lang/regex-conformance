@@ -6,11 +6,11 @@ or generated declaration cannot issue an authoritative certification.
 
 The canonical artifacts are:
 
-- `contracts/regex-conformance-certification.v1.json`: the versioned C1-C7
+- `contracts/regex-conformance-certification.v1.1.json`: the current versioned C1-C7
   predicate contract;
-- `inputs/current-repository.v1.json`: the exact current repository inputs and
+- `inputs/current-repository-2026-09-08.v2.json`: the exact current repository inputs and
   their byte digests;
-- `reports/current-repository.v1.json`: a freshly recomputable evaluation; and
+- `reports/current-repository-2026-09-08.v2.json`: a freshly recomputable evaluation; and
 - `current-authority.v1.json`: the separate issuance, supersession, and
   revocation authority index.
 
@@ -105,7 +105,7 @@ the current pointer or record a revocation without rewriting a historical
 
 The current repository does not certify. C1-C3 and C5-C7 are `BLOCKED` because
 their production canonical populations do not yet exist. C4 is `FAIL` at
-`0/9506`: all current frozen semantic requirements lack certified production
+`0/3378`: all current semantic-derived requirements lack certified production
 vector attribution. This result is intentional and must not be weakened to
 make an incomplete corpus pass.
 

@@ -1,0 +1,219 @@
+{
+  "authority_status": "evaluation-only",
+  "certification_eligible": false,
+  "contract_digest_sha256": "6e61743353f548e3408ff290c31cb3cafd9f9aa7b43fd7f7446e38586970c85c",
+  "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:2a54c9284a498d7de25e2f4f46fc3236f4ae9c4a71340562a2663dd5d49154da",
+  "criteria": [
+    {
+      "admitted_derivation_classes_used": [],
+      "criterion_id": "C1",
+      "denominator_count": null,
+      "denominator_members_sha256": null,
+      "diagnostics": [
+        {
+          "code": "canonical-universe-snapshot-absent",
+          "message": "The available universe artifact is explicitly planning-only and cannot satisfy universe disposition certification."
+        }
+      ],
+      "evidence_references": [
+        "registries/universe/full-known-universe-2026-08-15.v1.json"
+      ],
+      "exact_ratio": null,
+      "numerator_count": null,
+      "numerator_members_sha256": null,
+      "predicate_digest_sha256": "cfbe66e6b2dd95e29e2c6ae38b35b8ec78c36f737661d954bfb9b6702328aded",
+      "predicate_version": "1.0.0",
+      "status": "BLOCKED"
+    },
+    {
+      "admitted_derivation_classes_used": [],
+      "criterion_id": "C2",
+      "denominator_count": null,
+      "denominator_members_sha256": null,
+      "diagnostics": [
+        {
+          "code": "canonical-release-line-registry-absent",
+          "message": "No canonical release-line representative registry covers the governed universe."
+        }
+      ],
+      "evidence_references": [
+        "registries/profiles/vertical-slice-coordinates.v1.json",
+        "registries/universe/full-known-universe-2026-08-15.v1.json"
+      ],
+      "exact_ratio": null,
+      "numerator_count": null,
+      "numerator_members_sha256": null,
+      "predicate_digest_sha256": "291ec77fcf662b65b6ae36a8c264f6c3a7020adf4d723cb2885cf934e6808186",
+      "predicate_version": "1.0.0",
+      "status": "BLOCKED"
+    },
+    {
+      "admitted_derivation_classes_used": [],
+      "criterion_id": "C3",
+      "denominator_count": null,
+      "denominator_members_sha256": null,
+      "diagnostics": [
+        {
+          "code": "canonical-profile-reproducibility-ledger-absent",
+          "message": "Only a three-profile qualification slice exists; the governed profile population is not materialized."
+        }
+      ],
+      "evidence_references": [
+        "registries/profiles/vertical-slice-coordinates.v1.json"
+      ],
+      "exact_ratio": null,
+      "numerator_count": null,
+      "numerator_members_sha256": null,
+      "predicate_digest_sha256": "10b5629e7cecef436c242e852caf291bb701a6f28e69b01edcd33bfc61550508",
+      "predicate_version": "1.0.0",
+      "status": "BLOCKED"
+    },
+    {
+      "admitted_derivation_classes_used": [
+        "calculation",
+        "research-derived"
+      ],
+      "criterion_id": "C4",
+      "denominator_count": 3378,
+      "denominator_members_sha256": "551b8f7e81cb60988e955825d0f42ca3b8a802bbbed0f21044a4641f2e9505e3",
+      "diagnostics": [
+        {
+          "code": "vector-coverage-incomplete",
+          "message": "3378 applicable requirements lack certified explicit vector attribution."
+        }
+      ],
+      "evidence_references": [
+        "registries/identity/scientific-identities.v1.json",
+        "vectors/requirements/regex-semantic-vector-requirements-2026-09-08.v2.json"
+      ],
+      "exact_ratio": "0/3378",
+      "numerator_count": 0,
+      "numerator_members_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "predicate_digest_sha256": "eba5091f5d547980d1d6634707c6e192353151bba4c185bd171d7ccec83776c6",
+      "predicate_version": "1.0.0",
+      "status": "FAIL"
+    },
+    {
+      "admitted_derivation_classes_used": [],
+      "criterion_id": "C5",
+      "denominator_count": null,
+      "denominator_members_sha256": null,
+      "diagnostics": [
+        {
+          "code": "production-campaign-absent",
+          "message": "The repository contains qualification plans and lineage fixtures, not a frozen production conformance campaign with official observations."
+        }
+      ],
+      "evidence_references": [
+        "campaigns/compiled/first-vertical-slice.v1.json",
+        "tests/fixtures/provenance/execution-lineages.v1.json"
+      ],
+      "exact_ratio": null,
+      "numerator_count": null,
+      "numerator_members_sha256": null,
+      "predicate_digest_sha256": "a004399bd151da32378b2672fb88ce39ecc7da5aef12ac0280b103b9fa14a53e",
+      "predicate_version": "1.0.0",
+      "status": "BLOCKED"
+    },
+    {
+      "admitted_derivation_classes_used": [],
+      "criterion_id": "C6",
+      "denominator_count": null,
+      "denominator_members_sha256": null,
+      "diagnostics": [
+        {
+          "code": "official-evidence-set-absent",
+          "message": "No official production observation/evidence manifest set exists; the tracked report is a corruption-qualification artifact."
+        }
+      ],
+      "evidence_references": [
+        "reports/small-scale/evidence-verification-qualification.json"
+      ],
+      "exact_ratio": null,
+      "numerator_count": null,
+      "numerator_members_sha256": null,
+      "predicate_digest_sha256": "9befc0cbcd499e7b4eb60ef83be57ce2c336cefc33078e55a6ec7b974205eeed",
+      "predicate_version": "1.0.0",
+      "status": "BLOCKED"
+    },
+    {
+      "admitted_derivation_classes_used": [],
+      "criterion_id": "C7",
+      "denominator_count": null,
+      "denominator_members_sha256": null,
+      "diagnostics": [
+        {
+          "code": "production-reconciliation-pass-absent",
+          "message": "No completed production reconciliation detection pass or discrepancy ledger exists."
+        }
+      ],
+      "evidence_references": [],
+      "exact_ratio": null,
+      "numerator_count": null,
+      "numerator_members_sha256": null,
+      "predicate_digest_sha256": "e70168273e6a62c5c61404c26994d7bbe495de19ca53e2e3e6b3fb5c7818be1a",
+      "predicate_version": "1.0.0",
+      "status": "BLOCKED"
+    }
+  ],
+  "final_state": "FAIL",
+  "identity_schema_family_id": "rcid:v1:schema-family:u7:01a079d7-bff3-79f7-bd14-3184c831b9f5",
+  "identity_schema_version": "1.0.0",
+  "input_artifacts": [
+    {
+      "artifact_class": "campaign-plan",
+      "artifact_id": "rcid:v1:campaign-manifest:h:jcs-sha256-v1:f75ee9e8c9ce979b3c2d02a2dea0548c4b5e9359be67103c2e4fecb5aefe3d2c",
+      "authority_status": "qualification-only",
+      "relative_path": "campaigns/compiled/first-vertical-slice.v1.json",
+      "sha256": "a6b3cb3e30be5d5e797cdc03f34f515f96777afe74d542f07fdea72ebe734fb2"
+    },
+    {
+      "artifact_class": "scientific-identity-catalog",
+      "artifact_id": null,
+      "authority_status": "canonical",
+      "relative_path": "registries/identity/scientific-identities.v1.json",
+      "sha256": "040c16f1d29840e97374f8b3e61023a2735a5846284e110753ff346fa1a95f0a"
+    },
+    {
+      "artifact_class": "profile-registry-slice",
+      "artifact_id": null,
+      "authority_status": "qualification-only",
+      "relative_path": "registries/profiles/vertical-slice-coordinates.v1.json",
+      "sha256": "1e390e349226bbbdc87abb70112abea1539b2ff83713d1bcd110cb366ccfbbc9"
+    },
+    {
+      "artifact_class": "universe-planning-index",
+      "artifact_id": null,
+      "authority_status": "planning-only",
+      "relative_path": "registries/universe/full-known-universe-2026-08-15.v1.json",
+      "sha256": "0601c2c948b19c7f5265bd53260c7c8a47478d12d3dc79e863a2f2f8e411f9f8"
+    },
+    {
+      "artifact_class": "evidence-integrity-qualification",
+      "artifact_id": null,
+      "authority_status": "historical",
+      "relative_path": "reports/small-scale/evidence-verification-qualification.json",
+      "sha256": "4628d3c3f3b6d39a979732901d06d6ade4b239437210777e5875e1697fa1cc5e"
+    },
+    {
+      "artifact_class": "execution-lineage-fixture",
+      "artifact_id": null,
+      "authority_status": "validation-fixture",
+      "relative_path": "tests/fixtures/provenance/execution-lineages.v1.json",
+      "sha256": "b7a43d70c271ed2f7ed432e1ef28539fff3ea7cb28bf246f5286ed4a290ac46f"
+    },
+    {
+      "artifact_class": "semantic-requirement-ledger",
+      "artifact_id": "rcid:v1:ontology-snapshot:h:jcs-sha256-v1:0d1e0a5375bad7d176ccf910097a23cb6cd2bd8cebd3c03faade67d5250a09af",
+      "authority_status": "canonical",
+      "relative_path": "vectors/requirements/regex-semantic-vector-requirements-2026-09-08.v2.json",
+      "sha256": "6c7bb486760fa9cce52a6692a61aff074407899577573029b24e37cd34ecf9ec"
+    }
+  ],
+  "input_set_digest_sha256": "7df6d3db67f86b81472cabcc7482a276ceb698eaafdc52fa2889060436458300",
+  "input_set_id": "rcid:v1:certification-input-set:h:jcs-sha256-v1:347b2f6f4e7abc77e687aecad7a5cc76042ed1d8bdf62d23ba91c70408cbdcc1",
+  "report_digest_sha256": "53b30f272b198ebc39331700c845d4e736dc6858520fa6e4d3e7023c3431f099",
+  "report_id": "rcid:v1:certification-report:h:jcs-sha256-v1:05600b98053b3344e8e623364371f2a6415090eb23e633d8deab912a5e37332d",
+  "schema_version": "certification-report.v1",
+  "scope_kind": "current-repository"
+}

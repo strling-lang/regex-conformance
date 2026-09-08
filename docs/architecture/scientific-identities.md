@@ -107,7 +107,11 @@ The expanded researched semantic architecture preserves every baseline binding
 and adds 68 typed identities: 15 semantic facets, 11 operations, 17 features,
 5 semantic variants, and 20 manifestations. The declared-cutoff adversarial
 freeze adds four more: one feature, two manifestations, and one modifier. The
-current lock therefore contains 22,431 identities. The table above remains the
+semantic-denominator successor then adds 2,239 new obligation identities and
+3,346 new requirement identities while retaining 151 obligation and 32
+requirement identities whose scientific questions were unchanged. The current
+lock therefore contains 28,016 resolvable identities: 6,645 active and 21,371
+historical, connected by 3,162 lineage records. The table above remains the
 accepted foundation baseline; additive versioned evolution does not rewrite it.
 
 Each binding records its current key, former keys, status, source role, and an

@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/semantic-denominator-authority-index.schema.json",
+  "title": "Semantic denominator authority index",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "effective_on", "current", "historical_predecessor", "profile_expanded_denominator", "governance", "index_id", "index_digest_sha256"],
+  "properties": {
+    "schema_version": {"const": "semantic-denominator-authority-index.v1"}, "effective_on": {"type": "string", "format": "date"}, "current": {"type": "object"}, "historical_predecessor": {"type": "object"},
+    "profile_expanded_denominator": {"type": "object", "required": ["status", "reason"], "additionalProperties": false, "properties": {"status": {"const": "deferred"}, "reason": {"type": "string"}}},
+    "governance": {"type": "object"}, "index_id": {"type": "string", "pattern": "^rcid:v1:artifact-set-manifest:h:"}, "index_digest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

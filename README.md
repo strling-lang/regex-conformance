@@ -25,7 +25,7 @@ no repository observation is a conformance result yet, and no production
 evidence campaign is authorized merely by this certification.
 
 The versioned full-data certification evaluator currently reports C1-C3 and
-C5-C7 `BLOCKED`, C4 `FAIL` at `0/9506`, and final state `FAIL`. No authoritative
+C5-C7 `BLOCKED`, C4 `FAIL` at `0/3378`, and final state `FAIL`. No authoritative
 full-corpus certification has been issued. See the [machine-readable
 certification contract](certification/README.md).
 
@@ -41,12 +41,12 @@ modifiers, and 60 source identities. Five independent adversarial search
 strategies revalidated 73 prior candidates and dispositioned 18 residual
 candidates with no blocking item or source orphan. The original predecessor snapshot at digest
 `350bfea4c3da07b3426d885aa8ff645ac55539bbb1294a2ea35dd5319541d6c7`
-continues to bind the unchanged 12,048 obligations, 9,506 requirements, and
+continues to bind the historical 12,048 obligations, 9,506 requirements, and
 bounded execution forecast. Explainable, feature-specific derivation rules now
-cover every frozen feature/facet pair without a uniform fallback, but their
-2,390 prospective questions are explicitly a dry run; denominator authority
-does not advance until the dedicated materialization work supersedes the old
-artifacts. That historical forecast uses the anomaly-complete,
+materialize the current semantic denominator as 2,390 obligations and 3,378
+minimum attributable requirements. The predecessor populations remain
+immutable and fully reconciled; the final profile-expanded execution denominator
+still awaits empirical profile freeze. That historical forecast uses the anomaly-complete,
 routine-process-summary Evidence Pack v3 contract and passes the 8 GB soft stop
 at 7,452,076,843 conservative retained bytes. Broad vector authoring still
 waits for derived obligations, oracle and applicability contracts, and an
@@ -57,6 +57,8 @@ architecture](docs/architecture/scientific-implementation-dependencies.md)
 and [semantic architecture dispositions](docs/architecture/semantic-architecture-dispositions.md).
 The rule contract and its authority boundary are documented in
 [explainable obligation derivation](docs/architecture/explainable-obligation-derivation.md).
+The current snapshots, lineage, and C4 transition are documented in
+[canonical semantic obligations and requirements](docs/architecture/semantic-obligation-snapshots.md).
 The bounded freeze claim and its supersession rules are documented in the
 [semantic universe freeze](docs/architecture/semantic-universe-freeze.md).
 

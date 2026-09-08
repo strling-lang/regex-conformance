@@ -128,11 +128,17 @@ profile predicates, and has no uniform fallback. Its all-feature analysis is a
 dry run and does not advance denominator authority. See
 [Explainable obligation derivation](explainable-obligation-derivation.md).
 
-The next dependency is to materialize the accepted obligation population,
-apply permanent obligation identities and lineage, generate the corresponding
-requirement snapshot, and update lower, expected, and conservative denominator
-forecasts. Each emitted obligation must retain the semantic facts and rule
-revision that caused it to exist.
+The accepted rules now materialize 2,390 canonical semantic obligations and
+3,378 minimum attributable requirements. Permanent assigned identities,
+complete explanation chains, explicit capability predicates, characterization
+questions, and total 12,048/9,506 predecessor reconciliation are bound by the
+current denominator authority index. C4 has advanced versionedly to the new
+requirement snapshot and honestly remains `FAIL` at `0/3378`; old evaluations
+remain immutable. See [Canonical semantic obligations and requirements](semantic-obligation-snapshots.md).
+
+The next dependency is to recompute and audit the scientific denominator using
+these canonical semantic inputs. Profile-expanded execution counts and a final
+storage forecast remain deferred until the exact profile universe is frozen.
 
 ### Establish oracle, applicability, and adjudication contracts
 

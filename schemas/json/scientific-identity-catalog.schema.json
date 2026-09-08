@@ -36,7 +36,7 @@
         "additionalProperties": false,
         "required": ["role", "artifact_id", "digest_sha256"],
         "properties": {
-          "role": {"enum": ["semantic-projection", "semantic-snapshot", "vector-requirement-ledger"]},
+          "role": {"enum": ["semantic-obligation-snapshot", "semantic-projection", "semantic-requirement-projection", "semantic-requirement-snapshot", "semantic-snapshot", "vector-requirement-ledger"]},
           "artifact_id": {"type": ["string", "null"]},
           "digest_sha256": {"$ref": "#/$defs/digest"}
         }
@@ -135,7 +135,7 @@
             "unresolved"
           ]
         },
-        "source_role": {"enum": ["semantic-projection", "semantic-snapshot", "vector-requirement-ledger"]},
+        "source_role": {"enum": ["semantic-obligation-snapshot", "semantic-projection", "semantic-requirement-snapshot", "semantic-snapshot", "vector-requirement-ledger"]},
         "semantic_fingerprint_history": {
           "type": "array",
           "minItems": 1,

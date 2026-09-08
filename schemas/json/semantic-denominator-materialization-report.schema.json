@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/semantic-denominator-materialization-report.schema.json",
+  "title": "Semantic denominator materialization report",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "published_on", "authority", "summary", "distribution", "migration", "dry_run_comparison", "anomaly_checks", "profile_expansion", "historical_immutability", "derivations", "report_id", "report_digest_sha256"],
+  "properties": {
+    "schema_version": {"const": "semantic-denominator-materialization-report.v1"}, "published_on": {"type": "string", "format": "date"}, "authority": {"type": "object"}, "summary": {"type": "object"}, "distribution": {"type": "object"}, "migration": {"type": "object"}, "dry_run_comparison": {"type": "object"}, "anomaly_checks": {"type": "array", "minItems": 10, "items": {"type": "object", "required": ["check", "status", "detail"], "additionalProperties": false, "properties": {"check": {"type": "string"}, "status": {"const": "PASS"}, "detail": {"type": "string"}}}}, "profile_expansion": {"type": "object"}, "historical_immutability": {"type": "object"}, "derivations": {"type": "object"},
+    "report_id": {"type": "string", "pattern": "^rcid:v1:finding-revision:h:"}, "report_digest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

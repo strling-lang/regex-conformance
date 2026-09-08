@@ -104,7 +104,7 @@
       "additionalProperties": false,
       "required": ["blockers", "derivation_revision_ids", "input_mode", "lineage_set", "members", "population_status", "source_artifact_refs", "zero_result_manifest"],
       "properties": {
-        "input_mode": {"enum": ["blocked", "execution-lineage-set-v1", "normalized-member-ledger-v1", "semantic-vector-requirements-v1"]},
+        "input_mode": {"enum": ["blocked", "execution-lineage-set-v1", "normalized-member-ledger-v1", "semantic-vector-requirements-v1", "semantic-requirement-snapshot-v1"]},
         "population_status": {"enum": ["absent", "complete", "invalid", "provisional"]},
         "source_artifact_refs": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
         "derivation_revision_ids": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/derivationRevisionId"}},

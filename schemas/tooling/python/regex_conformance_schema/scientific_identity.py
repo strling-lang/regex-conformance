@@ -39,6 +39,15 @@ LEGACY_SEMANTIC_SNAPSHOT_PATH = Path(
 CURRENT_SEMANTIC_SNAPSHOT_PATH = Path(
     "semantic-corpus/snapshots/regex-semantic-features-2026-09-08.v4.json"
 )
+CURRENT_OBLIGATION_SNAPSHOT_PATH = Path(
+    "ontology/obligations/regex-semantic-obligations-2026-09-08.v1.json"
+)
+CURRENT_REQUIREMENT_SNAPSHOT_PATH = Path(
+    "vectors/requirements/regex-semantic-vector-requirements-2026-09-08.v2.json"
+)
+CURRENT_PROJECTION_PATH = Path(
+    "ontology/projections/regex-semantic-projection-2026-09-08.v2.json"
+)
 SEMANTIC_ARCHITECTURE_ALLOCATION_PATHS = (
     Path("semantic-corpus/research/semantic-architecture-identities-2026-09-07.v1.json"),
     Path("semantic-corpus/research/semantic-universe-freeze-identities-2026-09-08.v1.json"),
@@ -258,17 +267,18 @@ def normalize_predicate(value: Any) -> Any:
 
 def collect_descriptors(root: Path) -> tuple[list[ScientificDescriptor], list[dict[str, Any]]]:
     corpus = load_strict(root / LEGACY_SEMANTIC_SNAPSHOT_PATH)
+    successor_obligations = root / CURRENT_OBLIGATION_SNAPSHOT_PATH
+    successor_requirements = root / CURRENT_REQUIREMENT_SNAPSHOT_PATH
+    successor_projection = root / CURRENT_PROJECTION_PATH
     projection = load_strict(
-        root
-        / "ontology"
-        / "projections"
-        / "regex-semantic-projection-2026-08-22.v1.json"
+        successor_projection
+        if successor_projection.is_file()
+        else root / "ontology/projections/regex-semantic-projection-2026-08-22.v1.json"
     )
     requirements = load_strict(
-        root
-        / "vectors"
-        / "requirements"
-        / "regex-semantic-vector-requirements-2026-08-22.v1.json"
+        successor_requirements
+        if successor_requirements.is_file()
+        else root / "vectors/requirements/regex-semantic-vector-requirements-2026-08-22.v1.json"
     )
     descriptors: list[ScientificDescriptor] = []
     for feature in corpus["features"]:
@@ -305,17 +315,25 @@ def collect_descriptors(root: Path) -> tuple[list[ScientificDescriptor], list[di
         )
         for item in corpus["interactions"]
     )
+    obligation_records = (
+        load_strict(successor_obligations)["obligations"]
+        if successor_obligations.is_file()
+        else projection["semantic_obligation_templates"]
+    )
     descriptors.extend(
         ScientificDescriptor(
-            "obligation", item["obligation_id"], "semantic-projection", item
+            "obligation",
+            item.get("obligation_key", item.get("obligation_id")),
+            "semantic-obligation-snapshot" if successor_obligations.is_file() else "semantic-projection",
+            item,
         )
-        for item in projection["semantic_obligation_templates"]
+        for item in obligation_records
     )
     descriptors.extend(
         ScientificDescriptor(
             "semantic-requirement",
-            item["requirement_id"],
-            "vector-requirement-ledger",
+            item.get("requirement_key", item.get("requirement_id")),
+            "semantic-requirement-snapshot" if successor_requirements.is_file() else "vector-requirement-ledger",
             item,
         )
         for item in requirements["requirements"]
@@ -374,14 +392,16 @@ def collect_descriptors(root: Path) -> tuple[list[ScientificDescriptor], list[di
             ),
         },
         {
-            "role": "semantic-projection",
+            "role": "semantic-requirement-projection" if successor_projection.is_file() else "semantic-projection",
             "artifact_id": projection["projection_id"],
             "digest_sha256": projection["projection_digest_sha256"],
         },
         {
-            "role": "vector-requirement-ledger",
-            "artifact_id": None,
-            "digest_sha256": requirements["requirements_digest_sha256"],
+            "role": "semantic-requirement-snapshot" if successor_requirements.is_file() else "vector-requirement-ledger",
+            "artifact_id": requirements.get("snapshot_id"),
+            "digest_sha256": requirements.get(
+                "snapshot_digest_sha256", requirements.get("requirements_digest_sha256")
+            ),
         },
     ]
     return descriptors, sorted(sources, key=lambda item: item["role"])

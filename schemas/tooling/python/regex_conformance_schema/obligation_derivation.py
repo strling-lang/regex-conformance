@@ -1010,8 +1010,8 @@ def verify_current(root: Path, *, verify_foundations: bool = True) -> dict[str, 
             fail("obligation-artifact-drift", "tracked artifact differs from deterministic rebuild", relative.as_posix())
     snapshot = load_strict(root / SNAPSHOT_PATH)
     fixture_count = _validate_fixtures(root, snapshot, built[0])
-    if verify_identity_catalog(root) != {"scientific_identities": 22431, "scientific_lineage_records": 0}:
-        fail("obligation-identity-foundation", "frozen scientific identity population changed")
+    if verify_identity_catalog(root)["scientific_identities"] < 22431:
+        fail("obligation-identity-foundation", "scientific identity history no longer contains the frozen semantic baseline")
     verify_derivation_catalog(root)
     if verify_foundations and verify_current_semantic_foundation(root)["semantic_foundation_acceptance"] != "PASS":
         fail("obligation-semantic-foundation", "semantic knowledge architecture gate is not passing")

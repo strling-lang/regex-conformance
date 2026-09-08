@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/semantic-denominator-identity-allocation.schema.json",
+  "title": "Semantic denominator identity allocation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "allocated_on", "semantic_authority", "rule_contract", "fixed_allocations", "entity_allocations"],
+  "properties": {
+    "schema_version": {"const": "semantic-denominator-identity-allocation.v1"},
+    "allocated_on": {"type": "string", "format": "date"},
+    "semantic_authority": {"$ref": "#/$defs/artifactBinding"},
+    "rule_contract": {"$ref": "#/$defs/artifactBinding"},
+    "fixed_allocations": {
+      "type": "array",
+      "minItems": 8,
+      "maxItems": 8,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["entity_class", "canonical_key", "assigned_id"],
+        "properties": {
+          "entity_class": {"enum": ["assertion-derivation", "schema-family"]},
+          "canonical_key": {"type": "string", "minLength": 1},
+          "assigned_id": {"type": "string", "pattern": "^rcid:v1:(assertion-derivation|schema-family):u7:"}
+        }
+      }
+    },
+    "entity_allocations": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["entity_class", "basis_digest_sha256", "canonical_key", "assigned_id", "allocation_kind"],
+        "properties": {
+          "entity_class": {"enum": ["obligation", "semantic-requirement"]},
+          "basis_digest_sha256": {"$ref": "#/$defs/sha256"},
+          "canonical_key": {"type": "string", "minLength": 1},
+          "assigned_id": {"type": "string", "pattern": "^rcid:v1:(obligation|semantic-requirement):u7:"},
+          "allocation_kind": {"enum": ["retained-predecessor", "new-assignment"]}
+        }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "artifactBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "artifact_id", "digest_sha256"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "artifact_id": {"type": "string", "minLength": 1},
+        "digest_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    }
+  }
+}
