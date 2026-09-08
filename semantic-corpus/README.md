@@ -35,6 +35,9 @@ candidates. Its bounded cutoff, search plan, source coverage, negative space,
 and invalidation rules are closed by
 [`freeze/regex-semantic-universe-2026-09-08.v1.json`](freeze/regex-semantic-universe-2026-09-08.v1.json).
 See the [declared-cutoff semantic universe freeze](../docs/architecture/semantic-universe-freeze.md).
+The integrated [semantic knowledge architecture acceptance](../docs/architecture/semantic-knowledge-architecture.md)
+binds this authority, its research evidence, source coverage, identities,
+derivations, and denominator-input contract in one deterministic report.
 
 The expanded researched predecessor remains
 [`snapshots/regex-semantic-features-2026-09-07.v3.json`](snapshots/regex-semantic-features-2026-09-07.v3.json).
@@ -72,6 +75,7 @@ python tools/semantics/compile_semantic_baseline.py --check
 python tools/semantics/compile_researched_semantics.py --check
 python tools/semantics/compile_semantic_architecture.py --check
 python tools/semantics/freeze_semantic_universe.py --check
+python tools/semantics/certify_semantic_knowledge.py --check
 ```
 
 The predecessor compiler's generated products are:
@@ -102,6 +106,11 @@ The semantic-universe freeze compiler publishes a final adversarial audit plan,
 revalidated candidate ledger, source-coverage report, frozen successor
 snapshot, freeze manifest, and current authority index. It adds no obligation
 or vector requirement and preserves every predecessor snapshot.
+
+The semantic knowledge acceptance compiler publishes a content-derived
+foundation manifest and acceptance report. It validates integration and
+denominator readiness without emitting obligations or advancing denominator
+authority.
 
 Published semantic artifacts remain immutable. The companion derivation
 inventory records that legacy fixed audit, discovery, facility-reconciliation,

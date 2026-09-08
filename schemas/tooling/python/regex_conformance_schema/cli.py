@@ -20,6 +20,7 @@ from .foundation import (
     verify_current_foundation,
     verify_foundation_history,
 )
+from .semantic_foundation import verify_current_semantic_foundation
 from .fixtures import materialize_manifest, verify_manifest
 from .identity import NamespaceRegistry, build_content_identity, generate_assigned_id
 from .jsonio import canonical_bytes, load_strict
@@ -45,6 +46,7 @@ def parser() -> argparse.ArgumentParser:
     commands.add_parser("verify-foundation")
     commands.add_parser("verify-foundation-history")
     commands.add_parser("materialize-foundation")
+    commands.add_parser("verify-semantic-foundation")
     verify = commands.add_parser("verify-fixtures")
     verify.add_argument("manifest", nargs="?", default="tests/fixtures/identity/manifest.json")
     materialize = commands.add_parser("materialize-fixtures")
@@ -106,6 +108,8 @@ def run(argv: list[str] | None = None) -> int:
             _emit({"ok": True, **verify_foundation_history(root)})
         elif arguments.command == "materialize-foundation":
             _emit({"ok": True, **materialize_foundation(root)})
+        elif arguments.command == "verify-semantic-foundation":
+            _emit({"ok": True, **verify_current_semantic_foundation(root)})
         elif arguments.command == "verify-fixtures":
             _emit({"ok": True, **verify_manifest(root, root / arguments.manifest)})
         elif arguments.command == "materialize-fixtures":

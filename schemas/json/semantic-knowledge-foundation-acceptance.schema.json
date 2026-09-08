@@ -1,0 +1,184 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/semantic-knowledge-foundation-acceptance.schema.json",
+  "title": "Semantic knowledge architecture acceptance report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "identity_schema_family_id",
+    "identity_schema_version",
+    "report_id",
+    "report_digest_sha256",
+    "foundation_manifest",
+    "result",
+    "checks",
+    "semantic_population",
+    "acceptance_sampling",
+    "candidate_source_closure",
+    "identity_evolution",
+    "denominator_readiness",
+    "denominator_baseline",
+    "current_scientific_certification",
+    "assertion_derivations"
+  ],
+  "properties": {
+    "schema_version": {"const": "semantic-knowledge-foundation-acceptance.v1"},
+    "identity_schema_family_id": {"type": "string", "pattern": "^rcid:v1:schema-family:u7:"},
+    "identity_schema_version": {"const": "1.0.0"},
+    "report_id": {"type": "string", "pattern": "^rcid:v1:trust-assessment:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "report_digest_sha256": {"$ref": "#/$defs/digest"},
+    "foundation_manifest": {"$ref": "#/$defs/artifactRef"},
+    "result": {"const": "PASS"},
+    "checks": {"type": "array", "minItems": 16, "maxItems": 16, "items": {"$ref": "#/$defs/check"}},
+    "semantic_population": {"$ref": "#/$defs/population"},
+    "acceptance_sampling": {"type": "array", "minItems": 4, "maxItems": 4, "items": {"$ref": "#/$defs/scenario"}},
+    "candidate_source_closure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["candidate_total", "blocking_unresolved", "source_features", "source_orphans", "secondary_only"],
+      "properties": {
+        "candidate_total": {"const": 91},
+        "blocking_unresolved": {"const": 0},
+        "source_features": {"const": 269},
+        "source_orphans": {"const": 0},
+        "secondary_only": {"const": 0}
+      }
+    },
+    "identity_evolution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["original_feature_ids_retained", "architecture_additions", "freeze_additions", "current_identity_count", "lineage_records"],
+      "properties": {
+        "original_feature_ids_retained": {"const": 251},
+        "architecture_additions": {"const": 68},
+        "freeze_additions": {"const": 4},
+        "current_identity_count": {"const": 22431},
+        "lineage_records": {"const": 0}
+      }
+    },
+    "denominator_readiness": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["features_inspectable", "facet_mappings", "operations_inspectable", "template_fallback_permitted", "fixtures"],
+      "properties": {
+        "features_inspectable": {"const": 269},
+        "facet_mappings": {"const": 15},
+        "operations_inspectable": {"const": 33},
+        "template_fallback_permitted": {"const": false},
+        "fixtures": {"type": "array", "minItems": 6, "maxItems": 6, "items": {"$ref": "#/$defs/readinessFixture"}}
+      }
+    },
+    "denominator_baseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["artifacts_unchanged", "state", "obligation_templates", "vector_requirements", "artifact_sha256"],
+      "properties": {
+        "artifacts_unchanged": {"const": true},
+        "state": {"const": "pre-rederivation-predecessor-bound"},
+        "obligation_templates": {"const": 12048},
+        "vector_requirements": {"const": 9506},
+        "artifact_sha256": {"type": "object", "minProperties": 3, "maxProperties": 3, "additionalProperties": {"$ref": "#/$defs/digest"}}
+      }
+    },
+    "current_scientific_certification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["final_state", "certification_eligible", "criterion_states", "c4_completion"],
+      "properties": {
+        "final_state": {"const": "FAIL"},
+        "certification_eligible": {"const": false},
+        "criterion_states": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["C1", "C2", "C3", "C4", "C5", "C6", "C7"],
+          "properties": {
+            "C1": {"enum": ["PASS", "FAIL", "BLOCKED"]},
+            "C2": {"enum": ["PASS", "FAIL", "BLOCKED"]},
+            "C3": {"enum": ["PASS", "FAIL", "BLOCKED"]},
+            "C4": {"const": "FAIL"},
+            "C5": {"enum": ["PASS", "FAIL", "BLOCKED"]},
+            "C6": {"enum": ["PASS", "FAIL", "BLOCKED"]},
+            "C7": {"enum": ["PASS", "FAIL", "BLOCKED"]}
+          }
+        },
+        "c4_completion": {"const": "0/9506"}
+      }
+    },
+    "assertion_derivations": {"type": "array", "minItems": 4, "maxItems": 4, "items": {"$ref": "#/$defs/derivation"}}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "path": {"type": "string", "minLength": 1},
+    "artifactRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role", "path", "artifact_id", "content_digest_sha256", "file_sha256"],
+      "properties": {
+        "role": {"type": "string"},
+        "path": {"$ref": "#/$defs/path"},
+        "artifact_id": {"type": "string"},
+        "content_digest_sha256": {"$ref": "#/$defs/digest"},
+        "file_sha256": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "population": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["features", "operations", "facets", "sources", "variants", "manifestations", "modifiers", "typed_interactions", "scientific_identities"],
+      "properties": {
+        "features": {"const": 269},
+        "operations": {"const": 33},
+        "facets": {"const": 15},
+        "sources": {"const": 60},
+        "variants": {"const": 93},
+        "manifestations": {"const": 326},
+        "modifiers": {"const": 33},
+        "typed_interactions": {"const": 108},
+        "scientific_identities": {"const": 22431}
+      }
+    },
+    "derivation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["binding_key", "derivation_id", "derivation_revision_id", "derivation_class", "gate_kind"],
+      "properties": {
+        "binding_key": {"type": "string", "pattern": "^[a-z0-9-]+$"},
+        "derivation_id": {"type": "string", "pattern": "^rcid:v1:assertion-derivation:u7:"},
+        "derivation_revision_id": {"type": "string", "pattern": "^rcid:v1:assertion-derivation-revision:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+        "derivation_class": {"enum": ["calculation", "manual-decision", "measurement", "research-derived"]},
+        "gate_kind": {"type": "string", "minLength": 1}
+      }
+    },
+    "check": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["check_id", "status", "evidence"],
+      "properties": {
+        "check_id": {"type": "string", "pattern": "^[a-z0-9-]+$"},
+        "status": {"const": "PASS"},
+        "evidence": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}
+      }
+    },
+    "scenario": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["strategy", "status", "evidence"],
+      "properties": {
+        "strategy": {"enum": ["source-first", "category-first", "operation-first", "test-corpus-first"]},
+        "status": {"const": "PASS"},
+        "evidence": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}
+      }
+    },
+    "readinessFixture": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scenario", "status", "evidence"],
+      "properties": {
+        "scenario": {"type": "string", "pattern": "^[a-z0-9-]+$"},
+        "status": {"const": "PASS"},
+        "evidence": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}
+      }
+    }
+  }
+}

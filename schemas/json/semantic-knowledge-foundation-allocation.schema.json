@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/semantic-knowledge-foundation-allocation.schema.json",
+  "title": "Semantic knowledge foundation identity allocation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "allocated_on", "allocations"],
+  "properties": {
+    "schema_version": {"const": "semantic-knowledge-foundation-allocation.v1"},
+    "allocated_on": {"type": "string", "format": "date"},
+    "allocations": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["entity_class", "canonical_key", "assigned_id"],
+        "properties": {
+          "entity_class": {"const": "schema-family"},
+          "canonical_key": {"enum": ["schema.semantic-knowledge-foundation.acceptance", "schema.semantic-knowledge-foundation.manifest"]},
+          "assigned_id": {"type": "string", "pattern": "^rcid:v1:schema-family:u7:"}
+        }
+      }
+    }
+  }
+}

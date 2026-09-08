@@ -134,6 +134,15 @@ cross-artifact candidate closure, source-orphan detection, duplicate ownership
 checks, parent/reference validation, bounded supersession semantics, and exact
 predecessor-denominator byte commitments.
 
+`json/semantic-knowledge-foundation-allocation.schema.json`,
+`json/semantic-knowledge-foundation-manifest.schema.json`, and
+`json/semantic-knowledge-foundation-acceptance.schema.json` govern the
+integration gate over that freeze. The gate binds the frozen semantic and
+research authorities, checks their non-overlapping ownership, verifies that
+the structured semantic states are sufficient inputs to successor obligation
+derivation, and preserves exact byte commitments to the predecessor
+obligation, requirement, projection, and forecast artifacts.
+
 `json/generated-assertion-derivation-catalog.schema.json` defines the shared
 provenance contract for assertion-like generated fields. It requires
 class-specific metadata for measurement, calculation, research-derived,

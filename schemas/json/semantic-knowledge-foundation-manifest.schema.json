@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/semantic-knowledge-foundation-manifest.schema.json",
+  "title": "Accepted semantic knowledge architecture foundation manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "accepted_input_repository_sha", "declared_cutoff", "identity_schema_family_id", "identity_schema_version", "manifest_id", "manifest_digest_sha256", "implementation", "semantic_authority", "research_evidence", "semantic_population", "scientific_foundation", "authority_matrix", "denominator_input_contract", "denominator_baseline", "assertion_derivations"],
+  "properties": {
+    "schema_version": {"const": "semantic-knowledge-foundation-manifest.v1"},
+    "accepted_input_repository_sha": {"$ref": "#/$defs/gitSha"},
+    "declared_cutoff": {"type": "string", "format": "date-time"},
+    "identity_schema_family_id": {"type": "string", "pattern": "^rcid:v1:schema-family:u7:"},
+    "identity_schema_version": {"const": "1.0.0"},
+    "manifest_id": {"type": "string", "pattern": "^rcid:v1:artifact-set-manifest:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "manifest_digest_sha256": {"$ref": "#/$defs/digest"},
+    "implementation": {"type": "array", "minItems": 5, "maxItems": 5, "items": {"$ref": "#/$defs/fileRef"}},
+    "semantic_authority": {
+      "type": "object", "additionalProperties": false,
+      "required": ["snapshot", "freeze_manifest", "authority_index", "predecessor"],
+      "properties": {
+        "snapshot": {"$ref": "#/$defs/artifactRef"},
+        "freeze_manifest": {"$ref": "#/$defs/artifactRef"},
+        "authority_index": {"$ref": "#/$defs/artifactRef"},
+        "predecessor": {"$ref": "#/$defs/artifactRef"}
+      }
+    },
+    "research_evidence": {"type": "array", "minItems": 7, "items": {"$ref": "#/$defs/artifactRef"}},
+    "semantic_population": {"$ref": "#/$defs/population"},
+    "scientific_foundation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["foundation_manifest", "acceptance_report", "acceptance_state"],
+      "properties": {
+        "foundation_manifest": {"$ref": "#/$defs/artifactRef"},
+        "acceptance_report": {"$ref": "#/$defs/artifactRef"},
+        "acceptance_state": {"const": "PASS"}
+      }
+    },
+    "authority_matrix": {"type": "array", "minItems": 8, "maxItems": 8, "items": {"$ref": "#/$defs/authorityRow"}},
+    "denominator_input_contract": {
+      "type": "object", "additionalProperties": false,
+      "required": ["feature_state_vocabulary", "facet_inputs", "operation_rule", "variant_rule", "manifestation_rule", "template_fallback_permitted"],
+      "properties": {
+        "feature_state_vocabulary": {"type": "array", "minItems": 7, "maxItems": 7, "uniqueItems": true, "items": {"type": "string"}},
+        "facet_inputs": {"type": "array", "minItems": 15, "maxItems": 15, "items": {"$ref": "#/$defs/facetInput"}},
+        "operation_rule": {"type": "string", "minLength": 1},
+        "variant_rule": {"type": "string", "minLength": 1},
+        "manifestation_rule": {"type": "string", "minLength": 1},
+        "template_fallback_permitted": {"const": false}
+      }
+    },
+    "denominator_baseline": {"$ref": "#/$defs/denominator"},
+    "assertion_derivations": {"type": "array", "minItems": 4, "maxItems": 4, "items": {"$ref": "#/$defs/derivation"}}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "gitSha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "path": {"type": "string", "minLength": 1, "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"},
+    "fileRef": {
+      "type": "object", "additionalProperties": false,
+      "required": ["role", "path", "file_sha256"],
+      "properties": {"role": {"type": "string", "pattern": "^[a-z0-9-]+$"}, "path": {"$ref": "#/$defs/path"}, "file_sha256": {"$ref": "#/$defs/digest"}}
+    },
+    "artifactRef": {
+      "type": "object", "additionalProperties": false,
+      "required": ["role", "path", "artifact_id", "content_digest_sha256", "file_sha256"],
+      "properties": {"role": {"type": "string", "pattern": "^[a-z0-9-]+$"}, "path": {"$ref": "#/$defs/path"}, "artifact_id": {"type": "string", "minLength": 1}, "content_digest_sha256": {"$ref": "#/$defs/digest"}, "file_sha256": {"$ref": "#/$defs/digest"}}
+    },
+    "population": {
+      "type": "object", "additionalProperties": false,
+      "required": ["features", "operations", "facets", "sources", "variants", "manifestations", "modifiers", "typed_interactions", "scientific_identities"],
+      "properties": {"features": {"const": 269}, "operations": {"const": 33}, "facets": {"const": 15}, "sources": {"const": 60}, "variants": {"const": 93}, "manifestations": {"const": 326}, "modifiers": {"const": 33}, "typed_interactions": {"const": 108}, "scientific_identities": {"const": 22431}}
+    },
+    "authorityRow": {
+      "type": "object", "additionalProperties": false,
+      "required": ["decision_domain", "canonical_owner", "consumes_from", "forbidden_alternate_owners", "rule"],
+      "properties": {"decision_domain": {"type": "string", "pattern": "^[a-z0-9-]+$"}, "canonical_owner": {"type": "string", "pattern": "^[a-z0-9-]+$"}, "consumes_from": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[a-z0-9-]+$"}}, "forbidden_alternate_owners": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[a-z0-9-]+$"}}, "rule": {"type": "string", "minLength": 1}}
+    },
+    "facetInput": {
+      "type": "object", "additionalProperties": false,
+      "required": ["facet_id", "source_selectors", "resolution_rule"],
+      "properties": {"facet_id": {"type": "string", "pattern": "^facet\\."}, "source_selectors": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}, "resolution_rule": {"type": "string", "minLength": 1}}
+    },
+    "denominator": {
+      "type": "object", "additionalProperties": false,
+      "required": ["state", "obligation_templates", "vector_requirements", "artifact_sha256"],
+      "properties": {"state": {"const": "pre-rederivation-predecessor-bound"}, "obligation_templates": {"const": 12048}, "vector_requirements": {"const": 9506}, "artifact_sha256": {"type": "object", "minProperties": 3, "additionalProperties": {"$ref": "#/$defs/digest"}}}
+    },
+    "derivation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["binding_key", "derivation_id", "derivation_revision_id", "derivation_class", "gate_kind"],
+      "properties": {"binding_key": {"type": "string", "pattern": "^[a-z0-9-]+$"}, "derivation_id": {"type": "string", "pattern": "^rcid:v1:assertion-derivation:u7:"}, "derivation_revision_id": {"type": "string", "pattern": "^rcid:v1:assertion-derivation-revision:h:jcs-sha256-v1:[0-9a-f]{64}$"}, "derivation_class": {"enum": ["calculation", "manual-decision", "measurement", "research-derived"]}, "gate_kind": {"type": "string", "minLength": 1}}
+    }
+  }
+}

@@ -111,12 +111,18 @@ identities, and no blocking candidate or source orphan. See the [semantic univer
 freeze](semantic-universe-freeze.md). The predecessor 12,048 obligations and
 9,506 requirements remain unchanged.
 
-The next dependency is the semantic-knowledge acceptance gate. Obligation
-derivation remains blocked until that gate verifies the researched snapshot,
-candidate closure, source coverage, identities, derivations, determinism, and
-the unchanged predecessor denominator as one coherent input authority.
+The semantic knowledge architecture now passes its integrated acceptance. The
+[semantic knowledge foundation](semantic-knowledge-architecture.md) binds the
+frozen snapshot, candidate closure, source coverage, identities, derivations,
+authority boundaries, denominator-readiness fixtures, and unchanged
+predecessor denominator as one coherent input authority. This acceptance is
+not full data certification and does not advance denominator authority.
 
 ### Derive the true obligation denominator
+
+The next dependency is to define the explainable rules that consume the frozen
+semantic states, facets, canonical operations, variants, manifestations, and
+typed relations.
 
 Emit obligations from feature-specific semantic applicability instead of a
 uniform template product. Every emitted obligation must explain the semantic
