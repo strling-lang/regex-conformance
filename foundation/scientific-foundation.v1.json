@@ -4,7 +4,7 @@
     {
       "relative_path": "schemas/tooling/python/regex_conformance_schema/foundation.py",
       "role": "foundation-evaluator",
-      "sha256": "d3da9efc06d0fd1e53f820916a4cc25ed8d95d500d7316d2d7de5c2f26275c08"
+      "sha256": "57328986b12ad64220c818a7b26e2216205002a783e105cb0233668c3a67b430"
     },
     {
       "relative_path": "tools/foundation/certify.py",
@@ -14,7 +14,7 @@
     {
       "relative_path": "schemas/json/scientific-foundation-manifest.schema.json",
       "role": "foundation-manifest-schema",
-      "sha256": "c6bc1187d0d6ea6a52817b6d9ed8e7bc8f27fffa902ddfca3c9933e662a2c0b8"
+      "sha256": "2fea499a78ad808de9f6bfc9b3e1b90b0ff51dc792327cab1588127355e6ff81"
     },
     {
       "relative_path": "schemas/json/scientific-foundation-acceptance.schema.json",
@@ -24,7 +24,7 @@
     {
       "relative_path": "tests/schema/test_scientific_foundation.py",
       "role": "foundation-tests",
-      "sha256": "6bf188c924d57a4fd4c5f195d2f99968a004c0f358258016b3646cba66ecce3e"
+      "sha256": "e7476aa5941889645b160abf4c03e297e8836cecdd803a4d45405bf89b1b7c01"
     }
   ],
   "accepted_source_repository_sha": "167ebd5c55065f33191fe5843be902db53f3187e",
@@ -152,55 +152,55 @@
       "finding": "Final sustained production-architecture qualification"
     }
   ],
-  "foundation_manifest_digest_sha256": "5c75b1f79b89c55d81214a670e0ae0dc40e8d54b54ade1208061bbd4027187bc",
-  "foundation_manifest_id": "rcid:v1:artifact-set-manifest:h:jcs-sha256-v1:a6d3a33b0f7a390e24ad48fcebd997c8d92c8c43da6b3b224b6b654dcee7f81f",
+  "foundation_manifest_digest_sha256": "d742b508d59875dc1677b0be52461cb45ef95548ec2cf78d5154db90f94bfed2",
+  "foundation_manifest_id": "rcid:v1:artifact-set-manifest:h:jcs-sha256-v1:77e1d665791acbd5ec80e65670a439ceb83d00d7436eccbe1270450aba1a733d",
   "foundations": [
     {
       "artifacts": [
         {
           "relative_path": "certification/README.md",
           "role": "certification-contract-documentation",
-          "sha256": "693611a4fcf57dcfd14d5a822066f6f476ee2a0c7956d9d89de3f6e0403b4796"
+          "sha256": "8a3165559ecd8247b73e58f7f46d5a2a95f8b8cff5bd63f1e92f2b152f291a2c"
         },
         {
-          "relative_path": "certification/contracts/regex-conformance-certification.v1.json",
+          "relative_path": "certification/contracts/regex-conformance-certification.v1.1.json",
           "role": "certification-contract",
-          "sha256": "8208eeaa370989fa9872425c2227c230210cb15854768c5a34b2f148a3318793"
+          "sha256": "02bf378753b30428a02808ed4a2bacbc5d6ce6838e04afe9e98a40101d06d799"
         },
         {
           "relative_path": "schemas/tooling/python/regex_conformance_schema/certification.py",
           "role": "certification-evaluator",
-          "sha256": "88be1331e573b9c2711c862ae576969474ae916c1e37517cd903d5fb73ac9f0a"
+          "sha256": "b395706e7d9e81188f789da636b60a6743eade8ac80b53104b412278d5470382"
         },
         {
-          "relative_path": "certification/inputs/current-repository.v1.json",
+          "relative_path": "certification/inputs/current-repository-2026-09-08.v2.json",
           "role": "certification-input",
-          "sha256": "6f65fb17d68caf699530a3279126e2ace76f24a88177bd50bbd91c3bc6d733ac"
+          "sha256": "9483812b7bd3b804a67a031c43b4dd0f439641a70e580a7d400d9c5e9cbf2e3a"
         },
         {
-          "relative_path": "certification/reports/current-repository.v1.json",
+          "relative_path": "certification/reports/current-repository-2026-09-08.v2.json",
           "role": "certification-report",
-          "sha256": "f9a3e322afa2c6a336c841ed8c7f0b296d7f254206cbfc1b2495655ad7d35350"
+          "sha256": "9c40ee82ec38d55074d4ec265f6c0ef07a04435752b8e7d986be8c7448582fef"
         },
         {
           "relative_path": "certification/current-authority.v1.json",
           "role": "certification-authority",
-          "sha256": "9d9253947d693caa3e78c0a13f0b6ae750dc9c75f197b85ec4851d9e186474b3"
+          "sha256": "0fe4379a1d518f086c2977ebec8cfcaaae8644b22dde09c374bf528d7a85a4bb"
         },
         {
           "relative_path": "tests/fixtures/certification/certification-predicates.v1.json",
           "role": "certification-fixtures",
-          "sha256": "820eb45aeb83e3d6c62a3d961fecc692ed132f227ace9c9301089a8c32baab9f"
+          "sha256": "c3f57b1a6b6835fba595274fac0d04218e9359b8c3fc8f9ab7ad1e6a163bfcc7"
         },
         {
           "relative_path": "schemas/json/certification-contract.schema.json",
           "role": "certification-contract-schema",
-          "sha256": "28907bde28a394544d05bc99b598c3dec41402d73ce6050adb5edc79c14d1fbf"
+          "sha256": "7f4681fd2df68e03fedb68c598dcc4654d79addb7ad4bbc3672179f7b5fad7f9"
         },
         {
           "relative_path": "schemas/json/certification-input-set.schema.json",
           "role": "certification-input-schema",
-          "sha256": "b58f4f72a23a2662ffa934bbaf2f2aec7515e22c1566fdf633da472951dd3d20"
+          "sha256": "0e336cb889adae78a9dd5b50cbefd403c46072efdaddff0f94a330fbd32457ed"
         },
         {
           "relative_path": "schemas/json/certification-report.schema.json",
@@ -216,23 +216,23 @@
       "facts": [
         {
           "name": "contract-id",
-          "value": "rcid:v1:certification-definition:h:jcs-sha256-v1:c4e37ec6c122d758f71e6000fb708dd72ef8b9e2d948813919d1c3ddf15f1bfa"
+          "value": "rcid:v1:certification-definition:h:jcs-sha256-v1:2a54c9284a498d7de25e2f4f46fc3236f4ae9c4a71340562a2663dd5d49154da"
         },
         {
           "name": "contract-digest",
-          "value": "ed0c3db8560926e55d8642343a4557d565386264cb55fc95718dea8cfd0cf871"
+          "value": "6e61743353f548e3408ff290c31cb3cafd9f9aa7b43fd7f7446e38586970c85c"
         },
         {
           "name": "contract-version",
-          "value": "1.0.0"
+          "value": "1.1.0"
         },
         {
           "name": "current-report-id",
-          "value": "rcid:v1:certification-report:h:jcs-sha256-v1:dc743163d75f19b41c5730ba3e98f1ac386233266a6810577e19af12faa839d3"
+          "value": "rcid:v1:certification-report:h:jcs-sha256-v1:05600b98053b3344e8e623364371f2a6415090eb23e633d8deab912a5e37332d"
         },
         {
           "name": "current-report-digest",
-          "value": "7ceed685bbfa532a55d35ab1fc9d45392c6eaff8f9cadac028788972fb843cce"
+          "value": "53b30f272b198ebc39331700c845d4e736dc6858520fa6e4d3e7023c3431f099"
         },
         {
           "name": "current-final-state",
@@ -305,40 +305,40 @@
         {
           "relative_path": "docs/architecture/generated-assertion-derivations.md",
           "role": "derivation-contract",
-          "sha256": "86540ba682731a79c813fc0fe7c2f8bcc693c73e4e95740823d53c8a964d3b3a"
+          "sha256": "bdedfb21c589f771f140cb7d3cdca3eb23f69579efc58591440272d81c2b7ffe"
         },
         {
           "relative_path": "registries/provenance/generated-assertion-derivations.v1.json",
           "role": "derivation-catalog",
-          "sha256": "d1fc225669459380810c6bf1d3199beb923a02ebf9ddc134caa5096336a7d0f4"
+          "sha256": "0aa29e7fec67a86b3c8be5db16e1d9eff6c391e5799096ddac490e3ca432edf9"
         },
         {
           "relative_path": "schemas/tooling/python/regex_conformance_schema/derivation.py",
           "role": "derivation-validator",
-          "sha256": "346d002907bde905c4d07c685b030146e6ea699056836e80708e4e9952ede743"
+          "sha256": "f2e72f9a04b48eda0702b7350b94295f0bbb980ebd58b29a4acb36d6a9400a64"
         },
         {
           "relative_path": "schemas/json/generated-assertion-derivation-catalog.schema.json",
           "role": "derivation-schema",
-          "sha256": "faf4be999de8741e6337671a8543e5873ab543d0df83d4f82f14d243a9a730fd"
+          "sha256": "0f6a45a6ee34e7621b3e572e4e8e3e68628259205f3401c5e208de207e9abb4d"
         }
       ],
       "facts": [
         {
           "name": "catalog-digest",
-          "value": "e292e5fa6816614170628582ae15d5e296a76def264037fca3211f2896a80787"
+          "value": "cd32e2829292cd4d5de09c9b34e1cb1d6d21f766c3ee078d527b95f578171f45"
         },
         {
           "name": "inventoried-artifact-count",
-          "value": 41
+          "value": 74
         },
         {
           "name": "assertion-group-count",
-          "value": 178
+          "value": 267
         },
         {
           "name": "assertion-occurrence-count",
-          "value": 512768
+          "value": 1674396
         }
       ],
       "foundation_key": "generated-assertion-derivation"
@@ -348,12 +348,12 @@
         {
           "relative_path": "docs/architecture/scientific-identities.md",
           "role": "identity-contract",
-          "sha256": "b1a9fde51622af157c428f28ac03222ab45720a02d625851c12f3b0d54d6d522"
+          "sha256": "9e0b5f04caa517838e17e0530ad1158c77e081b0db1b1ceb69bc941c6b8ed929"
         },
         {
           "relative_path": "registries/identity/scientific-identities.v1.json",
           "role": "identity-lock",
-          "sha256": "e851472f4ea43cb8b7d7ae4f15d036c8b9635cf014b1a916afd212b7aec22a17"
+          "sha256": "040c16f1d29840e97374f8b3e61023a2735a5846284e110753ff346fa1a95f0a"
         },
         {
           "relative_path": "registries/identity/namespaces.v2.json",
@@ -363,26 +363,26 @@
         {
           "relative_path": "schemas/tooling/python/regex_conformance_schema/scientific_identity.py",
           "role": "identity-validator",
-          "sha256": "9a0bee09b4043c214f2508c26c7e5e5b40794b95ae68601e6f41cd43553226da"
+          "sha256": "8d8ae27dfe7f2317edbbc6f2a1274e87e83c6c44044961cdbd900cd433e1fb38"
         },
         {
           "relative_path": "schemas/json/scientific-identity-catalog.schema.json",
           "role": "identity-lock-schema",
-          "sha256": "94287925c69ba83b1cd663a90081a00adc8618cdaf23fd3abf096961fb5eb055"
+          "sha256": "d632af0dafee9eeedb52268e03c2f8ca5ed16c9545e22c5cf8c84bfea09ea9a2"
         }
       ],
       "facts": [
         {
           "name": "catalog-digest",
-          "value": "fd03b75bc88720a448cf4c5a1e8f598d2c2635d5293244b9217dabcffe36f2db"
+          "value": "f795af661fced82c4eb12d9f1a23d3c04523d2e805458e091af2d96b078149cb"
         },
         {
           "name": "scientific-identity-count",
-          "value": 22359
+          "value": 28016
         },
         {
           "name": "lineage-record-count",
-          "value": 0
+          "value": 3162
         }
       ],
       "foundation_key": "scientific-identity"
@@ -451,7 +451,7 @@
         "sha256": "dab61b42376d757eadada26c31d8fb5c173a508bb6ce780e98a220449ce6e871"
       }
     ],
-    "scientific_identity_count": 22359,
+    "scientific_identity_count": 28016,
     "semantic_snapshot_identity": "regex-semantic-features-2026-08-22.sha256-350bfea4c3da07b3426d885aa8ff645ac55539bbb1294a2ea35dd5319541d6c7"
   }
 }

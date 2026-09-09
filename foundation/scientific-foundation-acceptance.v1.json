@@ -1,6 +1,6 @@
 {
-  "acceptance_report_digest_sha256": "82518fe2d3a6aafe07981a0753f13449a37abdc9792e7d8adfe771a4e729f0db",
-  "acceptance_report_id": "rcid:v1:trust-assessment:h:jcs-sha256-v1:8841ed39055bc93706e2e11c38d4a745efa673032416fddeda073f0bb359c84a",
+  "acceptance_report_digest_sha256": "88efa852137868d1443a177d0c7843559358122bdeb424f5e155dbee071c66f5",
+  "acceptance_report_id": "rcid:v1:trust-assessment:h:jcs-sha256-v1:f77621cb034c838194ce2ddc72f986f684b9f7d389c039fdf7b5aefa245a3925",
   "accepted_source_repository_sha": "167ebd5c55065f33191fe5843be902db53f3187e",
   "assertion_derivations": [
     {
@@ -55,8 +55,8 @@
     {
       "check_id": "derivation-catalog",
       "evidence": [
-        "artifacts=41",
-        "groups=178"
+        "artifacts=74",
+        "groups=267"
       ],
       "status": "PASS"
     },
@@ -78,7 +78,7 @@
     {
       "check_id": "foundation-manifest-closure",
       "evidence": [
-        "5c75b1f79b89c55d81214a670e0ae0dc40e8d54b54ade1208061bbd4027187bc"
+        "d742b508d59875dc1677b0be52461cb45ef95548ec2cf78d5154db90f94bfed2"
       ],
       "status": "PASS"
     },
@@ -93,8 +93,8 @@
     {
       "check_id": "identity-lock",
       "evidence": [
-        "identities=22359",
-        "lineage=0"
+        "identities=28016",
+        "lineage=3162"
       ],
       "status": "PASS"
     },
@@ -119,7 +119,7 @@
   ],
   "current_scientific_certification": {
     "certification_eligible": false,
-    "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:c4e37ec6c122d758f71e6000fb708dd72ef8b9e2d948813919d1c3ddf15f1bfa",
+    "contract_id": "rcid:v1:certification-definition:h:jcs-sha256-v1:2a54c9284a498d7de25e2f4f46fc3236f4ae9c4a71340562a2663dd5d49154da",
     "criteria": [
       {
         "criterion_id": "C1",
@@ -151,8 +151,8 @@
       }
     ],
     "final_state": "FAIL",
-    "report_digest_sha256": "7ceed685bbfa532a55d35ab1fc9d45392c6eaff8f9cadac028788972fb843cce",
-    "report_id": "rcid:v1:certification-report:h:jcs-sha256-v1:dc743163d75f19b41c5730ba3e98f1ac386233266a6810577e19af12faa839d3"
+    "report_digest_sha256": "53b30f272b198ebc39331700c845d4e736dc6858520fa6e4d3e7023c3431f099",
+    "report_id": "rcid:v1:certification-report:h:jcs-sha256-v1:05600b98053b3344e8e623364371f2a6415090eb23e633d8deab912a5e37332d"
   },
   "deferred_finding_dispositions": {
     "correctly-deferred-to-later-architecture": 4,
@@ -161,8 +161,8 @@
     "resolved-by-foundation": 2
   },
   "foundation_acceptance": "PASS",
-  "foundation_manifest_digest_sha256": "5c75b1f79b89c55d81214a670e0ae0dc40e8d54b54ade1208061bbd4027187bc",
-  "foundation_manifest_id": "rcid:v1:artifact-set-manifest:h:jcs-sha256-v1:a6d3a33b0f7a390e24ad48fcebd997c8d92c8c43da6b3b224b6b654dcee7f81f",
+  "foundation_manifest_digest_sha256": "d742b508d59875dc1677b0be52461cb45ef95548ec2cf78d5154db90f94bfed2",
+  "foundation_manifest_id": "rcid:v1:artifact-set-manifest:h:jcs-sha256-v1:77e1d665791acbd5ec80e65670a439ceb83d00d7436eccbe1270450aba1a733d",
   "hosted_validation_basis": {
     "jobs": [
       "first-end-to-end-campaign",
@@ -501,8 +501,8 @@
     },
     {
       "evidence": [
-        "v1 remains rcid:v1:certification-definition:h:jcs-sha256-v1:c4e37ec6c122d758f71e6000fb708dd72ef8b9e2d948813919d1c3ddf15f1bfa",
-        "current authority may advance to rcid:v1:certification-definition:h:jcs-sha256-v1:a8520abd9ccffedc76c5803e6c06ed4c72eb4c4d8b35da817147b1b8d7bda4ae"
+        "v1 remains rcid:v1:certification-definition:h:jcs-sha256-v1:2a54c9284a498d7de25e2f4f46fc3236f4ae9c4a71340562a2663dd5d49154da",
+        "current authority may advance to rcid:v1:certification-definition:h:jcs-sha256-v1:76ed4dc0b8d3fd69eed32cd6abae8eafe1b3e05835620b6778232875c146b6f6"
       ],
       "scenario": "certification-contract-successor",
       "status": "PASS"

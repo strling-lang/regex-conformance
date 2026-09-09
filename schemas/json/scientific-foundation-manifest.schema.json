@@ -157,7 +157,7 @@
           "maxItems": 4,
           "items": {"$ref": "#/$defs/artifactReference"}
         },
-        "scientific_identity_count": {"const": 22359},
+          "scientific_identity_count": {"type": "integer", "minimum": 22359},
         "semantic_snapshot_identity": {"type": "string", "minLength": 1}
       }
     }
