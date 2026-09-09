@@ -72,34 +72,18 @@ class PublicCiPolicyTests(unittest.TestCase):
         self.mutate_workflow("      - main", "      - release")
         self.assertIn("missing-main-trigger", self.codes())
 
-    def test_missing_control_plane_tests_are_rejected(self) -> None:
+    def test_missing_local_certificate_verifier_is_rejected(self) -> None:
         self.mutate_workflow(
-            "python -m unittest discover -s tests/control_plane -v",
-            "python -m unittest discover -s tests/schema -v",
+            "verify_local_certification.py",
+            "local-verification-disabled.py",
         )
         self.assertIn("missing-validation", self.codes())
 
-    def test_missing_or_trust_upgraded_environment_certification_is_rejected(self) -> None:
-        self.mutate_workflow("certify_minimal.py", "certification-disabled.py")
-        self.assertIn("missing-validation", self.codes())
-        self.mutate_workflow("certification-disabled.py", "certify_minimal.py")
-        self.mutate_workflow("--trust-class untrusted_public", "--trust-class trusted_executioner")
-        self.assertIn("missing-validation", self.codes())
-
-    def test_missing_or_trust_upgraded_adapter_certification_is_rejected(self) -> None:
-        self.mutate_workflow("tools/adapters/certify_minimal.py", "tools/adapters/certification-disabled.py")
-        self.assertIn("missing-validation", self.codes())
-        self.mutate_workflow("tools/adapters/certification-disabled.py", "tools/adapters/certify_minimal.py")
-        command = (
-            'python tools/adapters/certify_minimal.py --state-root "$RUNNER_TEMP/strling-regex-adapter-state" '
-            '--evidence-dir "$RUNNER_TEMP/strling-regex-adapter-evidence" --trust-class untrusted_public '
-            '--compact-report "$RUNNER_TEMP/minimal-adapter-certification.json"'
-        )
-        self.mutate_workflow(
-            command,
-            command.replace("--trust-class untrusted_public", "--trust-class trusted_executioner"),
-        )
-        self.assertIn("missing-validation", self.codes())
+    def test_hosted_workflow_has_no_expensive_campaign_jobs(self) -> None:
+        text = (self.root / ".github/workflows/public-validation.yml").read_text(encoding="utf-8")
+        self.assertNotIn("minimal-environment-certification:", text)
+        self.assertNotIn("minimal-adapter-certification:", text)
+        self.assertNotIn("first-end-to-end-campaign:", text)
 
     def test_write_permission_is_rejected(self) -> None:
         self.mutate_workflow("contents: read", "contents: write")

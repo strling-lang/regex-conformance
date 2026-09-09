@@ -14,6 +14,8 @@ def parser() -> argparse.ArgumentParser:
     value = argparse.ArgumentParser(description=__doc__)
     value.add_argument("--root", type=Path, default=Path.cwd(), help="repository root")
     value.add_argument("--verified-sha", required=True, help="full commit SHA that passed task verification")
+    value.add_argument("--local-certification-manifest", required=True, help="tracked local certification envelope path")
+    value.add_argument("--local-certification-root", required=True, help="caller-recorded JCS/SHA-256 certification root")
     value.add_argument("--source", help="checked-out codex/* source branch; defaults to current branch")
     value.add_argument("--target", default="main", help="target branch (default: main)")
     value.add_argument("--remote", default="origin", help="Git remote (default: origin)")
@@ -30,6 +32,8 @@ def main(argv: list[str] | None = None) -> int:
             source_branch=arguments.source,
             target_branch=arguments.target,
             remote=arguments.remote,
+            local_certification_manifest=arguments.local_certification_manifest,
+            local_certification_root=arguments.local_certification_root,
         )
         if not arguments.dry_run:
             promote(arguments.root.resolve(), plan)

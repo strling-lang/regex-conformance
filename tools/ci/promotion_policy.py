@@ -8,6 +8,8 @@ import subprocess
 from dataclasses import asdict, dataclass
 from pathlib import Path
 
+from local_certification import LocalCertificationError, verify_manifest
+
 FULL_SHA = re.compile(r"[0-9a-f]{40}")
 
 
@@ -23,6 +25,9 @@ class PromotionPlan:
     verified_sha: str
     target_branch: str
     target_sha_before: str
+    certified_source_sha: str
+    local_certification_manifest: str
+    local_certification_root: str
 
     def as_json(self, *, promoted: bool) -> str:
         payload = asdict(self)
@@ -68,6 +73,8 @@ def build_plan(
     source_branch: str | None = None,
     target_branch: str = "main",
     remote: str = "origin",
+    local_certification_manifest: str | None = None,
+    local_certification_root: str | None = None,
 ) -> PromotionPlan:
     if target_branch != "main":
         raise PromotionPolicyError("the authorized target branch is main")
@@ -75,6 +82,10 @@ def build_plan(
         raise PromotionPolicyError("the authorized Git remote is origin")
     if FULL_SHA.fullmatch(verified_sha) is None:
         raise PromotionPolicyError("verified SHA must be a full lowercase 40-character commit SHA")
+    if not local_certification_manifest or not local_certification_root:
+        raise PromotionPolicyError("promotion requires the local certification manifest and root")
+    if re.fullmatch(r"[0-9a-f]{64}", local_certification_root) is None:
+        raise PromotionPolicyError("local certification root must be a lowercase SHA-256 digest")
 
     git = Git(root)
     if git.output("status", "--porcelain=v1"):
@@ -90,6 +101,15 @@ def build_plan(
     source_sha = git.output("rev-parse", "HEAD")
     if source_sha != verified_sha:
         raise PromotionPolicyError("the checked-out commit does not equal the caller-recorded verified SHA")
+    try:
+        verification = verify_manifest(
+            root,
+            Path(local_certification_manifest),
+            expected_envelope_sha=source_sha,
+            expected_root=local_certification_root,
+        )
+    except LocalCertificationError as error:
+        raise PromotionPolicyError(f"local certification rejected: {error}") from error
 
     git.run("fetch", "--prune", remote)
     target_sha = git.output("rev-parse", f"refs/remotes/{remote}/{target_branch}")
@@ -108,6 +128,9 @@ def build_plan(
         verified_sha=verified_sha,
         target_branch=target_branch,
         target_sha_before=target_sha,
+        certified_source_sha=verification["certified_source_sha"],
+        local_certification_manifest=local_certification_manifest,
+        local_certification_root=local_certification_root,
     )
 
 

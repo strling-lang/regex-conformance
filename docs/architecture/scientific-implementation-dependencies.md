@@ -136,6 +136,11 @@ current denominator authority index. C4 has advanced versionedly to the new
 requirement snapshot and honestly remains `FAIL` at `0/3378`; old evaluations
 remain immutable. See [Canonical semantic obligations and requirements](semantic-obligation-snapshots.md).
 
+Expensive deterministic closure is certified on the controlled local machine;
+hosted Linux verifies the exact source, result structure, content commitments,
+catalog bindings, and cheap aggregates under the
+[local authoritative certification architecture](local-authoritative-certification.md).
+
 The next dependency is to recompute and audit the scientific denominator using
 these canonical semantic inputs. Profile-expanded execution counts and a final
 storage forecast remain deferred until the exact profile universe is frozen.

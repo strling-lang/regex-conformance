@@ -1,7 +1,7 @@
 # Repository Delivery and Public CI Policy
 
-This policy implements the program's disposable public-validation trust zone and
-verified local fast-forward promotion boundary. It is controlled by the
+This policy implements the program's bounded hosted-integrity trust zone and
+locally certified fast-forward promotion boundary. It is controlled by the
 accepted disposable-validation, least-privilege automation, and verified
 fast-forward promotion decisions and by sections 21 and 22 of the Foundation
 Specification. The existing filename is retained as a stable documentation and
@@ -10,21 +10,18 @@ tooling path; this policy does not require GitHub branch protection.
 ## Public contribution boundary
 
 The public-validation workflow is the only public contribution workflow at
-repository bootstrap. Its source-validation job runs external pull requests,
-`main` pushes, and manual validation events exclusively on GitHub-hosted
-ubuntu-24.04. A separate job realizes the three minimal certified environments
-on `main` pushes and manual events after source validation; it never runs pull
-request code. Both jobs use
-read-only repository permission and retain no checkout credential. They have no
+repository bootstrap. Its bounded job runs external pull requests, `main`
+pushes, and manual validation events exclusively on GitHub-hosted ubuntu-24.04.
+It uses read-only repository permission and retains no checkout credential. It has no
 secret reference, OIDC permission, artifact upload, publication step,
 reusable-workflow handoff, privileged trigger, or self-hosted runner route.
 
-The workflow validates untrusted source. Its outputs are never empirical
+The workflow validates untrusted structure and independently verifies a tracked
+local certification envelope on `main` and manual exact-revision runs. It does
+not repeat expensive deterministic generation, environment realization,
+adapter qualification, or campaign execution. Its outputs are never empirical
 production evidence, trusted executables, reusable environment inputs, or
-publication authority. Ephemeral certification evidence is destroyed with the
-hosted worker after its digest and compact result are emitted to the job log. A
-future protected evidence workflow must be a separate trust zone with local
-admission; it may not extend or call this workflow across the boundary.
+publication authority.
 
 The public-CI verifier makes this contract executable and fail-closed. The CI
 dependency lock pins exact Linux wheels by SHA-256. Every action is pinned to a
@@ -40,7 +37,8 @@ pull request. Safety is established before promotion:
   fault, regression, structural, security, determinism, and integration checks;
 - inspect the complete diff and exclude unrelated changes, secrets, caches,
   runtime state, execution spools, and generated junk;
-- create one substantive commit and record its full 40-character SHA;
+- create one substantive source commit, certify it locally from a clean tree,
+  then create one manifest-only certification-envelope commit;
 - require a clean working tree and a fast-forward descendant of current
   `origin/main`, with no merge commit in the promotion range;
 - synchronize local `main` using `git pull --ff-only`, then integrate only with
@@ -69,18 +67,25 @@ After completing a coherent repository-changing task:
    generated-artifact, and integration check.
 2. Inspect `git status`, the complete diff, and the exact staged diff; commit
    only the coherent verified task result with a substantive subject.
-3. Record the exact verified commit: `VERIFIED_SHA=$(git rev-parse HEAD)`.
-4. Run `python tools/ci/promote_verified.py --verified-sha "$VERIFIED_SHA"
-   --dry-run` and inspect the JSON plan.
+3. Run `python tools/ci/certify_local.py --root .`, record its certification
+   root, stage only its manifest, and commit the certification envelope.
+4. Record the exact envelope SHA and run `python tools/ci/promote_verified.py
+   --verified-sha "$VERIFIED_SHA" --local-certification-manifest
+   certification/local/current-local-certification.v1.json
+   --local-certification-root "$LOCAL_CERTIFICATION_ROOT" --dry-run`.
 5. Run the same command without `--dry-run`. It fetches origin, switches to
    `main`, pulls with `--ff-only`, merges the verified SHA with `--ff-only`,
    pushes `main`, fetches again, and verifies all main SHAs.
 6. Independently compare `git rev-parse main`, `git rev-parse origin/main`, and
    `git ls-remote origin refs/heads/main` with the recorded verified SHA.
-7. Confirm the resulting main public-validation run used the disposable hosted
-   runner, requested no secrets or write permission, and produced no artifact.
+7. Confirm the resulting bounded hosted-integrity run verified the exact
+   envelope and local certification root, used the disposable hosted runner,
+   requested no secrets or write permission, and produced no artifact.
 8. Update canonical Notion evidence only after repository and remote state agree.
 
 Any failure keeps the task incomplete. The promotion tool deliberately surfaces
 Git's remote rejection diagnostic so a real server-side restriction can be
 reported without bypassing it.
+
+The complete trust boundary and non-self-referential envelope are documented in
+the [local certification architecture](../architecture/local-authoritative-certification.md).

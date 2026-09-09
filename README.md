@@ -211,21 +211,22 @@ architecture](docs/architecture/minimal-thin-adapters.md).
 
 ## Public validation and promotion
 
-Every external pull request and `main` push runs the public-validation check on
-a disposable GitHub-hosted Ubuntu worker with read-only repository permission.
+Every external pull request and `main` push runs a bounded integrity check on a
+disposable GitHub-hosted Ubuntu worker with read-only repository permission.
 The workflow has no trusted evidence credentials, publication permission,
 self-hosted runner label, or cross-zone artifact output. Its action revisions
 and Linux dependency wheels are SHA-256 pinned.
 
-Program work is fully verified and committed on a local `codex/**` branch, then
-promoted without a pull request or server-administration dependency. Record the
-exact commit that passed task verification; the authorized tool checks that
-identity, fetches `origin/main`, fast-forwards local `main`, pushes normally,
-fetches again, and proves local and remote main identify the same commit:
+Program work is fully verified on a clean committed local `codex/**` source,
+then bound by a manifest-only certification-envelope commit. Promotion requires
+the exact envelope SHA and local JCS/SHA-256 certification root:
 
+    python tools/ci/certify_local.py --root .
+    git add -- certification/local/current-local-certification.v1.json
+    git commit -m "cert(certification): bind local authoritative result"
     VERIFIED_SHA=$(git rev-parse HEAD)
-    python tools/ci/promote_verified.py --verified-sha "$VERIFIED_SHA" --dry-run
-    python tools/ci/promote_verified.py --verified-sha "$VERIFIED_SHA"
+    python tools/ci/promote_verified.py --verified-sha "$VERIFIED_SHA" --local-certification-manifest certification/local/current-local-certification.v1.json --local-certification-root "$LOCAL_CERTIFICATION_ROOT" --dry-run
+    python tools/ci/promote_verified.py --verified-sha "$VERIFIED_SHA" --local-certification-manifest certification/local/current-local-certification.v1.json --local-certification-root "$LOCAL_CERTIFICATION_ROOT"
 
 Run the same gate locally after installing requirements.lock:
 
@@ -237,6 +238,9 @@ procedure are documented in the [repository delivery policy][protection]. No
 GitHub ruleset or legacy branch protection is required solely for this delivery
 path. If GitHub rejects a normal `main` push because a real rule exists, stop
 and report that specific restriction.
+
+The split between expensive local authority and bounded hosted veto verification
+is documented in the [local certification architecture](docs/architecture/local-authoritative-certification.md).
 
 See [GOVERNANCE.md](GOVERNANCE.md) for authority and change control,
 [CONTRIBUTING.md](CONTRIBUTING.md) for contribution requirements, and

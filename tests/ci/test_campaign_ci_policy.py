@@ -42,25 +42,21 @@ class CampaignCiPolicyTests(unittest.TestCase):
         path.write_text(text.replace(old, new, 1), encoding="utf-8")
         return {item.code for item in evaluate(self.root)}
 
-    def test_campaign_execution_cannot_be_removed(self) -> None:
+    def test_hosted_workflow_does_not_execute_a_campaign(self) -> None:
+        text = (self.root / ".github/workflows/public-validation.yml").read_text(encoding="utf-8")
+        self.assertNotIn("run_vertical_slice.py", text)
+        self.assertNotIn("certify_minimal.py", text)
+
+    def test_local_certificate_verification_cannot_be_removed(self) -> None:
         codes = self._replace(
-            "python tools/campaigns/run_vertical_slice.py",
-            "python tools/campaigns/campaign-disabled.py",
+            "python tools/ci/verify_local_certification.py",
+            "python tools/ci/local-verification-disabled.py",
         )
         self.assertIn("missing-validation", codes)
 
-    def test_campaign_public_job_cannot_claim_trusted_execution(self) -> None:
-        command = (
-            'python tools/campaigns/run_vertical_slice.py --state-root "$RUNNER_TEMP/strling-regex-campaign-state" '
-            '--evidence-dir "$RUNNER_TEMP/strling-regex-campaign-evidence" '
-            '--warehouse-dir "$RUNNER_TEMP/strling-regex-campaign-warehouse" '
-            '--trust-class untrusted_public --compact-report "$RUNNER_TEMP/first-campaign-report.json"'
-        )
-        codes = self._replace(
-            command,
-            command.replace("--trust-class untrusted_public", "--trust-class trusted_executioner"),
-        )
-        self.assertIn("missing-validation", codes)
+    def test_hosted_verification_retains_ten_minute_bound(self) -> None:
+        codes = self._replace("timeout-minutes: 10", "timeout-minutes: 45")
+        self.assertIn("missing-timeout", codes)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/local-authoritative-certification.schema.json",
+  "title": "Local authoritative certification manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "architecture", "hash_policy", "certified_source", "promotion_envelope", "bindings", "generated_artifacts", "test_results", "cheap_aggregates", "final_local_certification", "local_certification_root", "manifest_id"],
+  "properties": {
+    "schema_version": {"const": "local-authoritative-certification.v1"},
+    "architecture": {"const": "Local Authoritative Certification / Hosted Integrity Verification"},
+    "hash_policy": {"const": "jcs-sha256-v1"},
+    "certified_source": {"type": "object", "additionalProperties": false, "required": ["git_sha", "tree_sha", "worktree_clean"], "properties": {"git_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"}, "tree_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"}, "worktree_clean": {"const": true}}},
+    "promotion_envelope": {"type": "object", "additionalProperties": false, "required": ["manifest_path", "source_must_be_single_parent", "manifest_only_commit_required"], "properties": {"manifest_path": {"const": "certification/local/current-local-certification.v1.json"}, "source_must_be_single_parent": {"const": true}, "manifest_only_commit_required": {"const": true}}},
+    "bindings": {"type": "object", "required": ["certification_contract", "semantic_snapshot", "obligation_snapshot", "requirement_snapshot", "migration_ledger", "identity_catalog", "derivation_catalog", "current_certification"]},
+    "generated_artifacts": {"$ref": "#/$defs/closure"},
+    "test_results": {"type": "object", "additionalProperties": false, "required": ["entries", "root_sha256"], "properties": {"entries": {"type": "array", "minItems": 1, "items": {"type": "object", "additionalProperties": false, "required": ["test_id", "argv", "result", "exit_code", "output_sha256", "duration_milliseconds"], "properties": {"test_id": {"type": "string"}, "argv": {"type": "array", "minItems": 1, "items": {"type": "string"}}, "result": {"const": "PASS"}, "exit_code": {"const": 0}, "output_sha256": {"$ref": "#/$defs/digest"}, "duration_milliseconds": {"type": "integer", "minimum": 0}}}}, "root_sha256": {"$ref": "#/$defs/digest"}}},
+    "cheap_aggregates": {"type": "object", "additionalProperties": false, "required": ["obligation_count", "required_obligation_count", "conditional_obligation_count", "requirement_count", "conditional_requirement_count", "predecessor_obligation_count", "predecessor_requirement_count", "c4_result", "c4_completed", "c4_denominator"], "properties": {"obligation_count": {"const": 2390}, "required_obligation_count": {"const": 1058}, "conditional_obligation_count": {"const": 1332}, "requirement_count": {"const": 3378}, "conditional_requirement_count": {"const": 1972}, "predecessor_obligation_count": {"const": 12048}, "predecessor_requirement_count": {"const": 9506}, "c4_result": {"const": "FAIL"}, "c4_completed": {"const": 0}, "c4_denominator": {"const": 3378}}},
+    "final_local_certification": {"type": "object", "additionalProperties": false, "required": ["result", "scientific_certification_result", "all_authoritative_checks_passed"], "properties": {"result": {"const": "PASS"}, "scientific_certification_result": {"enum": ["PASS", "FAIL", "BLOCKED"]}, "all_authoritative_checks_passed": {"const": true}}},
+    "local_certification_root": {"$ref": "#/$defs/digest"},
+    "manifest_id": {"type": "string", "pattern": "^rcid:v1:artifact-set-manifest:h:jcs-sha256-v1:[0-9a-f]{64}$"}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "artifact": {"type": "object", "additionalProperties": false, "required": ["role", "path", "sha256", "byte_length"], "properties": {"role": {"type": "string"}, "path": {"type": "string", "pattern": "^(?!/)(?!.*\\.\\.).+$"}, "sha256": {"$ref": "#/$defs/digest"}, "byte_length": {"type": "integer", "minimum": 1}}},
+    "closure": {"type": "object", "additionalProperties": false, "required": ["entries", "root_sha256"], "properties": {"entries": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/artifact"}}, "root_sha256": {"$ref": "#/$defs/digest"}}}
+  }
+}

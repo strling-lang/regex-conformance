@@ -4,6 +4,13 @@ Regex Conformance certification is a deterministic evaluation over explicit,
 digest-bound inputs. A prose statement, campaign completion flag, percentage,
 or generated declaration cannot issue an authoritative certification.
 
+Repository-wide deterministic certification follows the
+[Local Authoritative Certification / Hosted Integrity Verification](../docs/architecture/local-authoritative-certification.md)
+trust boundary. The tracked local manifest binds a clean exact source commit,
+the current contract and scientific artifacts, and all local test-result
+commitments; bounded hosted Linux verification retains veto authority without
+repeating expensive generation.
+
 The canonical artifacts are:
 
 - `contracts/regex-conformance-certification.v1.1.json`: the current versioned C1-C7

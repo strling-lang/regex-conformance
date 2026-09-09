@@ -5,6 +5,7 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 ROOT = Path(__file__).resolve().parents[2]
 TOOLING = ROOT / "tools" / "ci"
@@ -26,6 +27,10 @@ class PromotionArgumentTests(unittest.TestCase):
     def test_abbreviated_verified_sha_is_rejected_before_git_access(self) -> None:
         with self.assertRaisesRegex(PromotionPolicyError, "full lowercase"):
             build_plan(Path("/does/not/exist"), verified_sha="a" * 12)
+
+    def test_local_certificate_binding_is_required_before_git_access(self) -> None:
+        with self.assertRaisesRegex(PromotionPolicyError, "local certification"):
+            build_plan(Path("/does/not/exist"), verified_sha="a" * 40)
 
 
 class PromotionMutationTests(unittest.TestCase):
@@ -49,8 +54,14 @@ class PromotionMutationTests(unittest.TestCase):
         self.git("add", "change.txt", cwd=self.work)
         self.git("commit", "-m", "verified change", cwd=self.work)
         self.source_sha = self.output("rev-parse", "HEAD", cwd=self.work)
+        self.verifier = mock.patch(
+            "promotion_policy.verify_manifest",
+            return_value={"certified_source_sha": self.main_sha},
+        )
+        self.verifier.start()
 
     def tearDown(self) -> None:
+        self.verifier.stop()
         self.temporary.cleanup()
 
     @staticmethod
@@ -68,7 +79,12 @@ class PromotionMutationTests(unittest.TestCase):
         ).stdout.strip()
 
     def plan(self) -> PromotionPlan:
-        return build_plan(self.work, verified_sha=self.source_sha)
+        return build_plan(
+            self.work,
+            verified_sha=self.source_sha,
+            local_certification_manifest="certification/local/current-local-certification.v1.json",
+            local_certification_root="a" * 64,
+        )
 
     def remote_main(self) -> str:
         return self.output("ls-remote", "origin", "refs/heads/main", cwd=self.work).split()[0]
@@ -87,19 +103,19 @@ class PromotionMutationTests(unittest.TestCase):
 
     def test_wrong_verified_sha_is_rejected(self) -> None:
         with self.assertRaisesRegex(PromotionPolicyError, "caller-recorded"):
-            build_plan(self.work, verified_sha="f" * 40)
+            build_plan(self.work, verified_sha="f" * 40, local_certification_manifest="manifest.json", local_certification_root="a" * 64)
         self.assertEqual(self.remote_main(), self.main_sha)
 
     def test_dirty_repository_is_rejected_during_preflight(self) -> None:
         (self.work / "untracked.txt").write_text("dirty\n", encoding="utf-8")
         with self.assertRaisesRegex(PromotionPolicyError, "clean"):
-            build_plan(self.work, verified_sha=self.source_sha)
+            build_plan(self.work, verified_sha=self.source_sha, local_certification_manifest="manifest.json", local_certification_root="a" * 64)
         self.assertEqual(self.remote_main(), self.main_sha)
 
     def test_non_working_branch_source_is_rejected(self) -> None:
         self.git("switch", "main", cwd=self.work)
         with self.assertRaisesRegex(PromotionPolicyError, "codex/"):
-            build_plan(self.work, verified_sha=self.main_sha)
+            build_plan(self.work, verified_sha=self.main_sha, local_certification_manifest="manifest.json", local_certification_root="a" * 64)
 
     def test_merge_commit_in_promotion_range_is_rejected(self) -> None:
         self.git("switch", "-c", "topic", cwd=self.work)
@@ -110,7 +126,7 @@ class PromotionMutationTests(unittest.TestCase):
         self.git("merge", "--no-ff", "topic", "-m", "merge topic", cwd=self.work)
         merge_sha = self.output("rev-parse", "HEAD", cwd=self.work)
         with self.assertRaisesRegex(PromotionPolicyError, "merge commit"):
-            build_plan(self.work, verified_sha=merge_sha)
+            build_plan(self.work, verified_sha=merge_sha, local_certification_manifest="manifest.json", local_certification_root="a" * 64)
         self.assertEqual(self.remote_main(), self.main_sha)
 
     def test_promotion_updates_local_and_remote_main_to_exact_verified_sha(self) -> None:

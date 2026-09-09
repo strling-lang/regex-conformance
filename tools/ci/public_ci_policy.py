@@ -74,7 +74,7 @@ def evaluate(root: Path) -> list[Violation]:
     _require("\npermissions:\n  contents: read\n" in workflow, violations, "workflow-permissions", "top-level permissions must be contents: read")
     _require(re.search(r"^\s+[a-z-]+:\s+write\s*$", workflow, re.MULTILINE) is None, violations, "write-permission", "public workflow may not request write permission")
     _require("runs-on: ubuntu-24.04" in workflow, violations, "runner-class", "public workflow must use the audited disposable hosted image")
-    _require("timeout-minutes: 30" in workflow, violations, "missing-timeout", "public job must have a bounded timeout")
+    _require("timeout-minutes: 10" in workflow, violations, "missing-timeout", "hosted integrity verification must have a ten-minute bound")
     checkout_count = len(re.findall(r"^\s*uses:\s*actions/checkout@", workflow, re.MULTILINE))
     _require(
         checkout_count > 0 and workflow.count("persist-credentials: false") == checkout_count,
@@ -85,52 +85,14 @@ def evaluate(root: Path) -> list[Violation]:
     _require("--require-hashes" in workflow and "--only-binary=:all:" in workflow, violations, "dependency-install", "CI dependency installation must enforce hashes and wheels")
     for command in [
         "verify_public_ci.py --root .",
+        "verify_local_certification.py --root . --expected-envelope-sha \"$GITHUB_SHA\"",
+        "if: github.event_name != 'pull_request'",
         "validate-repository",
         "verify-fixtures",
-        "unittest discover -s tests/schema",
-        "unittest discover -s tests/adapters",
-        "unittest discover -s tests/campaign",
-        "python -m unittest discover -s tests/control_plane -v",
+        "verify_repository_identifier_hygiene.py --root .",
         "unittest discover -s tests/ci",
-        "materialize-fixtures",
-        "git diff --exit-code -- tests/fixtures/identity/manifest.json",
-        "minimal-environment-certification:",
-        "if: github.event_name != 'pull_request'",
-        "timeout-minutes: 45",
-        (
-            "python tools/environments/certify_minimal.py "
-            '--state-root "$RUNNER_TEMP/strling-regex-state" '
-            '--evidence-dir "$RUNNER_TEMP/strling-regex-evidence" '
-            "--trust-class untrusted_public "
-            '--compact-report "$RUNNER_TEMP/minimal-environment-certification.json"'
-        ),
-        "minimal-environment-certification.schema.json",
-        "docker ps --all --quiet --filter name=strling-rc-",
+        "python -m unittest tests.ci.test_local_certification -v",
         "git diff --exit-code",
-        "minimal-adapter-certification:",
-        "needs: minimal-environment-certification",
-        (
-            "python tools/adapters/certify_minimal.py "
-            '--state-root "$RUNNER_TEMP/strling-regex-adapter-state" '
-            '--evidence-dir "$RUNNER_TEMP/strling-regex-adapter-evidence" '
-            "--trust-class untrusted_public "
-            '--compact-report "$RUNNER_TEMP/minimal-adapter-certification.json"'
-        ),
-        "minimal-adapter-certification.schema.json",
-        "strling-regex-adapter-state",
-        "first-end-to-end-campaign:",
-        "needs: minimal-adapter-certification",
-        (
-            "python tools/campaigns/run_vertical_slice.py "
-            '--state-root "$RUNNER_TEMP/strling-regex-campaign-state" '
-            '--evidence-dir "$RUNNER_TEMP/strling-regex-campaign-evidence" '
-            '--warehouse-dir "$RUNNER_TEMP/strling-regex-campaign-warehouse" '
-            "--trust-class untrusted_public "
-            '--compact-report "$RUNNER_TEMP/first-campaign-report.json"'
-        ),
-        "first-campaign-report.schema.json",
-        "strling-regex-campaign-evidence",
-        "strling-regex-campaign-warehouse",
     ]:
         _require(command in workflow, violations, "missing-validation", f"workflow omits required command {command!r}")
 
@@ -246,6 +208,9 @@ def evaluate(root: Path) -> list[Violation]:
     _require(promotion.get("source_branch_prefix") == "codex/", violations, "promotion-source", "program work must originate on codex/ branches")
     _require(promotion.get("clean_worktree_required") is True, violations, "clean-worktree", "promotion requires a clean working tree")
     _require(promotion.get("verified_commit_required") is True, violations, "verified-commit", "promotion requires the exact caller-recorded verified commit")
+    _require(promotion.get("local_certification_manifest_required") is True, violations, "local-certification-manifest", "promotion requires the local certification manifest")
+    _require(promotion.get("local_certification_root_required") is True, violations, "local-certification-root", "promotion requires the caller-recorded local certification root")
+    _require(promotion.get("manifest_only_envelope_required") is True, violations, "certification-envelope", "promotion requires a manifest-only envelope over the certified source")
     _require(promotion.get("fast_forward_only") is True, violations, "fast-forward-only", "main promotion must preserve the validated commit SHA")
     _require(promotion.get("merge_commits_allowed") is False, violations, "merge-commit", "promotion ranges may not contain merge commits")
     _require(promotion.get("force_push_allowed") is False, violations, "force-push", "main promotion may not force-push")

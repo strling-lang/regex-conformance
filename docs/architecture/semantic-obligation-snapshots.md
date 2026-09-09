@@ -96,13 +96,16 @@ C1–C7 predicate meanings.
 
 ## Reproduction
 
-Materialization is design compilation only:
+Materialization is design compilation only. Expensive deterministic closure is
+authoritative on the controlled local machine and is bound into the tracked
+local certification manifest:
 
 ```sh
 python tools/semantics/generate_obligation_snapshots.py --check
 python tools/certification/evaluate.py --check
 python tools/identity/freeze_scientific_identities.py --check
 python tools/provenance/compile_generated_assertion_derivations.py --check
+python tools/ci/certify_local.py --root .
 ```
 
 The verifier regenerates the snapshots, validates total migration and exact
@@ -110,3 +113,9 @@ cardinality, checks every explanation and conditional predicate, verifies the
 identity/lineage lock, and confirms the historical denominator hashes. It does
 not execute a target, author a vector, expand a profile universe, or estimate
 final retained production storage.
+
+Hosted Linux follows the bounded integrity role described by the
+[local authoritative certification architecture](local-authoritative-certification.md):
+it verifies the exact source/envelope relationship, every referenced digest and
+closure, identity and derivation bindings, and cheap aggregate predicates. It
+does not repeat this expensive materialization.
