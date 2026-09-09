@@ -228,7 +228,7 @@ def verify_manifest(root: Path, manifest_path: Path, *, expected_envelope_sha: s
         if manifest["bindings"][binding_name]["id"] not in identity_text and ":h:" not in manifest["bindings"][binding_name]["id"]:
             raise LocalCertificationError(f"assigned identity binding is absent from identity catalog: {binding_name}")
     materialization = load_strict(root / "reports/semantics/semantic-denominator-materialization-2026-09-08.v1.json")
-    if materialization["derivation_revision_id"] not in derivation_text:
+    if materialization["derivations"]["materialization_derivation_revision_id"] not in derivation_text:
         raise LocalCertificationError("materialization derivation revision is absent from derivation catalog")
     if require_envelope:
         envelope_sha = expected_envelope_sha or git_output(root, "rev-parse", "HEAD")

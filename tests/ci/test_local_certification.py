@@ -27,7 +27,7 @@ class LocalCertificationTests(unittest.TestCase):
         (self.root / "registries/identity/scientific-identities.v1.json").write_text("{}", encoding="utf-8")
         revision = "rcid:v1:assertion-derivation-revision:h:jcs-sha256-v1:" + "d" * 64
         (self.root / "registries/provenance/generated-assertion-derivations.v1.json").write_text(revision, encoding="utf-8")
-        (self.root / "reports/semantics/semantic-denominator-materialization-2026-09-08.v1.json").write_text(dump_pretty({"derivation_revision_id": revision}), encoding="utf-8")
+        (self.root / "reports/semantics/semantic-denominator-materialization-2026-09-08.v1.json").write_text(dump_pretty({"derivations": {"materialization_derivation_revision_id": revision}}), encoding="utf-8")
         self.entry = {"role": "fixture", "path": "fixture.json", "sha256": "a" * 64, "byte_length": 1}
         self.test = {"test_id": "local-01", "argv": ["python", "check.py"], "result": "PASS", "exit_code": 0, "output_sha256": "b" * 64, "duration_milliseconds": 1}
         self.aggregates = {"value": 1}
