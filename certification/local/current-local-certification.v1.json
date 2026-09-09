@@ -1,0 +1,326 @@
+{
+  "architecture": "Local Authoritative Certification / Hosted Integrity Verification",
+  "bindings": {
+    "certification_contract": {
+      "byte_length": 21976,
+      "id": "rcid:v1:certification-definition:h:jcs-sha256-v1:2a54c9284a498d7de25e2f4f46fc3236f4ae9c4a71340562a2663dd5d49154da",
+      "path": "certification/contracts/regex-conformance-certification.v1.1.json",
+      "role": "certification-contract",
+      "sha256": "02bf378753b30428a02808ed4a2bacbc5d6ce6838e04afe9e98a40101d06d799"
+    },
+    "current_certification": {
+      "byte_length": 9028,
+      "id": "rcid:v1:certification-report:h:jcs-sha256-v1:05600b98053b3344e8e623364371f2a6415090eb23e633d8deab912a5e37332d",
+      "path": "certification/reports/current-repository-2026-09-08.v2.json",
+      "result": "FAIL",
+      "role": "certification-report",
+      "sha256": "9c40ee82ec38d55074d4ec265f6c0ef07a04435752b8e7d986be8c7448582fef"
+    },
+    "derivation_catalog": {
+      "byte_length": 233070,
+      "derivation_count": 22,
+      "path": "registries/provenance/generated-assertion-derivations.v1.json",
+      "role": "derivation-catalog",
+      "schema_version": "generated-assertion-derivation-catalog.v1",
+      "sha256": "0aa29e7fec67a86b3c8be5db16e1d9eff6c391e5799096ddac490e3ca432edf9"
+    },
+    "identity_catalog": {
+      "byte_length": 20237117,
+      "entry_count": 28016,
+      "path": "registries/identity/scientific-identities.v1.json",
+      "role": "identity-catalog",
+      "schema_version": "scientific-identity-catalog.v1",
+      "sha256": "040c16f1d29840e97374f8b3e61023a2735a5846284e110753ff346fa1a95f0a"
+    },
+    "migration_ledger": {
+      "byte_length": 12769187,
+      "id": "rcid:v1:reconciliation-set:h:jcs-sha256-v1:8f2814a45d8d01107da3f1ebd19c9558b13c5d7cee7409915b6504990a073c2c",
+      "path": "ontology/migrations/regex-semantic-denominator-2026-09-08.v1.json",
+      "role": "migration-ledger",
+      "sha256": "60512e4ceb8ca64d5c72f403d3fbfba43f1ece4b53cc20ea670bf5fc93d06841"
+    },
+    "obligation_snapshot": {
+      "byte_length": 13814201,
+      "id": "rcid:v1:ontology-snapshot:h:jcs-sha256-v1:d82bc7ecd6b525060af99c65dfd6db8d8f7dbba0171f6ed59b35b66f034e30ea",
+      "path": "ontology/obligations/regex-semantic-obligations-2026-09-08.v1.json",
+      "role": "obligation-snapshot",
+      "sha256": "b5bd49d5998573ff73f188f240a68c1fbb568cb2c73c5846c9598ca62e0ee3bb"
+    },
+    "requirement_snapshot": {
+      "byte_length": 14464363,
+      "id": "rcid:v1:ontology-snapshot:h:jcs-sha256-v1:0d1e0a5375bad7d176ccf910097a23cb6cd2bd8cebd3c03faade67d5250a09af",
+      "path": "vectors/requirements/regex-semantic-vector-requirements-2026-09-08.v2.json",
+      "role": "requirement-snapshot",
+      "sha256": "6c7bb486760fa9cce52a6692a61aff074407899577573029b24e37cd34ecf9ec"
+    },
+    "semantic_snapshot": {
+      "byte_length": 2018955,
+      "id": "rcid:v1:ontology-snapshot:h:jcs-sha256-v1:4c9afcd3ea350a6f6c0a429d96fd6b10ca7d142300ce9a39e94809a1f383899e",
+      "path": "semantic-corpus/snapshots/regex-semantic-features-2026-09-08.v4.json",
+      "role": "semantic-snapshot",
+      "sha256": "47d32ed6ff3f0334047171db29d0a9e48b7134346140d529c1c137472b16c802"
+    }
+  },
+  "certified_source": {
+    "git_sha": "a8b92e29f177f9f476a20b24e8e606fb91ef45bf",
+    "tree_sha": "d6d3800661e03ae61fda874f4212790606580cda",
+    "worktree_clean": true
+  },
+  "cheap_aggregates": {
+    "c4_completed": 0,
+    "c4_denominator": 3378,
+    "c4_result": "FAIL",
+    "conditional_obligation_count": 1332,
+    "conditional_requirement_count": 1972,
+    "obligation_count": 2390,
+    "predecessor_obligation_count": 12048,
+    "predecessor_requirement_count": 9506,
+    "required_obligation_count": 1058,
+    "requirement_count": 3378
+  },
+  "final_local_certification": {
+    "all_authoritative_checks_passed": true,
+    "result": "PASS",
+    "scientific_certification_result": "FAIL"
+  },
+  "generated_artifacts": {
+    "entries": [
+      {
+        "byte_length": 21976,
+        "path": "certification/contracts/regex-conformance-certification.v1.1.json",
+        "role": "certification-contract",
+        "sha256": "02bf378753b30428a02808ed4a2bacbc5d6ce6838e04afe9e98a40101d06d799"
+      },
+      {
+        "byte_length": 2018955,
+        "path": "semantic-corpus/snapshots/regex-semantic-features-2026-09-08.v4.json",
+        "role": "semantic-snapshot",
+        "sha256": "47d32ed6ff3f0334047171db29d0a9e48b7134346140d529c1c137472b16c802"
+      },
+      {
+        "byte_length": 13814201,
+        "path": "ontology/obligations/regex-semantic-obligations-2026-09-08.v1.json",
+        "role": "obligation-snapshot",
+        "sha256": "b5bd49d5998573ff73f188f240a68c1fbb568cb2c73c5846c9598ca62e0ee3bb"
+      },
+      {
+        "byte_length": 14464363,
+        "path": "vectors/requirements/regex-semantic-vector-requirements-2026-09-08.v2.json",
+        "role": "requirement-snapshot",
+        "sha256": "6c7bb486760fa9cce52a6692a61aff074407899577573029b24e37cd34ecf9ec"
+      },
+      {
+        "byte_length": 12769187,
+        "path": "ontology/migrations/regex-semantic-denominator-2026-09-08.v1.json",
+        "role": "migration-ledger",
+        "sha256": "60512e4ceb8ca64d5c72f403d3fbfba43f1ece4b53cc20ea670bf5fc93d06841"
+      },
+      {
+        "byte_length": 5273038,
+        "path": "ontology/projections/regex-semantic-projection-2026-09-08.v2.json",
+        "role": "semantic-projection",
+        "sha256": "037628e168069369ed9de04d18d036fc18e34eb29ab3677794ba3fc394ede0ff"
+      },
+      {
+        "byte_length": 3507,
+        "path": "ontology/authority/current-semantic-denominator.v1.json",
+        "role": "denominator-authority",
+        "sha256": "b8e7081f5f4717c657915220c4dd5acbc69ca19e2f101823eeb3faba501fc4a8"
+      },
+      {
+        "byte_length": 6718,
+        "path": "reports/semantics/semantic-denominator-materialization-2026-09-08.v1.json",
+        "role": "materialization-report",
+        "sha256": "51035d8f526405818f897f99b91936a892e0d5ddd05721b9bc2b95d5e97ef1dd"
+      },
+      {
+        "byte_length": 7328,
+        "path": "certification/inputs/current-repository-2026-09-08.v2.json",
+        "role": "certification-input",
+        "sha256": "9483812b7bd3b804a67a031c43b4dd0f439641a70e580a7d400d9c5e9cbf2e3a"
+      },
+      {
+        "byte_length": 9028,
+        "path": "certification/reports/current-repository-2026-09-08.v2.json",
+        "role": "certification-report",
+        "sha256": "9c40ee82ec38d55074d4ec265f6c0ef07a04435752b8e7d986be8c7448582fef"
+      },
+      {
+        "byte_length": 810,
+        "path": "certification/current-authority.v1.json",
+        "role": "certification-authority",
+        "sha256": "0fe4379a1d518f086c2977ebec8cfcaaae8644b22dde09c374bf528d7a85a4bb"
+      },
+      {
+        "byte_length": 20237117,
+        "path": "registries/identity/scientific-identities.v1.json",
+        "role": "identity-catalog",
+        "sha256": "040c16f1d29840e97374f8b3e61023a2735a5846284e110753ff346fa1a95f0a"
+      },
+      {
+        "byte_length": 233070,
+        "path": "registries/provenance/generated-assertion-derivations.v1.json",
+        "role": "derivation-catalog",
+        "sha256": "0aa29e7fec67a86b3c8be5db16e1d9eff6c391e5799096ddac490e3ca432edf9"
+      },
+      {
+        "byte_length": 13494,
+        "path": "foundation/scientific-foundation-acceptance.v1.json",
+        "role": "scientific-foundation-acceptance",
+        "sha256": "312fc948726c449f02ed880da91753a7e0f4f5c93c5a57a2305995a038d25e69"
+      },
+      {
+        "byte_length": 15839,
+        "path": "semantic-corpus/foundation/semantic-knowledge-architecture.v1.json",
+        "role": "semantic-foundation-acceptance",
+        "sha256": "eb7133f0eddb77c2c7afd549f1d686b55c2bb520bb88497960a80b26e2d6122b"
+      },
+      {
+        "byte_length": 4325,
+        "path": "schemas/json/local-authoritative-certification.schema.json",
+        "role": "local-certification-schema",
+        "sha256": "77a0b9964db7b7c1b32f0223e06989b8f67705a65b6eaf91e15308ab5dc1e4ed"
+      }
+    ],
+    "root_sha256": "9284a50511b08606d01446ef8224405d2218d5bafb86bc5f04ca48c88ebdb174"
+  },
+  "hash_policy": "jcs-sha256-v1",
+  "local_certification_root": "8c11ba9c68702e3a1ab91765eaa0560581d2b23807e7f64ec83af1efd19348de",
+  "manifest_id": "rcid:v1:artifact-set-manifest:h:jcs-sha256-v1:8c11ba9c68702e3a1ab91765eaa0560581d2b23807e7f64ec83af1efd19348de",
+  "promotion_envelope": {
+    "manifest_only_commit_required": true,
+    "manifest_path": "certification/local/current-local-certification.v1.json",
+    "source_must_be_single_parent": true
+  },
+  "schema_version": "local-authoritative-certification.v1",
+  "test_results": {
+    "entries": [
+      {
+        "argv": [
+          "python",
+          "tools/semantics/generate_obligation_snapshots.py",
+          "--check"
+        ],
+        "duration_milliseconds": 364920,
+        "exit_code": 0,
+        "output_sha256": "35938d9ce76529b7078a78d77a2b5f636d34f203b739096f6a593c189442bc77",
+        "result": "PASS",
+        "test_id": "local-01"
+      },
+      {
+        "argv": [
+          "python",
+          "tools/certification/evaluate.py",
+          "--check"
+        ],
+        "duration_milliseconds": 146158,
+        "exit_code": 0,
+        "output_sha256": "c8d52c1ef2ac5fb00a7cda14a5d18f9b5eb4dbb914e1013fae9e35765af2a7db",
+        "result": "PASS",
+        "test_id": "local-02"
+      },
+      {
+        "argv": [
+          "python",
+          "tools/semantics/certify_semantic_knowledge.py",
+          "--check"
+        ],
+        "duration_milliseconds": 268194,
+        "exit_code": 0,
+        "output_sha256": "6751e4759c2bcfbccf775940cf63a1fc2469f0c87f060366324c9189d32f243a",
+        "result": "PASS",
+        "test_id": "local-03"
+      },
+      {
+        "argv": [
+          "python",
+          "tools/foundation/certify.py",
+          "--check"
+        ],
+        "duration_milliseconds": 309471,
+        "exit_code": 0,
+        "output_sha256": "b2ac5e0c7aa6a55311daaeb2b3c94d70f5c02c26f290af77ae06d38ffe5e4cb8",
+        "result": "PASS",
+        "test_id": "local-04"
+      },
+      {
+        "argv": [
+          "python",
+          "tools/identity/freeze_scientific_identities.py",
+          "--check"
+        ],
+        "duration_milliseconds": 43367,
+        "exit_code": 0,
+        "output_sha256": "c11f426e50f151c87692af87135ad86bbfd81ea9b9d135f02502b20e37f5cc70",
+        "result": "PASS",
+        "test_id": "local-05"
+      },
+      {
+        "argv": [
+          "python",
+          "tools/provenance/compile_generated_assertion_derivations.py",
+          "--check"
+        ],
+        "duration_milliseconds": 168979,
+        "exit_code": 0,
+        "output_sha256": "b8f4b5881a9d777cde7731238ea611b985289adb0001f2b2ada8e95b7e9a483d",
+        "result": "PASS",
+        "test_id": "local-06"
+      },
+      {
+        "argv": [
+          "python",
+          "schemas/tooling/python/run.py",
+          "validate-repository"
+        ],
+        "duration_milliseconds": 294015,
+        "exit_code": 0,
+        "output_sha256": "6104701a392b171cb6e248960c25737f5601cb097fdf01c10d431bf6eeb23b68",
+        "result": "PASS",
+        "test_id": "local-07"
+      },
+      {
+        "argv": [
+          "python",
+          "schemas/tooling/python/run.py",
+          "verify-fixtures"
+        ],
+        "duration_milliseconds": 2816,
+        "exit_code": 0,
+        "output_sha256": "9000858920430a9a33b1f95cac5170d0bdda89aa7588a21c13defe5a58f75f5e",
+        "result": "PASS",
+        "test_id": "local-08"
+      },
+      {
+        "argv": [
+          "python",
+          "tools/ci/verify_repository_identifier_hygiene.py",
+          "--root",
+          "."
+        ],
+        "duration_milliseconds": 2234,
+        "exit_code": 0,
+        "output_sha256": "947e7861a99b7fb6efe0b33a0484b8b716b3e4825cadbfea51931dfbe4f922c4",
+        "result": "PASS",
+        "test_id": "local-09"
+      },
+      {
+        "argv": [
+          "python",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tests/ci",
+          "-v"
+        ],
+        "duration_milliseconds": 36475,
+        "exit_code": 0,
+        "output_sha256": "0d9a88964ca8e7d8f616a7d1fadaac2258b1ee59fc325336622c42026ab01593",
+        "result": "PASS",
+        "test_id": "local-10"
+      }
+    ],
+    "root_sha256": "85b7fc8a4ce79fef611ef9cf9a112bce387cba3e087fb727a61ffb3746bba124"
+  }
+}
