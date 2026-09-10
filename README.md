@@ -62,6 +62,11 @@ The current snapshots, lineage, and C4 transition are documented in
 Their orthogonal accounting, independent recomputation, scenario bounds, and
 profile-expansion handoff are documented in [scientific denominator
 accounting](docs/architecture/scientific-denominator-accounting.md).
+The [true obligation denominator acceptance](docs/architecture/true-obligation-denominator.md)
+then attacks the canonical population for both excess and omission, validates
+every suppression and conditional boundary, and binds the denominator as safe
+input to later oracle, vector, and applicability work without claiming a final
+execution count.
 The bounded freeze claim and its supersession rules are documented in the
 [semantic universe freeze](docs/architecture/semantic-universe-freeze.md).
 

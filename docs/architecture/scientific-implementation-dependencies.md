@@ -151,10 +151,14 @@ Expected remains symbolic within those exact bounds because no accepted
 empirical profile-applicability model exists. See [Scientific denominator
 accounting](scientific-denominator-accounting.md).
 
-This audited denominator must pass its focused acceptance boundary before the
-program advances to oracle, applicability, and vector work. Profile-expanded
-execution counts and a final storage forecast remain deferred until the exact
-profile universe is frozen.
+The audited denominator now passes its focused
+[true obligation denominator acceptance](true-obligation-denominator.md).
+Fresh independent recomputation, adversarial excess and omission attacks,
+suppression and predicate audits, end-to-end explainability, migration closure,
+historical-byte checks, and multiplier-leakage checks all close. The 3,378
+semantic requirements are accepted input to oracle, applicability, and vector
+architecture. Profile-expanded execution counts and a final storage forecast
+remain deferred until the exact profile universe is frozen.
 
 ### Establish oracle, applicability, and adjudication contracts
 

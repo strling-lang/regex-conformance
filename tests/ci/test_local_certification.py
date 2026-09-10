@@ -24,11 +24,16 @@ class LocalCertificationTests(unittest.TestCase):
         (self.root / "registries/identity").mkdir(parents=True)
         (self.root / "registries/provenance").mkdir(parents=True)
         (self.root / "reports/semantics").mkdir(parents=True)
+        (self.root / "ontology/denominator").mkdir(parents=True)
         (self.root / "registries/identity/scientific-identities.v1.json").write_text("{}", encoding="utf-8")
         revision = "rcid:v1:assertion-derivation-revision:h:jcs-sha256-v1:" + "d" * 64
         (self.root / "registries/provenance/generated-assertion-derivations.v1.json").write_text(revision, encoding="utf-8")
         (self.root / "reports/semantics/semantic-denominator-materialization-2026-09-08.v1.json").write_text(dump_pretty({"derivations": {"materialization_derivation_revision_id": revision}}), encoding="utf-8")
         (self.root / "reports/semantics/regex-semantic-denominator-audit-2026-09-10.v1.json").write_text(dump_pretty({"result": "PASS", "derivation_revision_id": revision}), encoding="utf-8")
+        foundation_id = "rcid:v1:artifact-set-manifest:h:jcs-sha256-v1:" + "9" * 64
+        gate_id = "rcid:v1:trust-assessment:h:jcs-sha256-v1:" + "a" * 64
+        (self.root / "ontology/denominator/true-obligation-denominator-foundation-2026-09-10.v1.json").write_text(dump_pretty({"manifest_id": foundation_id}), encoding="utf-8")
+        (self.root / "reports/semantics/true-obligation-denominator-acceptance-2026-09-10.v1.json").write_text(dump_pretty({"report_id": gate_id, "result": "PASS", "checks": [{"status": "PASS"}] * 20, "foundation_manifest": {"artifact_id": foundation_id}}), encoding="utf-8")
         self.entry = {"role": "fixture", "path": "fixture.json", "sha256": "a" * 64, "byte_length": 1}
         self.test = {"test_id": "local-01", "argv": ["python", "check.py"], "result": "PASS", "exit_code": 0, "output_sha256": "b" * 64, "duration_milliseconds": 1}
         self.aggregates = {"value": 1}
@@ -48,6 +53,8 @@ class LocalCertificationTests(unittest.TestCase):
                 "denominator_audit": {"id": "rcid:v1:finding-revision:h:jcs-sha256-v1:" + "6" * 64, "path": "reports/semantics/regex-semantic-denominator-audit-2026-09-10.v1.json"},
                 "profile_expansion_handoff": {"id": "rcid:v1:ontology-projection:h:jcs-sha256-v1:" + "7" * 64},
                 "denominator_audit_authority": {"id": "rcid:v1:artifact-set-manifest:h:jcs-sha256-v1:" + "8" * 64},
+                "true_denominator_foundation": {"id": foundation_id, "path": "ontology/denominator/true-obligation-denominator-foundation-2026-09-10.v1.json"},
+                "true_denominator_gate": {"id": gate_id, "path": "reports/semantics/true-obligation-denominator-acceptance-2026-09-10.v1.json"},
             },
             "generated_artifacts": {"entries": [self.entry], "root_sha256": merkleless_root([self.entry])},
             "test_results": {"entries": [self.test], "root_sha256": merkleless_root([self.test])},

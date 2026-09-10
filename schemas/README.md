@@ -162,6 +162,14 @@ exist, bind every requirement to a closed capability predicate, retain exact
 stable-ID commitments, and keep the profile-expanded execution denominator
 explicitly deferred.
 
+`json/true-obligation-denominator-foundation.schema.json` and
+`json/true-obligation-denominator-acceptance.schema.json` govern the focused
+semantic-denominator acceptance boundary. They bind every denominator and
+predecessor foundation input, require twenty explicit gate predicates, preserve
+orthogonal cross-sums and symbolic scenario semantics, and fail closed for
+over-count, under-count, suppression, predicate, migration, multiplier, C4, or
+premature profile-expansion defects.
+
 `json/generated-assertion-derivation-catalog.schema.json` defines the shared
 provenance contract for assertion-like generated fields. It requires
 class-specific metadata for measurement, calculation, research-derived,

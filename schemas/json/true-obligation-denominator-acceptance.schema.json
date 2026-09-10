@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/true-obligation-denominator-acceptance.schema.json",
+  "title": "True obligation denominator acceptance report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "published_on", "foundation_manifest", "result", "claim_scope", "checks", "exact_accounting", "over_count_audit", "under_count_audit", "suppression_audit", "conditional_predicate_audit", "cardinality_audit", "explainability_audit", "migration_audit", "multiplier_audit", "historical_integrity", "current_c4", "profile_expansion", "local_certification_binding", "assertion_derivations", "report_id", "report_digest_sha256"],
+  "properties": {
+    "schema_version": {"const": "true-obligation-denominator-acceptance.v1"},
+    "published_on": {"type": "string", "format": "date"},
+    "foundation_manifest": {"$ref": "#/$defs/artifact"},
+    "result": {"const": "PASS"},
+    "claim_scope": {"type": "string", "minLength": 1},
+    "checks": {"type": "array", "minItems": 20, "maxItems": 20, "items": {"$ref": "#/$defs/check"}},
+    "exact_accounting": {"type": "object"},
+    "over_count_audit": {"$ref": "#/$defs/adversarial"},
+    "under_count_audit": {"$ref": "#/$defs/adversarial"},
+    "suppression_audit": {
+      "type": "object", "required": ["result", "not_required_by_feature_semantics", "not_applicable", "unresolved", "decision_commitment", "not_applicable_is_prohibited", "profile_absence_causes_suppression"],
+      "properties": {"result": {"const": "PASS"}, "not_required_by_feature_semantics": {"const": 2237}, "not_applicable": {"const": 233}, "unresolved": {"const": 0}, "decision_commitment": {"type": "object"}, "not_applicable_is_prohibited": {"const": false}, "profile_absence_causes_suppression": {"const": false}}
+    },
+    "conditional_predicate_audit": {"type": "object"},
+    "cardinality_audit": {"type": "object"},
+    "explainability_audit": {"type": "object"},
+    "migration_audit": {"type": "object"},
+    "multiplier_audit": {"type": "object"},
+    "historical_integrity": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "object"}},
+    "current_c4": {
+      "type": "object", "additionalProperties": false, "required": ["status", "completed", "denominator", "scientific_certification_issued"],
+      "properties": {"status": {"const": "FAIL"}, "completed": {"const": 0}, "denominator": {"const": 3378}, "scientific_certification_issued": {"const": false}}
+    },
+    "profile_expansion": {
+      "type": "object", "additionalProperties": false, "required": ["status", "exact_profile_count", "final_logical_execution_denominator", "historical_planning_multiplier_substituted", "handoff_id"],
+      "properties": {"status": {"const": "deferred"}, "exact_profile_count": {"type": "null"}, "final_logical_execution_denominator": {"type": "null"}, "historical_planning_multiplier_substituted": {"const": false}, "handoff_id": {"type": "string", "pattern": "^rcid:v1:ontology-projection:h:jcs-sha256-v1:"}}
+    },
+    "local_certification_binding": {
+      "type": "object", "additionalProperties": false, "required": ["status", "manifest_path", "hosted_verification", "reason"],
+      "properties": {"status": {"const": "requires-manifest-only-envelope"}, "manifest_path": {"const": "certification/local/current-local-certification.v1.json"}, "hosted_verification": {"const": "external-bounded-veto"}, "reason": {"type": "string", "minLength": 1}}
+    },
+    "assertion_derivations": {"type": "array", "minItems": 4, "maxItems": 4, "items": {"type": "object"}},
+    "report_id": {"type": "string", "pattern": "^rcid:v1:trust-assessment:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "report_digest_sha256": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "artifact": {
+      "type": "object", "additionalProperties": false, "required": ["path", "artifact_id", "content_digest_sha256", "file_sha256"],
+      "properties": {"path": {"type": "string", "minLength": 1}, "artifact_id": {"type": "string", "minLength": 1}, "content_digest_sha256": {"$ref": "#/$defs/digest"}, "file_sha256": {"$ref": "#/$defs/digest"}}
+    },
+    "check": {
+      "type": "object", "additionalProperties": false, "required": ["check_id", "status", "evidence"],
+      "properties": {"check_id": {"type": "string", "pattern": "^[a-z0-9-]+$"}, "status": {"const": "PASS"}, "evidence": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}}
+    },
+    "adversarial": {
+      "type": "object", "additionalProperties": false, "required": ["result", "dispositions"],
+      "properties": {
+        "result": {"const": "PASS"},
+        "suspected_over_count": {"const": 0},
+        "suspected_under_count": {"const": 0},
+        "dispositions": {
+          "type": "array",
+          "minItems": 7,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["attack", "result", "evidence"],
+            "properties": {
+              "attack": {"type": "string", "minLength": 1},
+              "result": {"const": "PASS"},
+              "evidence": {"type": "string", "minLength": 1}
+            }
+          }
+        }
+      }
+    }
+  }
+}

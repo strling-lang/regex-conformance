@@ -39,6 +39,8 @@ ARTIFACT_ROLES: tuple[tuple[str, str], ...] = (
     ("denominator-audit-report", "reports/semantics/regex-semantic-denominator-audit-2026-09-10.v1.json"),
     ("profile-expansion-handoff", "ontology/projections/regex-semantic-profile-expansion-handoff-2026-09-10.v1.json"),
     ("denominator-audit-authority", "ontology/authority/current-semantic-denominator-audit.v1.json"),
+    ("true-denominator-foundation", "ontology/denominator/true-obligation-denominator-foundation-2026-09-10.v1.json"),
+    ("true-denominator-gate-report", "reports/semantics/true-obligation-denominator-acceptance-2026-09-10.v1.json"),
     ("certification-input", "certification/inputs/current-repository-2026-09-08.v2.json"),
     ("certification-report", "certification/reports/current-repository-2026-09-08.v2.json"),
     ("certification-authority", "certification/current-authority.v1.json"),
@@ -51,11 +53,14 @@ ARTIFACT_ROLES: tuple[tuple[str, str], ...] = (
     ("denominator-audit-report-schema", "schemas/json/semantic-denominator-audit-report.schema.json"),
     ("profile-expansion-handoff-schema", "schemas/json/semantic-profile-expansion-handoff.schema.json"),
     ("denominator-audit-authority-schema", "schemas/json/semantic-denominator-audit-authority.schema.json"),
+    ("true-denominator-foundation-schema", "schemas/json/true-obligation-denominator-foundation.schema.json"),
+    ("true-denominator-gate-report-schema", "schemas/json/true-obligation-denominator-acceptance.schema.json"),
 )
 
 LOCAL_COMMANDS: tuple[tuple[str, ...], ...] = (
     ("python", "tools/semantics/generate_obligation_snapshots.py", "--check"),
     ("python", "tools/semantics/audit_scientific_denominator.py", "--check"),
+    ("python", "tools/semantics/certify_true_denominator.py", "--check", "--bounded"),
     ("python", "tools/certification/evaluate.py", "--check"),
     ("python", "tools/semantics/certify_semantic_knowledge.py", "--check"),
     ("python", "tools/foundation/certify.py", "--check"),
@@ -65,6 +70,7 @@ LOCAL_COMMANDS: tuple[tuple[str, ...], ...] = (
     ("python", "schemas/tooling/python/run.py", "verify-fixtures"),
     ("python", "tools/ci/verify_repository_identifier_hygiene.py", "--root", "."),
     ("python", "-m", "unittest", "discover", "-s", "tests/schema", "-p", "test_denominator_audit.py", "-v"),
+    ("python", "-m", "unittest", "discover", "-s", "tests/schema", "-p", "test_true_obligation_denominator_gate.py", "-v"),
     ("python", "-m", "unittest", "discover", "-s", "tests/ci", "-v"),
 )
 
@@ -141,6 +147,8 @@ def _artifact_payload(root: Path) -> tuple[list[dict[str, Any]], dict[str, Any]]
     audit = load_strict(root / by_role["denominator-audit-report"]["path"])
     handoff = load_strict(root / by_role["profile-expansion-handoff"]["path"])
     audit_authority = load_strict(root / by_role["denominator-audit-authority"]["path"])
+    denominator_foundation = load_strict(root / by_role["true-denominator-foundation"]["path"])
+    denominator_gate = load_strict(root / by_role["true-denominator-gate-report"]["path"])
     bindings = {
         "certification_contract": {"id": contract["contract_id"], **by_role["certification-contract"]},
         "semantic_snapshot": {"id": semantic["snapshot_id"], **by_role["semantic-snapshot"]},
@@ -151,6 +159,8 @@ def _artifact_payload(root: Path) -> tuple[list[dict[str, Any]], dict[str, Any]]
         "denominator_audit": {"id": audit["report_id"], "result": audit["result"], **by_role["denominator-audit-report"]},
         "profile_expansion_handoff": {"id": handoff["projection_id"], **by_role["profile-expansion-handoff"]},
         "denominator_audit_authority": {"id": audit_authority["index_id"], **by_role["denominator-audit-authority"]},
+        "true_denominator_foundation": {"id": denominator_foundation["manifest_id"], **by_role["true-denominator-foundation"]},
+        "true_denominator_gate": {"id": denominator_gate["report_id"], "result": denominator_gate["result"], **by_role["true-denominator-gate-report"]},
         "identity_catalog": {"schema_version": identity["schema_version"], "entry_count": len(identity["bindings"]), **by_role["identity-catalog"]},
         "derivation_catalog": {"schema_version": derivation["schema_version"], "derivation_count": len(derivation["derivations"]), **by_role["derivation-catalog"]},
         "current_certification": {"id": report["report_id"], "result": report["final_state"], **by_role["certification-report"]},
@@ -184,6 +194,7 @@ def _cheap_aggregates(root: Path) -> dict[str, Any]:
     migration = load_strict(root / "ontology/migrations/regex-semantic-denominator-2026-09-08.v1.json")
     report = load_strict(root / "certification/reports/current-repository-2026-09-08.v2.json")
     audit = load_strict(root / "reports/semantics/regex-semantic-denominator-audit-2026-09-10.v1.json")
+    gate = load_strict(root / "reports/semantics/true-obligation-denominator-acceptance-2026-09-10.v1.json")
     handoff = load_strict(root / "ontology/projections/regex-semantic-profile-expansion-handoff-2026-09-10.v1.json")
     dry_run = load_strict(root / "reports/semantics/obligation-derivation-dry-run-2026-09-08.v1.json")
     obligations = obligation["obligations"]
@@ -229,6 +240,16 @@ def _cheap_aggregates(root: Path) -> dict[str, Any]:
         "unresolved_requirement_count": audit_result["overlapping_rollups"]["unresolved"],
         "cardinality_expansion_count": sum(item["requirement_cardinality"]["minimum_requirements"] - 1 for item in obligations),
         "distinct_conditional_predicate_count": len(conditional_predicates),
+        "distinct_predicate_count": audit_result["predicate_audit"]["distinct_predicates"],
+        "conformance_capable_requirement_count": audit_result["base_partitions"]["scientific_purpose"]["counts"]["conformance-capable"],
+        "relational_metamorphic_requirement_count": audit_result["base_partitions"]["scientific_purpose"]["counts"]["relational/metamorphic-candidate"],
+        "positive_requirement_count": audit_result["base_partitions"]["evidence_role"]["counts"]["positive"],
+        "negative_requirement_count": audit_result["base_partitions"]["evidence_role"]["counts"]["negative"],
+        "boundary_requirement_count": audit_result["base_partitions"]["evidence_role"]["counts"]["boundary"],
+        "true_denominator_gate_result": gate["result"],
+        "true_denominator_gate_check_count": len(gate["checks"]),
+        "over_count_suspect_count": gate["over_count_audit"]["suspected_over_count"],
+        "under_count_suspect_count": gate["under_count_audit"]["suspected_under_count"],
         "expected_requirement_count": None,
         "expected_requirement_lower_bound": sum(item["requirement_state"] == "required" for item in requirements),
         "expected_requirement_upper_bound": len(requirements),
@@ -286,7 +307,7 @@ def verify_manifest(root: Path, manifest_path: Path, *, expected_envelope_sha: s
         raise LocalCertificationError("independent cheap aggregate verification failed")
     identity_text = (root / IDENTITY_CATALOG).read_text(encoding="utf-8")
     derivation_text = (root / DERIVATION_CATALOG).read_text(encoding="utf-8")
-    for binding_name in ("semantic_snapshot", "obligation_snapshot", "requirement_snapshot", "migration_ledger", "denominator_accounting_contract", "denominator_audit", "profile_expansion_handoff", "denominator_audit_authority"):
+    for binding_name in ("semantic_snapshot", "obligation_snapshot", "requirement_snapshot", "migration_ledger", "denominator_accounting_contract", "denominator_audit", "profile_expansion_handoff", "denominator_audit_authority", "true_denominator_foundation", "true_denominator_gate"):
         if manifest["bindings"][binding_name]["id"] not in identity_text and ":h:" not in manifest["bindings"][binding_name]["id"]:
             raise LocalCertificationError(f"assigned identity binding is absent from identity catalog: {binding_name}")
     materialization = load_strict(root / "reports/semantics/semantic-denominator-materialization-2026-09-08.v1.json")
@@ -295,6 +316,12 @@ def verify_manifest(root: Path, manifest_path: Path, *, expected_envelope_sha: s
     audit = load_strict(root / manifest["bindings"]["denominator_audit"]["path"])
     if audit.get("result") != "PASS" or audit.get("derivation_revision_id") not in derivation_text:
         raise LocalCertificationError("denominator audit is not PASS or its derivation revision is absent from the catalog")
+    gate = load_strict(root / manifest["bindings"]["true_denominator_gate"]["path"])
+    if gate.get("result") != "PASS" or len(gate.get("checks", [])) != 20:
+        raise LocalCertificationError("true denominator gate is not PASS with its exact predicate set")
+    foundation = load_strict(root / manifest["bindings"]["true_denominator_foundation"]["path"])
+    if gate["foundation_manifest"]["artifact_id"] != foundation.get("manifest_id"):
+        raise LocalCertificationError("true denominator gate does not bind its exact foundation manifest")
     if require_envelope:
         envelope_sha = expected_envelope_sha or git_output(root, "rev-parse", "HEAD")
         if FULL_SHA.fullmatch(envelope_sha) is None or git_output(root, "rev-parse", "HEAD") != envelope_sha:

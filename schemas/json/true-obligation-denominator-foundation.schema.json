@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/true-obligation-denominator-foundation.schema.json",
+  "title": "True obligation denominator foundation manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "accepted_input_repository_sha", "published_on", "claim_scope", "artifacts", "catalogs", "implementation", "predecessor_acceptance", "expected_population", "historical_denominator", "local_authoritative_certification", "assertion_derivations", "manifest_id", "manifest_digest_sha256"],
+  "properties": {
+    "schema_version": {"const": "true-obligation-denominator-foundation.v1"},
+    "accepted_input_repository_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "published_on": {"type": "string", "format": "date"},
+    "claim_scope": {"type": "string", "minLength": 1},
+    "artifacts": {"type": "array", "minItems": 16, "maxItems": 16, "items": {"$ref": "#/$defs/artifact"}},
+    "catalogs": {"type": "array", "minItems": 2, "maxItems": 2, "items": {"$ref": "#/$defs/catalog"}},
+    "implementation": {"type": "array", "minItems": 4, "maxItems": 4, "items": {"$ref": "#/$defs/file"}},
+    "predecessor_acceptance": {
+      "type": "object", "additionalProperties": false,
+      "required": ["scientific_foundation", "semantic_knowledge_architecture"],
+      "properties": {"scientific_foundation": {"const": "PASS"}, "semantic_knowledge_architecture": {"const": "PASS"}}
+    },
+    "expected_population": {
+      "type": "object", "additionalProperties": false,
+      "required": ["obligations", "required_obligations", "conditional_obligations", "requirements", "required_requirements", "conditional_requirements", "conformance_capable", "relational_metamorphic", "characterization_only", "positive", "negative", "boundary", "characterization", "cardinality_expansion", "distinct_conditional_predicates", "distinct_predicates", "suppressed_not_required", "suppressed_not_applicable"],
+      "properties": {
+        "obligations": {"const": 2390}, "required_obligations": {"const": 1058}, "conditional_obligations": {"const": 1332},
+        "requirements": {"const": 3378}, "required_requirements": {"const": 1406}, "conditional_requirements": {"const": 1972},
+        "conformance_capable": {"const": 3071}, "relational_metamorphic": {"const": 228}, "characterization_only": {"const": 79},
+        "positive": {"const": 1785}, "negative": {"const": 1394}, "boundary": {"const": 120}, "characterization": {"const": 79},
+        "cardinality_expansion": {"const": 988}, "distinct_conditional_predicates": {"const": 278}, "distinct_predicates": {"const": 354},
+        "suppressed_not_required": {"const": 2237}, "suppressed_not_applicable": {"const": 233}
+      }
+    },
+    "historical_denominator": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"$ref": "#/$defs/file"}},
+    "local_authoritative_certification": {
+      "type": "object", "additionalProperties": false,
+      "required": ["architecture", "manifest_path", "source_state_requirement", "hosted_role"],
+      "properties": {
+        "architecture": {"const": "Local Authoritative Certification / Hosted Integrity Verification"},
+        "manifest_path": {"const": "certification/local/current-local-certification.v1.json"},
+        "source_state_requirement": {"type": "string", "minLength": 1},
+        "hosted_role": {"type": "string", "minLength": 1}
+      }
+    },
+    "assertion_derivations": {"type": "array", "minItems": 4, "maxItems": 4, "items": {"$ref": "#/$defs/derivation"}},
+    "manifest_id": {"type": "string", "pattern": "^rcid:v1:artifact-set-manifest:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "manifest_digest_sha256": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "path": {"type": "string", "minLength": 1, "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"},
+    "file": {
+      "type": "object", "additionalProperties": false, "required": ["path", "file_sha256"],
+      "properties": {"path": {"$ref": "#/$defs/path"}, "file_sha256": {"$ref": "#/$defs/digest"}}
+    },
+    "artifact": {
+      "type": "object", "additionalProperties": false, "required": ["role", "path", "artifact_id", "content_digest_sha256", "file_sha256"],
+      "properties": {"role": {"type": "string", "pattern": "^[a-z0-9-]+$"}, "path": {"$ref": "#/$defs/path"}, "artifact_id": {"type": "string", "minLength": 1}, "content_digest_sha256": {"$ref": "#/$defs/digest"}, "file_sha256": {"$ref": "#/$defs/digest"}}
+    },
+    "catalog": {
+      "type": "object", "additionalProperties": false, "required": ["role", "path", "schema_version", "catalog_digest_sha256", "file_sha256", "member_count"],
+      "properties": {"role": {"enum": ["identity-catalog", "derivation-catalog"]}, "path": {"$ref": "#/$defs/path"}, "schema_version": {"type": "string", "minLength": 1}, "catalog_digest_sha256": {"$ref": "#/$defs/digest"}, "file_sha256": {"$ref": "#/$defs/digest"}, "member_count": {"type": "integer", "minimum": 1}}
+    },
+    "derivation": {
+      "type": "object", "additionalProperties": false, "required": ["binding_key", "derivation_id", "derivation_revision_id", "derivation_class", "gate_kind"],
+      "properties": {"binding_key": {"type": "string", "pattern": "^[a-z0-9-]+$"}, "derivation_id": {"type": "string", "pattern": "^rcid:v1:assertion-derivation:u7:"}, "derivation_revision_id": {"type": "string", "pattern": "^rcid:v1:assertion-derivation-revision:h:jcs-sha256-v1:[0-9a-f]{64}$"}, "derivation_class": {"enum": ["calculation", "manual-decision", "measurement"]}, "gate_kind": {"type": "string", "minLength": 1}}
+    }
+  }
+}

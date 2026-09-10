@@ -78,6 +78,8 @@ python tools/semantics/freeze_semantic_universe.py --check
 python tools/semantics/certify_semantic_knowledge.py --check
 python tools/semantics/define_obligation_derivation.py --check
 python tools/semantics/generate_obligation_snapshots.py --check
+python tools/semantics/audit_scientific_denominator.py --check
+python tools/semantics/certify_true_denominator.py --check
 ```
 
 The predecessor compiler's generated products are:
@@ -135,6 +137,13 @@ conditional predicate and predecessor migration; and rejects unexplained
 current multipliers. Its profile-expansion handoff retains exact predicates but
 leaves exact profile and logical-execution counts explicitly deferred. See
 [`../docs/architecture/scientific-denominator-accounting.md`](../docs/architecture/scientific-denominator-accounting.md).
+
+The true-denominator acceptance gate binds the semantic, rule, snapshot,
+migration, accounting, audit, profile-handoff, identity, derivation, and
+certification authorities in one content-derived foundation manifest. Its
+fresh independent recomputation and adversarial over-count/under-count checks
+accept the 3,378 semantic requirements for downstream architecture while C4
+remains `FAIL` at `0/3378` and exact profile expansion remains deferred.
 
 Published semantic artifacts remain immutable. The companion derivation
 inventory records that legacy fixed audit, discovery, facility-reconciliation,
