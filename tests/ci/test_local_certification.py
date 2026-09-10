@@ -28,6 +28,7 @@ class LocalCertificationTests(unittest.TestCase):
         revision = "rcid:v1:assertion-derivation-revision:h:jcs-sha256-v1:" + "d" * 64
         (self.root / "registries/provenance/generated-assertion-derivations.v1.json").write_text(revision, encoding="utf-8")
         (self.root / "reports/semantics/semantic-denominator-materialization-2026-09-08.v1.json").write_text(dump_pretty({"derivations": {"materialization_derivation_revision_id": revision}}), encoding="utf-8")
+        (self.root / "reports/semantics/regex-semantic-denominator-audit-2026-09-10.v1.json").write_text(dump_pretty({"result": "PASS", "derivation_revision_id": revision}), encoding="utf-8")
         self.entry = {"role": "fixture", "path": "fixture.json", "sha256": "a" * 64, "byte_length": 1}
         self.test = {"test_id": "local-01", "argv": ["python", "check.py"], "result": "PASS", "exit_code": 0, "output_sha256": "b" * 64, "duration_milliseconds": 1}
         self.aggregates = {"value": 1}
@@ -43,6 +44,10 @@ class LocalCertificationTests(unittest.TestCase):
                 "obligation_snapshot": {"id": "rcid:v1:ontology-snapshot:h:jcs-sha256-v1:" + "2" * 64},
                 "requirement_snapshot": {"id": "rcid:v1:ontology-snapshot:h:jcs-sha256-v1:" + "3" * 64},
                 "migration_ledger": {"id": "rcid:v1:reconciliation-set:h:jcs-sha256-v1:" + "4" * 64},
+                "denominator_accounting_contract": {"id": "rcid:v1:applicability-rule-set:h:jcs-sha256-v1:" + "5" * 64},
+                "denominator_audit": {"id": "rcid:v1:finding-revision:h:jcs-sha256-v1:" + "6" * 64, "path": "reports/semantics/regex-semantic-denominator-audit-2026-09-10.v1.json"},
+                "profile_expansion_handoff": {"id": "rcid:v1:ontology-projection:h:jcs-sha256-v1:" + "7" * 64},
+                "denominator_audit_authority": {"id": "rcid:v1:artifact-set-manifest:h:jcs-sha256-v1:" + "8" * 64},
             },
             "generated_artifacts": {"entries": [self.entry], "root_sha256": merkleless_root([self.entry])},
             "test_results": {"entries": [self.test], "root_sha256": merkleless_root([self.test])},

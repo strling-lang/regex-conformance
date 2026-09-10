@@ -102,6 +102,7 @@ DERIVATION_IDS = {
     "semantic-universe-freeze": "rcid:v1:assertion-derivation:u7:01a07e69-dfbc-7506-91ad-45f3775dc29a",
     "obligation-derivation": "rcid:v1:assertion-derivation:u7:01a08125-97ae-7633-b217-ca1d0fa22fbf",
     "denominator-materialization": "rcid:v1:assertion-derivation:u7:01a08250-8e26-7ae3-aaf5-32e23ece7dbc",
+    "denominator-audit": "rcid:v1:assertion-derivation:u7:01a08bfe-f086-7b3f-bc06-0ed1f691f052",
 }
 
 ALLOWED_GATES_BY_CLASS = {
@@ -639,6 +640,34 @@ def _derivation_specs(root: Path) -> list[dict[str, Any]]:
                 "formula": "Materialize one immutable obligation per accepted prospective scientific question, then one minimum requirement per archetype evidence role while preserving conditional predicates and predecessor lineage.",
             },
             "notes": "Materialization establishes current semantic-denominator authority; it does not author vectors, evaluate profiles, or provide empirical evidence.",
+        },
+        {
+            "key": "denominator-audit",
+            "title": "Independent semantic denominator accounting audit",
+            "derivation_class": "calculation",
+            "method_key": "semantic-denominator-independent-audit",
+            "method_version": "1.0.0",
+            "input_references": [
+                "ontology/obligations/regex-semantic-obligations-2026-09-08.v1.json",
+                "vectors/requirements/regex-semantic-vector-requirements-2026-09-08.v2.json",
+                "ontology/migrations/regex-semantic-denominator-2026-09-08.v1.json",
+                "reports/semantics/obligation-derivation-dry-run-2026-09-08.v1.json",
+                "ontology/derivations/regex-obligation-derivation-rules-2026-09-08.v1.json",
+            ],
+            "authority_references": [
+                "ontology/authority/current-semantic-denominator.v1.json"
+            ],
+            "allowed_gate_kinds": ["arithmetic-closure", "structural-integrity"],
+            "independent_evidence": False,
+            "metadata": {
+                "kind": "calculation",
+                "input_references": [
+                    "committed semantic obligation and requirement snapshots, their predecessor migration ledger, the accepted dry-run decisions, and the rule contract"
+                ],
+                "procedure_ref": "schemas/tooling/python/regex_conformance_schema/denominator_audit.py",
+                "formula": "Independently partition committed stable-ID populations, validate predicates and cardinality from source fields, reconcile predecessor and successor sets, and compare every recomputed aggregate with the authoritative snapshots.",
+            },
+            "notes": "The audit proves accounting and derivation closure. It does not supply profile facts, author vectors, or certify conformance behavior.",
         },
         {
             "key": "certification-predicate-calculation",
@@ -1380,6 +1409,55 @@ def _artifact_specs() -> tuple[ArtifactSpec, ...]:
             ),
             coverage_selectors=("/current_authority", "/historical_predecessor", "/profile_expanded_denominator", "/governance"),
             schema_reference="schemas/json/semantic-denominator-authority-index.schema.json",
+        ),
+        ArtifactSpec(
+            "ontology/denominator/regex-semantic-denominator-accounting-2026-09-10.v1.json",
+            "governed-registry",
+            "governed-registry",
+            ("tools/semantics/audit_scientific_denominator.py",),
+            (
+                _b("/", "manual-registry-decision", "governance", "Accepted denominator vocabulary, orthogonal accounting axes, scenario meanings, and profile-deferral boundary."),
+                _b("/contract_digest_sha256", "denominator-audit", "validation", "JCS/SHA-256 digest of the complete accounting contract body."),
+                _b("/contract_id", "denominator-audit", "validation", "Content-derived typed identity of the exact accounting contract."),
+            ),
+            coverage_selectors=("/population_definitions", "/orthogonal_axes", "/scenario_rules", "/predicate_contract"),
+            schema_reference="schemas/json/semantic-denominator-accounting-contract.schema.json",
+        ),
+        ArtifactSpec(
+            "ontology/projections/regex-semantic-profile-expansion-handoff-2026-09-10.v1.json",
+            "semantic-projection",
+            "current-generated",
+            ("tools/semantics/audit_scientific_denominator.py",),
+            (_b("/", "denominator-audit", "reconciliation", "Closed capability predicates and exact stable-ID requirement bindings for later empirical profile expansion."),),
+            coverage_selectors=("/profile_fact_contract", "/predicate_definitions", "/requirement_predicate_bindings", "/evaluation_contract", "/counts", "/deferral"),
+            count_contracts=(
+                _c("/counts/semantic_requirements", "collection-length", ["/requirement_predicate_bindings"], "canonical semantic requirement predicate bindings", "Exact binding collection length."),
+                _c("/counts/required_requirements", "matching-value-count", ["/requirement_predicate_bindings/*/semantic_applicability"], "unconditional requirement predicate bindings", "Count exact required bindings.", values=["required"]),
+                _c("/counts/conditional_requirements", "matching-value-count", ["/requirement_predicate_bindings/*/semantic_applicability"], "conditional requirement predicate bindings", "Count exact conditional bindings.", values=["conditional"]),
+                _c("/counts/distinct_predicates", "collection-length", ["/predicate_definitions"], "normalized distinct capability predicates", "Exact predicate definition collection length."),
+            ),
+            schema_reference="schemas/json/semantic-profile-expansion-handoff.schema.json",
+        ),
+        ArtifactSpec(
+            "reports/semantics/regex-semantic-denominator-audit-2026-09-10.v1.json",
+            "audit-or-reconciliation-report",
+            "current-generated",
+            ("tools/semantics/audit_scientific_denominator.py",),
+            (_b("/", "denominator-audit", "audit", "Independent stable-ID accounting, predicate validation, cardinality reconstruction, migration closure, stratified reconstruction, and hidden-multiplier audit."),),
+            coverage_selectors=("/independent_recomputation", "/current_certification", "/profile_expansion", "/anomaly_dispositions", "/result"),
+            schema_reference="schemas/json/semantic-denominator-audit-report.schema.json",
+        ),
+        ArtifactSpec(
+            "ontology/authority/current-semantic-denominator-audit.v1.json",
+            "authority-index",
+            "governed-registry",
+            ("tools/semantics/audit_scientific_denominator.py",),
+            (
+                _b("/", "denominator-audit", "reconciliation", "Digest-bound current denominator audit, accounting contract, and future profile-expansion handoff."),
+                _b("/governance", "manual-registry-decision", "governance", "Local authoritative certification and hosted integrity-verification requirements."),
+            ),
+            coverage_selectors=("/denominator_authority", "/accounting_contract", "/audit_report", "/profile_expansion_handoff", "/authority_scope", "/governance"),
+            schema_reference="schemas/json/semantic-denominator-audit-authority.schema.json",
         ),
         ArtifactSpec(
             "certification/contracts/regex-conformance-certification.v1.json",

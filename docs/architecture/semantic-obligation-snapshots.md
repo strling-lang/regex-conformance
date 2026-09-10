@@ -119,3 +119,11 @@ Hosted Linux follows the bounded integrity role described by the
 it verifies the exact source/envelope relationship, every referenced digest and
 closure, identity and derivation bindings, and cheap aggregate predicates. It
 does not repeat this expensive materialization.
+
+The separately generated [scientific denominator accounting
+report](scientific-denominator-accounting.md) independently reconstructs these
+populations from committed snapshots. It establishes orthogonal partitions,
+scenario semantics, closed conditional predicates, the 988-role cardinality
+expansion, predecessor migration closure, and the absence of an unexplained
+current multiplier. Expected applicability and the final execution denominator
+remain symbolic until empirical profile facts exist.

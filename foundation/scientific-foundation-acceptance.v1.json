@@ -1,6 +1,6 @@
 {
-  "acceptance_report_digest_sha256": "88efa852137868d1443a177d0c7843559358122bdeb424f5e155dbee071c66f5",
-  "acceptance_report_id": "rcid:v1:trust-assessment:h:jcs-sha256-v1:f77621cb034c838194ce2ddc72f986f684b9f7d389c039fdf7b5aefa245a3925",
+  "acceptance_report_digest_sha256": "be90783d9111d595a9aba33d888dc665c2c031d91bf8edd590409e0ed54200f1",
+  "acceptance_report_id": "rcid:v1:trust-assessment:h:jcs-sha256-v1:5c194cbac93842642d5b2cd5d82c0867d4f637731f1d6695f717e7233e82f850",
   "accepted_source_repository_sha": "167ebd5c55065f33191fe5843be902db53f3187e",
   "assertion_derivations": [
     {
@@ -55,8 +55,8 @@
     {
       "check_id": "derivation-catalog",
       "evidence": [
-        "artifacts=74",
-        "groups=267"
+        "artifacts=78",
+        "groups=272"
       ],
       "status": "PASS"
     },
@@ -78,7 +78,7 @@
     {
       "check_id": "foundation-manifest-closure",
       "evidence": [
-        "d742b508d59875dc1677b0be52461cb45ef95548ec2cf78d5154db90f94bfed2"
+        "a259b725d60b84d395dcef53d1d91b5c29ab5aac252e489a4db119002df49097"
       ],
       "status": "PASS"
     },
@@ -161,8 +161,8 @@
     "resolved-by-foundation": 2
   },
   "foundation_acceptance": "PASS",
-  "foundation_manifest_digest_sha256": "d742b508d59875dc1677b0be52461cb45ef95548ec2cf78d5154db90f94bfed2",
-  "foundation_manifest_id": "rcid:v1:artifact-set-manifest:h:jcs-sha256-v1:77e1d665791acbd5ec80e65670a439ceb83d00d7436eccbe1270450aba1a733d",
+  "foundation_manifest_digest_sha256": "a259b725d60b84d395dcef53d1d91b5c29ab5aac252e489a4db119002df49097",
+  "foundation_manifest_id": "rcid:v1:artifact-set-manifest:h:jcs-sha256-v1:0e557e56870d0af76309b87b72d3a9d34e2582924fdd37406ded6c16318cbed2",
   "hosted_validation_basis": {
     "jobs": [
       "first-end-to-end-campaign",

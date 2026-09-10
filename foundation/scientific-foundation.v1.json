@@ -152,8 +152,8 @@
       "finding": "Final sustained production-architecture qualification"
     }
   ],
-  "foundation_manifest_digest_sha256": "d742b508d59875dc1677b0be52461cb45ef95548ec2cf78d5154db90f94bfed2",
-  "foundation_manifest_id": "rcid:v1:artifact-set-manifest:h:jcs-sha256-v1:77e1d665791acbd5ec80e65670a439ceb83d00d7436eccbe1270450aba1a733d",
+  "foundation_manifest_digest_sha256": "a259b725d60b84d395dcef53d1d91b5c29ab5aac252e489a4db119002df49097",
+  "foundation_manifest_id": "rcid:v1:artifact-set-manifest:h:jcs-sha256-v1:0e557e56870d0af76309b87b72d3a9d34e2582924fdd37406ded6c16318cbed2",
   "foundations": [
     {
       "artifacts": [
@@ -310,12 +310,12 @@
         {
           "relative_path": "registries/provenance/generated-assertion-derivations.v1.json",
           "role": "derivation-catalog",
-          "sha256": "0aa29e7fec67a86b3c8be5db16e1d9eff6c391e5799096ddac490e3ca432edf9"
+          "sha256": "fc16bde641cfc2ba81b7151a061efc9ed167784c7b6e04f19e031f8afb30af19"
         },
         {
           "relative_path": "schemas/tooling/python/regex_conformance_schema/derivation.py",
           "role": "derivation-validator",
-          "sha256": "f2e72f9a04b48eda0702b7350b94295f0bbb980ebd58b29a4acb36d6a9400a64"
+          "sha256": "4206e17adaf2d532816a88b23a52778dad83cd19dfbae1ab961abffc7057f61d"
         },
         {
           "relative_path": "schemas/json/generated-assertion-derivation-catalog.schema.json",
@@ -326,19 +326,19 @@
       "facts": [
         {
           "name": "catalog-digest",
-          "value": "cd32e2829292cd4d5de09c9b34e1cb1d6d21f766c3ee078d527b95f578171f45"
+          "value": "af59adba7729d9befe073fb07fb40318a0574a30ed2799391b6e6decc5e818bf"
         },
         {
           "name": "inventoried-artifact-count",
-          "value": 74
+          "value": 78
         },
         {
           "name": "assertion-group-count",
-          "value": 267
+          "value": 272
         },
         {
           "name": "assertion-occurrence-count",
-          "value": 1674396
+          "value": 1722519
         }
       ],
       "foundation_key": "generated-assertion-derivation"

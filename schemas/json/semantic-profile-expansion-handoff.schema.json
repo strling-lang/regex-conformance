@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/semantic-profile-expansion-handoff.schema.json",
+  "title": "Semantic requirement to profile expansion handoff",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "published_on", "authority", "profile_fact_contract", "predicate_definitions", "requirement_predicate_bindings", "evaluation_contract", "counts", "deferral", "derivation_id", "derivation_revision_id", "projection_id", "projection_digest_sha256"],
+  "properties": {
+    "schema_version": {"const": "semantic-profile-expansion-handoff.v1"},
+    "published_on": {"type": "string", "format": "date"},
+    "authority": {"type": "object", "minProperties": 3},
+    "profile_fact_contract": {"type": "object", "required": ["required_fields", "field_identity_prefixes", "predicate_operators", "value_from", "unknown_fact_result"]},
+    "predicate_definitions": {"type": "array", "minItems": 1, "items": {"type": "object", "additionalProperties": false, "required": ["predicate_id", "predicate"], "properties": {"predicate_id": {"$ref": "#/$defs/rcid"}, "predicate": {"type": "object"}}}},
+    "requirement_predicate_bindings": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/binding"}},
+    "evaluation_contract": {"type": "object", "required": ["formula", "true_result", "false_result", "unknown_result", "operation_rule"]},
+    "counts": {"type": "object", "additionalProperties": false, "required": ["semantic_requirements", "required_requirements", "conditional_requirements", "distinct_predicates", "distinct_conditional_predicates", "exact_profiles", "final_logical_execution_denominator"], "properties": {"semantic_requirements": {"const": 3378}, "required_requirements": {"const": 1406}, "conditional_requirements": {"const": 1972}, "distinct_predicates": {"type": "integer", "minimum": 1}, "distinct_conditional_predicates": {"type": "integer", "minimum": 1}, "exact_profiles": {"type": "null"}, "final_logical_execution_denominator": {"type": "null"}}},
+    "deferral": {"type": "object", "additionalProperties": false, "required": ["status", "reason", "historical_multiplier_substituted"], "properties": {"status": {"const": "deferred"}, "reason": {"type": "string", "minLength": 1}, "historical_multiplier_substituted": {"const": false}}},
+    "derivation_id": {"$ref": "#/$defs/rcid"}, "derivation_revision_id": {"$ref": "#/$defs/rcid"}, "projection_id": {"$ref": "#/$defs/rcid"}, "projection_digest_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}, "rcid": {"type": "string", "pattern": "^rcid:v1:"},
+    "binding": {"type": "object", "additionalProperties": false, "required": ["requirement_scientific_id", "obligation_scientific_id", "feature_scientific_id", "semantic_applicability", "predicate_id", "operation_scientific_ids"], "properties": {"requirement_scientific_id": {"type": "string", "pattern": "^rcid:v1:semantic-requirement:"}, "obligation_scientific_id": {"type": "string", "pattern": "^rcid:v1:obligation:"}, "feature_scientific_id": {"type": "string", "pattern": "^rcid:v1:feature:"}, "semantic_applicability": {"enum": ["required", "conditional"]}, "predicate_id": {"$ref": "#/$defs/rcid"}, "operation_scientific_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^rcid:v1:operation:"}}}}
+  }
+}

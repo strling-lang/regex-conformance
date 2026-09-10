@@ -59,6 +59,9 @@ The rule contract and its authority boundary are documented in
 [explainable obligation derivation](docs/architecture/explainable-obligation-derivation.md).
 The current snapshots, lineage, and C4 transition are documented in
 [canonical semantic obligations and requirements](docs/architecture/semantic-obligation-snapshots.md).
+Their orthogonal accounting, independent recomputation, scenario bounds, and
+profile-expansion handoff are documented in [scientific denominator
+accounting](docs/architecture/scientific-denominator-accounting.md).
 The bounded freeze claim and its supersession rules are documented in the
 [semantic universe freeze](docs/architecture/semantic-universe-freeze.md).
 

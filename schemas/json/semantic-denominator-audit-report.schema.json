@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/semantic-denominator-audit-report.schema.json",
+  "title": "Independent semantic denominator audit report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "published_on", "claim", "authority", "independent_recomputation", "current_certification", "profile_expansion", "anomaly_dispositions", "derivation_id", "derivation_revision_id", "result", "report_id", "report_digest_sha256"],
+  "properties": {
+    "schema_version": {"const": "semantic-denominator-audit-report.v1"},
+    "published_on": {"type": "string", "format": "date"},
+    "claim": {"type": "string", "minLength": 1},
+    "authority": {"type": "object", "minProperties": 7},
+    "independent_recomputation": {"$ref": "#/$defs/recomputation"},
+    "current_certification": {"type": "object", "required": ["report_id", "status", "c4"]},
+    "profile_expansion": {"type": "object", "required": ["status", "exact_profile_count", "final_logical_execution_denominator", "historical_planning_multiplier_substituted", "handoff_id"], "properties": {"status": {"const": "deferred"}, "exact_profile_count": {"type": "null"}, "final_logical_execution_denominator": {"type": "null"}, "historical_planning_multiplier_substituted": {"const": false}, "handoff_id": {"$ref": "#/$defs/rcid"}}},
+    "anomaly_dispositions": {"type": "array", "minItems": 1, "items": {"type": "object", "additionalProperties": false, "required": ["anomaly", "count", "status"], "properties": {"anomaly": {"type": "string"}, "count": {"type": "integer", "minimum": 0}, "status": {"const": "PASS"}}}},
+    "derivation_id": {"$ref": "#/$defs/rcid"}, "derivation_revision_id": {"$ref": "#/$defs/rcid"}, "result": {"const": "PASS"}, "report_id": {"$ref": "#/$defs/rcid"}, "report_digest_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}, "rcid": {"type": "string", "pattern": "^rcid:v1:"},
+    "commitment": {"type": "object", "additionalProperties": false, "required": ["member_count", "jcs_sha256"], "properties": {"member_count": {"type": "integer", "minimum": 0}, "jcs_sha256": {"$ref": "#/$defs/sha256"}}},
+    "population": {"type": "object", "required": ["total", "required", "conditional", "characterization", "stable_id_commitment"], "properties": {"total": {"type": "integer"}, "required": {"type": "integer"}, "conditional": {"type": "integer"}, "characterization": {"type": "integer"}, "stable_id_commitment": {"$ref": "#/$defs/commitment"}}},
+    "recomputation": {"type": "object", "additionalProperties": false, "required": ["result", "obligations", "requirements", "base_partitions", "overlapping_rollups", "scenario_accounting", "predicate_audit", "cardinality_audit", "distributions", "excluded_decisions", "sample_audit", "migration_audit", "multiplier_audit"], "properties": {"result": {"const": "PASS"}, "obligations": {"$ref": "#/$defs/population"}, "requirements": {"$ref": "#/$defs/population"}, "base_partitions": {"type": "object"}, "overlapping_rollups": {"type": "object"}, "scenario_accounting": {"type": "object"}, "predicate_audit": {"type": "object"}, "cardinality_audit": {"type": "object"}, "distributions": {"type": "object"}, "excluded_decisions": {"type": "object"}, "sample_audit": {"type": "object"}, "migration_audit": {"type": "object"}, "multiplier_audit": {"type": "object"}}}
+  }
+}

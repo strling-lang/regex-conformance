@@ -12,6 +12,7 @@ second program authority.
 - [Semantic knowledge architecture acceptance](semantic-knowledge-architecture.md)
 - [Explainable obligation derivation](explainable-obligation-derivation.md)
 - [Canonical semantic obligations and requirements](semantic-obligation-snapshots.md)
+- [Scientific denominator accounting](scientific-denominator-accounting.md)
 - [Local authoritative certification and hosted integrity verification](local-authoritative-certification.md)
 - [Generated assertion derivation contract](generated-assertion-derivations.md)
 - [Physical-attempt and terminal-outcome provenance](execution-provenance.md)

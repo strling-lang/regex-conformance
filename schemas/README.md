@@ -152,6 +152,16 @@ vocabularies, scientific-identity references for conditional applicability,
 bounded variant and interaction attribution, no generic fallback, deterministic
 explanation traces, and byte-stable predecessor denominator artifacts.
 
+`json/semantic-denominator-accounting-contract.schema.json`,
+`json/semantic-denominator-audit-report.schema.json`,
+`json/semantic-profile-expansion-handoff.schema.json`, and
+`json/semantic-denominator-audit-authority.schema.json` govern the independent
+accounting layer. They separate orthogonal partitions from overlapping
+rollups, preserve a symbolic expected scenario until empirical profile facts
+exist, bind every requirement to a closed capability predicate, retain exact
+stable-ID commitments, and keep the profile-expanded execution denominator
+explicitly deferred.
+
 `json/generated-assertion-derivation-catalog.schema.json` defines the shared
 provenance contract for assertion-like generated fields. It requires
 class-specific metadata for measurement, calculation, research-derived,

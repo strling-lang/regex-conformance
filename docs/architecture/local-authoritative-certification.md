@@ -12,7 +12,8 @@ Integrity Verification**.
 ## Authority and trust boundary
 
 The local certifier starts only from a clean committed source tree. It runs the
-canonical denominator regeneration check, migration and explainability checks,
+canonical denominator regeneration check, independent denominator accounting,
+migration and explainability checks,
 identity and derivation validation, foundation gates, certification evaluation,
 schema and fixture validation, identifier hygiene, and the affected policy
 suite. A failed command prevents a local PASS.
@@ -27,8 +28,10 @@ SHA-256 through the repository's existing content-identity conventions.
 A SHA proves integrity and identity, not correctness. The hosted verifier
 therefore validates the complete result structure, exact source and tree,
 artifact bytes, contract and catalog bindings, test-result closure, and cheap
-independently recomputed obligation, requirement, predecessor, and C4
-aggregates. Schema, fixture, identifier, and trust-boundary checks plus a small
+independently recomputed obligation, requirement, predecessor, conditional
+predicate, cardinality, and C4 aggregates. It also verifies the denominator
+audit result and profile-expansion deferral. Schema, fixture, identifier, and
+trust-boundary checks plus a small
 adversarial verifier canary run separately. Stale, malformed, mismatched,
 corrupted, or incompletely bound certificates are vetoed.
 

@@ -35,6 +35,10 @@ ARTIFACT_ROLES: tuple[tuple[str, str], ...] = (
     ("semantic-projection", "ontology/projections/regex-semantic-projection-2026-09-08.v2.json"),
     ("denominator-authority", "ontology/authority/current-semantic-denominator.v1.json"),
     ("materialization-report", "reports/semantics/semantic-denominator-materialization-2026-09-08.v1.json"),
+    ("denominator-accounting-contract", "ontology/denominator/regex-semantic-denominator-accounting-2026-09-10.v1.json"),
+    ("denominator-audit-report", "reports/semantics/regex-semantic-denominator-audit-2026-09-10.v1.json"),
+    ("profile-expansion-handoff", "ontology/projections/regex-semantic-profile-expansion-handoff-2026-09-10.v1.json"),
+    ("denominator-audit-authority", "ontology/authority/current-semantic-denominator-audit.v1.json"),
     ("certification-input", "certification/inputs/current-repository-2026-09-08.v2.json"),
     ("certification-report", "certification/reports/current-repository-2026-09-08.v2.json"),
     ("certification-authority", "certification/current-authority.v1.json"),
@@ -43,10 +47,15 @@ ARTIFACT_ROLES: tuple[tuple[str, str], ...] = (
     ("scientific-foundation-acceptance", "foundation/scientific-foundation-acceptance.v1.json"),
     ("semantic-foundation-acceptance", "semantic-corpus/foundation/semantic-knowledge-architecture.v1.json"),
     ("local-certification-schema", str(SCHEMA_PATH).replace("\\", "/")),
+    ("denominator-accounting-schema", "schemas/json/semantic-denominator-accounting-contract.schema.json"),
+    ("denominator-audit-report-schema", "schemas/json/semantic-denominator-audit-report.schema.json"),
+    ("profile-expansion-handoff-schema", "schemas/json/semantic-profile-expansion-handoff.schema.json"),
+    ("denominator-audit-authority-schema", "schemas/json/semantic-denominator-audit-authority.schema.json"),
 )
 
 LOCAL_COMMANDS: tuple[tuple[str, ...], ...] = (
     ("python", "tools/semantics/generate_obligation_snapshots.py", "--check"),
+    ("python", "tools/semantics/audit_scientific_denominator.py", "--check"),
     ("python", "tools/certification/evaluate.py", "--check"),
     ("python", "tools/semantics/certify_semantic_knowledge.py", "--check"),
     ("python", "tools/foundation/certify.py", "--check"),
@@ -55,6 +64,7 @@ LOCAL_COMMANDS: tuple[tuple[str, ...], ...] = (
     ("python", "schemas/tooling/python/run.py", "validate-repository"),
     ("python", "schemas/tooling/python/run.py", "verify-fixtures"),
     ("python", "tools/ci/verify_repository_identifier_hygiene.py", "--root", "."),
+    ("python", "-m", "unittest", "discover", "-s", "tests/schema", "-p", "test_denominator_audit.py", "-v"),
     ("python", "-m", "unittest", "discover", "-s", "tests/ci", "-v"),
 )
 
@@ -127,12 +137,20 @@ def _artifact_payload(root: Path) -> tuple[list[dict[str, Any]], dict[str, Any]]
     identity = load_strict(root / by_role["identity-catalog"]["path"])
     derivation = load_strict(root / by_role["derivation-catalog"]["path"])
     report = load_strict(root / by_role["certification-report"]["path"])
+    accounting = load_strict(root / by_role["denominator-accounting-contract"]["path"])
+    audit = load_strict(root / by_role["denominator-audit-report"]["path"])
+    handoff = load_strict(root / by_role["profile-expansion-handoff"]["path"])
+    audit_authority = load_strict(root / by_role["denominator-audit-authority"]["path"])
     bindings = {
         "certification_contract": {"id": contract["contract_id"], **by_role["certification-contract"]},
         "semantic_snapshot": {"id": semantic["snapshot_id"], **by_role["semantic-snapshot"]},
         "obligation_snapshot": {"id": obligation["snapshot_id"], **by_role["obligation-snapshot"]},
         "requirement_snapshot": {"id": requirement["snapshot_id"], **by_role["requirement-snapshot"]},
         "migration_ledger": {"id": migration["ledger_id"], **by_role["migration-ledger"]},
+        "denominator_accounting_contract": {"id": accounting["contract_id"], **by_role["denominator-accounting-contract"]},
+        "denominator_audit": {"id": audit["report_id"], "result": audit["result"], **by_role["denominator-audit-report"]},
+        "profile_expansion_handoff": {"id": handoff["projection_id"], **by_role["profile-expansion-handoff"]},
+        "denominator_audit_authority": {"id": audit_authority["index_id"], **by_role["denominator-audit-authority"]},
         "identity_catalog": {"schema_version": identity["schema_version"], "entry_count": len(identity["bindings"]), **by_role["identity-catalog"]},
         "derivation_catalog": {"schema_version": derivation["schema_version"], "derivation_count": len(derivation["derivations"]), **by_role["derivation-catalog"]},
         "current_certification": {"id": report["report_id"], "result": report["final_state"], **by_role["certification-report"]},
@@ -165,15 +183,59 @@ def _cheap_aggregates(root: Path) -> dict[str, Any]:
     requirement = load_strict(root / "vectors/requirements/regex-semantic-vector-requirements-2026-09-08.v2.json")
     migration = load_strict(root / "ontology/migrations/regex-semantic-denominator-2026-09-08.v1.json")
     report = load_strict(root / "certification/reports/current-repository-2026-09-08.v2.json")
+    audit = load_strict(root / "reports/semantics/regex-semantic-denominator-audit-2026-09-10.v1.json")
+    handoff = load_strict(root / "ontology/projections/regex-semantic-profile-expansion-handoff-2026-09-10.v1.json")
+    dry_run = load_strict(root / "reports/semantics/obligation-derivation-dry-run-2026-09-08.v1.json")
     obligations = obligation["obligations"]
     requirements = requirement["requirements"]
     c4 = next(item for item in report["criteria"] if item["criterion_id"] == "C4")
+    audit_result = audit["independent_recomputation"]
+    conditional_predicates = {
+        canonical_bytes(item["profile_condition"])
+        for item in requirements
+        if item["requirement_state"] == "conditionally-required"
+    }
+    obligation_by_id = {item["scientific_id"]: item for item in obligations}
+    requirement_by_id = {item["scientific_id"]: item for item in requirements}
+    decision_keys = {
+        (item["feature_scientific_id"], item["facet_id"], item["decision"], item["rule_revision_id"])
+        for item in dry_run["decisions"]
+    }
+    samples = audit_result["sample_audit"]
+    for sample in samples["included_reconstructions"]:
+        obligation_item = obligation_by_id.get(sample["obligation_scientific_id"])
+        requirement_item = requirement_by_id.get(sample["requirement_scientific_id"])
+        if obligation_item is None or requirement_item is None:
+            raise LocalCertificationError("denominator audit sample references a missing current object")
+        if requirement_item["obligation_scientific_ids"] != [obligation_item["scientific_id"]]:
+            raise LocalCertificationError("denominator audit sample attribution is inconsistent")
+        if obligation_item["derivation"]["rule_revision_id"] != sample["rule_revision_id"]:
+            raise LocalCertificationError("denominator audit sample rule revision is inconsistent")
+    for sample in samples["excluded_reconstructions"]:
+        key = (sample["feature_scientific_id"], sample["sample_value"], sample["decision"], sample["rule_revision_id"])
+        if key not in decision_keys:
+            raise LocalCertificationError("denominator audit exclusion sample is not reconstructable")
     return {
         "obligation_count": len(obligations),
         "required_obligation_count": sum(item["requirement_state"] == "required" for item in obligations),
         "conditional_obligation_count": sum(item["requirement_state"] == "conditionally-required" for item in obligations),
         "requirement_count": len(requirements),
+        "required_requirement_count": sum(item["requirement_state"] == "required" for item in requirements),
         "conditional_requirement_count": sum(item["requirement_state"] == "conditionally-required" for item in requirements),
+        "characterization_requirement_count": sum(item["requirement_type"] == "characterization-only" for item in requirements),
+        "executable_requirement_count": sum(audit_result["base_partitions"]["execution_disposition"]["counts"][key] for key in ("executable-conformance", "executable-relational", "executable-characterization")),
+        "informative_requirement_count": audit_result["overlapping_rollups"]["informative"],
+        "prohibited_requirement_count": audit_result["overlapping_rollups"]["prohibited"],
+        "unresolved_requirement_count": audit_result["overlapping_rollups"]["unresolved"],
+        "cardinality_expansion_count": sum(item["requirement_cardinality"]["minimum_requirements"] - 1 for item in obligations),
+        "distinct_conditional_predicate_count": len(conditional_predicates),
+        "expected_requirement_count": None,
+        "expected_requirement_lower_bound": sum(item["requirement_state"] == "required" for item in requirements),
+        "expected_requirement_upper_bound": len(requirements),
+        "authoritative_unexplained_multiplier_count": audit_result["multiplier_audit"]["authoritative_unexplained_multiplier_count"],
+        "profile_expansion_deferred": handoff["deferral"]["status"] == "deferred" and handoff["counts"]["exact_profiles"] is None,
+        "included_sample_reconstruction_count": len(samples["included_reconstructions"]),
+        "excluded_sample_reconstruction_count": len(samples["excluded_reconstructions"]),
         "predecessor_obligation_count": len(migration["obligation_migrations"]),
         "predecessor_requirement_count": len(migration["requirement_migrations"]),
         "c4_result": c4["status"],
@@ -224,12 +286,15 @@ def verify_manifest(root: Path, manifest_path: Path, *, expected_envelope_sha: s
         raise LocalCertificationError("independent cheap aggregate verification failed")
     identity_text = (root / IDENTITY_CATALOG).read_text(encoding="utf-8")
     derivation_text = (root / DERIVATION_CATALOG).read_text(encoding="utf-8")
-    for binding_name in ("semantic_snapshot", "obligation_snapshot", "requirement_snapshot", "migration_ledger"):
+    for binding_name in ("semantic_snapshot", "obligation_snapshot", "requirement_snapshot", "migration_ledger", "denominator_accounting_contract", "denominator_audit", "profile_expansion_handoff", "denominator_audit_authority"):
         if manifest["bindings"][binding_name]["id"] not in identity_text and ":h:" not in manifest["bindings"][binding_name]["id"]:
             raise LocalCertificationError(f"assigned identity binding is absent from identity catalog: {binding_name}")
     materialization = load_strict(root / "reports/semantics/semantic-denominator-materialization-2026-09-08.v1.json")
     if materialization["derivations"]["materialization_derivation_revision_id"] not in derivation_text:
         raise LocalCertificationError("materialization derivation revision is absent from derivation catalog")
+    audit = load_strict(root / manifest["bindings"]["denominator_audit"]["path"])
+    if audit.get("result") != "PASS" or audit.get("derivation_revision_id") not in derivation_text:
+        raise LocalCertificationError("denominator audit is not PASS or its derivation revision is absent from the catalog")
     if require_envelope:
         envelope_sha = expected_envelope_sha or git_output(root, "rev-parse", "HEAD")
         if FULL_SHA.fullmatch(envelope_sha) is None or git_output(root, "rev-parse", "HEAD") != envelope_sha:

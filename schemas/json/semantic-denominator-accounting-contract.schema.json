@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/semantic-denominator-accounting-contract.schema.json",
+  "title": "Semantic denominator accounting contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "contract_version", "effective_on", "authority", "population_definitions", "orthogonal_axes", "scenario_rules", "predicate_contract", "authority_references", "derivation", "contract_id", "contract_digest_sha256"],
+  "properties": {
+    "schema_version": {"const": "semantic-denominator-accounting-contract.v1"},
+    "contract_version": {"const": "1.0.0"},
+    "effective_on": {"type": "string", "format": "date"},
+    "authority": {"type": "object", "additionalProperties": {"$ref": "#/$defs/fileBinding"}, "minProperties": 4},
+    "population_definitions": {"type": "array", "minItems": 12, "items": {"$ref": "#/$defs/populationDefinition"}},
+    "orthogonal_axes": {"type": "object", "minProperties": 5, "additionalProperties": {"$ref": "#/$defs/axis"}},
+    "scenario_rules": {"type": "object", "additionalProperties": false, "required": ["lower", "expected", "conservative"], "properties": {"lower": {"$ref": "#/$defs/scenario"}, "expected": {"$ref": "#/$defs/scenario"}, "conservative": {"$ref": "#/$defs/scenario"}}},
+    "predicate_contract": {"type": "object", "required": ["root_operator", "fields", "operators", "value_from", "unknown_fact_result", "missing_capability_is_not"], "properties": {"root_operator": {"const": "all"}, "fields": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}}, "operators": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}}, "value_from": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}}, "unknown_fact_result": {"const": "unresolved"}, "missing_capability_is_not": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}}}},
+    "authority_references": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+    "derivation": {"type": "object", "required": ["derivation_class", "scope"], "properties": {"derivation_class": {"const": "manual-decision"}, "scope": {"type": "string", "minLength": 1}}},
+    "contract_id": {"$ref": "#/$defs/rcid"},
+    "contract_digest_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "rcid": {"type": "string", "pattern": "^rcid:v1:"},
+    "fileBinding": {"type": "object", "additionalProperties": false, "required": ["path", "artifact_id", "digest_sha256", "file_sha256"], "properties": {"path": {"type": "string"}, "artifact_id": {"type": "string"}, "digest_sha256": {"$ref": "#/$defs/sha256"}, "file_sha256": {"$ref": "#/$defs/sha256"}}},
+    "populationDefinition": {"type": "object", "additionalProperties": false, "required": ["term", "definition", "population", "axis", "partition_behavior", "contributes_to_c4", "future_execution_contribution"], "properties": {"term": {"type": "string"}, "definition": {"type": "string", "minLength": 1}, "population": {"type": "string"}, "axis": {"type": "string"}, "partition_behavior": {"enum": ["separate-population", "partition-member", "overlapping-rollup", "scenario"]}, "contributes_to_c4": {"type": "boolean"}, "future_execution_contribution": {"type": "string", "minLength": 1}}},
+    "axis": {"type": "object", "required": ["partition", "cross_sum_permitted"], "properties": {"partition": {"type": "array", "uniqueItems": true, "items": {"type": "string"}}, "cross_sum_permitted": {"type": "boolean"}, "reason": {"type": "string"}}},
+    "scenario": {"type": "object", "required": ["formula", "numeric_policy"], "properties": {"formula": {"type": "string"}, "numeric_policy": {"type": "string"}, "reason": {"type": "string"}, "qualification": {"type": "string"}}}
+  }
+}

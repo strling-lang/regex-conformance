@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/semantic-denominator-audit-authority.schema.json",
+  "title": "Current semantic denominator audit authority",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "effective_on", "denominator_authority", "accounting_contract", "audit_report", "profile_expansion_handoff", "authority_scope", "governance", "derivation_id", "derivation_revision_id", "index_id", "index_digest_sha256"],
+  "properties": {
+    "schema_version": {"const": "semantic-denominator-audit-authority.v1"},
+    "effective_on": {"type": "string", "format": "date"},
+    "denominator_authority": {"$ref": "#/$defs/bindingWithFile"},
+    "accounting_contract": {"$ref": "#/$defs/binding"},
+    "audit_report": {"$ref": "#/$defs/binding"},
+    "profile_expansion_handoff": {"$ref": "#/$defs/binding"},
+    "authority_scope": {"type": "string", "minLength": 1},
+    "governance": {"type": "object", "additionalProperties": false, "required": ["local_authoritative_certification_required", "hosted_integrity_veto_required", "scientific_certification_issued"], "properties": {"local_authoritative_certification_required": {"const": true}, "hosted_integrity_veto_required": {"const": true}, "scientific_certification_issued": {"const": false}}},
+    "derivation_id": {"$ref": "#/$defs/rcid"}, "derivation_revision_id": {"$ref": "#/$defs/rcid"}, "index_id": {"$ref": "#/$defs/rcid"}, "index_digest_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}, "rcid": {"type": "string", "pattern": "^rcid:v1:"},
+    "binding": {"type": "object", "additionalProperties": false, "required": ["path", "artifact_id", "digest_sha256"], "properties": {"path": {"type": "string"}, "artifact_id": {"type": "string"}, "digest_sha256": {"$ref": "#/$defs/sha256"}}},
+    "bindingWithFile": {"type": "object", "additionalProperties": false, "required": ["path", "artifact_id", "digest_sha256", "file_sha256"], "properties": {"path": {"type": "string"}, "artifact_id": {"type": "string"}, "digest_sha256": {"$ref": "#/$defs/sha256"}, "file_sha256": {"$ref": "#/$defs/sha256"}}}
+  }
+}

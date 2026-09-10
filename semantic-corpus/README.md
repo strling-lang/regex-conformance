@@ -128,6 +128,14 @@ reconciliation and a compact downstream projection. The original 12,048/9,506
 artifacts remain immutable historical authority for their own earlier reports.
 No concrete vector or profile-expanded coordinate is produced.
 
+The independent denominator audit partitions all 3,378 requirements by
+semantic applicability, scientific purpose, execution disposition, and
+evidence role; reconstructs the 988-role cardinality expansion; verifies every
+conditional predicate and predecessor migration; and rejects unexplained
+current multipliers. Its profile-expansion handoff retains exact predicates but
+leaves exact profile and logical-execution counts explicitly deferred. See
+[`../docs/architecture/scientific-denominator-accounting.md`](../docs/architecture/scientific-denominator-accounting.md).
+
 Published semantic artifacts remain immutable. The companion derivation
 inventory records that legacy fixed audit, discovery, facility-reconciliation,
 and facet-template statements are construction output where appropriate,

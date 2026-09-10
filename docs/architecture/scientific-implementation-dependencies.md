@@ -141,9 +141,20 @@ hosted Linux verifies the exact source, result structure, content commitments,
 catalog bindings, and cheap aggregates under the
 [local authoritative certification architecture](local-authoritative-certification.md).
 
-The next dependency is to recompute and audit the scientific denominator using
-these canonical semantic inputs. Profile-expanded execution counts and a final
-storage forecast remain deferred until the exact profile universe is frozen.
+The scientific denominator is now independently recomputed from committed
+snapshots under an overlap-safe accounting contract. All 2,390 obligations and
+3,378 requirements reconcile; 988 additional evidence roles are justified by
+archetype cardinality; all conditional predicates validate; predecessor
+migration closes; and no unexplained uniform multiplier feeds current
+authority. Lower and conservative requirement scenarios are 1,406 and 3,378.
+Expected remains symbolic within those exact bounds because no accepted
+empirical profile-applicability model exists. See [Scientific denominator
+accounting](scientific-denominator-accounting.md).
+
+This audited denominator must pass its focused acceptance boundary before the
+program advances to oracle, applicability, and vector work. Profile-expanded
+execution counts and a final storage forecast remain deferred until the exact
+profile universe is frozen.
 
 ### Establish oracle, applicability, and adjudication contracts
 
