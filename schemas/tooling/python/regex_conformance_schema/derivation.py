@@ -103,6 +103,7 @@ DERIVATION_IDS = {
     "obligation-derivation": "rcid:v1:assertion-derivation:u7:01a08125-97ae-7633-b217-ca1d0fa22fbf",
     "denominator-materialization": "rcid:v1:assertion-derivation:u7:01a08250-8e26-7ae3-aaf5-32e23ece7dbc",
     "denominator-audit": "rcid:v1:assertion-derivation:u7:01a08bfe-f086-7b3f-bc06-0ed1f691f052",
+    "oracle-foundation-governance": "rcid:v1:assertion-derivation:u7:01a08d07-ef56-7cf6-a0ec-bba01aa82e7c",
 }
 
 ALLOWED_GATES_BY_CLASS = {
@@ -668,6 +669,29 @@ def _derivation_specs(root: Path) -> list[dict[str, Any]]:
                 "formula": "Independently partition committed stable-ID populations, validate predicates and cardinality from source fields, reconcile predecessor and successor sets, and compare every recomputed aggregate with the authoritative snapshots.",
             },
             "notes": "The audit proves accounting and derivation closure. It does not supply profile facts, author vectors, or certify conformance behavior.",
+        },
+        {
+            "key": "oracle-foundation-governance",
+            "title": "Oracle epistemic classes and circularity policy",
+            "derivation_class": "manual-decision",
+            "method_key": "oracle-foundation-governance",
+            "method_version": "1.0.0",
+            "input_references": [
+                "vectors/requirements/regex-semantic-vector-requirements-2026-09-08.v2.json",
+                "the accepted separation of source proposition, researched claim, expectation, vector, execution, observation, and finding",
+            ],
+            "authority_references": [
+                "Define oracle hierarchy and circularity guards",
+                "GOVERNANCE.md",
+            ],
+            "allowed_gate_kinds": ["governance-policy"],
+            "independent_evidence": False,
+            "metadata": {
+                "kind": "manual-decision",
+                "governing_decision_ref": "Define oracle hierarchy and circularity guards",
+                "decision_scope": "Versioned oracle classes, permitted conclusion types, dependency independence, conflict preservation, and campaign expectation freezing.",
+            },
+            "notes": "This governance contract constrains admissible expectation authority. It does not itself establish a semantic expectation or empirical fact.",
         },
         {
             "key": "certification-predicate-calculation",
@@ -1458,6 +1482,60 @@ def _artifact_specs() -> tuple[ArtifactSpec, ...]:
             ),
             coverage_selectors=("/denominator_authority", "/accounting_contract", "/audit_report", "/profile_expansion_handoff", "/authority_scope", "/governance"),
             schema_reference="schemas/json/semantic-denominator-audit-authority.schema.json",
+        ),
+        ArtifactSpec(
+            "oracle/oracle-foundation-identities-2026-09-10.v1.json",
+            "governed-registry",
+            "governed-registry",
+            ("tools/oracle/compile_oracle_foundation.py",),
+            (_b("/", "oracle-foundation-governance", "governance", "Reviewed one-time typed identity allocation for the oracle schema family and governance derivation."),),
+            coverage_selectors=("/allocations",),
+            schema_reference="schemas/json/oracle-foundation-allocation.schema.json",
+        ),
+        ArtifactSpec(
+            "oracle/contracts/regex-conformance-oracles-2026-09-10.v1.json",
+            "governed-registry",
+            "governed-registry",
+            ("tools/oracle/compile_oracle_foundation.py",),
+            (_b("/", "oracle-foundation-governance", "governance", "Accepted epistemic functions, class-specific judgment boundaries, dependency contract, circularity guards, conflict semantics, and historical expectation-freeze policy."),),
+            coverage_selectors=("/oracle_classes", "/resolution_states", "/circularity_guards", "/selection_and_conflict", "/promotion_contract", "/campaign_freeze_contract"),
+            schema_reference="schemas/json/oracle-foundation-contract.schema.json",
+        ),
+        ArtifactSpec(
+            "tests/fixtures/oracle/oracle-validation-cases.v1.json",
+            "certification-fixture-set",
+            "current-generated",
+            ("tools/oracle/compile_oracle_foundation.py",),
+            (_b("/", "oracle-foundation-governance", "validation", "Reviewed valid O1-O8 examples, prohibited circularity mutations, conflict interface, and immutable campaign-binding canary."),),
+            coverage_selectors=("/valid_oracles", "/invalid_cases", "/frozen_vector_binding", "/authority_conflicts"),
+            schema_reference="schemas/json/oracle-validation-fixtures.schema.json",
+        ),
+        ArtifactSpec(
+            "reports/oracle/oracle-foundation-2026-09-10.v1.json",
+            "audit-or-reconciliation-report",
+            "current-generated",
+            ("tools/oracle/compile_oracle_foundation.py",),
+            (
+                _b("/", "reconciliation-calculation", "validation", "Deterministic validation of exact oracle classes, guards, class fixtures, prohibited cases, and frozen denominator boundary."),
+                _b("/claim_scope", "oracle-foundation-governance", "governance", "Governed boundary excluding applicability, adjudication, waivers, production vectors, and repository-wide certification."),
+                _b("/denominator_boundary", "reconciliation-calculation", "reconciliation", "Exact read-only reconciliation with the authoritative 2,390-obligation and 3,378-requirement denominator."),
+            ),
+            coverage_selectors=("/claim_scope", "/implementation_bindings", "/counts", "/checks", "/denominator_boundary", "/result"),
+            schema_reference="schemas/json/oracle-foundation-report.schema.json",
+        ),
+        ArtifactSpec(
+            "oracle/current-authority.v1.json",
+            "authority-index",
+            "governed-registry",
+            ("tools/oracle/compile_oracle_foundation.py",),
+            (
+                _b("/", "reconciliation-calculation", "reconciliation", "Exact digest-bound current oracle contract, fixture, report, and semantic-requirement references."),
+                _b("/historical_compatibility", "oracle-foundation-governance", "governance", "Prospective versioning and no-rewrite history policy."),
+                _b("/next_interfaces", "oracle-foundation-governance", "governance", "Explicit deferral of later applicability, adjudication, waiver, and production-vector work."),
+                _b("/governance", "oracle-foundation-governance", "governance", "Non-overlapping source, observation, oracle, and future-adjudication authority boundary."),
+            ),
+            coverage_selectors=("/current_contract", "/validation_fixture", "/foundation_report", "/semantic_requirement_authority", "/historical_compatibility", "/next_interfaces", "/governance"),
+            schema_reference="schemas/json/oracle-authority-index.schema.json",
         ),
         ArtifactSpec(
             "certification/contracts/regex-conformance-certification.v1.json",

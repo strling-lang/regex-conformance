@@ -89,6 +89,7 @@ def evaluate(root: Path) -> list[Violation]:
         "if: github.event_name != 'pull_request'",
         "validate-repository",
         "verify-fixtures",
+        "tools/oracle/compile_oracle_foundation.py --check --bounded",
         "verify_repository_identifier_hygiene.py --root .",
         "unittest discover -s tests/ci",
         "python -m unittest tests.ci.test_local_certification -v",

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/oracle-validation-fixtures.schema.json",
+  "title": "Oracle validation fixtures",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "published_on", "contract_ref", "valid_oracles", "frozen_vector_binding", "invalid_cases", "authority_conflicts", "derivation", "fixture_set_id", "fixture_set_digest_sha256"],
+  "properties": {
+    "schema_version": {"const": "oracle-validation-fixtures.v1"},
+    "published_on": {"type": "string", "format": "date"},
+    "contract_ref": {"$ref": "#/$defs/artifactRef"},
+    "valid_oracles": {"type": "array", "minItems": 8, "maxItems": 8, "items": {"type": "object"}},
+    "frozen_vector_binding": {"type": "object"},
+    "invalid_cases": {"type": "array", "minItems": 10, "items": {"type": "object", "additionalProperties": false, "required": ["case_id", "base_class", "expected_error"], "properties": {"case_id": {"type": "string"}, "base_class": {"pattern": "^O[1-8]$", "type": "string"}, "expected_error": {"type": "string"}}}},
+    "authority_conflicts": {"type": "array", "items": {"type": "object", "additionalProperties": false, "required": ["conflict_id", "requirement_scientific_id", "oracle_ids", "resolution_state", "selected_oracle_id", "scope_overlap_basis"], "properties": {"conflict_id": {"type": "string", "minLength": 1}, "requirement_scientific_id": {"type": "string"}, "oracle_ids": {"type": "array", "minItems": 2, "uniqueItems": true, "items": {"type": "string"}}, "resolution_state": {"const": "conflicting-authoritative-expectations"}, "selected_oracle_id": {"type": "null"}, "scope_overlap_basis": {"type": "string", "minLength": 1}}}},
+    "derivation": {"type": "object"},
+    "fixture_set_id": {"type": "string", "pattern": "^rcid:v1:expectation-projection:h:"},
+    "fixture_set_digest_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "artifactRef": {"type": "object", "additionalProperties": false, "required": ["contract_id", "contract_digest_sha256"], "properties": {"contract_id": {"type": "string", "pattern": "^rcid:v1:"}, "contract_digest_sha256": {"$ref": "#/$defs/sha256"}}}
+  }
+}

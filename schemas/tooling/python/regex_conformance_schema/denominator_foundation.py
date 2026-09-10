@@ -749,6 +749,26 @@ def verify_current(root: Path, *, broad_foundations: bool = True) -> dict[str, A
     }
 
 
+def verify_history(root: Path) -> dict[str, Any]:
+    """Validate the immutable accepted denominator gate without rebinding it.
+
+    Later phases may append scientific identities and derivation records.  Those
+    additions must not make the already accepted denominator report drift toward
+    the current catalogs or require rewriting its historical input envelope.
+    """
+    manifest = load_strict(root / MANIFEST_PATH)
+    report = load_strict(root / REPORT_PATH)
+    validate_manifest(root, manifest, verify_current_files=False)
+    validate_acceptance_report(root, manifest, report)
+    return {
+        "result": report["result"],
+        "manifest_id": manifest["manifest_id"],
+        "report_id": report["report_id"],
+        "obligations": report["exact_accounting"]["obligations"]["total"],
+        "requirements": report["exact_accounting"]["requirements"]["total"],
+    }
+
+
 def _write(path: Path, value: dict[str, Any]) -> None:
     encoded = canonical_bytes(value) + b"\n"
     path.parent.mkdir(parents=True, exist_ok=True)

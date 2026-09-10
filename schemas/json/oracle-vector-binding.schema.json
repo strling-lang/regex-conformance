@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/oracle-vector-binding.schema.json",
+  "title": "Frozen vector oracle binding",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "vector_revision_id", "semantic_requirement_id", "contract_ref", "oracle_refs", "resolution_state", "frozen_at", "campaign_definition_revision_id", "mutable_latest_alias_used", "binding_id", "binding_digest_sha256"],
+  "properties": {
+    "schema_version": {"const": "oracle-vector-binding.v1"},
+    "vector_revision_id": {"type": "string", "pattern": "^rcid:v1:vector-revision:h:jcs-sha256-v1:"},
+    "semantic_requirement_id": {"type": "string", "pattern": "^rcid:v1:semantic-requirement:u7:"},
+    "contract_ref": {"type": "object", "additionalProperties": false, "required": ["contract_id", "contract_digest_sha256"], "properties": {"contract_id": {"type": "string", "pattern": "^rcid:v1:"}, "contract_digest_sha256": {"$ref": "#/$defs/sha256"}}},
+    "oracle_refs": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "object", "additionalProperties": false, "required": ["oracle_id", "oracle_digest_sha256"], "properties": {"oracle_id": {"type": "string", "pattern": "^rcid:v1:expectation-projection:h:"}, "oracle_digest_sha256": {"$ref": "#/$defs/sha256"}}}},
+    "resolution_state": {"enum": ["oracle-established", "oracle-inapplicable", "expectation-ambiguous", "expectation-under-specified", "conflicting-authoritative-expectations", "oracle-inputs-unavailable", "characterization-only"]},
+    "frozen_at": {"type": "string", "format": "date-time"},
+    "campaign_definition_revision_id": {"type": "string", "pattern": "^rcid:v1:campaign-definition-revision:h:"},
+    "mutable_latest_alias_used": {"const": false},
+    "binding_id": {"type": "string", "pattern": "^rcid:v1:expectation-projection:h:jcs-sha256-v1:"},
+    "binding_digest_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {"sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+}

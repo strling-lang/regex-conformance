@@ -41,6 +41,11 @@ ARTIFACT_ROLES: tuple[tuple[str, str], ...] = (
     ("denominator-audit-authority", "ontology/authority/current-semantic-denominator-audit.v1.json"),
     ("true-denominator-foundation", "ontology/denominator/true-obligation-denominator-foundation-2026-09-10.v1.json"),
     ("true-denominator-gate-report", "reports/semantics/true-obligation-denominator-acceptance-2026-09-10.v1.json"),
+    ("oracle-foundation-allocation", "oracle/oracle-foundation-identities-2026-09-10.v1.json"),
+    ("oracle-foundation-contract", "oracle/contracts/regex-conformance-oracles-2026-09-10.v1.json"),
+    ("oracle-validation-fixtures", "tests/fixtures/oracle/oracle-validation-cases.v1.json"),
+    ("oracle-foundation-report", "reports/oracle/oracle-foundation-2026-09-10.v1.json"),
+    ("oracle-authority", "oracle/current-authority.v1.json"),
     ("certification-input", "certification/inputs/current-repository-2026-09-08.v2.json"),
     ("certification-report", "certification/reports/current-repository-2026-09-08.v2.json"),
     ("certification-authority", "certification/current-authority.v1.json"),
@@ -60,10 +65,11 @@ ARTIFACT_ROLES: tuple[tuple[str, str], ...] = (
 LOCAL_COMMANDS: tuple[tuple[str, ...], ...] = (
     ("python", "tools/semantics/generate_obligation_snapshots.py", "--check"),
     ("python", "tools/semantics/audit_scientific_denominator.py", "--check"),
-    ("python", "tools/semantics/certify_true_denominator.py", "--check", "--bounded"),
+    ("python", "tools/semantics/certify_true_denominator.py", "--history"),
+    ("python", "tools/oracle/compile_oracle_foundation.py", "--check", "--bounded"),
     ("python", "tools/certification/evaluate.py", "--check"),
     ("python", "tools/semantics/certify_semantic_knowledge.py", "--check"),
-    ("python", "tools/foundation/certify.py", "--check"),
+    ("python", "tools/foundation/certify.py", "--history"),
     ("python", "tools/identity/freeze_scientific_identities.py", "--check"),
     ("python", "tools/provenance/compile_generated_assertion_derivations.py", "--check"),
     ("python", "schemas/tooling/python/run.py", "validate-repository"),
@@ -149,6 +155,9 @@ def _artifact_payload(root: Path) -> tuple[list[dict[str, Any]], dict[str, Any]]
     audit_authority = load_strict(root / by_role["denominator-audit-authority"]["path"])
     denominator_foundation = load_strict(root / by_role["true-denominator-foundation"]["path"])
     denominator_gate = load_strict(root / by_role["true-denominator-gate-report"]["path"])
+    oracle_contract = load_strict(root / by_role["oracle-foundation-contract"]["path"])
+    oracle_report = load_strict(root / by_role["oracle-foundation-report"]["path"])
+    oracle_authority = load_strict(root / by_role["oracle-authority"]["path"])
     bindings = {
         "certification_contract": {"id": contract["contract_id"], **by_role["certification-contract"]},
         "semantic_snapshot": {"id": semantic["snapshot_id"], **by_role["semantic-snapshot"]},
@@ -161,6 +170,9 @@ def _artifact_payload(root: Path) -> tuple[list[dict[str, Any]], dict[str, Any]]
         "denominator_audit_authority": {"id": audit_authority["index_id"], **by_role["denominator-audit-authority"]},
         "true_denominator_foundation": {"id": denominator_foundation["manifest_id"], **by_role["true-denominator-foundation"]},
         "true_denominator_gate": {"id": denominator_gate["report_id"], "result": denominator_gate["result"], **by_role["true-denominator-gate-report"]},
+        "oracle_foundation_contract": {"id": oracle_contract["contract_id"], **by_role["oracle-foundation-contract"]},
+        "oracle_foundation_report": {"id": oracle_report["report_id"], "result": oracle_report["result"], **by_role["oracle-foundation-report"]},
+        "oracle_authority": {"id": oracle_authority["index_id"], **by_role["oracle-authority"]},
         "identity_catalog": {"schema_version": identity["schema_version"], "entry_count": len(identity["bindings"]), **by_role["identity-catalog"]},
         "derivation_catalog": {"schema_version": derivation["schema_version"], "derivation_count": len(derivation["derivations"]), **by_role["derivation-catalog"]},
         "current_certification": {"id": report["report_id"], "result": report["final_state"], **by_role["certification-report"]},
@@ -322,6 +334,17 @@ def verify_manifest(root: Path, manifest_path: Path, *, expected_envelope_sha: s
     foundation = load_strict(root / manifest["bindings"]["true_denominator_foundation"]["path"])
     if gate["foundation_manifest"]["artifact_id"] != foundation.get("manifest_id"):
         raise LocalCertificationError("true denominator gate does not bind its exact foundation manifest")
+    oracle_binding = manifest["bindings"].get("oracle_foundation_report")
+    if oracle_binding is not None:
+        oracle_report = load_strict(root / oracle_binding["path"])
+        if oracle_report.get("result") != "PASS":
+            raise LocalCertificationError("oracle foundation report is not PASS")
+        oracle_contract = load_strict(root / manifest["bindings"]["oracle_foundation_contract"]["path"])
+        oracle_authority = load_strict(root / manifest["bindings"]["oracle_authority"]["path"])
+        if oracle_report.get("contract", {}).get("artifact_id") != oracle_contract.get("contract_id"):
+            raise LocalCertificationError("oracle foundation report does not bind its exact contract")
+        if oracle_authority.get("current_contract", {}).get("artifact_id") != oracle_contract.get("contract_id"):
+            raise LocalCertificationError("oracle authority does not bind its exact current contract")
     if require_envelope:
         envelope_sha = expected_envelope_sha or git_output(root, "rev-parse", "HEAD")
         if FULL_SHA.fullmatch(envelope_sha) is None or git_output(root, "rev-parse", "HEAD") != envelope_sha:

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/oracle-foundation-report.schema.json",
+  "title": "Oracle foundation validation report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "published_on", "claim_scope", "contract", "fixtures", "implementation_bindings", "counts", "checks", "denominator_boundary", "result", "derivation", "report_id", "report_digest_sha256"],
+  "properties": {
+    "schema_version": {"const": "oracle-foundation-report.v1"},
+    "published_on": {"type": "string", "format": "date"},
+    "claim_scope": {"type": "string", "minLength": 1},
+    "contract": {"$ref": "#/$defs/artifact"},
+    "fixtures": {"$ref": "#/$defs/artifact"},
+    "implementation_bindings": {"type": "array", "minItems": 9, "maxItems": 9, "items": {"type": "object", "additionalProperties": false, "required": ["path", "file_sha256"], "properties": {"path": {"type": "string"}, "file_sha256": {"$ref": "#/$defs/sha256"}}}},
+    "counts": {"type": "object", "additionalProperties": false, "required": ["oracle_classes", "resolution_states", "circularity_guards", "valid_class_fixtures", "prohibited_cases_rejected"], "properties": {"oracle_classes": {"const": 8}, "resolution_states": {"const": 7}, "circularity_guards": {"const": 8}, "valid_class_fixtures": {"const": 8}, "prohibited_cases_rejected": {"minimum": 10, "type": "integer"}}},
+    "checks": {"type": "array", "minItems": 8, "maxItems": 8, "items": {"type": "object", "additionalProperties": false, "required": ["check_id", "status"], "properties": {"check_id": {"type": "string"}, "status": {"const": "PASS"}}}},
+    "denominator_boundary": {"type": "object", "additionalProperties": false, "required": ["obligations", "requirements", "modified", "profile_expanded_execution_denominator"], "properties": {"obligations": {"const": 2390}, "requirements": {"const": 3378}, "modified": {"const": false}, "profile_expanded_execution_denominator": {"const": "deferred"}}},
+    "result": {"const": "PASS"},
+    "derivation": {"type": "object"},
+    "report_id": {"type": "string", "pattern": "^rcid:v1:trust-assessment:h:"},
+    "report_digest_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {"sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}, "artifact": {"type": "object", "additionalProperties": false, "required": ["path", "artifact_id", "digest_sha256"], "properties": {"path": {"type": "string"}, "artifact_id": {"type": "string"}, "digest_sha256": {"$ref": "#/$defs/sha256"}}}}
+}

@@ -170,6 +170,13 @@ orthogonal cross-sums and symbolic scenario semantics, and fail closed for
 over-count, under-count, suppression, predicate, migration, multiplier, C4, or
 premature profile-expansion defects.
 
+The oracle schema family defines the eight epistemic oracle functions,
+class-specific provenance, permitted judgments, dependency graphs, explicit
+failure-to-establish states, conflict records, and immutable vector bindings.
+Semantic validation performs transitive cycle and authority-domain checks so
+observations, consensus, generators, reference profiles, and absence of
+documentation cannot be laundered into independent expected results.
+
 `json/generated-assertion-derivation-catalog.schema.json` defines the shared
 provenance contract for assertion-like generated fields. It requires
 class-specific metadata for measurement, calculation, research-derived,

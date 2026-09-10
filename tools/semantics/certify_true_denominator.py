@@ -18,15 +18,22 @@ TOOLING = ROOT / "schemas" / "tooling" / "python"
 if str(TOOLING) not in sys.path:
     sys.path.insert(0, str(TOOLING))
 
-from regex_conformance_schema.denominator_foundation import materialize, verify_current  # noqa: E402
+from regex_conformance_schema.denominator_foundation import materialize, verify_current, verify_history  # noqa: E402
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--check", action="store_true", help="freshly recompute every gate predicate from committed canonical inputs")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--check", action="store_true", help="freshly recompute every gate predicate from committed canonical inputs")
+    mode.add_argument("--history", action="store_true", help="validate the immutable accepted gate without rebinding later catalog additions")
     parser.add_argument("--bounded", action="store_true", help="skip broad predecessor suites while retaining exact denominator checks")
     arguments = parser.parse_args()
-    result = verify_current(ROOT, broad_foundations=not arguments.bounded) if arguments.check else materialize(ROOT)
+    if arguments.check:
+        result = verify_current(ROOT, broad_foundations=not arguments.bounded)
+    elif arguments.history:
+        result = verify_history(ROOT)
+    else:
+        result = materialize(ROOT)
     print(" ".join(f"{key}={result[key]}" for key in sorted(result)))
     return 0
 

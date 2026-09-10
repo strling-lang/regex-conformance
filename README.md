@@ -67,6 +67,11 @@ then attacks the canonical population for both excess and omission, validates
 every suppression and conditional boundary, and binds the denominator as safe
 input to later oracle, vector, and applicability work without claiming a final
 execution count.
+The [oracle hierarchy and circularity guards](docs/architecture/oracle-hierarchy.md)
+now define eight epistemic oracle functions, their exact judgment ceilings,
+deep independence traversal, conflict-preserving resolution, and immutable
+campaign expectation bindings. They do not author vectors or turn the current
+absence of production evidence into a conformance conclusion.
 The bounded freeze claim and its supersession rules are documented in the
 [semantic universe freeze](docs/architecture/semantic-universe-freeze.md).
 

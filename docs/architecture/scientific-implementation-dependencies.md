@@ -162,8 +162,12 @@ remain deferred until the exact profile universe is frozen.
 
 ### Establish oracle, applicability, and adjudication contracts
 
-Define an oracle hierarchy with circularity guards; implement a total,
-proof-bearing applicability evaluator; and formalize the coordinate-state
+The versioned [oracle hierarchy and circularity guards](oracle-hierarchy.md)
+now define O1–O8 as distinct epistemic functions, enforce class-specific
+judgment boundaries, traverse indirect provenance and shared authority domains,
+preserve conflicting authorities, and freeze campaign expectations by exact
+revision. Next, implement a total, proof-bearing applicability evaluator and
+formalize the coordinate-state
 algebra. Define divergence, waiver, dispute, and unresolved states without
 allowing observations to redefine applicability. Claims must follow an
 explicit observation-to-adjudication-to-claim process and carry reproducibility
