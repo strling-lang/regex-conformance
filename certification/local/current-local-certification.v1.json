@@ -88,15 +88,31 @@
       "path": "semantic-corpus/snapshots/regex-semantic-features-2026-09-08.v4.json",
       "role": "semantic-snapshot",
       "sha256": "47d32ed6ff3f0334047171db29d0a9e48b7134346140d529c1c137472b16c802"
+    },
+    "true_denominator_foundation": {
+      "byte_length": 11261,
+      "id": "rcid:v1:artifact-set-manifest:h:jcs-sha256-v1:2f732ac4f289cf5db47766f6cb650a5e8006da7b3e90e6729b28563c8f6c3527",
+      "path": "ontology/denominator/true-obligation-denominator-foundation-2026-09-10.v1.json",
+      "role": "true-denominator-foundation",
+      "sha256": "d0678424a131cbe1938c2946d4ab74648517195c67b6b4ce22db124dad23ae9c"
+    },
+    "true_denominator_gate": {
+      "byte_length": 23251,
+      "id": "rcid:v1:trust-assessment:h:jcs-sha256-v1:e95c05129035ea3a01b340f605d92bb35cffbfa9b312106245653d2863c66b5f",
+      "path": "reports/semantics/true-obligation-denominator-acceptance-2026-09-10.v1.json",
+      "result": "PASS",
+      "role": "true-denominator-gate-report",
+      "sha256": "733185430c7ec3163c8ebb0f85d86c865e8b403282ffa93e73243124473e799d"
     }
   },
   "certified_source": {
-    "git_sha": "3ef68ae2b2962d86622742750103fab51bf5cc16",
-    "tree_sha": "38d6962e8273f2201ae6f84c86012873e288a6cc",
+    "git_sha": "710f85a6cb994c7f5394be01c3e81ea55aa878e2",
+    "tree_sha": "ada328ae8b7ee76617ef4e68803f76214672f1f9",
     "worktree_clean": true
   },
   "cheap_aggregates": {
     "authoritative_unexplained_multiplier_count": 0,
+    "boundary_requirement_count": 120,
     "c4_completed": 0,
     "c4_denominator": 3378,
     "c4_result": "FAIL",
@@ -104,7 +120,9 @@
     "characterization_requirement_count": 79,
     "conditional_obligation_count": 1332,
     "conditional_requirement_count": 1972,
+    "conformance_capable_requirement_count": 3071,
     "distinct_conditional_predicate_count": 278,
+    "distinct_predicate_count": 354,
     "excluded_sample_reconstruction_count": 15,
     "executable_requirement_count": 3378,
     "expected_requirement_count": null,
@@ -112,14 +130,21 @@
     "expected_requirement_upper_bound": 3378,
     "included_sample_reconstruction_count": 62,
     "informative_requirement_count": 307,
+    "negative_requirement_count": 1394,
     "obligation_count": 2390,
+    "over_count_suspect_count": 0,
+    "positive_requirement_count": 1785,
     "predecessor_obligation_count": 12048,
     "predecessor_requirement_count": 9506,
     "profile_expansion_deferred": true,
     "prohibited_requirement_count": 0,
+    "relational_metamorphic_requirement_count": 228,
     "required_obligation_count": 1058,
     "required_requirement_count": 1406,
     "requirement_count": 3378,
+    "true_denominator_gate_check_count": 20,
+    "true_denominator_gate_result": "PASS",
+    "under_count_suspect_count": 0,
     "unresolved_requirement_count": 0
   },
   "final_local_certification": {
@@ -202,6 +227,18 @@
         "sha256": "1b1d870a5647cd2d1cf452afa4e9d1960f88e1b6e13d9070cd193089c8eaa56f"
       },
       {
+        "byte_length": 11261,
+        "path": "ontology/denominator/true-obligation-denominator-foundation-2026-09-10.v1.json",
+        "role": "true-denominator-foundation",
+        "sha256": "d0678424a131cbe1938c2946d4ab74648517195c67b6b4ce22db124dad23ae9c"
+      },
+      {
+        "byte_length": 23251,
+        "path": "reports/semantics/true-obligation-denominator-acceptance-2026-09-10.v1.json",
+        "role": "true-denominator-gate-report",
+        "sha256": "733185430c7ec3163c8ebb0f85d86c865e8b403282ffa93e73243124473e799d"
+      },
+      {
         "byte_length": 7328,
         "path": "certification/inputs/current-repository-2026-09-08.v2.json",
         "role": "certification-input",
@@ -244,10 +281,10 @@
         "sha256": "eb7133f0eddb77c2c7afd549f1d686b55c2bb520bb88497960a80b26e2d6122b"
       },
       {
-        "byte_length": 5148,
+        "byte_length": 6259,
         "path": "schemas/json/local-authoritative-certification.schema.json",
         "role": "local-certification-schema",
-        "sha256": "c89e4b9a89cd1cb5907dc038793f29a062b7ef1e13c3febcdf1337b82bf18ecd"
+        "sha256": "79abf9ed8cdd18a6a209fbf800e1203fdcf2d7d6f7f69c7a6403cc99fded764e"
       },
       {
         "byte_length": 3936,
@@ -272,13 +309,25 @@
         "path": "schemas/json/semantic-denominator-audit-authority.schema.json",
         "role": "denominator-audit-authority-schema",
         "sha256": "d32fc06ad3bc089f1311e0a90280d73daf591aa8f3b55586387c7c2721631299"
+      },
+      {
+        "byte_length": 5698,
+        "path": "schemas/json/true-obligation-denominator-foundation.schema.json",
+        "role": "true-denominator-foundation-schema",
+        "sha256": "7455b804dee1b3ca4fb3ab8c3794757f4e11493e86d1cb2add9f65474ac9639f"
+      },
+      {
+        "byte_length": 5309,
+        "path": "schemas/json/true-obligation-denominator-acceptance.schema.json",
+        "role": "true-denominator-gate-report-schema",
+        "sha256": "692cc742e74d253b4f1afd16872df89323f7182fb02778cee2711d2191b3e663"
       }
     ],
-    "root_sha256": "1387d1016a3f307d11584bee6685167e05a1e6591e3d59f1dc2d662fd28d5756"
+    "root_sha256": "6201ae74bcdaa79a3b5944befc022bb2a092244cc9d102a565b4189decba0d43"
   },
   "hash_policy": "jcs-sha256-v1",
-  "local_certification_root": "febaad7bfb496046af4c65f1fa26abaedafe33dfb43fcd309f2eeac6df84aff4",
-  "manifest_id": "rcid:v1:artifact-set-manifest:h:jcs-sha256-v1:febaad7bfb496046af4c65f1fa26abaedafe33dfb43fcd309f2eeac6df84aff4",
+  "local_certification_root": "d2c9d2565b6dddfe4d4dd0c9c061f6acfbef79d2f2d656f365adbff7b4fcb08f",
+  "manifest_id": "rcid:v1:artifact-set-manifest:h:jcs-sha256-v1:d2c9d2565b6dddfe4d4dd0c9c061f6acfbef79d2f2d656f365adbff7b4fcb08f",
   "promotion_envelope": {
     "manifest_only_commit_required": true,
     "manifest_path": "certification/local/current-local-certification.v1.json",
@@ -293,7 +342,7 @@
           "tools/semantics/generate_obligation_snapshots.py",
           "--check"
         ],
-        "duration_milliseconds": 367727,
+        "duration_milliseconds": 198965,
         "exit_code": 0,
         "output_sha256": "35938d9ce76529b7078a78d77a2b5f636d34f203b739096f6a593c189442bc77",
         "result": "PASS",
@@ -305,7 +354,7 @@
           "tools/semantics/audit_scientific_denominator.py",
           "--check"
         ],
-        "duration_milliseconds": 55299,
+        "duration_milliseconds": 29942,
         "exit_code": 0,
         "output_sha256": "b49d9885e30a11e73e0c7fbbf1e7b0b9a4421dd8db124eb7c4f024bbbe88a565",
         "result": "PASS",
@@ -314,14 +363,27 @@
       {
         "argv": [
           "python",
+          "tools/semantics/certify_true_denominator.py",
+          "--check",
+          "--bounded"
+        ],
+        "duration_milliseconds": 119414,
+        "exit_code": 0,
+        "output_sha256": "926687dc114aa8859cac91c99284d9f803d7e97cc9e95d923d7cea1006491dbc",
+        "result": "PASS",
+        "test_id": "local-03"
+      },
+      {
+        "argv": [
+          "python",
           "tools/certification/evaluate.py",
           "--check"
         ],
-        "duration_milliseconds": 149645,
+        "duration_milliseconds": 78226,
         "exit_code": 0,
         "output_sha256": "8004a0d1a0da5fa5520e3012b5e0be8bfcbd7bf30323b2c901a44dda3b838906",
         "result": "PASS",
-        "test_id": "local-03"
+        "test_id": "local-04"
       },
       {
         "argv": [
@@ -329,11 +391,11 @@
           "tools/semantics/certify_semantic_knowledge.py",
           "--check"
         ],
-        "duration_milliseconds": 276223,
+        "duration_milliseconds": 142737,
         "exit_code": 0,
         "output_sha256": "6751e4759c2bcfbccf775940cf63a1fc2469f0c87f060366324c9189d32f243a",
         "result": "PASS",
-        "test_id": "local-04"
+        "test_id": "local-05"
       },
       {
         "argv": [
@@ -341,11 +403,11 @@
           "tools/foundation/certify.py",
           "--check"
         ],
-        "duration_milliseconds": 325427,
+        "duration_milliseconds": 165931,
         "exit_code": 0,
         "output_sha256": "b2ac5e0c7aa6a55311daaeb2b3c94d70f5c02c26f290af77ae06d38ffe5e4cb8",
         "result": "PASS",
-        "test_id": "local-05"
+        "test_id": "local-06"
       },
       {
         "argv": [
@@ -353,11 +415,11 @@
           "tools/identity/freeze_scientific_identities.py",
           "--check"
         ],
-        "duration_milliseconds": 43551,
+        "duration_milliseconds": 23533,
         "exit_code": 0,
         "output_sha256": "c11f426e50f151c87692af87135ad86bbfd81ea9b9d135f02502b20e37f5cc70",
         "result": "PASS",
-        "test_id": "local-06"
+        "test_id": "local-07"
       },
       {
         "argv": [
@@ -365,21 +427,9 @@
           "tools/provenance/compile_generated_assertion_derivations.py",
           "--check"
         ],
-        "duration_milliseconds": 181237,
+        "duration_milliseconds": 93798,
         "exit_code": 0,
         "output_sha256": "cd03e5d3916bf9566baacc43a882a30e1b538d31fe8bb52e3f436db5adad55ae",
-        "result": "PASS",
-        "test_id": "local-07"
-      },
-      {
-        "argv": [
-          "python",
-          "schemas/tooling/python/run.py",
-          "validate-repository"
-        ],
-        "duration_milliseconds": 308216,
-        "exit_code": 0,
-        "output_sha256": "f42186df3d748951532a34e65942ee5ea019971b361d2b1c6cc303fa0ac31c4b",
         "result": "PASS",
         "test_id": "local-08"
       },
@@ -387,13 +437,25 @@
         "argv": [
           "python",
           "schemas/tooling/python/run.py",
+          "validate-repository"
+        ],
+        "duration_milliseconds": 154702,
+        "exit_code": 0,
+        "output_sha256": "2855608701f426550d47b2b9548831d82c02efd3cdda93978a1c894399622317",
+        "result": "PASS",
+        "test_id": "local-09"
+      },
+      {
+        "argv": [
+          "python",
+          "schemas/tooling/python/run.py",
           "verify-fixtures"
         ],
-        "duration_milliseconds": 2392,
+        "duration_milliseconds": 2418,
         "exit_code": 0,
         "output_sha256": "9000858920430a9a33b1f95cac5170d0bdda89aa7588a21c13defe5a58f75f5e",
         "result": "PASS",
-        "test_id": "local-09"
+        "test_id": "local-10"
       },
       {
         "argv": [
@@ -402,11 +464,11 @@
           "--root",
           "."
         ],
-        "duration_milliseconds": 2191,
+        "duration_milliseconds": 2256,
         "exit_code": 0,
-        "output_sha256": "43ef249172bb4d7ce32600b52ed36111b038435f08376719e9b453be183f74f5",
+        "output_sha256": "860280e75246be56bae6547fb870262b322dbb699864561fead001b9b09eba89",
         "result": "PASS",
-        "test_id": "local-10"
+        "test_id": "local-11"
       },
       {
         "argv": [
@@ -420,11 +482,29 @@
           "test_denominator_audit.py",
           "-v"
         ],
-        "duration_milliseconds": 69966,
+        "duration_milliseconds": 36495,
         "exit_code": 0,
-        "output_sha256": "02c5c3948c714a2bd05e9682256a2643a2ae5c33acced5044041a9de819457f4",
+        "output_sha256": "0f76feead43fb0873b92b7716722f50b520c92a4161f08eebb78ae43ce097aa2",
         "result": "PASS",
-        "test_id": "local-11"
+        "test_id": "local-12"
+      },
+      {
+        "argv": [
+          "python",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tests/schema",
+          "-p",
+          "test_true_obligation_denominator_gate.py",
+          "-v"
+        ],
+        "duration_milliseconds": 53254,
+        "exit_code": 0,
+        "output_sha256": "f35a9aecf4830ed3cb0f4c586a16027fa0dd164d8ad691622be9340c4c2cc101",
+        "result": "PASS",
+        "test_id": "local-13"
       },
       {
         "argv": [
@@ -436,13 +516,13 @@
           "tests/ci",
           "-v"
         ],
-        "duration_milliseconds": 23546,
+        "duration_milliseconds": 22464,
         "exit_code": 0,
-        "output_sha256": "f37921b406f1354a806177651baee4cb4b385fafea17e093bcba2f1f37b21359",
+        "output_sha256": "ccd655b06686aa0374fe2d826c7338d3915153f23b78fa3d9845e24bb3551463",
         "result": "PASS",
-        "test_id": "local-12"
+        "test_id": "local-14"
       }
     ],
-    "root_sha256": "2f4605e72b630182d3c66d6f2a1845a7ef457870b302a24d158be883210bbe34"
+    "root_sha256": "b41ec7c34b1b04fbfbd292b723e767032e92523d3d9801dad2f6b09fbf87db84"
   }
 }
