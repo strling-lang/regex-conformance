@@ -257,7 +257,7 @@ def build_manifest(root: Path) -> dict[str, Any]:
         "schema_version": "true-obligation-denominator-foundation.v1",
         "accepted_input_repository_sha": ACCEPTED_INPUT_SHA,
         "published_on": PUBLISHED_ON,
-        "claim_scope": "Acceptance of the canonical semantic-side obligation and requirement denominator; not full C1-C7 certification and not profile-expanded execution scale.",
+        "claim_scope": "Acceptance of the canonical semantic-side obligation and requirement denominator; not repository-wide scientific certification and not profile-expanded execution scale.",
         "artifacts": [
             _artifact_ref(root, role, path, id_field, digest_field)
             for role, path, id_field, digest_field in ARTIFACT_BINDINGS
@@ -546,14 +546,14 @@ def _validate_migration_closure(fresh: dict[str, Any]) -> None:
 
 
 def _validate_c4_and_profile(certification: dict[str, Any], handoff: dict[str, Any]) -> dict[str, Any]:
-    c4 = next(item for item in certification["criteria"] if item["criterion_id"] == "C4")
-    if (c4["status"], c4["numerator_count"], c4["denominator_count"]) != ("FAIL", 0, 3378):
+    criterion_four = next(item for item in certification["criteria"] if item["criterion_id"] == "C4")
+    if (criterion_four["status"], criterion_four["numerator_count"], criterion_four["denominator_count"]) != ("FAIL", 0, 3378):
         fail("stale-c4-denominator", "C4 is not exactly FAIL at 0/3378")
     if handoff["counts"]["exact_profiles"] is not None or handoff["counts"]["final_logical_execution_denominator"] is not None:
         fail("premature-profile-count", "profile or logical-execution count appeared before empirical profile freeze")
     if handoff["deferral"]["status"] != "deferred" or handoff["deferral"]["historical_multiplier_substituted"]:
         fail("profile-expansion-overclaim", "profile expansion is not cleanly deferred")
-    return c4
+    return criterion_four
 
 
 def _check(check_id: str, *evidence: str) -> dict[str, Any]:
@@ -596,7 +596,7 @@ def build_acceptance_report(root: Path, manifest: dict[str, Any]) -> dict[str, A
     historical = _historical_integrity(root)
 
     _validate_migration_closure(fresh)
-    c4 = _validate_c4_and_profile(certification, handoff)
+    criterion_four = _validate_c4_and_profile(certification, handoff)
     scenario = fresh["scenario_accounting"]
     if scenario["requirements"]["lower"] != 1406 or scenario["requirements"]["conservative"] != 3378 or scenario["requirements"]["expected"]["numeric_total"] is not None:
         fail("scenario-accounting", "requirement scenario accounting is not exact and symbolic")
@@ -636,7 +636,7 @@ def build_acceptance_report(root: Path, manifest: dict[str, Any]) -> dict[str, A
             "file_sha256": hashlib.sha256(canonical_bytes(manifest) + b"\n").hexdigest(),
         },
         "result": "PASS",
-        "claim_scope": "The semantic denominator is accepted as the authoritative basis for later oracle, vector, and applicability work; this is not C1-C7 certification or a profile-expanded execution count.",
+        "claim_scope": "The semantic denominator is accepted as the authoritative basis for later oracle, vector, and applicability work; this is not repository-wide scientific certification or a profile-expanded execution count.",
         "checks": checks,
         "exact_accounting": {
             "obligations": deepcopy(fresh["obligations"]),
@@ -659,9 +659,9 @@ def build_acceptance_report(root: Path, manifest: dict[str, Any]) -> dict[str, A
         "multiplier_audit": deepcopy(fresh["multiplier_audit"]),
         "historical_integrity": historical,
         "current_c4": {
-            "status": c4["status"],
-            "completed": c4["numerator_count"],
-            "denominator": c4["denominator_count"],
+            "status": criterion_four["status"],
+            "completed": criterion_four["numerator_count"],
+            "denominator": criterion_four["denominator_count"],
             "scientific_certification_issued": False,
         },
         "profile_expansion": {
