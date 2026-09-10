@@ -39,12 +39,12 @@
       "sha256": "1b1d870a5647cd2d1cf452afa4e9d1960f88e1b6e13d9070cd193089c8eaa56f"
     },
     "derivation_catalog": {
-      "byte_length": 240964,
-      "derivation_count": 23,
+      "byte_length": 250095,
+      "derivation_count": 24,
       "path": "registries/provenance/generated-assertion-derivations.v1.json",
       "role": "derivation-catalog",
       "schema_version": "generated-assertion-derivation-catalog.v1",
-      "sha256": "fc16bde641cfc2ba81b7151a061efc9ed167784c7b6e04f19e031f8afb30af19"
+      "sha256": "4c6a5f97d94fa03c83e8070ae9869fe549715351374b736e3585e714f6882bba"
     },
     "identity_catalog": {
       "byte_length": 20237117,
@@ -67,6 +67,28 @@
       "path": "ontology/obligations/regex-semantic-obligations-2026-09-08.v1.json",
       "role": "obligation-snapshot",
       "sha256": "b5bd49d5998573ff73f188f240a68c1fbb568cb2c73c5846c9598ca62e0ee3bb"
+    },
+    "oracle_authority": {
+      "byte_length": 2672,
+      "id": "rcid:v1:artifact-set-manifest:h:jcs-sha256-v1:124d8dfb311c415c3451cfe0c4a845fe3f4a74875f04f8879f7e3df3cd8808f8",
+      "path": "oracle/current-authority.v1.json",
+      "role": "oracle-authority",
+      "sha256": "52899cde80c9336425e9e4297bb5cef23fcba749225a6b0f6ca72c67439bc500"
+    },
+    "oracle_foundation_contract": {
+      "byte_length": 11643,
+      "id": "rcid:v1:trust-policy-revision:h:jcs-sha256-v1:9c38dd4a3817492504dd2027cf31efcbae150577b2cb57c76cf9afc69d4c524c",
+      "path": "oracle/contracts/regex-conformance-oracles-2026-09-10.v1.json",
+      "role": "oracle-foundation-contract",
+      "sha256": "f237778a95ea28810d61c9a6cafed6d0112a271354d0d1dcae8a0213e4319a0e"
+    },
+    "oracle_foundation_report": {
+      "byte_length": 3550,
+      "id": "rcid:v1:trust-assessment:h:jcs-sha256-v1:a20224633df1317117c4680212f59042184f2eae04fcc0e440603c0541b15407",
+      "path": "reports/oracle/oracle-foundation-2026-09-10.v1.json",
+      "result": "PASS",
+      "role": "oracle-foundation-report",
+      "sha256": "cbabe6d00c566a62c0c0a6c25a78fd43aaeccee2079d9db452f69939e67e073b"
     },
     "profile_expansion_handoff": {
       "byte_length": 3336728,
@@ -106,8 +128,8 @@
     }
   },
   "certified_source": {
-    "git_sha": "710f85a6cb994c7f5394be01c3e81ea55aa878e2",
-    "tree_sha": "ada328ae8b7ee76617ef4e68803f76214672f1f9",
+    "git_sha": "ec02acada9d4402ca567a8702e629983096d0838",
+    "tree_sha": "3b3074f452ebc37bf28c9c975b5697f73f80db2d",
     "worktree_clean": true
   },
   "cheap_aggregates": {
@@ -239,6 +261,36 @@
         "sha256": "733185430c7ec3163c8ebb0f85d86c865e8b403282ffa93e73243124473e799d"
       },
       {
+        "byte_length": 434,
+        "path": "oracle/oracle-foundation-identities-2026-09-10.v1.json",
+        "role": "oracle-foundation-allocation",
+        "sha256": "6e6499735776a36b80cbb91e739c88911d33c6f9776733c5c5cbdde708f55bb5"
+      },
+      {
+        "byte_length": 11643,
+        "path": "oracle/contracts/regex-conformance-oracles-2026-09-10.v1.json",
+        "role": "oracle-foundation-contract",
+        "sha256": "f237778a95ea28810d61c9a6cafed6d0112a271354d0d1dcae8a0213e4319a0e"
+      },
+      {
+        "byte_length": 25124,
+        "path": "tests/fixtures/oracle/oracle-validation-cases.v1.json",
+        "role": "oracle-validation-fixtures",
+        "sha256": "f81ff2c65d58fbcdd11b17414136bf304e2c28402abb3cca7e89fcab3b7227db"
+      },
+      {
+        "byte_length": 3550,
+        "path": "reports/oracle/oracle-foundation-2026-09-10.v1.json",
+        "role": "oracle-foundation-report",
+        "sha256": "cbabe6d00c566a62c0c0a6c25a78fd43aaeccee2079d9db452f69939e67e073b"
+      },
+      {
+        "byte_length": 2672,
+        "path": "oracle/current-authority.v1.json",
+        "role": "oracle-authority",
+        "sha256": "52899cde80c9336425e9e4297bb5cef23fcba749225a6b0f6ca72c67439bc500"
+      },
+      {
         "byte_length": 7328,
         "path": "certification/inputs/current-repository-2026-09-08.v2.json",
         "role": "certification-input",
@@ -263,10 +315,10 @@
         "sha256": "040c16f1d29840e97374f8b3e61023a2735a5846284e110753ff346fa1a95f0a"
       },
       {
-        "byte_length": 240964,
+        "byte_length": 250095,
         "path": "registries/provenance/generated-assertion-derivations.v1.json",
         "role": "derivation-catalog",
-        "sha256": "fc16bde641cfc2ba81b7151a061efc9ed167784c7b6e04f19e031f8afb30af19"
+        "sha256": "4c6a5f97d94fa03c83e8070ae9869fe549715351374b736e3585e714f6882bba"
       },
       {
         "byte_length": 13494,
@@ -323,11 +375,11 @@
         "sha256": "692cc742e74d253b4f1afd16872df89323f7182fb02778cee2711d2191b3e663"
       }
     ],
-    "root_sha256": "6201ae74bcdaa79a3b5944befc022bb2a092244cc9d102a565b4189decba0d43"
+    "root_sha256": "8c6d4300d35a068d6f3cdd79f803cf197964f3072e855c7442f0623daea66f5d"
   },
   "hash_policy": "jcs-sha256-v1",
-  "local_certification_root": "d2c9d2565b6dddfe4d4dd0c9c061f6acfbef79d2f2d656f365adbff7b4fcb08f",
-  "manifest_id": "rcid:v1:artifact-set-manifest:h:jcs-sha256-v1:d2c9d2565b6dddfe4d4dd0c9c061f6acfbef79d2f2d656f365adbff7b4fcb08f",
+  "local_certification_root": "434736ab448e90d092bf7338348ff9c2f4acbbb34134f93e9e824cbadd3121ea",
+  "manifest_id": "rcid:v1:artifact-set-manifest:h:jcs-sha256-v1:434736ab448e90d092bf7338348ff9c2f4acbbb34134f93e9e824cbadd3121ea",
   "promotion_envelope": {
     "manifest_only_commit_required": true,
     "manifest_path": "certification/local/current-local-certification.v1.json",
@@ -342,7 +394,7 @@
           "tools/semantics/generate_obligation_snapshots.py",
           "--check"
         ],
-        "duration_milliseconds": 198965,
+        "duration_milliseconds": 375681,
         "exit_code": 0,
         "output_sha256": "35938d9ce76529b7078a78d77a2b5f636d34f203b739096f6a593c189442bc77",
         "result": "PASS",
@@ -354,7 +406,7 @@
           "tools/semantics/audit_scientific_denominator.py",
           "--check"
         ],
-        "duration_milliseconds": 29942,
+        "duration_milliseconds": 55652,
         "exit_code": 0,
         "output_sha256": "b49d9885e30a11e73e0c7fbbf1e7b0b9a4421dd8db124eb7c4f024bbbe88a565",
         "result": "PASS",
@@ -364,14 +416,26 @@
         "argv": [
           "python",
           "tools/semantics/certify_true_denominator.py",
+          "--history"
+        ],
+        "duration_milliseconds": 430,
+        "exit_code": 0,
+        "output_sha256": "c82924c2236afa72803e884b3394398794aaf224cf8f8d549d4255813fd8ec72",
+        "result": "PASS",
+        "test_id": "local-03"
+      },
+      {
+        "argv": [
+          "python",
+          "tools/oracle/compile_oracle_foundation.py",
           "--check",
           "--bounded"
         ],
-        "duration_milliseconds": 119414,
+        "duration_milliseconds": 20999,
         "exit_code": 0,
-        "output_sha256": "926687dc114aa8859cac91c99284d9f803d7e97cc9e95d923d7cea1006491dbc",
+        "output_sha256": "2c47b94b97de7bff5bc7c20c3a1ce766f58b6e8985e3d7ad24af535956c0df15",
         "result": "PASS",
-        "test_id": "local-03"
+        "test_id": "local-04"
       },
       {
         "argv": [
@@ -379,11 +443,11 @@
           "tools/certification/evaluate.py",
           "--check"
         ],
-        "duration_milliseconds": 78226,
+        "duration_milliseconds": 150170,
         "exit_code": 0,
-        "output_sha256": "8004a0d1a0da5fa5520e3012b5e0be8bfcbd7bf30323b2c901a44dda3b838906",
+        "output_sha256": "3cfa6783a88987d859b9a87450314246deaa45cfbf30e2bf71ec81b4fbd87ba1",
         "result": "PASS",
-        "test_id": "local-04"
+        "test_id": "local-05"
       },
       {
         "argv": [
@@ -391,23 +455,23 @@
           "tools/semantics/certify_semantic_knowledge.py",
           "--check"
         ],
-        "duration_milliseconds": 142737,
+        "duration_milliseconds": 279496,
         "exit_code": 0,
         "output_sha256": "6751e4759c2bcfbccf775940cf63a1fc2469f0c87f060366324c9189d32f243a",
         "result": "PASS",
-        "test_id": "local-05"
+        "test_id": "local-06"
       },
       {
         "argv": [
           "python",
           "tools/foundation/certify.py",
-          "--check"
+          "--history"
         ],
-        "duration_milliseconds": 165931,
+        "duration_milliseconds": 430,
         "exit_code": 0,
         "output_sha256": "b2ac5e0c7aa6a55311daaeb2b3c94d70f5c02c26f290af77ae06d38ffe5e4cb8",
         "result": "PASS",
-        "test_id": "local-06"
+        "test_id": "local-07"
       },
       {
         "argv": [
@@ -415,11 +479,11 @@
           "tools/identity/freeze_scientific_identities.py",
           "--check"
         ],
-        "duration_milliseconds": 23533,
+        "duration_milliseconds": 45024,
         "exit_code": 0,
         "output_sha256": "c11f426e50f151c87692af87135ad86bbfd81ea9b9d135f02502b20e37f5cc70",
         "result": "PASS",
-        "test_id": "local-07"
+        "test_id": "local-08"
       },
       {
         "argv": [
@@ -427,21 +491,9 @@
           "tools/provenance/compile_generated_assertion_derivations.py",
           "--check"
         ],
-        "duration_milliseconds": 93798,
+        "duration_milliseconds": 185019,
         "exit_code": 0,
-        "output_sha256": "cd03e5d3916bf9566baacc43a882a30e1b538d31fe8bb52e3f436db5adad55ae",
-        "result": "PASS",
-        "test_id": "local-08"
-      },
-      {
-        "argv": [
-          "python",
-          "schemas/tooling/python/run.py",
-          "validate-repository"
-        ],
-        "duration_milliseconds": 154702,
-        "exit_code": 0,
-        "output_sha256": "2855608701f426550d47b2b9548831d82c02efd3cdda93978a1c894399622317",
+        "output_sha256": "bd90a7eb2eb398448450003538c669304d48eab908f81172c9f25f3511eb4cd9",
         "result": "PASS",
         "test_id": "local-09"
       },
@@ -449,13 +501,25 @@
         "argv": [
           "python",
           "schemas/tooling/python/run.py",
+          "validate-repository"
+        ],
+        "duration_milliseconds": 311214,
+        "exit_code": 0,
+        "output_sha256": "0608ccf3f62f288ab7a6f0f8dc4da345a3da84f64f3b6e125de66d6c44b7359e",
+        "result": "PASS",
+        "test_id": "local-10"
+      },
+      {
+        "argv": [
+          "python",
+          "schemas/tooling/python/run.py",
           "verify-fixtures"
         ],
-        "duration_milliseconds": 2418,
+        "duration_milliseconds": 2317,
         "exit_code": 0,
         "output_sha256": "9000858920430a9a33b1f95cac5170d0bdda89aa7588a21c13defe5a58f75f5e",
         "result": "PASS",
-        "test_id": "local-10"
+        "test_id": "local-11"
       },
       {
         "argv": [
@@ -464,11 +528,11 @@
           "--root",
           "."
         ],
-        "duration_milliseconds": 2256,
+        "duration_milliseconds": 2243,
         "exit_code": 0,
-        "output_sha256": "860280e75246be56bae6547fb870262b322dbb699864561fead001b9b09eba89",
+        "output_sha256": "fc471dd3e8db800f315a335e9f7160003b1cf01786523f01cd1ed32dd9f77013",
         "result": "PASS",
-        "test_id": "local-11"
+        "test_id": "local-12"
       },
       {
         "argv": [
@@ -482,11 +546,11 @@
           "test_denominator_audit.py",
           "-v"
         ],
-        "duration_milliseconds": 36495,
+        "duration_milliseconds": 71962,
         "exit_code": 0,
-        "output_sha256": "0f76feead43fb0873b92b7716722f50b520c92a4161f08eebb78ae43ce097aa2",
+        "output_sha256": "888521b1fc0da6b735d6d2e7480382141acf1fa6876e6016c211fa681a840ca2",
         "result": "PASS",
-        "test_id": "local-12"
+        "test_id": "local-13"
       },
       {
         "argv": [
@@ -500,11 +564,11 @@
           "test_true_obligation_denominator_gate.py",
           "-v"
         ],
-        "duration_milliseconds": 53254,
+        "duration_milliseconds": 48110,
         "exit_code": 0,
-        "output_sha256": "f35a9aecf4830ed3cb0f4c586a16027fa0dd164d8ad691622be9340c4c2cc101",
+        "output_sha256": "cb21b4374d965e35ddbe1382aaa24dca5dfb79e77a1087231151019f606150aa",
         "result": "PASS",
-        "test_id": "local-13"
+        "test_id": "local-14"
       },
       {
         "argv": [
@@ -516,13 +580,13 @@
           "tests/ci",
           "-v"
         ],
-        "duration_milliseconds": 22464,
+        "duration_milliseconds": 24073,
         "exit_code": 0,
-        "output_sha256": "ccd655b06686aa0374fe2d826c7338d3915153f23b78fa3d9845e24bb3551463",
+        "output_sha256": "048e16521a95d413ac8c62fd7c0b712518df346f0f53858496623a0284503562",
         "result": "PASS",
-        "test_id": "local-14"
+        "test_id": "local-15"
       }
     ],
-    "root_sha256": "b41ec7c34b1b04fbfbd292b723e767032e92523d3d9801dad2f6b09fbf87db84"
+    "root_sha256": "9cc3d63dc04e14f0f39feae23e8a575482700f55ffe514084c8665b857efb849"
   }
 }
