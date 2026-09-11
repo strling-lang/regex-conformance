@@ -65,6 +65,11 @@ def _finalize(body: dict[str, Any]) -> dict[str, Any]:
     return {**body, "report_id": identity["content_id"], "report_digest_sha256": digest}
 
 
+def render_report(report: dict[str, Any] | None = None) -> bytes:
+    """Serialize the closure report with repository-stable UTF-8/LF bytes."""
+    return dump_pretty(build_report() if report is None else report).encode("utf-8")
+
+
 def build_report() -> dict[str, Any]:
     certification = load_strict(ROOT / "certification/reports/current-repository-2026-09-08.v2.json")
     body = {
@@ -198,11 +203,14 @@ def _verify_history() -> None:
 
 def verify_current(*, history: bool) -> dict[str, Any]:
     expected = build_report()
-    observed = load_strict(ROOT / REPORT_PATH)
+    report_path = ROOT / REPORT_PATH
+    observed = load_strict(report_path)
     Draft202012Validator.check_schema(load_strict(ROOT / SCHEMA_PATH))
     Draft202012Validator(load_strict(ROOT / SCHEMA_PATH)).validate(observed)
     if observed != expected:
         raise ValueError("tracked evidence-adjudication closure report differs from deterministic build")
+    if report_path.read_bytes() != render_report(expected):
+        raise ValueError("tracked evidence-adjudication closure report has non-canonical bytes")
     if history:
         _verify_history()
     return {"result": "PASS", "report_id": observed["report_id"], "gate_checks": len(observed["gate_checks"]), "history_verified": history}
@@ -220,7 +228,7 @@ def main() -> int:
         if not args.check:
             target = ROOT / REPORT_PATH
             target.parent.mkdir(parents=True, exist_ok=True)
-            target.write_text(dump_pretty(build_report()), encoding="utf-8")
+            target.write_bytes(render_report())
         result = verify_current(history=args.history)
         print(result)
     except (OSError, ValueError) as error:

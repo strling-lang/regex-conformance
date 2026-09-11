@@ -18,6 +18,11 @@ class EvidenceAdjudicationClosureTests(unittest.TestCase):
         self.assertEqual(result["result"], "PASS")
         self.assertEqual(result["gate_checks"], 15)
 
+    def test_tracked_closure_uses_platform_stable_bytes(self) -> None:
+        tracked = (ROOT / MODULE.REPORT_PATH).read_bytes()
+        self.assertEqual(tracked, MODULE.render_report())
+        self.assertNotIn(b"\r\n", tracked)
+
     def test_closure_preserves_denominator_and_nonpassing_certification(self) -> None:
         report = MODULE.build_report()
         self.assertEqual(report["denominator"]["conditional_requirements_represented"], 1972)
