@@ -9,7 +9,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from local_certification import MANIFEST_PATH, LocalCertificationError, build_manifest, require_clean_source, run_local_suite, write_manifest
+from local_certification import MANIFEST_PATH, LocalCertificationError, build_manifest, require_clean_source, run_local_suite, verify_manifest, write_manifest
 
 
 def main() -> int:
@@ -25,6 +25,7 @@ def main() -> int:
             raise LocalCertificationError("source changed while local certification ran")
         manifest = build_manifest(root, source_sha, results)
         write_manifest(root, args.manifest, manifest)
+        verify_manifest(root, args.manifest, expected_root=manifest["local_certification_root"], require_envelope=False)
         print(json.dumps({"result": "PASS", "certified_source_sha": source_sha, "manifest": str(args.manifest), "local_certification_root": manifest["local_certification_root"]}, indent=2, sort_keys=True))
     except (OSError, subprocess.SubprocessError, LocalCertificationError) as error:
         print(f"local certification failed: {error}", file=sys.stderr)

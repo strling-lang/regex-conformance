@@ -12,7 +12,7 @@ TOOLING = ROOT / "tools" / "ci"
 if str(TOOLING) not in sys.path:
     sys.path.insert(0, str(TOOLING))
 
-from local_certification import LocalCertificationError, merkleless_root, sha256_bytes, verify_manifest
+from local_certification import LocalCertificationError, _verify_adjudication_scientific_boundary, merkleless_root, sha256_bytes, verify_manifest
 from regex_conformance_schema.jsonio import canonical_bytes, dump_pretty
 
 
@@ -103,6 +103,18 @@ class LocalCertificationTests(unittest.TestCase):
         with mock.patch("local_certification.file_binding", return_value=self.entry), mock.patch("local_certification._cheap_aggregates", return_value={"value": 2}):
             with self.assertRaisesRegex(LocalCertificationError, "aggregate"):
                 verify_manifest(self.root, Path("certification/local/current-local-certification.v1.json"), require_envelope=False)
+
+    def test_adjudication_boundary_uses_canonical_generated_coordinate_count(self) -> None:
+        report = {
+            "result": "PASS",
+            "coverage": {"adversarial_case_count": 17},
+            "certification_state": {"C4": "FAIL", "C4_completed": 0, "C4_denominator": 3378},
+            "denominator_boundary": {"obligations": 2390, "requirements": 3378, "real_profile_coordinates_generated": 0},
+        }
+        _verify_adjudication_scientific_boundary(report)
+        report["denominator_boundary"] = {"obligations": 2390, "requirements": 3378, "real_profile_coordinates": 0}
+        with self.assertRaisesRegex(LocalCertificationError, "profile-coordinate boundary"):
+            _verify_adjudication_scientific_boundary(report)
 
 
 if __name__ == "__main__":

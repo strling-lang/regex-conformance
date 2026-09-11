@@ -338,6 +338,17 @@ def _payload_without_identity(manifest: dict[str, Any]) -> dict[str, Any]:
     return {key: value for key, value in manifest.items() if key not in {"local_certification_root", "manifest_id"}}
 
 
+def _verify_adjudication_scientific_boundary(adjudication_report: dict[str, Any]) -> None:
+    certification_state = adjudication_report.get("certification_state", {})
+    denominator = adjudication_report.get("denominator_boundary", {})
+    if adjudication_report.get("result") != LOCAL_CHECK_PASS or adjudication_report.get("coverage", {}).get("adversarial_case_count") != 17:
+        raise LocalCertificationError("adjudication acceptance result or adversarial coverage is invalid")
+    if certification_state.get("C4") != "FAIL" or certification_state.get("C4_completed") != 0 or certification_state.get("C4_denominator") != 3378:
+        raise LocalCertificationError("adjudication report does not preserve the honest C4 result")
+    if denominator.get("obligations") != 2390 or denominator.get("requirements") != 3378 or denominator.get("real_profile_coordinates_generated") != 0:
+        raise LocalCertificationError("adjudication report changes the semantic or profile-coordinate boundary")
+
+
 def verify_manifest(root: Path, manifest_path: Path, *, expected_envelope_sha: str | None = None, expected_root: str | None = None, require_envelope: bool = True) -> dict[str, Any]:
     manifest = load_strict(root / manifest_path)
     if manifest.get("schema_version") != "local-authoritative-certification.v1":
@@ -432,14 +443,7 @@ def verify_manifest(root: Path, manifest_path: Path, *, expected_envelope_sha: s
         adjudication_contract = load_strict(root / manifest["bindings"]["adjudication_contract"]["path"])
         adjudication_fixtures = load_strict(root / manifest["bindings"]["adjudication_fixtures"]["path"])
         adjudication_authority = load_strict(root / manifest["bindings"]["adjudication_authority"]["path"])
-        certification_state = adjudication_report.get("certification_state", {})
-        denominator = adjudication_report.get("denominator_boundary", {})
-        if adjudication_report.get("result") != LOCAL_CHECK_PASS or adjudication_report.get("coverage", {}).get("adversarial_case_count") != 17:
-            raise LocalCertificationError("adjudication acceptance result or adversarial coverage is invalid")
-        if certification_state.get("C4") != "FAIL" or certification_state.get("C4_completed") != 0 or certification_state.get("C4_denominator") != 3378:
-            raise LocalCertificationError("adjudication report does not preserve the honest C4 result")
-        if denominator.get("obligations") != 2390 or denominator.get("requirements") != 3378 or denominator.get("real_profile_coordinates") != 0:
-            raise LocalCertificationError("adjudication report changes the semantic or profile-coordinate boundary")
+        _verify_adjudication_scientific_boundary(adjudication_report)
         if adjudication_report.get("contract", {}).get("artifact_id") != adjudication_contract.get("contract_id"):
             raise LocalCertificationError("adjudication report does not bind its exact contract")
         if adjudication_authority.get("current_contract", {}).get("artifact_id") != adjudication_contract.get("contract_id"):
