@@ -191,6 +191,11 @@ open-world three-valued logic, rejects unknown fields and operators, checks
 stable-ID and fact dependency closure, and prevents target observations or ad
 hoc skips from manufacturing profile non-applicability.
 
+`evidence-adjudication-architecture-closure.schema.json` binds the linear
+reconstruction provenance, contract and assessment identities, hosted
+verification, denominator invariants, and the continuing non-passing scientific
+certification state. Closure of these rules supplies no empirical evidence.
+
 The adjudication schema family defines expected outcomes, a closed coordinate
 state algebra, typed derived claims, discrepancy revisions, reviewed waiver
 revisions, evidence-preserving quarantine revisions, structured adjudication

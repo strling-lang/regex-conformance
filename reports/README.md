@@ -10,6 +10,12 @@ binds exact predecessor contracts, adversarial coverage, unchanged semantic
 denominators, zero production credit, and the continuing C4 result
 `FAIL — 0/3378`.
 
+The evidence-adjudication architecture closure under `certification/reports/`
+binds the policy-compliant linear reconstruction, exact contract and acceptance
+identities, local and hosted verification, unchanged denominator, and honest
+non-passing scientific certification. It closes the architecture rules only;
+it is not empirical coverage.
+
 `small-scale/qualification-coverage.json` is generated from the compiled
 logical-execution set and proves operational category coverage without making
 normative, semantic, or conformance claims.

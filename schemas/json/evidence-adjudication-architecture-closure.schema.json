@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/evidence-adjudication-architecture-closure.schema.json",
+  "title": "Evidence adjudication architecture closure",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "published_on", "closure_scope", "reconstruction", "authority_bindings", "promotion", "denominator", "certification", "gate_checks", "boundary", "result", "report_id", "report_digest_sha256"],
+  "properties": {
+    "schema_version": {"const": "evidence-adjudication-architecture-closure.v1"},
+    "published_on": {"type": "string", "format": "date"},
+    "closure_scope": {"type": "string", "minLength": 1},
+    "reconstruction": {"type": "object", "required": ["reason", "authoritative_base_sha", "source_integrated_candidate_sha", "original_implementation_commits", "original_integration_merge_commits", "replacement_commits", "content_equivalence", "review_correction", "promotion_range_merge_count"], "additionalProperties": true},
+    "authority_bindings": {"type": "object", "minProperties": 8, "additionalProperties": {"$ref": "#/$defs/artifact"}},
+    "promotion": {"type": "object", "required": ["certified_source_sha", "local_certification_root", "promoted_repository_sha", "hosted_verification"], "additionalProperties": true},
+    "denominator": {"type": "object", "required": ["obligations", "requirements", "unconditional_requirements", "conditional_requirements", "conditional_requirements_represented", "real_profile_coordinates_generated", "profile_expanded_denominator", "production_coverage_credit"], "additionalProperties": false, "properties": {"obligations": {"const": 2390}, "requirements": {"const": 3378}, "unconditional_requirements": {"const": 1406}, "conditional_requirements": {"const": 1972}, "conditional_requirements_represented": {"const": 1972}, "real_profile_coordinates_generated": {"const": 0}, "profile_expanded_denominator": {"type": "null"}, "production_coverage_credit": {"const": 0}}},
+    "certification": {"type": "object", "required": ["C1", "C2", "C3", "C4", "C4_completed", "C4_denominator", "C5", "C6", "C7", "final_state"], "additionalProperties": true},
+    "gate_checks": {"type": "array", "minItems": 15, "maxItems": 15, "items": {"type": "object", "additionalProperties": false, "required": ["check_id", "status"], "properties": {"check_id": {"type": "string", "minLength": 1}, "status": {"const": "PASS"}}}},
+    "boundary": {"type": "object", "required": ["linear_reconstruction_changes_history_not_science", "production_campaign_executed", "empirical_coverage_created", "profile_expansion_performed", "successor_implementation_started"], "additionalProperties": false, "properties": {"linear_reconstruction_changes_history_not_science": {"const": true}, "production_campaign_executed": {"const": false}, "empirical_coverage_created": {"const": false}, "profile_expansion_performed": {"const": false}, "successor_implementation_started": {"const": false}}},
+    "result": {"const": "PASS"},
+    "report_id": {"type": "string", "pattern": "^rcid:v1:trust-assessment:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "report_digest_sha256": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "artifact": {"type": "object", "additionalProperties": false, "required": ["path", "artifact_id", "digest_sha256", "file_sha256"], "properties": {"path": {"type": "string", "minLength": 1}, "artifact_id": {"type": "string", "minLength": 1}, "digest_sha256": {"$ref": "#/$defs/digest"}, "file_sha256": {"$ref": "#/$defs/digest"}}}
+  }
+}

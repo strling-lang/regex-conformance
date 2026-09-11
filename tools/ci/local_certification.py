@@ -62,6 +62,7 @@ ARTIFACT_ROLES: tuple[tuple[str, str], ...] = (
     ("adjudication-fixtures", "tests/fixtures/adjudication/adjudication-cases.v1.json"),
     ("adjudication-report", "reports/adjudication/adjudication-acceptance-2026-09-11.v1.json"),
     ("adjudication-authority", "adjudication/current-authority.v1.json"),
+    ("evidence-adjudication-closure", "certification/reports/evidence-adjudication-architecture-closure-2026-09-11.v1.json"),
     ("certification-input", "certification/inputs/current-repository-2026-09-08.v2.json"),
     ("certification-report", "certification/reports/current-repository-2026-09-08.v2.json"),
     ("certification-authority", "certification/current-authority.v1.json"),
@@ -91,6 +92,7 @@ ARTIFACT_ROLES: tuple[tuple[str, str], ...] = (
     ("adjudication-fixtures-schema", "schemas/json/adjudication-fixtures.schema.json"),
     ("adjudication-report-schema", "schemas/json/adjudication-report.schema.json"),
     ("adjudication-authority-schema", "schemas/json/adjudication-authority.schema.json"),
+    ("evidence-adjudication-closure-schema", "schemas/json/evidence-adjudication-architecture-closure.schema.json"),
 )
 
 LOCAL_COMMANDS: tuple[tuple[str, ...], ...] = (
@@ -101,6 +103,7 @@ LOCAL_COMMANDS: tuple[tuple[str, ...], ...] = (
     ("python", "tools/oracle/compile_evidence_admissibility.py", "--check", "--bounded"),
     ("python", "tools/applicability/compile_conditional_applicability.py", "--check", "--bounded"),
     ("python", "tools/adjudication/compile_adjudication.py", "--check", "--bounded"),
+    ("python", "tools/certification/compile_evidence_adjudication_closure.py", "--check", "--history"),
     ("python", "tools/certification/evaluate.py", "--check"),
     ("python", "tools/semantics/certify_semantic_knowledge.py", "--check"),
     ("python", "tools/foundation/certify.py", "--history"),
@@ -205,6 +208,7 @@ def _artifact_payload(root: Path) -> tuple[list[dict[str, Any]], dict[str, Any]]
     adjudication_fixtures = load_strict(root / by_role["adjudication-fixtures"]["path"])
     adjudication_report = load_strict(root / by_role["adjudication-report"]["path"])
     adjudication_authority = load_strict(root / by_role["adjudication-authority"]["path"])
+    evidence_adjudication_closure = load_strict(root / by_role["evidence-adjudication-closure"]["path"])
     bindings = {
         "certification_contract": {"id": contract["contract_id"], **by_role["certification-contract"]},
         "semantic_snapshot": {"id": semantic["snapshot_id"], **by_role["semantic-snapshot"]},
@@ -230,6 +234,7 @@ def _artifact_payload(root: Path) -> tuple[list[dict[str, Any]], dict[str, Any]]
         "adjudication_fixtures": {"id": adjudication_fixtures["fixture_set_id"], **by_role["adjudication-fixtures"]},
         "adjudication_report": {"id": adjudication_report["report_id"], "result": adjudication_report["result"], **by_role["adjudication-report"]},
         "adjudication_authority": {"id": adjudication_authority["index_id"], **by_role["adjudication-authority"]},
+        "evidence_adjudication_closure": {"id": evidence_adjudication_closure["report_id"], "result": evidence_adjudication_closure["result"], **by_role["evidence-adjudication-closure"]},
         "identity_catalog": {"schema_version": identity["schema_version"], "entry_count": len(identity["bindings"]), **by_role["identity-catalog"]},
         "derivation_catalog": {"schema_version": derivation["schema_version"], "derivation_count": len(derivation["derivations"]), **by_role["derivation-catalog"]},
         "current_certification": {"id": report["report_id"], "result": report["final_state"], **by_role["certification-report"]},
@@ -455,6 +460,15 @@ def verify_manifest(root: Path, manifest_path: Path, *, expected_envelope_sha: s
             raise LocalCertificationError("adjudication does not bind the exact applicability predecessor")
         if predecessors.get("evidence_admissibility", {}).get("artifact_id") != manifest["bindings"]["evidence_admissibility_contract"].get("id"):
             raise LocalCertificationError("adjudication does not bind the exact evidence-admissibility predecessor")
+    closure_binding = manifest["bindings"].get("evidence_adjudication_closure")
+    if closure_binding is not None:
+        closure = load_strict(root / closure_binding["path"])
+        if closure.get("result") != LOCAL_CHECK_PASS or len(closure.get("gate_checks", [])) != 15:
+            raise LocalCertificationError("evidence-adjudication architecture closure is not PASS")
+        if closure.get("denominator", {}).get("production_coverage_credit") != 0 or closure.get("certification", {}).get("C4") != "FAIL":
+            raise LocalCertificationError("architecture closure manufactures scientific coverage")
+        if closure.get("promotion", {}).get("promoted_repository_sha") != "89ffaabebaa487cf2f2357e84aa1f4943bca3eac":
+            raise LocalCertificationError("architecture closure does not bind the reviewed promotion")
     if require_envelope:
         envelope_sha = expected_envelope_sha or git_output(root, "rev-parse", "HEAD")
         if FULL_SHA.fullmatch(envelope_sha) is None or git_output(root, "rev-parse", "HEAD") != envelope_sha:

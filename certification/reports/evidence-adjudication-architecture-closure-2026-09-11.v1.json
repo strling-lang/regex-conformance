@@ -1,0 +1,209 @@
+{
+  "authority_bindings": {
+    "adjudication_acceptance": {
+      "artifact_id": "rcid:v1:trust-assessment:h:jcs-sha256-v1:6327057d995efa49a430cb3ef02cd8e82df0fa663b52df10e4a92a2b83fd4bcf",
+      "digest_sha256": "d24fa765082f01cf2424392e5e44ce6abe161ee7c7ec9a11c975c7daa27e3df8",
+      "file_sha256": "f442e9895f2d4c861688b1ddf42d10376770e288dd06f68e97f1b14ce6edb89b",
+      "path": "reports/adjudication/adjudication-acceptance-2026-09-11.v1.json"
+    },
+    "adjudication_contract": {
+      "artifact_id": "rcid:v1:trust-policy-revision:h:jcs-sha256-v1:bf4e8f41fc371911e99e1a54f76a9fe1718c32aed3d5c6cb3bbb261396aa7b97",
+      "digest_sha256": "f9abf697769c29045208d735e789f3c0963bb0548eb7ef849b7877ac10a7af2b",
+      "file_sha256": "72d27ec26f572eca50d87179d092193fdc7612af163ef364834215b06f371181",
+      "path": "adjudication/contracts/regex-conformance-adjudication-2026-09-11.v1.json"
+    },
+    "certification_state": {
+      "artifact_id": "rcid:v1:certification-report:h:jcs-sha256-v1:05600b98053b3344e8e623364371f2a6415090eb23e633d8deab912a5e37332d",
+      "digest_sha256": "53b30f272b198ebc39331700c845d4e736dc6858520fa6e4d3e7023c3431f099",
+      "file_sha256": "9c40ee82ec38d55074d4ec265f6c0ef07a04435752b8e7d986be8c7448582fef",
+      "path": "certification/reports/current-repository-2026-09-08.v2.json"
+    },
+    "conditional_applicability_acceptance": {
+      "artifact_id": "rcid:v1:trust-assessment:h:jcs-sha256-v1:ab0f1345187a33be50a9b6134a093e964bd11bfa809974654ca95f39782dd0be",
+      "digest_sha256": "3916de4eedf87ac85512c5b07fd22ad8527dd1ba3806bc20270b67194bd8155d",
+      "file_sha256": "57448e7e3257868e5aba60bba522d51a3ca2b091fd8a48e833a1220ab1818d43",
+      "path": "reports/applicability/conditional-requirement-applicability-2026-09-10.v1.json"
+    },
+    "conditional_applicability_contract": {
+      "artifact_id": "rcid:v1:trust-policy-revision:h:jcs-sha256-v1:3215fba6a702763b56fd9cbb87e337cf9b103d96c033214c6cc1a07bea61b331",
+      "digest_sha256": "a31c2a70e54646dd2b48c1ea8012f87ca369cd59225fb5911d58fb9616f1ed34",
+      "file_sha256": "6ea8ef6daf6e15187aa20cbef836da14e27de1c25ea1a4232c9f218a61cef221",
+      "path": "applicability/contracts/regex-conformance-conditional-applicability-2026-09-10.v1.json"
+    },
+    "evidence_admissibility_acceptance": {
+      "artifact_id": "rcid:v1:trust-assessment:h:jcs-sha256-v1:68bbf69ffcab1c4466d465432bc2d415e54983d93bd0c8b958a985ea972823e8",
+      "digest_sha256": "81be8d1dd3be7f0f2b4757fe0042b8d9babaf55ee63ddf8add671e17f8a1f4b2",
+      "file_sha256": "c24d013000f80f3df7670ce496eedf8b629cb5700ca6204f855789ce6d007065",
+      "path": "reports/oracle/evidence-admissibility-2026-09-10.v1.json"
+    },
+    "evidence_admissibility_contract": {
+      "artifact_id": "rcid:v1:trust-policy-revision:h:jcs-sha256-v1:a6414c91a3a1fe0e6b24594ad4217c911739c520e417640b09a94362a423ef39",
+      "digest_sha256": "37bac8b2b69a906d1008fd2cb21cb38bc81cca3a5f952cc0ad394475318bbe02",
+      "file_sha256": "adb4fb73c21306f928d6467c72bca0c262d078324c02c3cc4144bbb0efb360ab",
+      "path": "oracle/contracts/regex-conformance-evidence-admissibility-2026-09-10.v1.json"
+    },
+    "semantic_denominator_authority": {
+      "artifact_id": "rcid:v1:artifact-set-manifest:h:jcs-sha256-v1:cf5764175091ef468b88ec296d23791027411f98dd0103829a6bcddd49571ebd",
+      "digest_sha256": "abbf4d883bd32729e26b4130d9768bdbf1bc9869b797ea10f4a11ae87fb3a75d",
+      "file_sha256": "b8e7081f5f4717c657915220c4dd5acbc69ca19e2f101823eeb3faba501fc4a8",
+      "path": "ontology/authority/current-semantic-denominator.v1.json"
+    }
+  },
+  "boundary": {
+    "empirical_coverage_created": false,
+    "linear_reconstruction_changes_history_not_science": true,
+    "production_campaign_executed": false,
+    "profile_expansion_performed": false,
+    "successor_implementation_started": false
+  },
+  "certification": {
+    "C1": "BLOCKED",
+    "C2": "BLOCKED",
+    "C3": "BLOCKED",
+    "C4": "FAIL",
+    "C4_completed": 0,
+    "C4_denominator": 3378,
+    "C5": "BLOCKED",
+    "C6": "BLOCKED",
+    "C7": "BLOCKED",
+    "final_state": "FAIL"
+  },
+  "closure_scope": "Rules for correctness, profile applicability, evidence admission, observation adjudication, typed claims, discrepancies, permitted divergence, waiver gating, and quarantine operations. This closure creates no empirical coverage.",
+  "denominator": {
+    "conditional_requirements": 1972,
+    "conditional_requirements_represented": 1972,
+    "obligations": 2390,
+    "production_coverage_credit": 0,
+    "profile_expanded_denominator": null,
+    "real_profile_coordinates_generated": 0,
+    "requirements": 3378,
+    "unconditional_requirements": 1406
+  },
+  "gate_checks": [
+    {
+      "check_id": "requirement-identity",
+      "status": "PASS"
+    },
+    {
+      "check_id": "profile-applicability",
+      "status": "PASS"
+    },
+    {
+      "check_id": "applicability-trace",
+      "status": "PASS"
+    },
+    {
+      "check_id": "evidence-admission",
+      "status": "PASS"
+    },
+    {
+      "check_id": "oracle-conclusion-boundary",
+      "status": "PASS"
+    },
+    {
+      "check_id": "expectation-binding",
+      "status": "PASS"
+    },
+    {
+      "check_id": "physical-attempt-history",
+      "status": "PASS"
+    },
+    {
+      "check_id": "eligible-observation-selection",
+      "status": "PASS"
+    },
+    {
+      "check_id": "expectation-comparison",
+      "status": "PASS"
+    },
+    {
+      "check_id": "typed-claim-derivation",
+      "status": "PASS"
+    },
+    {
+      "check_id": "discrepancy-preservation",
+      "status": "PASS"
+    },
+    {
+      "check_id": "positive-permitted-divergence",
+      "status": "PASS"
+    },
+    {
+      "check_id": "waiver-quarantine-boundary",
+      "status": "PASS"
+    },
+    {
+      "check_id": "immutable-reconstruction",
+      "status": "PASS"
+    },
+    {
+      "check_id": "certification-honesty",
+      "status": "PASS"
+    }
+  ],
+  "promotion": {
+    "certified_source_sha": "2532eb424c5336bcddaf9e3378dd814b4b597b3f",
+    "hosted_verification": [
+      {
+        "event": "workflow_dispatch",
+        "head_sha": "89ffaabebaa487cf2f2357e84aa1f4943bca3eac",
+        "job_id": 103315176362,
+        "result": "PASS",
+        "run_id": 34615173291
+      },
+      {
+        "event": "push",
+        "head_sha": "89ffaabebaa487cf2f2357e84aa1f4943bca3eac",
+        "job_id": 103316251389,
+        "result": "PASS",
+        "run_id": 34615490107
+      }
+    ],
+    "local_certification_root": "a97f1c7b847765282730aba8b5c7cbc8300b6c02b872b2acb949a2936e2d1485",
+    "promoted_repository_sha": "89ffaabebaa487cf2f2357e84aa1f4943bca3eac"
+  },
+  "published_on": "2026-09-11",
+  "reconstruction": {
+    "authoritative_base_sha": "9ab4d93a8f4d41796f34639ee0e2eaab79a12748",
+    "content_equivalence": {
+      "git_diff_exit_code": 0,
+      "reconstructed_sha": "c17477a15ac9350792f3e6b8b56c55297a632bd9",
+      "reconstructed_tree_sha": "8182858771c1ad8dc71c67154e5980ff5e254f76",
+      "reference_sha": "a07f539239bfdd0fe838caae9e186db7be27a5c9",
+      "reference_tree_sha": "8182858771c1ad8dc71c67154e5980ff5e254f76",
+      "result": "PASS"
+    },
+    "original_implementation_commits": {
+      "conditional_applicability": "d3679c752abc012779fa9b6b0a584f5002e6209c",
+      "evidence_admissibility": "4023b09b87927e5ad4a54b5fbc01b053bcf82dd4",
+      "observation_to_claim_adjudication": "a07f539239bfdd0fe838caae9e186db7be27a5c9"
+    },
+    "original_integration_merge_commits": [
+      "47693526e97bcc975dbba7041d564760e35ec619",
+      "1bc259b391dd05f9ad447d362e626f719c76d96f"
+    ],
+    "promotion_range_merge_count": 0,
+    "reason": "linear-promotion-policy",
+    "replacement_commits": {
+      "conditional_applicability": "f1836e940b66d47b1319ebaf2b89c99ccb009634",
+      "evidence_admissibility": "5392663bcbf7cef0547a7856e819c761634e3049",
+      "observation_to_claim_adjudication": "c17477a15ac9350792f3e6b8b56c55297a632bd9"
+    },
+    "review_correction": {
+      "changed_paths": [
+        "tests/ci/test_local_certification.py",
+        "tools/ci/certify_local.py",
+        "tools/ci/local_certification.py"
+      ],
+      "classification": "hosted-certificate-verifier-integration-defect",
+      "commit_sha": "2532eb424c5336bcddaf9e3378dd814b4b597b3f",
+      "scientific_semantics_changed": false
+    },
+    "source_integrated_candidate_sha": "a07f539239bfdd0fe838caae9e186db7be27a5c9",
+    "source_integrated_candidate_tree_sha": "8182858771c1ad8dc71c67154e5980ff5e254f76"
+  },
+  "report_digest_sha256": "187465c407549974ab2c60cd4c9ce9c0eeeec4d5f5552e1bab7af73f655a5fc5",
+  "report_id": "rcid:v1:trust-assessment:h:jcs-sha256-v1:0524a6df169e0bcdd3cc226fcae58d4f092e17d7d22550b30486e8aa9b97add8",
+  "result": "PASS",
+  "schema_version": "evidence-adjudication-architecture-closure.v1"
+}

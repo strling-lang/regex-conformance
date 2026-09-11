@@ -52,6 +52,7 @@ jobs:
           python tools/oracle/compile_evidence_admissibility.py --check --bounded
           python tools/applicability/compile_conditional_applicability.py --check --bounded
           python tools/adjudication/compile_adjudication.py --check --bounded
+          python tools/certification/compile_evidence_adjudication_closure.py --check --bounded
           python tools/ci/verify_repository_identifier_hygiene.py --root .
           python -m unittest discover -s tests/ci -v
 
