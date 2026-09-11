@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/conditional-applicability-authority.schema.json",
+  "title": "Current conditional applicability authority",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "current_contract", "validation_fixture", "acceptance_report", "requirement_authority", "profile_expansion_handoff", "historical_compatibility", "next_interfaces", "governance", "index_id", "index_digest_sha256"],
+  "properties": {
+    "schema_version": {"const": "conditional-applicability-authority.v1"},
+    "current_contract": {"$ref": "#/$defs/binding"},
+    "validation_fixture": {"$ref": "#/$defs/binding"},
+    "acceptance_report": {"$ref": "#/$defs/binding"},
+    "requirement_authority": {"$ref": "#/$defs/binding"},
+    "profile_expansion_handoff": {"$ref": "#/$defs/binding"},
+    "historical_compatibility": {"type": "object"},
+    "next_interfaces": {"type": "object"},
+    "governance": {"type": "object"},
+    "index_id": {"type": "string", "pattern": "^rcid:v1:applicability-policy:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "index_digest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "$defs": {
+    "binding": {"type": "object", "additionalProperties": false, "required": ["path", "artifact_id", "digest_sha256", "file_sha256"], "properties": {"path": {"type": "string"}, "artifact_id": {"type": "string", "pattern": "^rcid:v1:"}, "digest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}, "file_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}}
+  }
+}

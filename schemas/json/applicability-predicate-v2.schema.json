@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/applicability-predicate-v2.schema.json",
+  "title": "Pure typed applicability predicate AST",
+  "$ref": "#/$defs/node",
+  "$defs": {
+    "node": {
+      "oneOf": [
+        {"$ref": "#/$defs/group"},
+        {"$ref": "#/$defs/not"},
+        {"$ref": "#/$defs/constant"},
+        {"$ref": "#/$defs/field"}
+      ]
+    },
+    "group": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["operator", "clauses"],
+      "properties": {
+        "operator": {"enum": ["all", "any"]},
+        "clauses": {"type": "array", "minItems": 1, "maxItems": 128, "items": {"$ref": "#/$defs/node"}}
+      }
+    },
+    "not": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["operator", "clause"],
+      "properties": {
+        "operator": {"const": "not"},
+        "clause": {"$ref": "#/$defs/node"}
+      }
+    },
+    "constant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["operator", "value"],
+      "properties": {
+        "operator": {"const": "const"},
+        "value": {"type": "boolean"}
+      }
+    },
+    "field": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["operator", "field"],
+      "properties": {
+        "operator": {"enum": ["contains", "not-contains", "intersects", "disjoint", "eq", "neq", "in", "not-in", "exists", "lt", "lte", "gt", "gte", "range"]},
+        "field": {"type": "string", "pattern": "^[a-z][a-z0-9_]*(?:[.-][a-z0-9_]+)*$"},
+        "value": {"type": ["boolean", "integer", "string"]},
+        "values": {"type": "array", "minItems": 1, "maxItems": 256, "uniqueItems": true, "items": {"type": ["boolean", "integer", "string"]}},
+        "value_from": {"enum": ["feature.scientific_id", "derived.operation_scientific_ids"]},
+        "lower": {"type": ["integer", "string"]},
+        "upper": {"type": ["integer", "string"]},
+        "include_lower": {"type": "boolean"},
+        "include_upper": {"type": "boolean"},
+        "comparator": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"}
+      }
+    }
+  }
+}

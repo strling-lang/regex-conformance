@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/conditional-applicability-allocation.schema.json",
+  "title": "Conditional applicability identity allocation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "allocated_on", "allocations"],
+  "properties": {
+    "schema_version": {"const": "conditional-applicability-allocation.v1"},
+    "allocated_on": {"type": "string", "format": "date"},
+    "allocations": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["entity_class", "canonical_key", "assigned_id"],
+        "properties": {
+          "entity_class": {"enum": ["assertion-derivation", "schema-family"]},
+          "canonical_key": {"type": "string", "minLength": 1},
+          "assigned_id": {"type": "string", "pattern": "^rcid:v1:(assertion-derivation|schema-family):u7:"}
+        }
+      }
+    }
+  }
+}

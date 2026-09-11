@@ -184,6 +184,12 @@ authority-domain independence, prospective frozen expectation bases, and
 fail-closed role/use/conclusion validation. Informative prose, ambiguity,
 silence, historical stability, characterization, or shared wrappers cannot be
 promoted into normative authority by schema omission.
+The conditional-applicability schema family defines a bounded typed predicate
+AST, immutable profile-capability fact snapshots, proof-bearing evaluation
+results, and their versioned authority contract. Semantic validation applies
+open-world three-valued logic, rejects unknown fields and operators, checks
+stable-ID and fact dependency closure, and prevents target observations or ad
+hoc skips from manufacturing profile non-applicability.
 
 `json/generated-assertion-derivation-catalog.schema.json` defines the shared
 provenance contract for assertion-like generated fields. It requires

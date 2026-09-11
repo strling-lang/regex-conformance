@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/conditional-applicability-fixtures.schema.json",
+  "title": "Conditional applicability fixtures",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "classification", "profile_fact_snapshots", "valid_cases", "invalid_cases", "synthetic_denominator_example"],
+  "properties": {
+    "schema_version": {"const": "conditional-applicability-fixtures.v1"},
+    "classification": {"const": "synthetic-non-authoritative"},
+    "profile_fact_snapshots": {"type": "array", "minItems": 4, "items": {"type": "object"}},
+    "valid_cases": {"type": "array", "minItems": 8, "items": {"type": "object", "required": ["case_id", "kind", "expected_result"], "properties": {"case_id": {"type": "string"}, "kind": {"type": "string"}, "expected_result": {"enum": ["applicable", "not-applicable", "unresolved"]}, "snapshot_id": {"type": "string"}, "predicate": {"type": "object"}}}},
+    "invalid_cases": {"type": "array", "minItems": 7, "items": {"type": "object", "required": ["case_id", "expected_error"], "properties": {"case_id": {"type": "string"}, "expected_error": {"type": "string"}, "mutation": {"type": "string"}}}},
+    "synthetic_denominator_example": {"type": "object", "required": ["authoritative", "profile_count", "applicable_coordinates", "not_applicable_coordinates", "unresolved_coordinates"]}
+  }
+}

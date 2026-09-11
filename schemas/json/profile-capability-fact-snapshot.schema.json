@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/profile-capability-fact-snapshot.schema.json",
+  "title": "Frozen profile capability fact snapshot",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "classification", "profile_id", "profile_revision_id", "world_assumption", "field_closure_rules", "facts", "snapshot_id", "snapshot_digest_sha256"],
+  "properties": {
+    "schema_version": {"const": "profile-capability-fact-snapshot.v1"},
+    "classification": {"enum": ["synthetic-non-authoritative", "frozen-profile-capability-authority"]},
+    "profile_id": {"type": "string", "pattern": "^rcid:v1:profile:u7:"},
+    "profile_revision_id": {"type": "string", "pattern": "^rcid:v1:profile-revision:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "world_assumption": {"const": "open"},
+    "field_closure_rules": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["field_id", "field", "rule_id", "scope", "authority_artifact_id"],
+        "properties": {
+          "field_id": {"$ref": "#/$defs/rcid"},
+          "field": {"type": "string"},
+          "rule_id": {"$ref": "#/$defs/rcid"},
+          "scope": {"const": "exact-profile-revision-and-field"},
+          "authority_artifact_id": {"$ref": "#/$defs/rcid"}
+        }
+      }
+    },
+    "facts": {"type": "array", "items": {"$ref": "#/$defs/fact"}},
+    "snapshot_id": {"type": "string", "pattern": "^rcid:v1:ontology-projection:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "snapshot_digest_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "rcid": {"type": "string", "pattern": "^rcid:v1:"},
+    "fact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fact_id", "fact_digest_sha256", "fact_revision_id", "field_id", "field", "assertion", "value_type", "value", "authority_class", "authority_state", "source", "dependencies"],
+      "properties": {
+        "fact_id": {"type": "string", "pattern": "^rcid:v1:trust-assessment:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+        "fact_digest_sha256": {"$ref": "#/$defs/sha256"},
+        "fact_revision_id": {"type": "string", "pattern": "^rcid:v1:applicability-rule-set:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+        "field_id": {"$ref": "#/$defs/rcid"},
+        "field": {"type": "string"},
+        "assertion": {"enum": ["member-present", "member-absent", "scalar-value", "scalar-absent"]},
+        "value_type": {"enum": ["boolean", "integer", "token", "string", "stable-id", "release-coordinate"]},
+        "value": {"type": ["boolean", "integer", "string", "null"]},
+        "authority_class": {"enum": ["canonical-registry-profile-definition", "exact-knowledge-projection", "certified-adapter-capability", "certified-environment-capability", "frozen-campaign-policy", "reviewed-empirical-promotion", "raw-execution-observation", "mutable-host-discovery", "untrusted-adapter-self-report", "contributor-claim"]},
+        "authority_state": {"enum": ["admissible", "inadmissible", "unresolved"]},
+        "source": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["artifact_id", "revision_id", "digest_sha256", "locator"],
+          "properties": {
+            "artifact_id": {"$ref": "#/$defs/rcid"},
+            "revision_id": {"$ref": "#/$defs/rcid"},
+            "digest_sha256": {"$ref": "#/$defs/sha256"},
+            "locator": {"type": "string", "minLength": 1},
+            "promotion_record_id": {"$ref": "#/$defs/rcid"}
+          }
+        },
+        "dependencies": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["dependency_id", "kind"],
+            "properties": {
+              "dependency_id": {"$ref": "#/$defs/rcid"},
+              "kind": {"enum": ["capability-fact", "registered-source", "knowledge-projection", "certified-adapter", "certified-environment", "policy-constant", "reviewed-promotion", "semantic-requirement", "applicability-evaluation", "target-observation"]}
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/conditional-applicability-report.schema.json",
+  "title": "Conditional applicability acceptance report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "published_on", "claim_scope", "contract", "authoritative_inputs", "coverage", "predicate_audit", "fixture_results", "checks", "denominator_boundary", "deferrals", "result", "report_id", "report_digest_sha256"],
+  "properties": {
+    "schema_version": {"const": "conditional-applicability-report.v1"},
+    "published_on": {"type": "string", "format": "date"},
+    "claim_scope": {"type": "string", "minLength": 1},
+    "contract": {"type": "object", "required": ["artifact_id", "digest_sha256", "file_sha256"]},
+    "authoritative_inputs": {"type": "array", "minItems": 3},
+    "coverage": {"type": "object", "required": ["semantic_requirements", "unconditional_requirements", "conditional_requirements", "conditional_requirements_validated", "distinct_predicates", "distinct_conditional_predicates", "unexplained_conditional_requirements", "required_intrinsic_modifier_scope_requirements", "required_unexplained_capability_dependencies"]},
+    "predicate_audit": {"type": "object", "required": ["fields", "leaf_operators", "value_sources", "invalid_references", "type_errors", "cycles", "identity_mismatches", "noncanonical_predicates"]},
+    "fixture_results": {"type": "object", "required": ["accepted", "rejected", "outcomes"]},
+    "checks": {"type": "array", "minItems": 10, "items": {"type": "object", "additionalProperties": false, "required": ["check_id", "status", "evidence"], "properties": {"check_id": {"type": "string"}, "status": {"const": "PASS"}, "evidence": {"type": "string"}}}},
+    "denominator_boundary": {"type": "object", "required": ["obligations", "requirements", "conditional_requirements", "c4", "unchanged"]},
+    "deferrals": {"type": "object", "required": ["exact_profile_count", "final_execution_denominator", "profile_fact_research", "production_vectors"]},
+    "result": {"const": "PASS"},
+    "report_id": {"type": "string", "pattern": "^rcid:v1:trust-assessment:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "report_digest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

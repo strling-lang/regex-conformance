@@ -201,9 +201,9 @@ class CertificationPredicateTests(unittest.TestCase):
         self.assertEqual(
             verify_repository_certification(ROOT),
             {
-                "generated_assertion_artifacts": 88,
-                "generated_assertion_groups": 292,
-                "generated_assertion_occurrences": 1724357,
+                "generated_assertion_artifacts": 93,
+                "generated_assertion_groups": 298,
+                "generated_assertion_occurrences": 1725201,
                 "generated_count_contracts": 106,
                 "certification_contracts": 1,
                 "certification_criteria": 7,

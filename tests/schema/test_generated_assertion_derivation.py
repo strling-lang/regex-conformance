@@ -80,9 +80,9 @@ class GeneratedAssertionDerivationTests(unittest.TestCase):
         derivation = self.derivations[summary["derivation_id"]]
         self.assertEqual(derivation["derivation_class"], "calculation")
         self.assertEqual(summary["derivation_revision_id"], derivation["derivation_revision_id"])
-        self.assertEqual(summary["inventoried_artifacts"], 88)
-        self.assertEqual(summary["assertion_groups"], 292)
-        self.assertEqual(summary["assertion_occurrences"], 1724357)
+        self.assertEqual(summary["inventoried_artifacts"], 93)
+        self.assertEqual(summary["assertion_groups"], 298)
+        self.assertEqual(summary["assertion_occurrences"], 1725201)
         self.assertEqual(summary["count_contracts"], 106)
 
     def test_each_class_has_required_nonempty_metadata(self) -> None:

@@ -51,6 +51,11 @@ ARTIFACT_ROLES: tuple[tuple[str, str], ...] = (
     ("evidence-admissibility-fixtures", "tests/fixtures/oracle/evidence-admissibility-cases.v1.json"),
     ("evidence-admissibility-report", "reports/oracle/evidence-admissibility-2026-09-10.v1.json"),
     ("evidence-admissibility-authority", "oracle/evidence/current-authority.v1.json"),
+    ("applicability-allocation", "applicability/conditional-applicability-identities-2026-09-10.v1.json"),
+    ("applicability-contract", "applicability/contracts/regex-conformance-conditional-applicability-2026-09-10.v1.json"),
+    ("applicability-fixtures", "tests/fixtures/applicability/conditional-requirement-applicability.v1.json"),
+    ("applicability-report", "reports/applicability/conditional-requirement-applicability-2026-09-10.v1.json"),
+    ("applicability-authority", "applicability/current-authority.v1.json"),
     ("certification-input", "certification/inputs/current-repository-2026-09-08.v2.json"),
     ("certification-report", "certification/reports/current-repository-2026-09-08.v2.json"),
     ("certification-authority", "certification/current-authority.v1.json"),
@@ -65,6 +70,9 @@ ARTIFACT_ROLES: tuple[tuple[str, str], ...] = (
     ("denominator-audit-authority-schema", "schemas/json/semantic-denominator-audit-authority.schema.json"),
     ("true-denominator-foundation-schema", "schemas/json/true-obligation-denominator-foundation.schema.json"),
     ("true-denominator-gate-report-schema", "schemas/json/true-obligation-denominator-acceptance.schema.json"),
+    ("applicability-contract-schema", "schemas/json/conditional-applicability-contract.schema.json"),
+    ("applicability-result-schema", "schemas/json/applicability-evaluation-result.schema.json"),
+    ("profile-capability-fact-schema", "schemas/json/profile-capability-fact-snapshot.schema.json"),
 )
 
 LOCAL_COMMANDS: tuple[tuple[str, ...], ...] = (
@@ -73,6 +81,7 @@ LOCAL_COMMANDS: tuple[tuple[str, ...], ...] = (
     ("python", "tools/semantics/certify_true_denominator.py", "--history"),
     ("python", "tools/oracle/compile_oracle_foundation.py", "--check", "--bounded"),
     ("python", "tools/oracle/compile_evidence_admissibility.py", "--check", "--bounded"),
+    ("python", "tools/applicability/compile_conditional_applicability.py", "--check", "--bounded"),
     ("python", "tools/certification/evaluate.py", "--check"),
     ("python", "tools/semantics/certify_semantic_knowledge.py", "--check"),
     ("python", "tools/foundation/certify.py", "--history"),
@@ -84,6 +93,7 @@ LOCAL_COMMANDS: tuple[tuple[str, ...], ...] = (
     ("python", "-m", "unittest", "discover", "-s", "tests/schema", "-p", "test_denominator_audit.py", "-v"),
     ("python", "-m", "unittest", "discover", "-s", "tests/schema", "-p", "test_true_obligation_denominator_gate.py", "-v"),
     ("python", "-m", "unittest", "discover", "-s", "tests/schema", "-p", "test_evidence_admissibility.py", "-v"),
+    ("python", "-m", "unittest", "discover", "-s", "tests/schema", "-p", "test_conditional_applicability.py", "-v"),
     ("python", "-m", "unittest", "discover", "-s", "tests/ci", "-v"),
 )
 
@@ -168,6 +178,9 @@ def _artifact_payload(root: Path) -> tuple[list[dict[str, Any]], dict[str, Any]]
     evidence_contract = load_strict(root / by_role["evidence-admissibility-contract"]["path"])
     evidence_report = load_strict(root / by_role["evidence-admissibility-report"]["path"])
     evidence_authority = load_strict(root / by_role["evidence-admissibility-authority"]["path"])
+    applicability_contract = load_strict(root / by_role["applicability-contract"]["path"])
+    applicability_report = load_strict(root / by_role["applicability-report"]["path"])
+    applicability_authority = load_strict(root / by_role["applicability-authority"]["path"])
     bindings = {
         "certification_contract": {"id": contract["contract_id"], **by_role["certification-contract"]},
         "semantic_snapshot": {"id": semantic["snapshot_id"], **by_role["semantic-snapshot"]},
@@ -186,6 +199,9 @@ def _artifact_payload(root: Path) -> tuple[list[dict[str, Any]], dict[str, Any]]
         "evidence_admissibility_contract": {"id": evidence_contract["contract_id"], **by_role["evidence-admissibility-contract"]},
         "evidence_admissibility_report": {"id": evidence_report["report_id"], "result": evidence_report["result"], **by_role["evidence-admissibility-report"]},
         "evidence_admissibility_authority": {"id": evidence_authority["index_id"], **by_role["evidence-admissibility-authority"]},
+        "applicability_contract": {"id": applicability_contract["contract_id"], **by_role["applicability-contract"]},
+        "applicability_report": {"id": applicability_report["report_id"], "result": applicability_report["result"], **by_role["applicability-report"]},
+        "applicability_authority": {"id": applicability_authority["index_id"], **by_role["applicability-authority"]},
         "identity_catalog": {"schema_version": identity["schema_version"], "entry_count": len(identity["bindings"]), **by_role["identity-catalog"]},
         "derivation_catalog": {"schema_version": derivation["schema_version"], "derivation_count": len(derivation["derivations"]), **by_role["derivation-catalog"]},
         "current_certification": {"id": report["report_id"], "result": report["final_state"], **by_role["certification-report"]},
@@ -371,6 +387,17 @@ def verify_manifest(root: Path, manifest_path: Path, *, expected_envelope_sha: s
             raise LocalCertificationError("evidence admissibility authority does not bind its exact current contract")
         if evidence_contract.get("oracle_foundation", {}).get("artifact_id") != manifest["bindings"]["oracle_foundation_contract"].get("id"):
             raise LocalCertificationError("evidence admissibility contract does not bind the fixed oracle foundation")
+    applicability_binding = manifest["bindings"].get("applicability_report")
+    if applicability_binding is not None:
+        applicability_report = load_strict(root / applicability_binding["path"])
+        applicability_contract = load_strict(root / manifest["bindings"]["applicability_contract"]["path"])
+        applicability_authority = load_strict(root / manifest["bindings"]["applicability_authority"]["path"])
+        if applicability_report.get("result") != "PASS" or applicability_report.get("coverage", {}).get("conditional_requirements_validated") != 1972:
+            raise LocalCertificationError("conditional applicability report is not PASS with complete requirement coverage")
+        if applicability_report.get("contract", {}).get("artifact_id") != applicability_contract.get("contract_id"):
+            raise LocalCertificationError("conditional applicability report does not bind its exact contract")
+        if applicability_authority.get("current_contract", {}).get("artifact_id") != applicability_contract.get("contract_id"):
+            raise LocalCertificationError("conditional applicability authority does not bind its exact contract")
     if require_envelope:
         envelope_sha = expected_envelope_sha or git_output(root, "rev-parse", "HEAD")
         if FULL_SHA.fullmatch(envelope_sha) is None or git_output(root, "rev-parse", "HEAD") != envelope_sha:

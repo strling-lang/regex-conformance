@@ -105,6 +105,7 @@ DERIVATION_IDS = {
     "denominator-audit": "rcid:v1:assertion-derivation:u7:01a08bfe-f086-7b3f-bc06-0ed1f691f052",
     "oracle-foundation-governance": "rcid:v1:assertion-derivation:u7:01a08d07-ef56-7cf6-a0ec-bba01aa82e7c",
     "evidence-admissibility-governance": "rcid:v1:assertion-derivation:u7:01a08d9e-ab75-762b-8a10-90db25ccb8fb",
+    "conditional-applicability-governance": "rcid:v1:assertion-derivation:u7:01a08e2e-c914-7cbf-902d-c1cbe7b120bf",
 }
 
 ALLOWED_GATES_BY_CLASS = {
@@ -718,6 +719,30 @@ def _derivation_specs(root: Path) -> list[dict[str, Any]]:
                 "decision_scope": "Evidence roles, epistemic uses, source-language strength, immutable provenance, authority-domain independence, and fail-closed admissibility.",
             },
             "notes": "This policy determines what a preserved evidence object may support. It neither changes the evidence's epistemic role nor establishes a semantic or empirical proposition by itself.",
+        },
+        {
+            "key": "conditional-applicability-governance",
+            "title": "Total proof-bearing conditional applicability policy",
+            "derivation_class": "manual-decision",
+            "method_key": "conditional-applicability-governance",
+            "method_version": "1.0.0",
+            "input_references": [
+                "vectors/requirements/regex-semantic-vector-requirements-2026-09-08.v2.json",
+                "ontology/projections/regex-semantic-profile-expansion-handoff-2026-09-10.v1.json",
+                "oracle/contracts/regex-conformance-oracles-2026-09-10.v1.json",
+            ],
+            "authority_references": [
+                "Build applicability evaluation for conditional requirements",
+                "GOVERNANCE.md",
+            ],
+            "allowed_gate_kinds": ["governance-policy"],
+            "independent_evidence": False,
+            "metadata": {
+                "kind": "manual-decision",
+                "governing_decision_ref": "Build applicability evaluation for conditional requirements",
+                "decision_scope": "Open-world typed predicates, immutable capability-fact inputs, total applicability states, structured traces, self-reference guards, and the profile-expansion boundary.",
+            },
+            "notes": "This contract decides profile engagement for existing requirements. It does not create semantic requirements, expected results, support claims, observations, or conformance verdicts.",
         },
         {
             "key": "certification-predicate-calculation",
@@ -1616,6 +1641,54 @@ def _artifact_specs() -> tuple[ArtifactSpec, ...]:
             ),
             coverage_selectors=("/current_contract", "/oracle_foundation", "/validation_fixture", "/acceptance_report", "/semantic_requirement_authority", "/historical_compatibility", "/next_interfaces", "/governance"),
             schema_reference="schemas/json/evidence-admissibility-authority.schema.json",
+        ),
+        ArtifactSpec(
+            "applicability/conditional-applicability-identities-2026-09-10.v1.json",
+            "governed-registry",
+            "governed-registry",
+            ("tools/applicability/compile_conditional_applicability.py",),
+            (_b("/", "conditional-applicability-governance", "governance", "Reviewed one-time typed allocation for the applicability schema family and governing derivation."),),
+            coverage_selectors=("/allocations",),
+            schema_reference="schemas/json/conditional-applicability-allocation.schema.json",
+        ),
+        ArtifactSpec(
+            "applicability/contracts/regex-conformance-conditional-applicability-2026-09-10.v1.json",
+            "governed-registry",
+            "governed-registry",
+            ("tools/applicability/compile_conditional_applicability.py",),
+            (_b("/", "conditional-applicability-governance", "governance", "Accepted total-state algebra, typed predicate language, open-world facts, trace semantics, exclusion boundary, and profile-expansion deferral."),),
+            coverage_selectors=("/state_algebra", "/predicate_language", "/field_registry", "/world_semantics", "/capability_fact_contract", "/evaluation_contract", "/dependency_contract", "/exclusion_boundary"),
+            schema_reference="schemas/json/conditional-applicability-contract.schema.json",
+        ),
+        ArtifactSpec(
+            "tests/fixtures/applicability/conditional-requirement-applicability.v1.json",
+            "certification-fixture-set",
+            "current-generated",
+            ("tools/applicability/compile_conditional_applicability.py",),
+            (_b("/", "conditional-applicability-governance", "validation", "Synthetic valid and prohibited applicability cases covering open-world truth, explicit absence, conflict, type safety, cycles, self-reference, and skip exclusion."),),
+            coverage_selectors=("/profile_fact_snapshots", "/valid_cases", "/invalid_cases", "/synthetic_denominator_example"),
+            schema_reference="schemas/json/conditional-applicability-fixtures.schema.json",
+        ),
+        ArtifactSpec(
+            "reports/applicability/conditional-requirement-applicability-2026-09-10.v1.json",
+            "audit-or-reconciliation-report",
+            "current-generated",
+            ("tools/applicability/compile_conditional_applicability.py",),
+            (_b("/", "reconciliation-calculation", "validation", "Deterministic audit of every requirement binding, predicate identity, stable-ID reference, structured fixture outcome, and denominator boundary."),),
+            coverage_selectors=("/coverage", "/predicate_audit", "/fixture_results", "/checks", "/denominator_boundary", "/result"),
+            schema_reference="schemas/json/conditional-applicability-report.schema.json",
+        ),
+        ArtifactSpec(
+            "applicability/current-authority.v1.json",
+            "authority-index",
+            "governed-registry",
+            ("tools/applicability/compile_conditional_applicability.py",),
+            (
+                _b("/", "reconciliation-calculation", "reconciliation", "Digest-bound current applicability contract, fixtures, report, requirement authority, and predecessor profile-expansion handoff."),
+                _b("/governance", "conditional-applicability-governance", "governance", "Non-overlapping requirement-existence, applicability, oracle, observation, and exclusion authority boundary."),
+            ),
+            coverage_selectors=("/current_contract", "/validation_fixture", "/acceptance_report", "/requirement_authority", "/profile_expansion_handoff", "/historical_compatibility", "/next_interfaces", "/governance"),
+            schema_reference="schemas/json/conditional-applicability-authority.schema.json",
         ),
         ArtifactSpec(
             "certification/contracts/regex-conformance-certification.v1.json",

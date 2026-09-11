@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/conditional-applicability-contract.schema.json",
+  "title": "Conditional-requirement applicability contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "contract_version", "effective_on", "authority_scope", "authority", "state_algebra", "predicate_language", "field_registry", "world_semantics", "capability_fact_contract", "evaluation_contract", "dependency_contract", "exclusion_boundary", "prospective_profile_expansion", "derivation", "contract_id", "contract_digest_sha256"],
+  "properties": {
+    "schema_version": {"const": "conditional-applicability-contract.v1"},
+    "contract_version": {"const": "1.0.0"},
+    "effective_on": {"type": "string", "format": "date"},
+    "authority_scope": {"type": "string", "minLength": 1},
+    "authority": {"type": "object", "minProperties": 4},
+    "state_algebra": {"type": "object", "required": ["states", "internal_truth_values", "mapping", "and_table", "or_table", "not_table"]},
+    "predicate_language": {"type": "object", "required": ["ast_version", "operators", "types", "comparators", "limits", "canonicalization", "forbidden_runtime_features"]},
+    "field_registry": {"type": "array", "minItems": 5, "uniqueItems": true, "items": {"$ref": "#/$defs/field"}},
+    "world_semantics": {"type": "object", "required": ["default", "unknown_is_false", "negative_fact_rule", "closed_world_rule"]},
+    "capability_fact_contract": {"type": "object", "required": ["allowed_authority_classes", "prohibited_direct_authority_classes", "required_provenance", "historical_freeze_rule"]},
+    "evaluation_contract": {"type": "object", "required": ["input_bindings", "facts_read_rule", "trace_rule", "not_applicable_meaning", "unresolved_reasons", "invalid_rule"]},
+    "dependency_contract": {"type": "object", "required": ["traversal", "cycle_result", "self_reference_guards"]},
+    "exclusion_boundary": {"type": "object", "required": ["ad_hoc_skip_can_decide", "not_applicable_requires", "non_semantic_exclusions"]},
+    "prospective_profile_expansion": {"type": "object", "required": ["formula", "exact_profile_count", "final_execution_denominator", "historical_multiplier_substituted", "status"]},
+    "derivation": {"type": "object", "required": ["derivation_id", "derivation_revision_id", "derivation_class"]},
+    "contract_id": {"type": "string", "pattern": "^rcid:v1:trust-policy-revision:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "contract_digest_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "rcid": {"type": "string", "pattern": "^rcid:v1:"},
+    "field": {
+      "type": "object", "additionalProperties": false,
+      "required": ["field_id", "field", "value_type", "member_type", "identity_prefix", "allowed_operators", "default_world_assumption", "meaning"],
+      "properties": {
+        "field_id": {"$ref": "#/$defs/rcid"}, "field": {"type": "string"}, "value_type": {"enum": ["set", "scalar"]}, "member_type": {"enum": ["boolean", "integer", "token", "string", "stable-id", "release-coordinate"]},
+        "identity_prefix": {"type": ["string", "null"]}, "allowed_operators": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}}, "default_world_assumption": {"const": "open"}, "meaning": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

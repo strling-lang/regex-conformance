@@ -90,6 +90,7 @@ def evaluate(root: Path) -> list[Violation]:
         "validate-repository",
         "verify-fixtures",
         "tools/oracle/compile_oracle_foundation.py --check --bounded",
+        "tools/applicability/compile_conditional_applicability.py --check --bounded",
         "verify_repository_identifier_hygiene.py --root .",
         "unittest discover -s tests/ci",
         "python -m unittest tests.ci.test_local_certification -v",

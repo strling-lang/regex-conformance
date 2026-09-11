@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/applicability-evaluation-result.schema.json",
+  "title": "Proof-bearing applicability evaluation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "contract", "requirement", "predicate", "profile", "capability_snapshot", "result", "truth_value", "reason_codes", "facts_read", "unresolved_dependencies", "trace", "semantic_boundary", "evaluation_id", "evaluation_digest_sha256"],
+  "properties": {
+    "schema_version": {"const": "applicability-evaluation-result.v1"},
+    "contract": {"$ref": "#/$defs/binding"},
+    "requirement": {"$ref": "#/$defs/binding"},
+    "predicate": {"$ref": "#/$defs/binding"},
+    "profile": {
+      "type": "object", "additionalProperties": false,
+      "required": ["profile_id", "profile_revision_id"],
+      "properties": {"profile_id": {"$ref": "#/$defs/rcid"}, "profile_revision_id": {"$ref": "#/$defs/rcid"}}
+    },
+    "capability_snapshot": {"$ref": "#/$defs/binding"},
+    "result": {"enum": ["applicable", "not-applicable", "unresolved", "invalid"]},
+    "truth_value": {"enum": ["true", "false", "unknown", "invalid"]},
+    "reason_codes": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"}},
+    "facts_read": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/factRef"}},
+    "unresolved_dependencies": {"type": "array", "uniqueItems": true, "items": {"type": "object", "additionalProperties": false, "required": ["field_id", "field", "target", "reason"], "properties": {"field_id": {"$ref": "#/$defs/rcid"}, "field": {"type": "string"}, "target": {"type": ["boolean", "integer", "string", "null"]}, "reason": {"enum": ["missing-fact", "conflicting-facts", "inadmissible-fact", "unresolved-authority", "field-outside-frozen-model"]}}}},
+    "trace": {"$ref": "#/$defs/trace"},
+    "semantic_boundary": {
+      "type": "object", "additionalProperties": false,
+      "required": ["determines_expected_result", "establishes_empirical_unsupported", "rewrites_semantic_requirement", "ad_hoc_skip_used"],
+      "properties": {"determines_expected_result": {"const": false}, "establishes_empirical_unsupported": {"const": false}, "rewrites_semantic_requirement": {"const": false}, "ad_hoc_skip_used": {"const": false}}
+    },
+    "evaluation_id": {"type": "string", "pattern": "^rcid:v1:applicability-coordinate:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "evaluation_digest_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "rcid": {"type": "string", "pattern": "^rcid:v1:"},
+    "binding": {"type": "object", "additionalProperties": false, "required": ["artifact_id", "digest_sha256"], "properties": {"artifact_id": {"$ref": "#/$defs/rcid"}, "digest_sha256": {"$ref": "#/$defs/sha256"}}},
+    "factRef": {"type": "object", "additionalProperties": false, "required": ["fact_id", "fact_digest_sha256"], "properties": {"fact_id": {"$ref": "#/$defs/rcid"}, "fact_digest_sha256": {"$ref": "#/$defs/sha256"}}},
+    "trace": {
+      "type": "object", "additionalProperties": false,
+      "required": ["node_path", "operator", "truth_value", "reason_code", "fact_ids", "children"],
+      "properties": {
+        "node_path": {"type": "string"}, "operator": {"type": "string"}, "truth_value": {"enum": ["true", "false", "unknown", "invalid"]}, "reason_code": {"type": "string"},
+        "fact_ids": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/rcid"}},
+        "children": {"type": "array", "items": {"$ref": "#/$defs/trace"}}
+      }
+    }
+  }
+}
