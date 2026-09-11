@@ -14,6 +14,7 @@ second program authority.
 - [Canonical semantic obligations and requirements](semantic-obligation-snapshots.md)
 - [Scientific denominator accounting](scientific-denominator-accounting.md)
 - [Oracle hierarchy and circularity guards](oracle-hierarchy.md)
+- [Normative and characterization evidence admissibility](evidence-admissibility.md)
 - [Local authoritative certification and hosted integrity verification](local-authoritative-certification.md)
 - [Generated assertion derivation contract](generated-assertion-derivations.md)
 - [Physical-attempt and terminal-outcome provenance](execution-provenance.md)

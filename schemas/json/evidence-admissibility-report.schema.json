@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/evidence-admissibility-report.schema.json",
+  "title": "Evidence admissibility acceptance report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "published_on", "claim_scope", "contract", "oracle_foundation", "fixtures", "implementation_bindings", "counts", "checks", "denominator_boundary", "result", "derivation", "report_id", "report_digest_sha256"],
+  "properties": {
+    "schema_version": {"const": "evidence-admissibility-report.v1"},
+    "published_on": {"type": "string", "format": "date"},
+    "claim_scope": {"type": "string", "minLength": 1},
+    "contract": {"$ref": "#/$defs/artifactRef"},
+    "oracle_foundation": {"$ref": "#/$defs/artifactRef"},
+    "fixtures": {"$ref": "#/$defs/artifactRef"},
+    "implementation_bindings": {"type": "array", "minItems": 8, "uniqueItems": true, "items": {"type": "object", "additionalProperties": false, "required": ["path", "file_sha256"], "properties": {"path": {"type": "string", "minLength": 1}, "file_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}}},
+    "counts": {"type": "object", "additionalProperties": false, "required": ["evidence_roles", "epistemic_uses", "normative_strengths", "valid_role_fixtures", "valid_admissibility_cases", "prohibited_cases_rejected", "same_material_boundary_cases"], "properties": {"evidence_roles": {"const": 8}, "epistemic_uses": {"const": 10}, "normative_strengths": {"const": 11}, "valid_role_fixtures": {"const": 8}, "valid_admissibility_cases": {"type": "integer", "minimum": 8}, "prohibited_cases_rejected": {"type": "integer", "minimum": 12}, "same_material_boundary_cases": {"type": "integer", "minimum": 2}}},
+    "checks": {"type": "array", "minItems": 10, "uniqueItems": true, "items": {"type": "object", "additionalProperties": false, "required": ["check_id", "status"], "properties": {"check_id": {"type": "string", "minLength": 1}, "status": {"const": "PASS"}}}},
+    "denominator_boundary": {"type": "object", "additionalProperties": false, "required": ["obligations", "requirements", "conditional_requirements", "c4", "modified", "profile_expanded_execution_denominator"], "properties": {"obligations": {"const": 2390}, "requirements": {"const": 3378}, "conditional_requirements": {"const": 1972}, "c4": {"const": "FAIL — 0/3378"}, "modified": {"const": false}, "profile_expanded_execution_denominator": {"const": "deferred"}}},
+    "result": {"const": "PASS"},
+    "derivation": {"type": "object"},
+    "report_id": {"type": "string", "pattern": "^rcid:v1:trust-assessment:h:jcs-sha256-v1:"},
+    "report_digest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "$defs": {"artifactRef": {"type": "object", "additionalProperties": false, "required": ["path", "artifact_id", "digest_sha256"], "properties": {"path": {"type": "string", "minLength": 1}, "artifact_id": {"type": "string", "minLength": 1}, "digest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}}}
+}

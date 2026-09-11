@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/evidence-admissibility-fixtures.schema.json",
+  "title": "Evidence admissibility validation fixtures",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "published_on", "contract_ref", "valid_evidence", "valid_cases", "invalid_cases", "same_material_boundary_cases", "valid_expectation_basis", "derivation", "fixture_set_id", "fixture_set_digest_sha256"],
+  "properties": {
+    "schema_version": {"const": "evidence-admissibility-fixtures.v1"},
+    "published_on": {"type": "string", "format": "date"},
+    "contract_ref": {"type": "object", "additionalProperties": false, "required": ["contract_id", "contract_digest_sha256"], "properties": {"contract_id": {"type": "string", "minLength": 1}, "contract_digest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}},
+    "valid_evidence": {"type": "array", "minItems": 8, "maxItems": 8, "items": {"type": "object"}},
+    "valid_cases": {"type": "array", "minItems": 8, "items": {"$ref": "#/$defs/case"}},
+    "invalid_cases": {"type": "array", "minItems": 12, "items": {"$ref": "#/$defs/invalidCase"}},
+    "same_material_boundary_cases": {"type": "array", "minItems": 2, "items": {"$ref": "#/$defs/case"}},
+    "valid_expectation_basis": {"type": "object"},
+    "derivation": {"type": "object"},
+    "fixture_set_id": {"type": "string", "pattern": "^rcid:v1:artifact-set-manifest:h:jcs-sha256-v1:"},
+    "fixture_set_digest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "$defs": {
+    "case": {"type": "object", "additionalProperties": false, "required": ["case_id", "request", "expected_decision"], "properties": {"case_id": {"type": "string", "minLength": 1}, "request": {"type": "object"}, "expected_decision": {"const": "admissible"}}},
+    "invalidCase": {"type": "object", "additionalProperties": false, "required": ["case_id", "base_role", "request", "mutation", "expected_error"], "properties": {"case_id": {"type": "string", "minLength": 1}, "base_role": {"type": "string", "minLength": 1}, "request": {"type": "object"}, "mutation": {"type": "string", "minLength": 1}, "expected_error": {"type": "string", "minLength": 1}}}
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/evidence-admissibility-request.schema.json",
+  "title": "Evidence admissibility request",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "evidence_refs", "epistemic_use", "requested_conclusion", "scope", "oracle_class", "require_independent_authorities", "minimum_authority_domains"],
+  "properties": {
+    "schema_version": {"const": "evidence-admissibility-request.v1"},
+    "evidence_refs": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "object", "additionalProperties": false, "required": ["evidence_id", "evidence_digest_sha256"], "properties": {"evidence_id": {"type": "string", "pattern": "^rcid:v1:evidence-manifest:h:jcs-sha256-v1:"}, "evidence_digest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}}},
+    "epistemic_use": {"type": "string", "minLength": 1},
+    "requested_conclusion": {"type": "string", "minLength": 1},
+    "scope": {"type": "object", "additionalProperties": false, "required": ["requirement_scientific_ids", "profile_ids", "profile_family_ids", "operation_scientific_ids"], "properties": {"requirement_scientific_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^rcid:v1:semantic-requirement:u7:"}}, "profile_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^rcid:v1:profile:u7:"}}, "profile_family_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^rcid:v1:profile-family:u7:"}}, "operation_scientific_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^rcid:v1:operation:u7:"}}}},
+    "oracle_class": {"pattern": "^O[1-8]$", "type": "string"},
+    "require_independent_authorities": {"type": "boolean"},
+    "minimum_authority_domains": {"type": "integer", "minimum": 1}
+  }
+}

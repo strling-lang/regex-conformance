@@ -46,6 +46,11 @@ ARTIFACT_ROLES: tuple[tuple[str, str], ...] = (
     ("oracle-validation-fixtures", "tests/fixtures/oracle/oracle-validation-cases.v1.json"),
     ("oracle-foundation-report", "reports/oracle/oracle-foundation-2026-09-10.v1.json"),
     ("oracle-authority", "oracle/current-authority.v1.json"),
+    ("evidence-admissibility-allocation", "oracle/evidence/evidence-admissibility-identities-2026-09-10.v1.json"),
+    ("evidence-admissibility-contract", "oracle/contracts/regex-conformance-evidence-admissibility-2026-09-10.v1.json"),
+    ("evidence-admissibility-fixtures", "tests/fixtures/oracle/evidence-admissibility-cases.v1.json"),
+    ("evidence-admissibility-report", "reports/oracle/evidence-admissibility-2026-09-10.v1.json"),
+    ("evidence-admissibility-authority", "oracle/evidence/current-authority.v1.json"),
     ("certification-input", "certification/inputs/current-repository-2026-09-08.v2.json"),
     ("certification-report", "certification/reports/current-repository-2026-09-08.v2.json"),
     ("certification-authority", "certification/current-authority.v1.json"),
@@ -67,6 +72,7 @@ LOCAL_COMMANDS: tuple[tuple[str, ...], ...] = (
     ("python", "tools/semantics/audit_scientific_denominator.py", "--check"),
     ("python", "tools/semantics/certify_true_denominator.py", "--history"),
     ("python", "tools/oracle/compile_oracle_foundation.py", "--check", "--bounded"),
+    ("python", "tools/oracle/compile_evidence_admissibility.py", "--check", "--bounded"),
     ("python", "tools/certification/evaluate.py", "--check"),
     ("python", "tools/semantics/certify_semantic_knowledge.py", "--check"),
     ("python", "tools/foundation/certify.py", "--history"),
@@ -77,6 +83,7 @@ LOCAL_COMMANDS: tuple[tuple[str, ...], ...] = (
     ("python", "tools/ci/verify_repository_identifier_hygiene.py", "--root", "."),
     ("python", "-m", "unittest", "discover", "-s", "tests/schema", "-p", "test_denominator_audit.py", "-v"),
     ("python", "-m", "unittest", "discover", "-s", "tests/schema", "-p", "test_true_obligation_denominator_gate.py", "-v"),
+    ("python", "-m", "unittest", "discover", "-s", "tests/schema", "-p", "test_evidence_admissibility.py", "-v"),
     ("python", "-m", "unittest", "discover", "-s", "tests/ci", "-v"),
 )
 
@@ -158,6 +165,9 @@ def _artifact_payload(root: Path) -> tuple[list[dict[str, Any]], dict[str, Any]]
     oracle_contract = load_strict(root / by_role["oracle-foundation-contract"]["path"])
     oracle_report = load_strict(root / by_role["oracle-foundation-report"]["path"])
     oracle_authority = load_strict(root / by_role["oracle-authority"]["path"])
+    evidence_contract = load_strict(root / by_role["evidence-admissibility-contract"]["path"])
+    evidence_report = load_strict(root / by_role["evidence-admissibility-report"]["path"])
+    evidence_authority = load_strict(root / by_role["evidence-admissibility-authority"]["path"])
     bindings = {
         "certification_contract": {"id": contract["contract_id"], **by_role["certification-contract"]},
         "semantic_snapshot": {"id": semantic["snapshot_id"], **by_role["semantic-snapshot"]},
@@ -173,6 +183,9 @@ def _artifact_payload(root: Path) -> tuple[list[dict[str, Any]], dict[str, Any]]
         "oracle_foundation_contract": {"id": oracle_contract["contract_id"], **by_role["oracle-foundation-contract"]},
         "oracle_foundation_report": {"id": oracle_report["report_id"], "result": oracle_report["result"], **by_role["oracle-foundation-report"]},
         "oracle_authority": {"id": oracle_authority["index_id"], **by_role["oracle-authority"]},
+        "evidence_admissibility_contract": {"id": evidence_contract["contract_id"], **by_role["evidence-admissibility-contract"]},
+        "evidence_admissibility_report": {"id": evidence_report["report_id"], "result": evidence_report["result"], **by_role["evidence-admissibility-report"]},
+        "evidence_admissibility_authority": {"id": evidence_authority["index_id"], **by_role["evidence-admissibility-authority"]},
         "identity_catalog": {"schema_version": identity["schema_version"], "entry_count": len(identity["bindings"]), **by_role["identity-catalog"]},
         "derivation_catalog": {"schema_version": derivation["schema_version"], "derivation_count": len(derivation["derivations"]), **by_role["derivation-catalog"]},
         "current_certification": {"id": report["report_id"], "result": report["final_state"], **by_role["certification-report"]},
@@ -345,6 +358,19 @@ def verify_manifest(root: Path, manifest_path: Path, *, expected_envelope_sha: s
             raise LocalCertificationError("oracle foundation report does not bind its exact contract")
         if oracle_authority.get("current_contract", {}).get("artifact_id") != oracle_contract.get("contract_id"):
             raise LocalCertificationError("oracle authority does not bind its exact current contract")
+    evidence_binding = manifest["bindings"].get("evidence_admissibility_report")
+    if evidence_binding is not None:
+        evidence_report = load_strict(root / evidence_binding["path"])
+        evidence_contract = load_strict(root / manifest["bindings"]["evidence_admissibility_contract"]["path"])
+        evidence_authority = load_strict(root / manifest["bindings"]["evidence_admissibility_authority"]["path"])
+        if evidence_report.get("result") != "PASS":
+            raise LocalCertificationError("evidence admissibility report is not PASS")
+        if evidence_report.get("contract", {}).get("artifact_id") != evidence_contract.get("contract_id"):
+            raise LocalCertificationError("evidence admissibility report does not bind its exact contract")
+        if evidence_authority.get("current_contract", {}).get("artifact_id") != evidence_contract.get("contract_id"):
+            raise LocalCertificationError("evidence admissibility authority does not bind its exact current contract")
+        if evidence_contract.get("oracle_foundation", {}).get("artifact_id") != manifest["bindings"]["oracle_foundation_contract"].get("id"):
+            raise LocalCertificationError("evidence admissibility contract does not bind the fixed oracle foundation")
     if require_envelope:
         envelope_sha = expected_envelope_sha or git_output(root, "rev-parse", "HEAD")
         if FULL_SHA.fullmatch(envelope_sha) is None or git_output(root, "rev-parse", "HEAD") != envelope_sha:

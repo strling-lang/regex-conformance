@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/evidence-admissibility-authority.schema.json",
+  "title": "Evidence admissibility authority index",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "current_contract", "oracle_foundation", "validation_fixture", "acceptance_report", "semantic_requirement_authority", "historical_compatibility", "next_interfaces", "governance", "derivation", "index_id", "index_digest_sha256"],
+  "properties": {
+    "schema_version": {"const": "evidence-admissibility-authority.v1"},
+    "current_contract": {"$ref": "#/$defs/binding"},
+    "oracle_foundation": {"$ref": "#/$defs/binding"},
+    "validation_fixture": {"$ref": "#/$defs/binding"},
+    "acceptance_report": {"$ref": "#/$defs/binding"},
+    "semantic_requirement_authority": {"$ref": "#/$defs/binding"},
+    "historical_compatibility": {"type": "object", "additionalProperties": false, "required": ["observations_rewritten", "campaign_expectations_reinterpreted", "denominator_changed", "migration_rule"], "properties": {"observations_rewritten": {"const": false}, "campaign_expectations_reinterpreted": {"const": false}, "denominator_changed": {"const": false}, "migration_rule": {"const": "prospective-versioned-no-rewrite"}}},
+    "next_interfaces": {"type": "object", "additionalProperties": false, "required": ["profile_applicability", "claims_and_adjudication", "waivers", "production_vectors"], "properties": {"profile_applicability": {"const": "deferred"}, "claims_and_adjudication": {"const": "deferred"}, "waivers": {"const": "deferred"}, "production_vectors": {"const": "deferred"}}},
+    "governance": {"type": "string", "minLength": 1},
+    "derivation": {"type": "object"},
+    "index_id": {"type": "string", "pattern": "^rcid:v1:artifact-set-manifest:h:jcs-sha256-v1:"},
+    "index_digest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "$defs": {"binding": {"type": "object", "additionalProperties": false, "required": ["path", "artifact_id", "digest_sha256", "file_sha256"], "properties": {"path": {"type": "string", "minLength": 1}, "artifact_id": {"type": "string", "minLength": 1}, "digest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}, "file_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}}}
+}

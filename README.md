@@ -72,6 +72,11 @@ now define eight epistemic oracle functions, their exact judgment ceilings,
 deep independence traversal, conflict-preserving resolution, and immutable
 campaign expectation bindings. They do not author vectors or turn the current
 absence of production evidence into a conformance conclusion.
+The [evidence-admissibility contract](docs/architecture/evidence-admissibility.md)
+separately determines which immutable evidence roles may support each
+epistemic use. It keeps source-language strength, evidence quality, and
+authority-domain independence explicit so observation, consensus, historical
+stability, or implementation popularity cannot acquire normative authority.
 The bounded freeze claim and its supersession rules are documented in the
 [semantic universe freeze](docs/architecture/semantic-universe-freeze.md).
 

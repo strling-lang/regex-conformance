@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/evidence-admissibility-record.schema.json",
+  "title": "Evidence admissibility record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "record_version", "contract_ref", "oracle_contract_ref", "oracle_ref", "evidence_role", "normative_strength", "source_authority", "semantic_scope", "provenance", "dependency_graph", "quality", "oracle_compatibility", "claimed_epistemic_uses", "record_derivation", "evidence_id", "evidence_digest_sha256"],
+  "properties": {
+    "schema_version": {"const": "evidence-admissibility-record.v1"},
+    "record_version": {"const": "1.0.0"},
+    "contract_ref": {"$ref": "#/$defs/contractRef"},
+    "oracle_contract_ref": {"$ref": "#/$defs/contractRef"},
+    "oracle_ref": {
+      "type": "object", "additionalProperties": false,
+      "required": ["oracle_id", "oracle_digest_sha256", "oracle_class"],
+      "properties": {
+        "oracle_id": {"type": "string", "pattern": "^rcid:v1:expectation-projection:h:jcs-sha256-v1:"},
+        "oracle_digest_sha256": {"$ref": "#/$defs/sha256"},
+        "oracle_class": {"pattern": "^O[1-8]$", "type": "string"}
+      }
+    },
+    "evidence_role": {"$ref": "#/$defs/evidenceRole"},
+    "normative_strength": {"$ref": "#/$defs/normativeStrength"},
+    "source_authority": {
+      "type": "object", "additionalProperties": false,
+      "required": ["authority_domain_id", "source_identity", "source_revision", "source_digest_sha256", "locator", "semantic_authority", "immutable_input"],
+      "properties": {
+        "authority_domain_id": {"type": "string", "minLength": 1},
+        "source_identity": {"type": "string", "minLength": 1},
+        "source_revision": {"type": "string", "minLength": 1},
+        "source_digest_sha256": {"$ref": "#/$defs/sha256"},
+        "locator": {"type": "string", "minLength": 1},
+        "semantic_authority": {"enum": ["external-normative", "formal-model", "authoritative-data", "relational", "family-relative", "implementation-self-documentation", "historical-empirical", "characterization"]},
+        "immutable_input": {"type": "boolean"}
+      }
+    },
+    "semantic_scope": {
+      "type": "object", "additionalProperties": false,
+      "required": ["statement", "requirement_scientific_ids", "profile_ids", "profile_family_ids", "operation_scientific_ids", "semantic_assertion_revision_ids"],
+      "properties": {
+        "statement": {"type": "string", "minLength": 1},
+        "requirement_scientific_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^rcid:v1:semantic-requirement:u7:"}},
+        "profile_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^rcid:v1:profile:u7:"}},
+        "profile_family_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^rcid:v1:profile-family:u7:"}},
+        "operation_scientific_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^rcid:v1:operation:u7:"}},
+        "semantic_assertion_revision_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^rcid:v1:finding-revision:h:jcs-sha256-v1:"}}
+      }
+    },
+    "provenance": {"type": "object", "minProperties": 4, "additionalProperties": true},
+    "dependency_graph": {
+      "type": "object", "additionalProperties": false,
+      "required": ["root_dependency_ids", "nodes"],
+      "properties": {
+        "root_dependency_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "nodes": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/dependency"}}
+      }
+    },
+    "quality": {
+      "type": "object", "additionalProperties": false,
+      "required": ["integrity_status", "preservation_status", "reproducibility_status", "quality_changes_epistemic_role"],
+      "properties": {
+        "integrity_status": {"enum": ["verified", "unverified", "failed"]},
+        "preservation_status": {"enum": ["immutable-complete", "incomplete", "unavailable"]},
+        "reproducibility_status": {"enum": ["not-applicable", "unassessed", "reproduced", "not-reproduced", "provenance-blocked"]},
+        "quality_changes_epistemic_role": {"const": false}
+      }
+    },
+    "oracle_compatibility": {"type": "array", "minItems": 1, "maxItems": 1, "uniqueItems": true, "items": {"pattern": "^O[1-8]$", "type": "string"}},
+    "claimed_epistemic_uses": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/epistemicUse"}},
+    "record_derivation": {"$ref": "#/$defs/derivation"},
+    "evidence_id": {"type": "string", "pattern": "^rcid:v1:evidence-manifest:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "evidence_digest_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "contractRef": {"type": "object", "additionalProperties": false, "required": ["contract_id", "contract_digest_sha256"], "properties": {"contract_id": {"type": "string", "minLength": 1}, "contract_digest_sha256": {"$ref": "#/$defs/sha256"}}},
+    "derivation": {"type": "object", "additionalProperties": false, "required": ["derivation_id", "derivation_revision_id", "derivation_class"], "properties": {"derivation_id": {"type": "string", "pattern": "^rcid:v1:assertion-derivation:u7:"}, "derivation_revision_id": {"type": "string", "pattern": "^rcid:v1:assertion-derivation-revision:h:jcs-sha256-v1:"}, "derivation_class": {"enum": ["measurement", "calculation", "research-derived", "external-evidence", "inference", "constant-by-construction", "manual-decision"]}}},
+    "dependency": {
+      "type": "object", "additionalProperties": false,
+      "required": ["dependency_id", "kind", "semantic_role", "authority_domain_id", "version", "content_digest_sha256", "upstream_dependency_ids", "subject_profile_ids", "semantic_evaluator"],
+      "properties": {
+        "dependency_id": {"type": "string", "minLength": 1},
+        "kind": {"enum": ["absence-of-authority", "authoritative-dataset", "designated-reference-profile", "empirical-consensus", "empirical-observation", "expectation-projection", "formal-construction", "generator", "historical-observation", "implementation-documentation", "normative-source-proposition", "relation-definition", "research-claim", "target-implementation-output"]},
+        "semantic_role": {"enum": ["comparison-input", "context-only", "descriptive-statistic", "expected-basis", "historical-subject", "promotion-source", "stimulus-only"]},
+        "authority_domain_id": {"type": "string", "minLength": 1},
+        "version": {"type": "string", "minLength": 1},
+        "content_digest_sha256": {"$ref": "#/$defs/sha256"},
+        "upstream_dependency_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+        "subject_profile_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^rcid:v1:profile:u7:"}},
+        "semantic_evaluator": {"type": "boolean"}
+      }
+    },
+    "evidenceRole": {"enum": ["normative-source-evidence", "formal-derivation-evidence", "authoritative-data-derived-evidence", "relational-metamorphic-evidence", "family-relative-reference-evidence", "implementation-documentation-evidence", "historical-empirical-evidence", "characterization-only-evidence"]},
+    "epistemicUse": {"enum": ["establish-normative-expectation", "establish-formal-model-expectation", "establish-data-scoped-expectation", "evaluate-metamorphic-relation", "establish-family-relative-comparison", "establish-implementation-documentation-expectation", "establish-historical-fact", "establish-characterization", "support-discrepancy-investigation", "support-research-revision"]},
+    "normativeStrength": {"enum": ["required", "prohibited", "permitted", "optional", "conditional", "implementation-defined", "unspecified", "informative-non-normative", "ambiguous", "silent-not-established", "not-applicable"]}
+  }
+}

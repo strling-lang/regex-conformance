@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/expectation-basis.schema.json",
+  "title": "Immutable expectation basis",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "contract_ref", "oracle_contract_ref", "semantic_requirement_id", "epistemic_use", "conclusion", "evidence_refs", "oracle_refs", "scope", "resolution_state", "frozen_at", "mutable_latest_alias_used", "basis_id", "basis_digest_sha256"],
+  "properties": {
+    "schema_version": {"const": "expectation-basis.v1"},
+    "contract_ref": {"$ref": "#/$defs/contractRef"},
+    "oracle_contract_ref": {"$ref": "#/$defs/contractRef"},
+    "semantic_requirement_id": {"type": "string", "pattern": "^rcid:v1:semantic-requirement:u7:"},
+    "epistemic_use": {"type": "string", "minLength": 1},
+    "conclusion": {"type": "string", "minLength": 1},
+    "evidence_refs": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/evidenceRef"}},
+    "oracle_refs": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/oracleRef"}},
+    "scope": {"type": "object", "additionalProperties": false, "required": ["profile_ids", "profile_family_ids", "operation_scientific_ids"], "properties": {"profile_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^rcid:v1:profile:u7:"}}, "profile_family_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^rcid:v1:profile-family:u7:"}}, "operation_scientific_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^rcid:v1:operation:u7:"}}}},
+    "resolution_state": {"const": "oracle-established"},
+    "frozen_at": {"type": "string", "format": "date-time"},
+    "mutable_latest_alias_used": {"const": false},
+    "basis_id": {"type": "string", "pattern": "^rcid:v1:expectation-projection:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "basis_digest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "$defs": {
+    "contractRef": {"type": "object", "additionalProperties": false, "required": ["contract_id", "contract_digest_sha256"], "properties": {"contract_id": {"type": "string", "minLength": 1}, "contract_digest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}},
+    "evidenceRef": {"type": "object", "additionalProperties": false, "required": ["evidence_id", "evidence_digest_sha256"], "properties": {"evidence_id": {"type": "string", "pattern": "^rcid:v1:evidence-manifest:h:jcs-sha256-v1:"}, "evidence_digest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}},
+    "oracleRef": {"type": "object", "additionalProperties": false, "required": ["oracle_id", "oracle_digest_sha256"], "properties": {"oracle_id": {"type": "string", "pattern": "^rcid:v1:expectation-projection:h:jcs-sha256-v1:"}, "oracle_digest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}}
+  }
+}

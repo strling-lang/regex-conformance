@@ -166,12 +166,16 @@ The versioned [oracle hierarchy and circularity guards](oracle-hierarchy.md)
 now define O1–O8 as distinct epistemic functions, enforce class-specific
 judgment boundaries, traverse indirect provenance and shared authority domains,
 preserve conflicting authorities, and freeze campaign expectations by exact
-revision. Next, implement a total, proof-bearing applicability evaluator and
+revision. The [normative and characterization evidence contract](evidence-admissibility.md)
+now maps O1–O8 to exact evidence roles and epistemic uses, distinguishes source
+language from evidence quality, pins immutable provenance, and rejects
+observation, consensus, historical, generator, silence, and shared-authority
+laundering. Next, implement a total, proof-bearing applicability evaluator and
 formalize the coordinate-state
 algebra. Define divergence, waiver, dispute, and unresolved states without
 allowing observations to redefine applicability. Claims must follow an
 explicit observation-to-adjudication-to-claim process and carry reproducibility
-and evidence-confidence metadata. Any proposal for a waiver or
+and evidence-quality metadata without a numeric authority score. Any proposal for a waiver or
 flaky-conformant state to satisfy certification requires explicit program-owner
 approval.
 

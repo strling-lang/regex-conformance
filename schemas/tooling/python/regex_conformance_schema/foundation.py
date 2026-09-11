@@ -212,6 +212,7 @@ ALLOWED_FULL_PASS_SCHEMA_PATHS = {
     "schemas/json/semantic-knowledge-foundation-acceptance.schema.json",
     "schemas/tooling/python/regex_conformance_schema/certification.py",
     "schemas/tooling/python/regex_conformance_schema/foundation.py",
+    "schemas/tooling/python/regex_conformance_schema/evidence_admissibility.py",
     "schemas/tooling/python/regex_conformance_schema/semantic_foundation.py",
 }
 

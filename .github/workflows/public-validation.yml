@@ -49,6 +49,7 @@ jobs:
           python schemas/tooling/python/run.py validate-repository
           python schemas/tooling/python/run.py verify-fixtures
           python tools/oracle/compile_oracle_foundation.py --check --bounded
+          python tools/oracle/compile_evidence_admissibility.py --check --bounded
           python tools/ci/verify_repository_identifier_hygiene.py --root .
           python -m unittest discover -s tests/ci -v
 

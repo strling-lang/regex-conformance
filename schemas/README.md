@@ -177,6 +177,14 @@ Semantic validation performs transitive cycle and authority-domain checks so
 observations, consensus, generators, reference profiles, and absence of
 documentation cannot be laundered into independent expected results.
 
+The evidence-admissibility schema family maps those oracle functions to eight
+evidence roles and ten exact epistemic uses. It defines source-language
+strength, immutable source and scope provenance, orthogonal quality axes,
+authority-domain independence, prospective frozen expectation bases, and
+fail-closed role/use/conclusion validation. Informative prose, ambiguity,
+silence, historical stability, characterization, or shared wrappers cannot be
+promoted into normative authority by schema omission.
+
 `json/generated-assertion-derivation-catalog.schema.json` defines the shared
 provenance contract for assertion-like generated fields. It requires
 class-specific metadata for measurement, calculation, research-derived,
