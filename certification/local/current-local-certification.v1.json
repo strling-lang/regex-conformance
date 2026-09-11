@@ -95,15 +95,15 @@
       "path": "registries/provenance/generated-assertion-derivations.v1.json",
       "role": "derivation-catalog",
       "schema_version": "generated-assertion-derivation-catalog.v1",
-      "sha256": "3c86f505a83552fa1a23abf2c6b300557918d6d3e41ea2e6882d61d432399980"
+      "sha256": "fe8c8e13001dc2d07138e49edc066cc300f61d0b79af6705b6a21c8030df9701"
     },
     "evidence_adjudication_closure": {
-      "byte_length": 8970,
+      "byte_length": 8761,
       "id": "rcid:v1:trust-assessment:h:jcs-sha256-v1:0524a6df169e0bcdd3cc226fcae58d4f092e17d7d22550b30486e8aa9b97add8",
       "path": "certification/reports/evidence-adjudication-architecture-closure-2026-09-11.v1.json",
       "result": "PASS",
       "role": "evidence-adjudication-closure",
-      "sha256": "ae76a842c3eb97adb0666aa47f534c72d13a29e44e8e8d1481e1eee3ad655f73"
+      "sha256": "0fa43f72e43e94ea20b48a26b017dbbe311a0765b8c262f823e4b27ae3c8cc49"
     },
     "evidence_admissibility_authority": {
       "byte_length": 3104,
@@ -209,8 +209,8 @@
     }
   },
   "certified_source": {
-    "git_sha": "4c60b605b676233fcee0bc7799d8b1a652d94e87",
-    "tree_sha": "88641a0b8e6d02a904268973eb83b687bf2bf29d",
+    "git_sha": "ffd4f8bd787d28f9dc4310fa0f55c1ef6c550e84",
+    "tree_sha": "f7e778af273b2530fabb555f1d7b692df4da812e",
     "worktree_clean": true
   },
   "cheap_aggregates": {
@@ -462,10 +462,10 @@
         "sha256": "0b561071f2739f1d4a6bd6d97785a5dcb8afa2e0b77a05c07965b8d267497673"
       },
       {
-        "byte_length": 8970,
+        "byte_length": 8761,
         "path": "certification/reports/evidence-adjudication-architecture-closure-2026-09-11.v1.json",
         "role": "evidence-adjudication-closure",
-        "sha256": "ae76a842c3eb97adb0666aa47f534c72d13a29e44e8e8d1481e1eee3ad655f73"
+        "sha256": "0fa43f72e43e94ea20b48a26b017dbbe311a0765b8c262f823e4b27ae3c8cc49"
       },
       {
         "byte_length": 7328,
@@ -495,7 +495,7 @@
         "byte_length": 281961,
         "path": "registries/provenance/generated-assertion-derivations.v1.json",
         "role": "derivation-catalog",
-        "sha256": "3c86f505a83552fa1a23abf2c6b300557918d6d3e41ea2e6882d61d432399980"
+        "sha256": "fe8c8e13001dc2d07138e49edc066cc300f61d0b79af6705b6a21c8030df9701"
       },
       {
         "byte_length": 13494,
@@ -648,11 +648,11 @@
         "sha256": "5c0a9a2e04c5c6a1b799a8b8a92078eff381967bf75ec40055696cf118b6efd3"
       }
     ],
-    "root_sha256": "492fa429fd5bce0a71f17978b25f7cebf95342a0a8a63b90dcb8be9cabb48b27"
+    "root_sha256": "2425230b4294d9a1250b72f0e211f5bf9ac7f0680690428ef3ca8a7b978609be"
   },
   "hash_policy": "jcs-sha256-v1",
-  "local_certification_root": "e5003761773cff429a3d88c2091f834895c3eedb639d0be97335643c7f94b53d",
-  "manifest_id": "rcid:v1:artifact-set-manifest:h:jcs-sha256-v1:e5003761773cff429a3d88c2091f834895c3eedb639d0be97335643c7f94b53d",
+  "local_certification_root": "30b43b0a52ba15cd5b0e6f73e124c54b0095dcfcd1906a77f6b648f8ed044178",
+  "manifest_id": "rcid:v1:artifact-set-manifest:h:jcs-sha256-v1:30b43b0a52ba15cd5b0e6f73e124c54b0095dcfcd1906a77f6b648f8ed044178",
   "promotion_envelope": {
     "manifest_only_commit_required": true,
     "manifest_path": "certification/local/current-local-certification.v1.json",
@@ -667,7 +667,7 @@
           "tools/semantics/generate_obligation_snapshots.py",
           "--check"
         ],
-        "duration_milliseconds": 237280,
+        "duration_milliseconds": 324521,
         "exit_code": 0,
         "output_sha256": "35938d9ce76529b7078a78d77a2b5f636d34f203b739096f6a593c189442bc77",
         "result": "PASS",
@@ -679,7 +679,7 @@
           "tools/semantics/audit_scientific_denominator.py",
           "--check"
         ],
-        "duration_milliseconds": 30109,
+        "duration_milliseconds": 56338,
         "exit_code": 0,
         "output_sha256": "b49d9885e30a11e73e0c7fbbf1e7b0b9a4421dd8db124eb7c4f024bbbe88a565",
         "result": "PASS",
@@ -691,7 +691,7 @@
           "tools/semantics/certify_true_denominator.py",
           "--history"
         ],
-        "duration_milliseconds": 576,
+        "duration_milliseconds": 517,
         "exit_code": 0,
         "output_sha256": "c82924c2236afa72803e884b3394398794aaf224cf8f8d549d4255813fd8ec72",
         "result": "PASS",
@@ -704,7 +704,7 @@
           "--check",
           "--bounded"
         ],
-        "duration_milliseconds": 12497,
+        "duration_milliseconds": 20914,
         "exit_code": 0,
         "output_sha256": "0d029c252a52245b5ebb96e72ec4dfc068382551ad7250ca9e97dcab052b44aa",
         "result": "PASS",
@@ -717,7 +717,7 @@
           "--check",
           "--bounded"
         ],
-        "duration_milliseconds": 21355,
+        "duration_milliseconds": 37211,
         "exit_code": 0,
         "output_sha256": "0a1314131f7bebbf25bdc6839064115a6a560aaf759aa6a7052d0d46640335bb",
         "result": "PASS",
@@ -730,7 +730,7 @@
           "--check",
           "--bounded"
         ],
-        "duration_milliseconds": 44711,
+        "duration_milliseconds": 72382,
         "exit_code": 0,
         "output_sha256": "84b079e8e81b74e544810d9c0cc9663056f1ea816c172d66d24c006c6802e209",
         "result": "PASS",
@@ -743,7 +743,7 @@
           "--check",
           "--bounded"
         ],
-        "duration_milliseconds": 21943,
+        "duration_milliseconds": 33377,
         "exit_code": 0,
         "output_sha256": "cad21e60dd0c084f90c5ee1ab4457cb4a0ab89480679bad094671af41b426534",
         "result": "PASS",
@@ -756,7 +756,7 @@
           "--check",
           "--history"
         ],
-        "duration_milliseconds": 2466,
+        "duration_milliseconds": 1986,
         "exit_code": 0,
         "output_sha256": "85023c3160fd15b8ca7a2ad289bd2994d31c87dbd9497922246b5adafdb116bf",
         "result": "PASS",
@@ -768,7 +768,7 @@
           "tools/certification/evaluate.py",
           "--check"
         ],
-        "duration_milliseconds": 123513,
+        "duration_milliseconds": 97509,
         "exit_code": 0,
         "output_sha256": "c90d4ec5dac2be001766f6be03540893720dc504b43960d103cde65ce74c5b9c",
         "result": "PASS",
@@ -780,7 +780,7 @@
           "tools/semantics/certify_semantic_knowledge.py",
           "--check"
         ],
-        "duration_milliseconds": 233631,
+        "duration_milliseconds": 161035,
         "exit_code": 0,
         "output_sha256": "6751e4759c2bcfbccf775940cf63a1fc2469f0c87f060366324c9189d32f243a",
         "result": "PASS",
@@ -792,7 +792,7 @@
           "tools/foundation/certify.py",
           "--history"
         ],
-        "duration_milliseconds": 816,
+        "duration_milliseconds": 552,
         "exit_code": 0,
         "output_sha256": "b2ac5e0c7aa6a55311daaeb2b3c94d70f5c02c26f290af77ae06d38ffe5e4cb8",
         "result": "PASS",
@@ -804,7 +804,7 @@
           "tools/identity/freeze_scientific_identities.py",
           "--check"
         ],
-        "duration_milliseconds": 44047,
+        "duration_milliseconds": 29583,
         "exit_code": 0,
         "output_sha256": "c11f426e50f151c87692af87135ad86bbfd81ea9b9d135f02502b20e37f5cc70",
         "result": "PASS",
@@ -816,7 +816,7 @@
           "tools/provenance/compile_generated_assertion_derivations.py",
           "--check"
         ],
-        "duration_milliseconds": 173369,
+        "duration_milliseconds": 156929,
         "exit_code": 0,
         "output_sha256": "aab58747189b8a9e446587f9bfe29de1493034c6f885c36dc2eec2409f3db9c1",
         "result": "PASS",
@@ -828,7 +828,7 @@
           "schemas/tooling/python/run.py",
           "validate-repository"
         ],
-        "duration_milliseconds": 179985,
+        "duration_milliseconds": 177801,
         "exit_code": 0,
         "output_sha256": "0896c8f23c219525dee8eeeb72451fede394ab38c35a35796fbe919373725977",
         "result": "PASS",
@@ -840,7 +840,7 @@
           "schemas/tooling/python/run.py",
           "verify-fixtures"
         ],
-        "duration_milliseconds": 3409,
+        "duration_milliseconds": 3201,
         "exit_code": 0,
         "output_sha256": "9000858920430a9a33b1f95cac5170d0bdda89aa7588a21c13defe5a58f75f5e",
         "result": "PASS",
@@ -853,7 +853,7 @@
           "--root",
           "."
         ],
-        "duration_milliseconds": 8535,
+        "duration_milliseconds": 2986,
         "exit_code": 0,
         "output_sha256": "777e9cca7c6039d6bbd1810096a0aa05af9f7fd2a367891b7679aefb77211b69",
         "result": "PASS",
@@ -871,9 +871,9 @@
           "test_denominator_audit.py",
           "-v"
         ],
-        "duration_milliseconds": 38275,
+        "duration_milliseconds": 51456,
         "exit_code": 0,
-        "output_sha256": "c029dad261c5b49dd86975ba460e63c1d8db0e3f3ee6ad9c614870827d835ad6",
+        "output_sha256": "45695650b7595b97ecd61ad51ca2d65402024d218a643a178bf3683759f0bef8",
         "result": "PASS",
         "test_id": "local-17"
       },
@@ -889,9 +889,9 @@
           "test_true_obligation_denominator_gate.py",
           "-v"
         ],
-        "duration_milliseconds": 25875,
+        "duration_milliseconds": 34487,
         "exit_code": 0,
-        "output_sha256": "d38cd09fb1effa6effe2679620c2791fb7102d1c5c3d9e574f4f67ace37bd65c",
+        "output_sha256": "76075697af8fefb10b02275d46d33052f32ff698d2ff5ddb725d5e71518c8eaa",
         "result": "PASS",
         "test_id": "local-18"
       },
@@ -907,9 +907,9 @@
           "test_evidence_admissibility.py",
           "-v"
         ],
-        "duration_milliseconds": 34540,
+        "duration_milliseconds": 59819,
         "exit_code": 0,
-        "output_sha256": "cc939142750847a5ad37ccc4ce88e466695a7e5ab5a5aeb5eb2134df9a5b0444",
+        "output_sha256": "076a9d6111cb5a5a305f1428be53a3db8709904bd86c374b39ab8e45980882d2",
         "result": "PASS",
         "test_id": "local-19"
       },
@@ -925,9 +925,9 @@
           "test_conditional_applicability.py",
           "-v"
         ],
-        "duration_milliseconds": 51523,
+        "duration_milliseconds": 72859,
         "exit_code": 0,
-        "output_sha256": "900ed398bed66ee6808037a43b082f285460192b715cd0261b69af4329bd59a7",
+        "output_sha256": "9148941bbad3179f19d2210efb10d1f41dbadf8d35d06075016e65aa9b3fae81",
         "result": "PASS",
         "test_id": "local-20"
       },
@@ -943,9 +943,9 @@
           "test_adjudication.py",
           "-v"
         ],
-        "duration_milliseconds": 28701,
+        "duration_milliseconds": 44210,
         "exit_code": 0,
-        "output_sha256": "0c463dedaeaa89069dfd0f85333a3f3d13bf0780457deaaa1f022e039c1e5192",
+        "output_sha256": "a4fb4ac8b91cb9c2095afe5758b0f2b6cd2a4c0c4ee13b86c03f1d38e7480626",
         "result": "PASS",
         "test_id": "local-21"
       },
@@ -959,13 +959,13 @@
           "tests/ci",
           "-v"
         ],
-        "duration_milliseconds": 36092,
+        "duration_milliseconds": 40561,
         "exit_code": 0,
-        "output_sha256": "54260e3d1ec097b7b7ab96c7e0963f1651225588e64c5a9b73a4c05ef398e568",
+        "output_sha256": "ca0122a48b1e069e37f17e1cbb89eea4325f8bc7b78f82b306bead34da0240dc",
         "result": "PASS",
         "test_id": "local-22"
       }
     ],
-    "root_sha256": "dd8c2c6ead8b4075ad7d1db49241db0fed833adad57c676121fd42da1a33db18"
+    "root_sha256": "b0005e55eb0fd50568fa8c4117f37f11f85a4578405aeea1fef1b6a44b221664"
   }
 }
