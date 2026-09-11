@@ -16,6 +16,7 @@ second program authority.
 - [Oracle hierarchy and circularity guards](oracle-hierarchy.md)
 - [Normative and characterization evidence admissibility](evidence-admissibility.md)
 - [Conditional requirement applicability](conditional-requirement-applicability.md)
+- [Observation-to-claim adjudication](observation-to-claim-adjudication.md)
 - [Local authoritative certification and hosted integrity verification](local-authoritative-certification.md)
 - [Generated assertion derivation contract](generated-assertion-derivations.md)
 - [Physical-attempt and terminal-outcome provenance](execution-provenance.md)

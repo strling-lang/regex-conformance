@@ -4,6 +4,12 @@ Definitions and compact generated coverage, reproducibility, differential, and
 certification reports live here. Reports are derived, traceable surfaces and may
 not become independently hand-maintained truth.
 
+`adjudication/adjudication-acceptance-2026-09-11.v1.json` is the compact
+synthetic-fixture acceptance result for observation-to-claim adjudication. It
+binds exact predecessor contracts, adversarial coverage, unchanged semantic
+denominators, zero production credit, and the continuing C4 result
+`FAIL — 0/3378`.
+
 `small-scale/qualification-coverage.json` is generated from the compiled
 logical-execution set and proves operational category coverage without making
 normative, semantic, or conformance claims.

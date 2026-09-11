@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/adjudication-allocation.schema.json",
+  "title": "Adjudication identity allocation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "published_on", "allocation_status", "allocations"],
+  "properties": {
+    "schema_version": {"const": "adjudication-allocation.v1"},
+    "published_on": {"type": "string", "format": "date"},
+    "allocation_status": {"const": "reviewed-one-time-allocation"},
+    "allocations": {
+      "type": "array", "minItems": 2, "maxItems": 2,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["entity_class", "canonical_key", "assigned_id"],
+        "properties": {
+          "entity_class": {"enum": ["assertion-derivation", "schema-family"]},
+          "canonical_key": {"type": "string", "pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)*$"},
+          "assigned_id": {"type": "string", "pattern": "^rcid:v1:(?:assertion-derivation|schema-family):u7:[0-9a-f-]{36}$"}
+        }
+      }
+    }
+  }
+}

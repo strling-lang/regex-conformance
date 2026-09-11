@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/waiver-revision.schema.json",
+  "title": "Typed gate waiver revision",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "waiver_id", "revision_number", "supersedes_revision_id", "waiver_type", "owner_id", "reviewer_id", "selector", "justification", "issue_reference", "created_on", "review_or_expiry_on", "status", "revocation_reference", "scientific_boundary", "revision_id", "revision_digest_sha256"],
+  "properties": {
+    "schema_version": {"const": "waiver-revision.v1"},
+    "waiver_id": {"type": "string", "pattern": "^rcid:v1:certification-action:u7:[0-9a-f-]{36}$"},
+    "revision_number": {"type": "integer", "minimum": 1},
+    "supersedes_revision_id": {"oneOf": [{"type": "string", "pattern": "^rcid:v1:finding-revision:h:jcs-sha256-v1:"}, {"type": "null"}]},
+    "waiver_type": {"enum": ["SPEC", "VECTOR", "HARNESS", "ENVIRONMENT"]},
+    "owner_id": {"type": "string", "minLength": 1},
+    "reviewer_id": {"type": "string", "minLength": 1},
+    "selector": {"$ref": "#/$defs/selector"},
+    "justification": {"type": "string", "minLength": 1},
+    "issue_reference": {"type": "string", "minLength": 1},
+    "created_on": {"type": "string", "format": "date"},
+    "review_or_expiry_on": {"type": "string", "format": "date"},
+    "status": {"enum": ["proposed", "approved", "expired", "revoked", "superseded"]},
+    "revocation_reference": {"type": ["string", "null"]},
+    "scientific_boundary": {"type": "object", "additionalProperties": false, "required": ["alters_applicability", "alters_expectation", "alters_observation", "alters_discrepancy_existence", "alters_scientific_result"], "properties": {"alters_applicability": {"type": "boolean"}, "alters_expectation": {"type": "boolean"}, "alters_observation": {"type": "boolean"}, "alters_discrepancy_existence": {"type": "boolean"}, "alters_scientific_result": {"type": "boolean"}}},
+    "revision_id": {"type": "string", "pattern": "^rcid:v1:finding-revision:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "revision_digest_sha256": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "selector": {"type": "object", "additionalProperties": false, "required": ["coordinate_ids", "requirement_ids", "profile_ids", "gate_ids"], "properties": {"coordinate_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string"}}, "requirement_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string"}}, "profile_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string"}}, "gate_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string"}}}}
+  }
+}

@@ -191,6 +191,15 @@ open-world three-valued logic, rejects unknown fields and operators, checks
 stable-ID and fact dependency closure, and prevents target observations or ad
 hoc skips from manufacturing profile non-applicability.
 
+The adjudication schema family defines expected outcomes, a closed coordinate
+state algebra, typed derived claims, discrepancy revisions, reviewed waiver
+revisions, evidence-preserving quarantine revisions, structured adjudication
+results, synthetic fixtures, and the current authority index. Semantic
+validation consumes the existing evidence-admissibility and applicability
+contracts, preserves physical-attempt and observation lineage, rejects
+authority cycles, and prevents operational overlays from rewriting scientific
+results.
+
 `json/generated-assertion-derivation-catalog.schema.json` defines the shared
 provenance contract for assertion-like generated fields. It requires
 class-specific metadata for measurement, calculation, research-derived,

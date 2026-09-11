@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/claim-revision.schema.json",
+  "title": "Derived epistemic claim revision",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "claim_id", "revision_number", "supersedes_revision_id", "epistemic_kind", "polarity", "scientific_result_state", "coordinate_state", "requirement", "profile", "applicability", "oracle_evidence_bases", "evidence_admissions", "expectations", "logical_execution_id", "physical_attempt_ids", "admitted_observations", "excluded_observations", "adjudication_contract", "discrepancy_revisions", "waiver_effect", "quarantine_effect", "dependency_graph", "derivation", "derived_product", "independent_truth_authority", "adjudicated_on", "revision_id", "revision_digest_sha256"],
+  "properties": {
+    "schema_version": {"const": "claim-revision.v1"},
+    "claim_id": {"type": "string", "pattern": "^rcid:v1:finding:u7:[0-9a-f-]{36}$"},
+    "revision_number": {"type": "integer", "minimum": 1},
+    "supersedes_revision_id": {"oneOf": [{"type": "string", "pattern": "^rcid:v1:finding-revision:h:jcs-sha256-v1:"}, {"type": "null"}]},
+    "epistemic_kind": {"enum": ["normative-conformance", "normative-non-conformance", "implementation-documentation-conformance", "implementation-documentation-non-conformance", "formal-model-satisfaction", "formal-model-violation", "authoritative-data-agreement", "authoritative-data-disagreement", "metamorphic-relation-satisfaction", "metamorphic-relation-violation", "family-relative-equivalence", "family-relative-divergence", "historical-characterization", "characterization-only-finding", "permitted-divergence-finding"]},
+    "polarity": {"enum": ["agreement", "disagreement", "conflict", "characterization"]},
+    "scientific_result_state": {"enum": ["inconclusive", "satisfied", "violated", "permitted-divergence", "conflicting-evidence", "conflicting-authority"]},
+    "coordinate_state": {"type": "string"},
+    "requirement": {"type": "object"},
+    "profile": {"type": "object"},
+    "applicability": {"type": "object"},
+    "oracle_evidence_bases": {"type": "array", "items": {"type": "object"}},
+    "evidence_admissions": {"type": "array", "items": {"type": "object", "additionalProperties": false, "required": ["basis_id", "decision", "evidence_ids", "epistemic_use", "requested_conclusion", "decision_digest_sha256"], "properties": {"basis_id": {"type": "string"}, "decision": {"const": "admissible"}, "evidence_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}}, "epistemic_use": {"type": "string"}, "requested_conclusion": {"type": "string"}, "decision_digest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}}},
+    "expectations": {"type": "array", "items": {"type": "object"}},
+    "logical_execution_id": {"oneOf": [{"type": "string", "pattern": "^rcid:v1:logical-execution:h:jcs-sha256-v1:"}, {"type": "null"}]},
+    "physical_attempt_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^rcid:v1:physical-run:u7:"}},
+    "admitted_observations": {"type": "array", "uniqueItems": true, "items": {"type": "object"}},
+    "excluded_observations": {"type": "array", "uniqueItems": true, "items": {"type": "object"}},
+    "adjudication_contract": {"type": "object"},
+    "discrepancy_revisions": {"type": "array", "uniqueItems": true, "items": {"type": "object"}},
+    "waiver_effect": {"type": "object", "additionalProperties": false, "required": ["waiver_revision_ids", "gate_id", "gate_effect", "alters_scientific_result"], "properties": {"waiver_revision_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string"}}, "gate_id": {"type": "string"}, "gate_effect": {"enum": ["unaffected", "waived", "blocked-by-quarantine"]}, "alters_scientific_result": {"const": false}}},
+    "quarantine_effect": {"type": "object", "additionalProperties": false, "required": ["quarantine_revision_ids", "operational_state", "alters_scientific_result"], "properties": {"quarantine_revision_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string"}}, "operational_state": {"enum": ["normal", "quarantined"]}, "alters_scientific_result": {"const": false}}},
+    "dependency_graph": {"$ref": "#/$defs/graph"},
+    "derivation": {"type": "object"},
+    "derived_product": {"const": true},
+    "independent_truth_authority": {"const": false},
+    "adjudicated_on": {"type": "string", "format": "date"},
+    "revision_id": {"type": "string", "pattern": "^rcid:v1:finding-revision:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "revision_digest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "$defs": {
+    "graph": {"type": "object", "additionalProperties": false, "required": ["nodes"], "properties": {"nodes": {"type": "array", "minItems": 1, "items": {"type": "object", "additionalProperties": false, "required": ["node_id", "kind", "upstream_node_ids"], "properties": {"node_id": {"type": "string", "minLength": 1}, "kind": {"enum": ["requirement", "profile", "applicability-contract", "applicability-predicate", "capability-snapshot", "profile-fact", "applicability", "evidence-contract", "oracle-contract", "oracle", "evidence-dependency", "evidence", "expectation-basis", "expectation", "logical-execution", "physical-attempt", "observation", "discrepancy", "waiver", "quarantine", "claim", "target-output"]}, "upstream_node_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string"}}}}}}}
+  }
+}

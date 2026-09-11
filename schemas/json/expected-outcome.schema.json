@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/expected-outcome.schema.json",
+  "title": "Canonical expected outcome",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "requirement", "profile", "basis_ref", "oracle_class", "epistemic_use", "conclusion", "outcome_model", "frozen_at", "mutable_latest_alias_used", "expectation_id", "expectation_digest_sha256"],
+  "properties": {
+    "schema_version": {"const": "expected-outcome.v1"},
+    "requirement": {"$ref": "#/$defs/requirement"},
+    "profile": {"$ref": "#/$defs/profile"},
+    "basis_ref": {"$ref": "#/$defs/basis"},
+    "oracle_class": {"enum": ["O1", "O2", "O3", "O4", "O5", "O6", "O7", "O8"]},
+    "epistemic_use": {"type": "string", "minLength": 1},
+    "conclusion": {"type": "string", "minLength": 1},
+    "outcome_model": {"oneOf": [{"type": "object"}, {"type": "null"}]},
+    "frozen_at": {"type": "string", "format": "date-time"},
+    "mutable_latest_alias_used": {"const": false},
+    "expectation_id": {"type": "string", "pattern": "^rcid:v1:expectation-projection:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "expectation_digest_sha256": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "requirement": {"type": "object", "additionalProperties": false, "required": ["requirement_id", "requirement_digest_sha256", "snapshot_id", "snapshot_digest_sha256"], "properties": {"requirement_id": {"type": "string", "pattern": "^rcid:v1:semantic-requirement:u7:"}, "requirement_digest_sha256": {"$ref": "#/$defs/digest"}, "snapshot_id": {"type": "string", "pattern": "^rcid:v1:"}, "snapshot_digest_sha256": {"$ref": "#/$defs/digest"}}},
+    "profile": {"type": "object", "additionalProperties": false, "required": ["profile_id", "profile_revision_id"], "properties": {"profile_id": {"type": "string", "pattern": "^rcid:v1:profile:u7:"}, "profile_revision_id": {"type": "string", "pattern": "^rcid:v1:profile-revision:h:jcs-sha256-v1:"}}},
+    "basis": {"type": "object", "additionalProperties": false, "required": ["basis_id", "basis_digest_sha256"], "properties": {"basis_id": {"type": "string", "pattern": "^rcid:v1:expectation-projection:h:jcs-sha256-v1:"}, "basis_digest_sha256": {"$ref": "#/$defs/digest"}}}
+  }
+}

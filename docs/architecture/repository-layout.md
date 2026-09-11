@@ -16,6 +16,7 @@ current lightweight Git boundary.
 | `vectors/` | Probe families, executable vectors, operations, observation requests, and vector provenance | Conformance Vector Model | Universal truth inferred from engine-specific behavior |
 | `oracle/` | Prospective oracle functions, evidence-role admissibility, immutable expectation bases, and digest-bound current authority | Oracle & Evidence Authority | Observations, popularity, consensus, or historical behavior promoted into normative truth |
 | `applicability/` | Pure applicability rules, capability references, relevant-dimension expansion, and exclusion explanations | Applicability & Matrix Semantics | Opaque filters or unaccounted exclusions |
+| `adjudication/` | Versioned coordinate-state, claim, discrepancy, permitted-divergence, waiver, and quarantine authority | Observation-to-Claim Adjudication | Mutation of requirements, expectations, applicability, attempts, or observations |
 | `protocol/` | Language-neutral adapter request/response, capability, encoding, native-index, error, diagnostic, and evolution contracts | Adapter Protocol; Result & Evidence Model | Conformance judgments embedded in adapter transport |
 | `adapters/` | Thin runtime adapters and adapter conformance fixtures | Adapter Protocol; Distributed Runner & Security | Environment acquisition, scheduling policy, or trusted-evidence decisions |
 | `environments/` | Reproducible recipes, acquisition policies, provider contracts, and verification definitions | Environment & Provenance; Control Plane Architecture | Realized environments, downloaded toolchains, images, or mutable cache state |
@@ -46,11 +47,13 @@ credentials.
    `scheduler/` plan and execute physical work without changing that scope.
 4. `verifier/` qualifies outputs and preserves target outcomes separately from
    infrastructure failures.
-5. Immutable external evidence feeds regenerable `warehouse/` projections and
+5. `adjudication/` derives typed coordinate claims from exact qualified inputs
+   without becoming an independent truth authority.
+6. Immutable external evidence feeds regenerable `warehouse/` projections and
    compact `reports/`; warehouse rows never replace evidence authority.
-6. `certification/` evaluates exact input sets and immutable evidence against
+7. `certification/` evaluates exact input sets and immutable evidence against
    C1-C7 as a conjunction.
-7. Only completely certified Coverage Shards emit compact `downstream/`
+8. Only completely certified Coverage Shards emit compact `downstream/`
    projections and an append-only checkpoint; downstream consumers advance
    independently from that Git signal.
 

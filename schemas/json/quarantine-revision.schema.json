@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/quarantine-revision.schema.json",
+  "title": "Operational quarantine revision",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "quarantine_id", "revision_number", "supersedes_revision_id", "owner_id", "reviewer_id", "selector", "issue_reference", "reason", "created_on", "review_on", "status", "safe_execution", "gate_policy", "preserves_attempts", "preserves_observations", "evidence_of_conformance", "revision_id", "revision_digest_sha256"],
+  "properties": {
+    "schema_version": {"const": "quarantine-revision.v1"},
+    "quarantine_id": {"type": "string", "pattern": "^rcid:v1:finding:u7:[0-9a-f-]{36}$"},
+    "revision_number": {"type": "integer", "minimum": 1},
+    "supersedes_revision_id": {"oneOf": [{"type": "string", "pattern": "^rcid:v1:finding-revision:h:jcs-sha256-v1:"}, {"type": "null"}]},
+    "owner_id": {"type": "string", "minLength": 1},
+    "reviewer_id": {"type": "string", "minLength": 1},
+    "selector": {"type": "object", "additionalProperties": false, "required": ["coordinate_ids", "requirement_ids", "profile_ids", "gate_ids"], "properties": {"coordinate_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string"}}, "requirement_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string"}}, "profile_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string"}}, "gate_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string"}}}},
+    "issue_reference": {"type": "string", "minLength": 1},
+    "reason": {"type": "string", "minLength": 1},
+    "created_on": {"type": "string", "format": "date"},
+    "review_on": {"type": "string", "format": "date"},
+    "status": {"enum": ["active", "released", "superseded"]},
+    "safe_execution": {"enum": ["remain-executable", "blocked-for-safety"]},
+    "gate_policy": {"enum": ["block", "exclude-with-explicit-accounting", "no-gate-effect"]},
+    "preserves_attempts": {"type": "boolean"},
+    "preserves_observations": {"type": "boolean"},
+    "evidence_of_conformance": {"type": "boolean"},
+    "revision_id": {"type": "string", "pattern": "^rcid:v1:finding-revision:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "revision_digest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

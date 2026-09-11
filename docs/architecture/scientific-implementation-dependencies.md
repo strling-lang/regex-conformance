@@ -177,13 +177,14 @@ language and exact immutable profile-capability snapshots. Open-world semantics
 preserve missing and conflicting facts as unresolved, explicit negative facts
 are required for non-applicability, and structured traces bind every decision
 to the facts read. Real profile facts and the profile-expanded denominator
-remain deferred. Next, formalize the broader coordinate-state algebra. Define
-divergence, waiver, dispute, and unresolved states without
-allowing observations to redefine applicability. Claims must follow an
-explicit observation-to-adjudication-to-claim process and carry reproducibility
-and evidence-quality metadata without a numeric authority score. Any proposal for a waiver or
-flaky-conformant state to satisfy certification requires explicit program-owner
-approval.
+remain deferred. The [observation-to-claim adjudication contract](observation-to-claim-adjudication.md)
+now defines the closed coordinate-state algebra, typed claim taxonomy,
+discrepancy and permitted-divergence histories, exact gate-only waivers, and
+evidence-preserving quarantine. Claims follow an explicit immutable
+attempt-to-observation-to-comparison derivation, carry exact reproducibility and
+evidence-admission bindings without a numeric authority score, and cannot feed
+their own expectation or applicability authority. A waiver never converts a
+scientific violation into conformance.
 
 ### Build the declarative production-vector system
 

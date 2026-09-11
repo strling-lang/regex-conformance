@@ -77,6 +77,11 @@ separately determines which immutable evidence roles may support each
 epistemic use. It keeps source-language strength, evidence quality, and
 authority-domain independence explicit so observation, consensus, historical
 stability, or implementation popularity cannot acquire normative authority.
+The [observation-to-claim adjudication contract](docs/architecture/observation-to-claim-adjudication.md)
+then combines exact applicability, expectation, evidence-admission, execution,
+discrepancy, waiver, and quarantine revisions into a typed derived claim. Its
+fixtures are synthetic, waivers affect gates only, and C4 remains `FAIL` at
+`0/3378`.
 The bounded freeze claim and its supersession rules are documented in the
 [semantic universe freeze](docs/architecture/semantic-universe-freeze.md).
 

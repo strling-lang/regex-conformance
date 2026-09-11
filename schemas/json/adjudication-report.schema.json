@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/adjudication-report.schema.json",
+  "title": "Adjudication acceptance report",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "published_on", "claim_scope", "contract", "fixtures", "implementation_bindings", "coverage", "checks", "denominator_boundary", "certification_state", "result", "report_id", "report_digest_sha256"],
+  "properties": {
+    "schema_version": {"const": "adjudication-report.v1"},
+    "published_on": {"type": "string", "format": "date"},
+    "claim_scope": {"type": "string", "minLength": 1},
+    "contract": {"type": "object"},
+    "fixtures": {"type": "object"},
+    "implementation_bindings": {"type": "array", "minItems": 3, "items": {"type": "object"}},
+    "coverage": {"type": "object"},
+    "checks": {"type": "array", "minItems": 15, "items": {"type": "object", "additionalProperties": false, "required": ["check", "status"], "properties": {"check": {"type": "string"}, "status": {"const": "PASS"}}}},
+    "denominator_boundary": {"type": "object"},
+    "certification_state": {"type": "object"},
+    "result": {"const": "PASS"},
+    "report_id": {"type": "string", "pattern": "^rcid:v1:trust-assessment:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "report_digest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/adjudication-result.schema.json",
+  "title": "Coordinate adjudication result",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "contract", "coordinate", "answers", "claim", "trace", "historical_reconstruction", "result_id", "result_digest_sha256"],
+  "properties": {
+    "schema_version": {"const": "adjudication-result.v1"},
+    "contract": {"type": "object", "additionalProperties": false, "required": ["contract_id", "contract_digest_sha256"], "properties": {"contract_id": {"type": "string", "pattern": "^rcid:v1:trust-policy-revision:h:jcs-sha256-v1:"}, "contract_digest_sha256": {"$ref": "#/$defs/digest"}}},
+    "coordinate": {"type": "object"},
+    "answers": {"type": "object", "additionalProperties": false, "required": ["requirement_applies", "admissible_expectation_available", "admissible_observation_available", "permitted_epistemic_claim_type", "comparison", "discrepancy_exists", "permitted_divergence_established", "waiver_alters_gate", "resulting_state", "immutable_input_digest_sha256"], "properties": {"requirement_applies": {"enum": ["applicable", "not-applicable", "unresolved", "invalid"]}, "admissible_expectation_available": {"type": "boolean"}, "admissible_observation_available": {"type": "boolean"}, "permitted_epistemic_claim_type": {"type": ["string", "null"]}, "comparison": {"enum": ["agreement", "disagreement", "conflict", "not-performed"]}, "discrepancy_exists": {"type": "boolean"}, "permitted_divergence_established": {"type": "boolean"}, "waiver_alters_gate": {"type": "boolean"}, "resulting_state": {"type": "string"}, "immutable_input_digest_sha256": {"$ref": "#/$defs/digest"}}},
+    "claim": {"oneOf": [{"type": "object"}, {"type": "null"}]},
+    "trace": {"type": "array", "minItems": 2, "items": {"type": "object", "additionalProperties": false, "required": ["stage", "reason_code", "result"], "properties": {"stage": {"type": "string"}, "reason_code": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"}, "result": {"type": "string"}}}},
+    "historical_reconstruction": {"type": "object"},
+    "result_id": {"type": "string", "pattern": "^rcid:v1:reconciliation-set:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "result_digest_sha256": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {"digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+}

@@ -21,6 +21,7 @@ from regex_conformance_schema.jsonio import canonical_bytes, dump_pretty, load_s
 
 FULL_SHA = re.compile(r"^[0-9a-f]{40}$")
 FULL_DIGEST = re.compile(r"^[0-9a-f]{64}$")
+LOCAL_CHECK_PASS = "PASS"
 MANIFEST_PATH = Path("certification/local/current-local-certification.v1.json")
 SCHEMA_PATH = Path("schemas/json/local-authoritative-certification.schema.json")
 IDENTITY_CATALOG = Path("registries/identity/scientific-identities.v1.json")
@@ -56,6 +57,11 @@ ARTIFACT_ROLES: tuple[tuple[str, str], ...] = (
     ("applicability-fixtures", "tests/fixtures/applicability/conditional-requirement-applicability.v1.json"),
     ("applicability-report", "reports/applicability/conditional-requirement-applicability-2026-09-10.v1.json"),
     ("applicability-authority", "applicability/current-authority.v1.json"),
+    ("adjudication-allocation", "adjudication/adjudication-identities-2026-09-11.v1.json"),
+    ("adjudication-contract", "adjudication/contracts/regex-conformance-adjudication-2026-09-11.v1.json"),
+    ("adjudication-fixtures", "tests/fixtures/adjudication/adjudication-cases.v1.json"),
+    ("adjudication-report", "reports/adjudication/adjudication-acceptance-2026-09-11.v1.json"),
+    ("adjudication-authority", "adjudication/current-authority.v1.json"),
     ("certification-input", "certification/inputs/current-repository-2026-09-08.v2.json"),
     ("certification-report", "certification/reports/current-repository-2026-09-08.v2.json"),
     ("certification-authority", "certification/current-authority.v1.json"),
@@ -73,6 +79,18 @@ ARTIFACT_ROLES: tuple[tuple[str, str], ...] = (
     ("applicability-contract-schema", "schemas/json/conditional-applicability-contract.schema.json"),
     ("applicability-result-schema", "schemas/json/applicability-evaluation-result.schema.json"),
     ("profile-capability-fact-schema", "schemas/json/profile-capability-fact-snapshot.schema.json"),
+    ("adjudication-allocation-schema", "schemas/json/adjudication-allocation.schema.json"),
+    ("adjudication-contract-schema", "schemas/json/adjudication-contract.schema.json"),
+    ("coordinate-state-schema", "schemas/json/coordinate-state.schema.json"),
+    ("expected-outcome-schema", "schemas/json/expected-outcome.schema.json"),
+    ("discrepancy-revision-schema", "schemas/json/discrepancy-revision.schema.json"),
+    ("waiver-revision-schema", "schemas/json/waiver-revision.schema.json"),
+    ("quarantine-revision-schema", "schemas/json/quarantine-revision.schema.json"),
+    ("claim-revision-schema", "schemas/json/claim-revision.schema.json"),
+    ("adjudication-result-schema", "schemas/json/adjudication-result.schema.json"),
+    ("adjudication-fixtures-schema", "schemas/json/adjudication-fixtures.schema.json"),
+    ("adjudication-report-schema", "schemas/json/adjudication-report.schema.json"),
+    ("adjudication-authority-schema", "schemas/json/adjudication-authority.schema.json"),
 )
 
 LOCAL_COMMANDS: tuple[tuple[str, ...], ...] = (
@@ -82,6 +100,7 @@ LOCAL_COMMANDS: tuple[tuple[str, ...], ...] = (
     ("python", "tools/oracle/compile_oracle_foundation.py", "--check", "--bounded"),
     ("python", "tools/oracle/compile_evidence_admissibility.py", "--check", "--bounded"),
     ("python", "tools/applicability/compile_conditional_applicability.py", "--check", "--bounded"),
+    ("python", "tools/adjudication/compile_adjudication.py", "--check", "--bounded"),
     ("python", "tools/certification/evaluate.py", "--check"),
     ("python", "tools/semantics/certify_semantic_knowledge.py", "--check"),
     ("python", "tools/foundation/certify.py", "--history"),
@@ -94,6 +113,7 @@ LOCAL_COMMANDS: tuple[tuple[str, ...], ...] = (
     ("python", "-m", "unittest", "discover", "-s", "tests/schema", "-p", "test_true_obligation_denominator_gate.py", "-v"),
     ("python", "-m", "unittest", "discover", "-s", "tests/schema", "-p", "test_evidence_admissibility.py", "-v"),
     ("python", "-m", "unittest", "discover", "-s", "tests/schema", "-p", "test_conditional_applicability.py", "-v"),
+    ("python", "-m", "unittest", "discover", "-s", "tests/schema", "-p", "test_adjudication.py", "-v"),
     ("python", "-m", "unittest", "discover", "-s", "tests/ci", "-v"),
 )
 
@@ -181,6 +201,10 @@ def _artifact_payload(root: Path) -> tuple[list[dict[str, Any]], dict[str, Any]]
     applicability_contract = load_strict(root / by_role["applicability-contract"]["path"])
     applicability_report = load_strict(root / by_role["applicability-report"]["path"])
     applicability_authority = load_strict(root / by_role["applicability-authority"]["path"])
+    adjudication_contract = load_strict(root / by_role["adjudication-contract"]["path"])
+    adjudication_fixtures = load_strict(root / by_role["adjudication-fixtures"]["path"])
+    adjudication_report = load_strict(root / by_role["adjudication-report"]["path"])
+    adjudication_authority = load_strict(root / by_role["adjudication-authority"]["path"])
     bindings = {
         "certification_contract": {"id": contract["contract_id"], **by_role["certification-contract"]},
         "semantic_snapshot": {"id": semantic["snapshot_id"], **by_role["semantic-snapshot"]},
@@ -202,6 +226,10 @@ def _artifact_payload(root: Path) -> tuple[list[dict[str, Any]], dict[str, Any]]
         "applicability_contract": {"id": applicability_contract["contract_id"], **by_role["applicability-contract"]},
         "applicability_report": {"id": applicability_report["report_id"], "result": applicability_report["result"], **by_role["applicability-report"]},
         "applicability_authority": {"id": applicability_authority["index_id"], **by_role["applicability-authority"]},
+        "adjudication_contract": {"id": adjudication_contract["contract_id"], **by_role["adjudication-contract"]},
+        "adjudication_fixtures": {"id": adjudication_fixtures["fixture_set_id"], **by_role["adjudication-fixtures"]},
+        "adjudication_report": {"id": adjudication_report["report_id"], "result": adjudication_report["result"], **by_role["adjudication-report"]},
+        "adjudication_authority": {"id": adjudication_authority["index_id"], **by_role["adjudication-authority"]},
         "identity_catalog": {"schema_version": identity["schema_version"], "entry_count": len(identity["bindings"]), **by_role["identity-catalog"]},
         "derivation_catalog": {"schema_version": derivation["schema_version"], "derivation_count": len(derivation["derivations"]), **by_role["derivation-catalog"]},
         "current_certification": {"id": report["report_id"], "result": report["final_state"], **by_role["certification-report"]},
@@ -398,6 +426,31 @@ def verify_manifest(root: Path, manifest_path: Path, *, expected_envelope_sha: s
             raise LocalCertificationError("conditional applicability report does not bind its exact contract")
         if applicability_authority.get("current_contract", {}).get("artifact_id") != applicability_contract.get("contract_id"):
             raise LocalCertificationError("conditional applicability authority does not bind its exact contract")
+    adjudication_binding = manifest["bindings"].get("adjudication_report")
+    if adjudication_binding is not None:
+        adjudication_report = load_strict(root / adjudication_binding["path"])
+        adjudication_contract = load_strict(root / manifest["bindings"]["adjudication_contract"]["path"])
+        adjudication_fixtures = load_strict(root / manifest["bindings"]["adjudication_fixtures"]["path"])
+        adjudication_authority = load_strict(root / manifest["bindings"]["adjudication_authority"]["path"])
+        certification_state = adjudication_report.get("certification_state", {})
+        denominator = adjudication_report.get("denominator_boundary", {})
+        if adjudication_report.get("result") != LOCAL_CHECK_PASS or adjudication_report.get("coverage", {}).get("adversarial_case_count") != 17:
+            raise LocalCertificationError("adjudication acceptance result or adversarial coverage is invalid")
+        if certification_state.get("C4") != "FAIL" or certification_state.get("C4_completed") != 0 or certification_state.get("C4_denominator") != 3378:
+            raise LocalCertificationError("adjudication report does not preserve the honest C4 result")
+        if denominator.get("obligations") != 2390 or denominator.get("requirements") != 3378 or denominator.get("real_profile_coordinates") != 0:
+            raise LocalCertificationError("adjudication report changes the semantic or profile-coordinate boundary")
+        if adjudication_report.get("contract", {}).get("artifact_id") != adjudication_contract.get("contract_id"):
+            raise LocalCertificationError("adjudication report does not bind its exact contract")
+        if adjudication_authority.get("current_contract", {}).get("artifact_id") != adjudication_contract.get("contract_id"):
+            raise LocalCertificationError("adjudication authority does not bind its exact current contract")
+        if adjudication_authority.get("validation_fixture", {}).get("artifact_id") != adjudication_fixtures.get("fixture_set_id"):
+            raise LocalCertificationError("adjudication authority does not bind its exact fixture set")
+        predecessors = adjudication_contract.get("predecessor_contracts", {})
+        if predecessors.get("applicability", {}).get("artifact_id") != manifest["bindings"]["applicability_contract"].get("id"):
+            raise LocalCertificationError("adjudication does not bind the exact applicability predecessor")
+        if predecessors.get("evidence_admissibility", {}).get("artifact_id") != manifest["bindings"]["evidence_admissibility_contract"].get("id"):
+            raise LocalCertificationError("adjudication does not bind the exact evidence-admissibility predecessor")
     if require_envelope:
         envelope_sha = expected_envelope_sha or git_output(root, "rev-parse", "HEAD")
         if FULL_SHA.fullmatch(envelope_sha) is None or git_output(root, "rev-parse", "HEAD") != envelope_sha:

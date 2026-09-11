@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/adjudication-contract.schema.json",
+  "title": "Observation-to-claim adjudication contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "published_on", "contract_version", "authority_model", "predecessor_contracts", "coordinate_states", "state_dimensions", "claim_kinds", "discrepancy_relations", "discrepancy_classifications", "permitted_divergence", "waivers", "quarantine", "expected_outcomes", "attempt_derivation", "circularity_guards", "reason_code_required_on_every_path", "derivation", "contract_id", "contract_digest_sha256"],
+  "properties": {
+    "schema_version": {"const": "adjudication-contract.v1"},
+    "published_on": {"type": "string", "format": "date"},
+    "contract_version": {"const": "1.0.0"},
+    "authority_model": {"type": "object"},
+    "predecessor_contracts": {
+      "type": "object", "additionalProperties": false,
+      "required": ["applicability", "evidence_admissibility", "execution_provenance", "semantic_requirements"],
+      "properties": {
+        "applicability": {"$ref": "#/$defs/artifactRef"},
+        "evidence_admissibility": {"$ref": "#/$defs/artifactRef"},
+        "execution_provenance": {"$ref": "#/$defs/artifactRef"},
+        "semantic_requirements": {"$ref": "#/$defs/artifactRef"}
+      }
+    },
+    "coordinate_states": {"type": "array", "minItems": 13, "uniqueItems": true, "items": {"type": "object", "additionalProperties": false, "required": ["state", "meaning"], "properties": {"state": {"type": "string"}, "meaning": {"type": "string", "minLength": 1}}}},
+    "state_dimensions": {"type": "object"},
+    "claim_kinds": {"type": "array", "minItems": 14, "uniqueItems": true, "items": {"type": "string"}},
+    "discrepancy_relations": {"type": "array", "minItems": 7, "uniqueItems": true, "items": {"type": "string"}},
+    "discrepancy_classifications": {"type": "array", "minItems": 12, "uniqueItems": true, "items": {"type": "string"}},
+    "permitted_divergence": {"type": "object"},
+    "waivers": {"type": "object"},
+    "quarantine": {"type": "object"},
+    "expected_outcomes": {"type": "array", "minItems": 7, "uniqueItems": true, "items": {"type": "string"}},
+    "attempt_derivation": {"type": "array", "minItems": 5, "uniqueItems": true, "items": {"type": "string"}},
+    "circularity_guards": {"type": "array", "minItems": 7, "uniqueItems": true, "items": {"type": "string"}},
+    "reason_code_required_on_every_path": {"const": true},
+    "derivation": {"$ref": "#/$defs/derivation"},
+    "contract_id": {"type": "string", "pattern": "^rcid:v1:trust-policy-revision:h:jcs-sha256-v1:[0-9a-f]{64}$"},
+    "contract_digest_sha256": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "artifactRef": {"type": "object", "additionalProperties": false, "required": ["path", "artifact_id", "digest_sha256", "file_sha256"], "properties": {"path": {"type": "string", "minLength": 1}, "artifact_id": {"type": "string", "pattern": "^rcid:v1:"}, "digest_sha256": {"$ref": "#/$defs/digest"}, "file_sha256": {"$ref": "#/$defs/digest"}}},
+    "derivation": {"type": "object", "additionalProperties": false, "required": ["derivation_id", "derivation_revision_id", "derivation_class"], "properties": {"derivation_id": {"type": "string", "pattern": "^rcid:v1:assertion-derivation:u7:"}, "derivation_revision_id": {"type": "string", "pattern": "^rcid:v1:assertion-derivation-revision:h:jcs-sha256-v1:"}, "derivation_class": {"const": "manual-decision"}}}
+  }
+}

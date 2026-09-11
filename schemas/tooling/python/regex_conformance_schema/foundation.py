@@ -196,6 +196,7 @@ ALLOWED_AUTHORITATIVE_MARKER_PATHS = {
 }
 ALLOWED_AUTHORITATIVE_MARKER_PREFIXES = ("foundation/",)
 ALLOWED_FULL_PASS_PREFIXES = (
+    "reports/adjudication/",
     "certification/",
     "docs/architecture/",
     "foundation/",
@@ -213,6 +214,7 @@ ALLOWED_FULL_PASS_SCHEMA_PATHS = {
     "schemas/tooling/python/regex_conformance_schema/certification.py",
     "schemas/tooling/python/regex_conformance_schema/foundation.py",
     "schemas/tooling/python/regex_conformance_schema/evidence_admissibility.py",
+    "schemas/tooling/python/regex_conformance_schema/adjudication.py",
     "schemas/tooling/python/regex_conformance_schema/semantic_foundation.py",
 }
 
