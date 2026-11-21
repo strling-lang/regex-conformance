@@ -699,6 +699,258 @@
           "locator": "L598"
         }
       ]
+    },
+    {
+      "comparison_family": null,
+      "definition_sha256": "b3de9651fc2a2e6ca397d5898f12248f45eed50dd92a18b85d54ad70bd163edf",
+      "expected_outcome": "match",
+      "family_key": "cpython-zero-or-more-quantifier-positive",
+      "premise": "For fullmatch, the literal a must fill the entire subject, with lower bound 0 and upper bound unbounded. The declared finite partition selects subjects that satisfy that condition.",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "sources": [
+        {
+          "locator": "L111",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L111"
+        },
+        {
+          "locator": "L860-L867",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L860"
+        }
+      ]
+    },
+    {
+      "comparison_family": null,
+      "definition_sha256": "42f6ed4b576a10c10382f573f47272c26bae8e9c01d9bf3588014f223e4f6000",
+      "expected_outcome": "no-match",
+      "family_key": "cpython-zero-or-more-quantifier-negative",
+      "premise": "For fullmatch, the literal a must fill the entire subject, with lower bound 0 and upper bound unbounded. The declared finite partition selects subjects that violate that condition.",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "sources": [
+        {
+          "locator": "L111",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L111"
+        },
+        {
+          "locator": "L860-L867",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L860"
+        }
+      ]
+    },
+    {
+      "comparison_family": null,
+      "definition_sha256": "fbb8f1d2c5b1986a4afeab80d24a0806a4dc7451ad22bdcbeef190f7b9844e33",
+      "expected_outcome": "match",
+      "family_key": "cpython-one-or-more-quantifier-positive",
+      "premise": "For fullmatch, the literal a must fill the entire subject, with lower bound 1 and upper bound unbounded. The declared finite partition selects subjects that satisfy that condition.",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "sources": [
+        {
+          "locator": "L118",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L118"
+        },
+        {
+          "locator": "L860-L867",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L860"
+        }
+      ]
+    },
+    {
+      "comparison_family": null,
+      "definition_sha256": "36a585b94fe7c5363f5b32f4265793d1a4c62a2275804dfa8acaa2a11d5af422",
+      "expected_outcome": "no-match",
+      "family_key": "cpython-one-or-more-quantifier-negative",
+      "premise": "For fullmatch, the literal a must fill the entire subject, with lower bound 1 and upper bound unbounded. The declared finite partition selects subjects that violate that condition.",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "sources": [
+        {
+          "locator": "L118",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L118"
+        },
+        {
+          "locator": "L860-L867",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L860"
+        }
+      ]
+    },
+    {
+      "comparison_family": null,
+      "definition_sha256": "5e4882bfaca16eedaa462d24cfdbea00af714c860ac5b8a7be0f4a310932f963",
+      "expected_outcome": "match",
+      "family_key": "cpython-optional-quantifier-positive",
+      "premise": "For fullmatch, the literal a must fill the entire subject, with lower bound 0 and upper bound 1. The declared finite partition selects subjects that satisfy that condition.",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "sources": [
+        {
+          "locator": "L124",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L124"
+        },
+        {
+          "locator": "L860-L867",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L860"
+        }
+      ]
+    },
+    {
+      "comparison_family": null,
+      "definition_sha256": "27fa4bea400c7b5de70a44c8b78e52755a619700f8c3198c9f09a60ffb7213e8",
+      "expected_outcome": "no-match",
+      "family_key": "cpython-optional-quantifier-negative",
+      "premise": "For fullmatch, the literal a must fill the entire subject, with lower bound 0 and upper bound 1. The declared finite partition selects subjects that violate that condition.",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "sources": [
+        {
+          "locator": "L124",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L124"
+        },
+        {
+          "locator": "L860-L867",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L860"
+        }
+      ]
+    },
+    {
+      "comparison_family": null,
+      "definition_sha256": "382856425a127700297989da8508efed8008f5c960a1d2aa747f5d94f9c85b61",
+      "expected_outcome": "match",
+      "family_key": "cpython-exact-quantifier-positive",
+      "premise": "For fullmatch, the literal a must fill the entire subject, with lower bound 2 and upper bound 2. The declared finite partition selects subjects that satisfy that condition.",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "sources": [
+        {
+          "locator": "L165",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L165"
+        },
+        {
+          "locator": "L860-L867",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L860"
+        }
+      ]
+    },
+    {
+      "comparison_family": null,
+      "definition_sha256": "aca43e6488a35de49f35c075c43ff888bcfafa9c3363671f0125557c157e7057",
+      "expected_outcome": "no-match",
+      "family_key": "cpython-exact-quantifier-negative",
+      "premise": "For fullmatch, the literal a must fill the entire subject, with lower bound 2 and upper bound 2. The declared finite partition selects subjects that violate that condition.",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "sources": [
+        {
+          "locator": "L165",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L165"
+        },
+        {
+          "locator": "L860-L867",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L860"
+        }
+      ]
+    },
+    {
+      "comparison_family": null,
+      "definition_sha256": "b5f621575fb206907d4856cf354b378ef63cde830d67ca87a73da31407720063",
+      "expected_outcome": "match",
+      "family_key": "cpython-bounded-quantifier-positive",
+      "premise": "For fullmatch, the literal a must fill the entire subject, with lower bound 1 and upper bound 3. The declared finite partition selects subjects that satisfy that condition.",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "sources": [
+        {
+          "locator": "L169",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L169"
+        },
+        {
+          "locator": "L860-L867",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L860"
+        }
+      ]
+    },
+    {
+      "comparison_family": null,
+      "definition_sha256": "439f0e8f8b9f9dcb9a988d401812dc473febc5a1ad7228d01b55d40a6fb85476",
+      "expected_outcome": "no-match",
+      "family_key": "cpython-bounded-quantifier-negative",
+      "premise": "For fullmatch, the literal a must fill the entire subject, with lower bound 1 and upper bound 3. The declared finite partition selects subjects that violate that condition.",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "sources": [
+        {
+          "locator": "L169",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L169"
+        },
+        {
+          "locator": "L860-L867",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L860"
+        }
+      ]
+    },
+    {
+      "comparison_family": null,
+      "definition_sha256": "70eafa78fc825c3fdf0d4de672b3d5697cc443ecc9b889acf4335f0605442da4",
+      "expected_outcome": "match",
+      "family_key": "cpython-lower-bounded-quantifier-positive",
+      "premise": "For fullmatch, the literal a must fill the entire subject, with lower bound 2 and upper bound unbounded. The declared finite partition selects subjects that satisfy that condition.",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "sources": [
+        {
+          "locator": "L169",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L169"
+        },
+        {
+          "locator": "L860-L867",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L860"
+        }
+      ]
+    },
+    {
+      "comparison_family": null,
+      "definition_sha256": "5ddccb39998ff0d5ab67913cd9fe9b650b64f20d5c02887e3fa0590ffe1c7c49",
+      "expected_outcome": "no-match",
+      "family_key": "cpython-lower-bounded-quantifier-negative",
+      "premise": "For fullmatch, the literal a must fill the entire subject, with lower bound 2 and upper bound unbounded. The declared finite partition selects subjects that violate that condition.",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "sources": [
+        {
+          "locator": "L169",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L169"
+        },
+        {
+          "locator": "L860-L867",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L860"
+        }
+      ]
+    },
+    {
+      "comparison_family": null,
+      "definition_sha256": "b784b1360ef6a4a18efd1b3e082f9342f0396336065e8bd20e3422ad420a7e08",
+      "expected_outcome": "match",
+      "family_key": "cpython-upper-bounded-quantifier-positive",
+      "premise": "For fullmatch, the literal a must fill the entire subject, with lower bound 0 and upper bound 2. The declared finite partition selects subjects that satisfy that condition.",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "sources": [
+        {
+          "locator": "L169",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L169"
+        },
+        {
+          "locator": "L860-L867",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L860"
+        }
+      ]
+    },
+    {
+      "comparison_family": null,
+      "definition_sha256": "40f543e752b3d1966bb90839106aca370a6a078bc514034e9a6a11546e0c37fd",
+      "expected_outcome": "no-match",
+      "family_key": "cpython-upper-bounded-quantifier-negative",
+      "premise": "For fullmatch, the literal a must fill the entire subject, with lower bound 0 and upper bound 2. The declared finite partition selects subjects that violate that condition.",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "sources": [
+        {
+          "locator": "L169",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L169"
+        },
+        {
+          "locator": "L860-L867",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L860"
+        }
+      ]
     }
   ],
   "schema_version": "production-candidate-basis.v1"

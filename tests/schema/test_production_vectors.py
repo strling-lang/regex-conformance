@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from copy import deepcopy
 from hashlib import sha256
+from itertools import product
 from pathlib import Path
 import sys
 import tempfile
@@ -58,7 +59,7 @@ class ProductionVectorTests(unittest.TestCase):
 
     def test_verifier_rejects_rehashed_stimulus_change_and_coherent_omission(self):
         manifest = deepcopy(self.manifest)
-        manifest["vectors"][0]["stimulus"]["pattern"]["hex"] = "61"
+        manifest["vectors"][0]["stimulus"]["pattern"]["hex"] += "61"
         self.assert_manifest_mutation_rejected(manifest, "vector-manifest-revision")
         manifest = deepcopy(self.manifest)
         missing = manifest["families"][0]["vector_revision_ids"].pop()
@@ -84,13 +85,13 @@ class ProductionVectorTests(unittest.TestCase):
         self.assertEqual(self.manifest, compile_vector_manifest(self.inputs, list(reversed(self.families))))
         self.assertEqual(self.manifest["counts"], {
             "requirements": 3378,
-            "requirements_with_candidate_stimuli": 44,
+            "requirements_with_candidate_stimuli": 58,
             "requirements_with_unresolved_interaction_identities": 4,
-            "vector_revisions": 87,
+            "vector_revisions": 528,
         })
         rows = self.manifest["requirement_coverage"]
         self.assertEqual(len({row["requirement_id"] for row in rows}), 3378)
-        self.assertEqual(sum(row["status"] == "missing" for row in rows), 3330)
+        self.assertEqual(sum(row["status"] == "missing" for row in rows), 3316)
         self.assertEqual({row["status"] for row in rows}, {
             "missing", "candidate-stimuli-only", "interaction-identity-unresolved",
         })
@@ -99,6 +100,27 @@ class ProductionVectorTests(unittest.TestCase):
         body = dict(self.manifest)
         digest = body.pop("manifest_digest_sha256")
         self.assertEqual(sha256(canonical_bytes(body)).hexdigest(), digest)
+
+    def test_quantifier_partitions_cover_the_exact_finite_subject_domain(self):
+        controls = {
+            "zero-or-more": ("a*", range(6)), "one-or-more": ("a+", range(1, 6)),
+            "optional": ("a?", range(2)), "exact": ("a{2}", range(2, 3)),
+            "bounded": ("a{1,3}", range(1, 4)), "lower-bounded": ("a{2,}", range(2, 6)),
+            "upper-bounded": ("a{,2}", range(3)),
+        }
+        family_ids = {row["key"]: row["vector_revision_ids"] for row in self.manifest["families"]}
+        stimuli = {row["vector_revision_id"]: row["stimulus"] for row in self.manifest["vectors"]}
+        all_subjects = {
+            b"".join(word) for width in range(6) for word in product((b"a", b"b"), repeat=width)
+        }
+        for name, (pattern, lengths) in controls.items():
+            accepted = {b"a" * length for length in lengths}
+            for role, expected_set in (("positive", accepted), ("negative", all_subjects - accepted)):
+                with self.subTest(quantifier=name, role=role):
+                    cases = [stimuli[key] for key in family_ids[f"cpython-{name}-quantifier-{role}"]]
+                    self.assertEqual({bytes.fromhex(item["pattern"]["hex"]).decode() for item in cases}, {pattern})
+                    self.assertEqual({bytes.fromhex(item["subjects"][0]["hex"]) for item in cases}, expected_set)
+                    self.assertEqual(len(cases), len(expected_set))
 
     def test_missing_interaction_identity_remains_in_requirement_accounting(self):
         blocked = [

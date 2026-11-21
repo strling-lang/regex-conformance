@@ -1,0 +1,394 @@
+{
+  "axes": {
+    "subjects": [
+      [
+        {
+          "encoding": "utf-8",
+          "hex": ""
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "62"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6162"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6261"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6262"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "616162"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "616261"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "616262"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "626161"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "626162"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "626261"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "626262"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "61616161"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "61616162"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "61616261"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "61616262"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "61626161"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "61626162"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "61626261"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "61626262"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "62616161"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "62616162"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "62616261"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "62616262"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "62626161"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "62626162"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "62626261"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "62626262"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6161616161"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6161616162"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6161616261"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6161616262"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6161626161"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6161626162"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6161626261"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6161626262"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6162616161"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6162616162"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6162616261"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6162616262"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6162626161"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6162626162"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6162626261"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6162626262"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6261616161"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6261616162"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6261616261"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6261616262"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6261626161"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6261626162"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6261626261"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6261626262"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6262616161"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6262616162"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6262616261"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6262616262"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6262626161"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6262626162"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6262626261"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6262626262"
+        }
+      ]
+    ]
+  },
+  "deterministic_limits": {
+    "maximum_diagnostic_bytes": 4096,
+    "maximum_matches": 2,
+    "maximum_output_bytes": 4096,
+    "wall_time_ms": 1000
+  },
+  "domain": "unicode-scalars",
+  "finite_subjects": null,
+  "inputs": {
+    "callback_fixture": null,
+    "initial_state": {},
+    "options": [],
+    "pattern": {
+      "encoding": "utf-8",
+      "hex": "617b312c337d"
+    },
+    "replacement": null,
+    "subjects": []
+  },
+  "key": "cpython-bounded-quantifier-negative",
+  "manifestation_id": null,
+  "operation_id": "rcid:v1:operation:u7:01a077a2-095f-70a3-b65f-ebfd7c23c9ea",
+  "requested_observations": [
+    "match-state",
+    "spans"
+  ],
+  "requirement_id": "rcid:v1:semantic-requirement:u7:01a08268-2477-7332-ad81-41ed14b664f5",
+  "schema_version": "production-vector-family.v1"
+}

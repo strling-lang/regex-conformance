@@ -70,6 +70,13 @@ alternation under full matching, and the empty-expression distinction between
 empty and nonempty subjects. Their source locators bind the exact CPython
 release commit. [CPython 3.14.6 regular-expression documentation](https://github.com/python/cpython/blob/c63aec69bd59c55314c06c23f4c22c03de76fe45/Doc/library/re.rst)
 
+The seven CPython quantifier pairs partition every string over `a` and `b`
+through length five into positive and negative full-match candidates. Each
+pair holds the repeated literal fixed and varies subject membership and
+length. The 441 candidates cover fourteen exact requirements. The upper
+bound with omitted lower count follows the parser's default of zero.
+[CPython quantifier documentation](https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L109) · [CPython quantifier parser](https://raw.githubusercontent.com/python/cpython/v3.14.6/Lib/re/_parser.py#L614)
+
 The numbered-reference families use `([ab])\1` and the four two-octet words
 over `a` and `b`. The subjects distinguish reference equality from merely
 consuming another member of the class. The malformed-reference family uses a
