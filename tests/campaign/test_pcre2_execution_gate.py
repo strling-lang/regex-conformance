@@ -8,10 +8,11 @@ from tempfile import TemporaryDirectory
 import unittest
 
 ROOT = Path(__file__).resolve().parents[2]
-for source in ("campaigns/python", "matrix/python", "scheduler/python", "schemas/tooling/python"):
+for source in ("campaigns/python", "matrix/python", "scheduler/python", "schemas/tooling/python", "adapters/python", "control-plane/python"):
     sys.path.insert(0, str(ROOT / source))
 
 from regex_conformance_scale.pcre2_execution_gate import Pcre2ExecutionGate, Pcre2ExecutionGateError
+from regex_conformance_scale.pcre2_native_dispatch import _frame_pairs, dispatch_serial
 from regex_conformance_schema.execution_provenance import _u
 from regex_conformance_schema.jsonio import canonical_bytes
 from regex_conformance_schema.pcre2_production_adjudication import request_semantics
@@ -116,3 +117,32 @@ class BoundedExecutionGateTests(unittest.TestCase):
                 gate.close(journal, 0, deepcopy(capture))
             second, _ = gate.reserve_next(ROOT, journal, 1)
             self.assertNotEqual(reservation["physical_run_id"], second["physical_run_id"])
+
+    def test_ambiguous_launch_stops_and_preserves_one_pending_reservation(self):
+        gate = self.verified_gate()
+        attempted = []
+
+        def broken_provider(payload, limits):
+            attempted.append(payload)
+            self.assertEqual(limits.wall_time_ms, 1_000)
+            raise OSError("synthetic provider failure")
+
+        with TemporaryDirectory() as temporary:
+            journal = Path(temporary) / self.campaign.rsplit(":", 1)[1]
+            journal.mkdir()
+            result = dispatch_serial(ROOT, journal, gate, offer={}, runtime_facts={}, invoke=broken_provider)
+            self.assertEqual(len(attempted), 1)
+            self.assertEqual(result["dispatch_reservations"], 1)
+            self.assertEqual(result["closed_physical_captures"], 0)
+            self.assertEqual(result["withheld"], 15)
+            self.assertTrue((journal / "00.reserved").is_file())
+            with self.assertRaises(Pcre2ExecutionGateError):
+                dispatch_serial(ROOT, journal, gate, offer={}, runtime_facts={}, invoke=broken_provider)
+
+    def test_raw_split_rejects_truncated_or_extra_native_frames(self):
+        first = b"\x00\x00\x00\x02{}"
+        second = b"\x00\x00\x00\x03abc"
+        self.assertEqual(_frame_pairs(first + second), (first, second))
+        for malformed in (first, first + second[:-1], first + second + b"x"):
+            with self.subTest(malformed=malformed), self.assertRaises(ValueError):
+                _frame_pairs(malformed)

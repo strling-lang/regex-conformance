@@ -33,3 +33,14 @@ source selected by its assignment. It must enforce the worker's actual
 resource limits and capture evidence from the target invocation. A new
 protected harness that changes pinned execution identity needs a successor
 proposal and separate owner authorization.
+
+The protected `tools/campaigns/run_pcre2_production.py` entrypoint takes the
+canonical readiness record, an independently pinned root-owned admission and
+worker attestation, the exact realized library, and a private external evidence
+path. It checks the protected checkout and certificate. It uses the contained
+supervisor, an isolated unprivileged network namespace, and a dedicated
+one-process cgroup supplied by the operator. Its raw capture preserves the
+request, handshake and response bytes, bounded diagnostics, and timing.
+Malformed output or a containment fault stops further dispatch. Final evidence
+admission and scientific comparison operate on independently reconciled
+records from that capture.
