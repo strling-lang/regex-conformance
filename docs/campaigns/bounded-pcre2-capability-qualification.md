@@ -40,10 +40,22 @@ usual pinned release, manifest and preflight inputs. It reconciles all sixteen
 oracle bindings against the corresponding open applicability trace, the exact
 qualification probes and the reciprocal controls for relational comparisons.
 
-The next production boundary needs an admissible capability snapshot for the
-realized profile, exact applicability evaluation, and an authorized campaign
-assignment. The existing admissibility evaluator resolves oracle records from
-the historical fixture catalog. Integrating these production oracles requires
-a governed campaign-bound catalog input and exact outcome projections. The
-relational cases need both terminal observations under the same realized
-profile. No qualification record can substitute for either observation.
+`tools/campaigns/compile_pcre2_production_readiness.py` independently replays
+the native qualification evidence against its separately pinned SHA-256 and
+protected revision. It reconstructs a capability snapshot for that realized
+graph, reevaluates the exact candidate predicates and binds their results to
+the source-reviewed oracle bindings and preflight request digests. The output
+is a comparison plan for the exact scope. It carries no execution authority.
+
+The isolated production comparison path reuses the adjudication comparators
+with field-level native projections. It requires an independently pinned
+authorized production admission and validates the exact execution lineage.
+Relational cases require comparable terminal observations for all controls
+under the same realization. The trace cannot issue canonical claims or award
+certification credit. The historical admissibility and adjudication artifacts
+remain replayable through their own fixture inputs.
+
+The v2 terminal lineage contract cannot encode a successful compile as its
+own outcome. The comparison plan identifies the affected compile coordinates
+explicitly. A prospective lineage revision must preserve native acceptance
+and rejection separately before those coordinates can enter production.
