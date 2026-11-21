@@ -85,13 +85,13 @@ class ProductionVectorTests(unittest.TestCase):
         self.assertEqual(self.manifest, compile_vector_manifest(self.inputs, list(reversed(self.families))))
         self.assertEqual(self.manifest["counts"], {
             "requirements": 3378,
-            "requirements_with_candidate_stimuli": 58,
+            "requirements_with_candidate_stimuli": 66,
             "requirements_with_unresolved_interaction_identities": 4,
-            "vector_revisions": 528,
+            "vector_revisions": 1056,
         })
         rows = self.manifest["requirement_coverage"]
         self.assertEqual(len({row["requirement_id"] for row in rows}), 3378)
-        self.assertEqual(sum(row["status"] == "missing" for row in rows), 3316)
+        self.assertEqual(sum(row["status"] == "missing" for row in rows), 3308)
         self.assertEqual({row["status"] for row in rows}, {
             "missing", "candidate-stimuli-only", "interaction-identity-unresolved",
         })
@@ -121,6 +121,35 @@ class ProductionVectorTests(unittest.TestCase):
                     self.assertEqual({bytes.fromhex(item["pattern"]["hex"]).decode() for item in cases}, {pattern})
                     self.assertEqual({bytes.fromhex(item["subjects"][0]["hex"]) for item in cases}, expected_set)
                     self.assertEqual(len(cases), len(expected_set))
+
+    def test_ascii_class_partitions_match_the_documented_single_character_sets(self):
+        digits = set(range(ord("0"), ord("9") + 1))
+        letters = set(range(ord("A"), ord("Z") + 1)) | set(range(ord("a"), ord("z") + 1))
+        ascii_values = set(range(128))
+        controls = {
+            "class-union": (b"[x0-9]", digits | {ord("x")}),
+            "word-class": (rb"\w", digits | letters | {ord("_")}),
+            "class-range": (b"[0-9]", digits),
+            "class-negation": (b"[^0-9]", ascii_values - digits),
+        }
+        domain = {bytes((code,)) for code in ascii_values} | {b"", b"00", b"Aa", b"x9"}
+        families = {row["key"]: row for row in self.manifest["families"]}
+        stimuli = {row["vector_revision_id"]: row["stimulus"] for row in self.manifest["vectors"]}
+        bases = {row["family_key"]: row for row in load_strict(ROOT / BASIS_PATH)["families"]}
+        for feature, (pattern, members) in controls.items():
+            accepted = {bytes((code,)) for code in members}
+            for role, samples in (("positive", accepted), ("negative", domain - accepted)):
+                key = f"cpython-ascii-domain-{feature}-{role}"
+                with self.subTest(feature=feature, role=role):
+                    family = families[key]
+                    expectation = "match" if role == "positive" else "no-match"
+                    self.assertEqual(bases[key]["expected_outcome"], expectation)
+                    self.assertEqual(family["attribution"]["evidence_role"], role)
+                    cases = [stimuli[identifier] for identifier in family["vector_revision_ids"]]
+                    self.assertEqual({bytes.fromhex(row["pattern"]["hex"]) for row in cases}, {pattern})
+                    self.assertTrue(all(len(row["subjects"]) == 1 for row in cases))
+                    self.assertEqual({bytes.fromhex(row["subjects"][0]["hex"]) for row in cases}, samples)
+                    self.assertEqual(len(cases), len(samples))
 
     def test_missing_interaction_identity_remains_in_requirement_accounting(self):
         blocked = [

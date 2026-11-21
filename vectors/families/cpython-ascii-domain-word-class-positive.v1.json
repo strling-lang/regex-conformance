@@ -1,0 +1,412 @@
+{
+  "axes": {
+    "subjects": [
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "30"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "31"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "32"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "33"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "34"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "35"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "36"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "37"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "38"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "39"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "41"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "42"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "43"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "44"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "45"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "46"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "47"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "48"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "49"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "4a"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "4b"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "4c"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "4d"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "4e"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "4f"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "50"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "51"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "52"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "53"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "54"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "55"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "56"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "57"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "58"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "59"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "5a"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "5f"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "61"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "62"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "63"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "64"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "65"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "66"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "67"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "68"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "69"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6a"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6b"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6c"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6d"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6e"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6f"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "70"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "71"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "72"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "73"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "74"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "75"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "76"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "77"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "78"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "79"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "7a"
+        }
+      ]
+    ]
+  },
+  "deterministic_limits": {
+    "maximum_diagnostic_bytes": 4096,
+    "maximum_matches": 2,
+    "maximum_output_bytes": 4096,
+    "wall_time_ms": 1000
+  },
+  "domain": "unicode-scalars",
+  "finite_subjects": null,
+  "inputs": {
+    "callback_fixture": null,
+    "initial_state": {},
+    "options": [],
+    "pattern": {
+      "encoding": "utf-8",
+      "hex": "5c77"
+    },
+    "replacement": null,
+    "subjects": []
+  },
+  "key": "cpython-ascii-domain-word-class-positive",
+  "manifestation_id": null,
+  "operation_id": "rcid:v1:operation:u7:01a077a2-095f-70a3-b65f-ebfd7c23c9ea",
+  "requested_observations": [
+    "match-state",
+    "spans"
+  ],
+  "requirement_id": "rcid:v1:semantic-requirement:u7:01a08268-2471-7e3c-a329-8248421ab7ef",
+  "schema_version": "production-vector-family.v1"
+}

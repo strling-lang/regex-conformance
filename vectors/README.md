@@ -77,6 +77,14 @@ length. The 441 candidates cover fourteen exact requirements. The upper
 bound with omitted lower count follows the parser's default of zero.
 [CPython quantifier documentation](https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L109) · [CPython quantifier parser](https://raw.githubusercontent.com/python/cpython/v3.14.6/Lib/re/_parser.py#L614)
 
+The CPython ASCII-domain families partition the 128 ASCII characters and
+four empty or multi-character controls for union, word membership, inclusive
+range, and class negation. Each operation is full matching on a text subject.
+The positive partition contains only single-character members. The negative
+partition includes every other subject in the finite domain, including NUL
+where the selected class excludes it. The 528 stimuli map to eight requirements.
+[CPython set grammar](https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L211-L249) · [CPython word class](https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L568-L580)
+
 The numbered-reference families use `([ab])\1` and the four two-octet words
 over `a` and `b`. The subjects distinguish reference equality from merely
 consuming another member of the class. The malformed-reference family uses a

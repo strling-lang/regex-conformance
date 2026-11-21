@@ -951,6 +951,150 @@
           "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L860"
         }
       ]
+    },
+    {
+      "comparison_family": null,
+      "definition_sha256": "268de4d187561edffde38ac48be4ec603aae6cb1bc9bd646a308ccb87015d375",
+      "expected_outcome": "match",
+      "family_key": "cpython-ascii-domain-class-union-positive",
+      "premise": "The union consumes one code point equal to x or in the inclusive digit range. Full matching must consume the complete subject.",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "sources": [
+        {
+          "locator": "L216",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L216"
+        },
+        {
+          "locator": "L860-L867",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L860"
+        }
+      ]
+    },
+    {
+      "comparison_family": null,
+      "definition_sha256": "148315b62d6f632099c9e132d3a82ddbadc5568b13e72c1ead205700c0b33a09",
+      "expected_outcome": "no-match",
+      "family_key": "cpython-ascii-domain-class-union-negative",
+      "premise": "The union consumes one code point equal to x or in the inclusive digit range. Full matching must consume the complete subject.",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "sources": [
+        {
+          "locator": "L216",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L216"
+        },
+        {
+          "locator": "L860-L867",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L860"
+        }
+      ]
+    },
+    {
+      "comparison_family": null,
+      "definition_sha256": "7b86a0f7029888086e0719399d8808fed2c2f7f8305c0f64f36ed39ab51f36d6",
+      "expected_outcome": "match",
+      "family_key": "cpython-ascii-domain-word-class-positive",
+      "premise": "The word class includes ASCII alphanumerics and underscore on this domain. Full matching must consume the complete subject.",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "sources": [
+        {
+          "locator": "L569",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L569"
+        },
+        {
+          "locator": "L860-L867",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L860"
+        }
+      ]
+    },
+    {
+      "comparison_family": null,
+      "definition_sha256": "442eabb3f76642ace2d26092d93e5fe7722eabfd9e1a535c018a620bb5cdbd94",
+      "expected_outcome": "no-match",
+      "family_key": "cpython-ascii-domain-word-class-negative",
+      "premise": "The word class includes ASCII alphanumerics and underscore on this domain. Full matching must consume the complete subject.",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "sources": [
+        {
+          "locator": "L569",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L569"
+        },
+        {
+          "locator": "L860-L867",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L860"
+        }
+      ]
+    },
+    {
+      "comparison_family": null,
+      "definition_sha256": "5c139154d6a3fd343daeb5fa96dba2f46a6318a58e891fd338db69c406d8eded",
+      "expected_outcome": "match",
+      "family_key": "cpython-ascii-domain-class-range-positive",
+      "premise": "The inclusive range contains precisely the ten ASCII digits on this domain. Full matching must consume the complete subject.",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "sources": [
+        {
+          "locator": "L216",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L216"
+        },
+        {
+          "locator": "L860-L867",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L860"
+        }
+      ]
+    },
+    {
+      "comparison_family": null,
+      "definition_sha256": "d2dbe58b5b6367f0cd8059da7063ca927f09fb7f7f06bc055ef0cb5442fd69e7",
+      "expected_outcome": "no-match",
+      "family_key": "cpython-ascii-domain-class-range-negative",
+      "premise": "The inclusive range contains precisely the ten ASCII digits on this domain. Full matching must consume the complete subject.",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "sources": [
+        {
+          "locator": "L216",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L216"
+        },
+        {
+          "locator": "L860-L867",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L860"
+        }
+      ]
+    },
+    {
+      "comparison_family": null,
+      "definition_sha256": "e3640f2aa046ad355382461d99729810c7fa5c7e40c37d0e2502b69fa8da158b",
+      "expected_outcome": "match",
+      "family_key": "cpython-ascii-domain-class-negation-positive",
+      "premise": "A negated class consumes one code point outside the inclusive digit range. Full matching must consume the complete subject.",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "sources": [
+        {
+          "locator": "L243-L249",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L243-L249"
+        },
+        {
+          "locator": "L860-L867",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L860"
+        }
+      ]
+    },
+    {
+      "comparison_family": null,
+      "definition_sha256": "082c57148073e2ee880f2cae8e5be009e2a666700d4ee5f55509ce33fca79df1",
+      "expected_outcome": "no-match",
+      "family_key": "cpython-ascii-domain-class-negation-negative",
+      "premise": "A negated class consumes one code point outside the inclusive digit range. Full matching must consume the complete subject.",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "sources": [
+        {
+          "locator": "L243-L249",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L243-L249"
+        },
+        {
+          "locator": "L860-L867",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L860"
+        }
+      ]
     }
   ],
   "schema_version": "production-candidate-basis.v1"
