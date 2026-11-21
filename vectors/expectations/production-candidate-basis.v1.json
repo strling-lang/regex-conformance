@@ -1,0 +1,201 @@
+{
+  "families": [
+    {
+      "comparison_family": "inline-caseless-restrict-reject",
+      "definition_sha256": "dbd68efc39c738f518c01a0781d0ce809b38c56c1d283dca69cb3d0875b4cbb2",
+      "expected_outcome": "match",
+      "family_key": "inline-caseless-restrict-local",
+      "premise": "The restricted position uses ASCII K or k while the outer caseless position accepts the Kelvin sign. Turkish casing is disabled.",
+      "profile_scope": "pcre2-10.47-ordinary-8",
+      "sources": [
+        {
+          "locator": "INTERNAL OPTION SETTING and CASELESS MATCHING",
+          "url": "https://raw.githubusercontent.com/PCRE2Project/pcre2/pcre2-10.47/doc/pcre2pattern.3"
+        }
+      ]
+    },
+    {
+      "comparison_family": "inline-caseless-restrict-local",
+      "definition_sha256": "a199b2d0b0407c41fded9df0bc63006b99f2d4e80d2c6c38202ce271fcf60cf7",
+      "expected_outcome": "no-match",
+      "family_key": "inline-caseless-restrict-reject",
+      "premise": "The Kelvin sign occurs in the restricted position. Turkish casing is disabled.",
+      "profile_scope": "pcre2-10.47-ordinary-8",
+      "sources": [
+        {
+          "locator": "INTERNAL OPTION SETTING and CASELESS MATCHING",
+          "url": "https://raw.githubusercontent.com/PCRE2Project/pcre2/pcre2-10.47/doc/pcre2pattern.3"
+        }
+      ]
+    },
+    {
+      "comparison_family": null,
+      "definition_sha256": "8b212f742500ad230481f152c944f3f315b3f41d53433edaf86313cf929c5620",
+      "expected_outcome": "compile-reject",
+      "family_key": "invalid-numbered-reference",
+      "premise": "A single-digit reference requires the referenced capture to exist in the pattern.",
+      "profile_scope": "pcre2-10.47-ordinary-8",
+      "sources": [
+        {
+          "locator": "BACKREFERENCES and Perl rules for non-class backslash 1-9",
+          "url": "https://raw.githubusercontent.com/PCRE2Project/pcre2/pcre2-10.47/doc/pcre2pattern.3"
+        }
+      ]
+    },
+    {
+      "comparison_family": null,
+      "definition_sha256": "3dd5877e6a5d6682aaf2d6599728acb55a5bb5f2ff0f09f2f8052dfbfcbe7e98",
+      "expected_outcome": "no-match",
+      "family_key": "line-start-negative",
+      "premise": "Run with REG_NEWLINE and REG_NOTBOL clear. An interior a is not at the beginning of the subject.",
+      "profile_scope": "posix-regexec",
+      "sources": [
+        {
+          "locator": "9.3.8 BRE Expression Anchoring and 9.4.9 ERE Expression Anchoring",
+          "url": "https://pubs.opengroup.org/onlinepubs/9799919799/basedefs/V1_chap09.html"
+        }
+      ]
+    },
+    {
+      "comparison_family": null,
+      "definition_sha256": "42d3362e35097a068b2e9eef4d2679fc673bf5a88d62d44b3146d6c2afc9a828",
+      "expected_outcome": "match",
+      "family_key": "line-start-positive",
+      "premise": "Run with REG_NEWLINE and REG_NOTBOL clear. The subject begins with an ASCII a.",
+      "profile_scope": "posix-regexec",
+      "sources": [
+        {
+          "locator": "9.3.8 BRE Expression Anchoring and 9.4.9 ERE Expression Anchoring",
+          "url": "https://pubs.opengroup.org/onlinepubs/9799919799/basedefs/V1_chap09.html"
+        }
+      ]
+    },
+    {
+      "comparison_family": null,
+      "definition_sha256": "c0a5acc8df3252c169577e80dc62a931163ba5726989d5a3f67c893e0d156500",
+      "expected_outcome": "no-match",
+      "family_key": "numbered-reference-mismatch",
+      "premise": "The second subject octet differs from the captured first octet with caseless matching disabled.",
+      "profile_scope": "pcre2-10.47-ordinary-8",
+      "sources": [
+        {
+          "locator": "BACKREFERENCES",
+          "url": "https://raw.githubusercontent.com/PCRE2Project/pcre2/pcre2-10.47/doc/pcre2pattern.3"
+        }
+      ]
+    },
+    {
+      "comparison_family": null,
+      "definition_sha256": "aeb2bbf8a504d960135982b34ad190bb27161fc809558228222dc4a764846d6b",
+      "expected_outcome": "match",
+      "family_key": "numbered-reference-repeat",
+      "premise": "The second subject octet is equal to the captured first octet with caseless matching disabled.",
+      "profile_scope": "pcre2-10.47-ordinary-8",
+      "sources": [
+        {
+          "locator": "BACKREFERENCES",
+          "url": "https://raw.githubusercontent.com/PCRE2Project/pcre2/pcre2-10.47/doc/pcre2pattern.3"
+        }
+      ]
+    },
+    {
+      "comparison_family": "numeric-escape-capture-threshold-reject",
+      "definition_sha256": "ba4a15f6cb2f44bef8f0e3f4fcdc5e38ecf8cfe5787077faf30b4026cc7dcd79",
+      "expected_outcome": "match",
+      "family_key": "numeric-escape-capture-threshold-match",
+      "premise": "Eleven prior captures make the decimal escape a backreference to capture eleven. PCRE2_EXTRA_PYTHON_OCTAL is unset.",
+      "profile_scope": "pcre2-10.47-ordinary-8",
+      "sources": [
+        {
+          "locator": "Perl rules for non-class backslash 1-9",
+          "url": "https://raw.githubusercontent.com/PCRE2Project/pcre2/pcre2-10.47/doc/pcre2pattern.3"
+        }
+      ]
+    },
+    {
+      "comparison_family": "numeric-escape-capture-threshold-match",
+      "definition_sha256": "0aa1052ca63aacefb65a4bb76d145ea68caa25dc2f178733bd2c13f883e5b729",
+      "expected_outcome": "no-match",
+      "family_key": "numeric-escape-capture-threshold-reject",
+      "premise": "The tab subject distinguishes a backreference from an octal interpretation when there are eleven prior captures. PCRE2_EXTRA_PYTHON_OCTAL is unset.",
+      "profile_scope": "pcre2-10.47-ordinary-8",
+      "sources": [
+        {
+          "locator": "Perl rules for non-class backslash 1-9",
+          "url": "https://raw.githubusercontent.com/PCRE2Project/pcre2/pcre2-10.47/doc/pcre2pattern.3"
+        }
+      ]
+    },
+    {
+      "comparison_family": null,
+      "definition_sha256": "db6ae2d19139d4483482364b22e5f8031e61ec45444cc66c051e93894fa37d2f",
+      "expected_outcome": null,
+      "family_key": "numeric-escape-diagnostics",
+      "premise": "Preserve native diagnostics and distinguish accepted syntax from range or syntax errors. The standard does not supply a portable native diagnostic.",
+      "profile_scope": "numeric-code-point-manifestation",
+      "sources": [
+        {
+          "locator": "RL1.1 Hex Notation",
+          "url": "https://www.unicode.org/reports/tr18/tr18-25.html#Hex_notation"
+        }
+      ]
+    },
+    {
+      "comparison_family": "numeric-escape-valid-reference-control",
+      "definition_sha256": "d6f1a6f872f4831d7f2f28793ec4cb01073a382f2be4fb0f8d8bfc7bc0226ce1",
+      "expected_outcome": "compile-reject",
+      "family_key": "numeric-escape-invalid-reference-rejected",
+      "premise": "The single existing capture cannot satisfy a reference to group two.",
+      "profile_scope": "pcre2-10.47-ordinary-8",
+      "sources": [
+        {
+          "locator": "BACKREFERENCES and Perl rules for non-class backslash 1-9",
+          "url": "https://raw.githubusercontent.com/PCRE2Project/pcre2/pcre2-10.47/doc/pcre2pattern.3"
+        }
+      ]
+    },
+    {
+      "comparison_family": "numeric-escape-invalid-reference-rejected",
+      "definition_sha256": "b40c6d30816f5f5d2bdd5561b846058fff9c2abeedce85020553b75855abec9e",
+      "expected_outcome": "compile-accept",
+      "family_key": "numeric-escape-valid-reference-control",
+      "premise": "Changing the reference from two to one selects an existing group with the same capture layout.",
+      "profile_scope": "pcre2-10.47-ordinary-8",
+      "sources": [
+        {
+          "locator": "BACKREFERENCES and Perl rules for non-class backslash 1-9",
+          "url": "https://raw.githubusercontent.com/PCRE2Project/pcre2/pcre2-10.47/doc/pcre2pattern.3"
+        }
+      ]
+    },
+    {
+      "comparison_family": "simple-fold-restricted-within-ascii",
+      "definition_sha256": "e1a857879dc2b498e34a8914c0ea93da0dced5fdf6fa042f51a0db1f2e5382d6",
+      "expected_outcome": "no-match",
+      "family_key": "simple-fold-restricted-cross-boundary",
+      "premise": "The restriction suppresses cross-domain K and Kelvin sign equivalence. Turkish casing is disabled.",
+      "profile_scope": "pcre2-10.47-ordinary-8",
+      "sources": [
+        {
+          "locator": "CASELESS MATCHING",
+          "url": "https://raw.githubusercontent.com/PCRE2Project/pcre2/pcre2-10.47/doc/pcre2pattern.3"
+        }
+      ]
+    },
+    {
+      "comparison_family": "simple-fold-restricted-cross-boundary",
+      "definition_sha256": "0f2f96e0de9d8041cd1aa92449fdaca57694ae2b357d02db63e898d521c92fc9",
+      "expected_outcome": "match",
+      "family_key": "simple-fold-restricted-within-ascii",
+      "premise": "The restriction retains K and k in the same ASCII folding domain. Turkish casing is disabled.",
+      "profile_scope": "pcre2-10.47-ordinary-8",
+      "sources": [
+        {
+          "locator": "CASELESS MATCHING",
+          "url": "https://raw.githubusercontent.com/PCRE2Project/pcre2/pcre2-10.47/doc/pcre2pattern.3"
+        }
+      ]
+    }
+  ],
+  "schema_version": "production-candidate-basis.v1"
+}

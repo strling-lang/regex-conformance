@@ -53,6 +53,10 @@ they can contribute to C4. Uncovered requirements retain `missing` rows.
 Requirements whose obligation names an interaction with no assigned scientific
 ID remain visible as `interaction-identity-unresolved`. Their rows identify the
 exact relations that require an identity allocation before vector attribution.
+The [candidate basis](expectations/production-candidate-basis.v1.json) binds
+source locators and scoped premises to exact family definition digests. The
+[campaign design](../docs/campaigns/first-production-design.md) validates this
+binding and the paired interaction controls before selecting candidates.
 
 The numbered-reference families use `([ab])\1` and the four two-octet words
 over `a` and `b`. The subjects distinguish reference equality from merely

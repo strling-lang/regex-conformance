@@ -1,0 +1,65 @@
+{
+  "allocation_digest_sha256": "0d864ed8ae6aa92ca1132cea6db3b27069eeabdbce9cd1d57113306c21fa9607",
+  "base_catalog_digest_sha256": "f795af661fced82c4eb12d9f1a23d3c04523d2e805458e091af2d96b078149cb",
+  "bindings": [
+    {
+      "canonical_key": "interaction.feature.inline-modifier-directive.modified-by.modifier.caseless-restrict",
+      "obligation_id": "rcid:v1:obligation:u7:01a08268-1ea0-7318-8192-c3d936a73ed3",
+      "scientific_id": "rcid:v1:semantic-interaction:u7:01a1fcb7-3d4f-73ab-88c2-368eeb574beb",
+      "semantic_fingerprint_sha256": "1466bc05b9dd9e5f9e04e5ce53890768ed42313111dec1a1e9d1c6af4ee2f461",
+      "source_evidence": [
+        {
+          "locator": "INTERNAL OPTION SETTING and CASELESS MATCHING",
+          "url": "https://raw.githubusercontent.com/PCRE2Project/pcre2/pcre2-10.47/doc/pcre2pattern.3"
+        }
+      ]
+    },
+    {
+      "canonical_key": "interaction.feature.numeric-escape-disambiguation.prerequisite.feature.invalid-group-reference",
+      "obligation_id": "rcid:v1:obligation:u7:01a08268-1ea5-770e-b249-a394b517f50a",
+      "scientific_id": "rcid:v1:semantic-interaction:u7:01a1fcb7-3d57-739f-ab4a-7e3d407807ea",
+      "semantic_fingerprint_sha256": "535b046f5820f62211688a4db116ad6d6b21d76d0f1c2f5e74d24af5d62b252c",
+      "source_evidence": [
+        {
+          "locator": "22.2.1.1 Early Errors, AtomEscape :: DecimalEscape",
+          "url": "https://tc39.es/ecma262/2026/multipage/text-processing.html#sec-patterns-static-semantics-early-errors"
+        },
+        {
+          "locator": "Python rules for non_class backslash 1-9",
+          "url": "https://raw.githubusercontent.com/PCRE2Project/pcre2/pcre2-10.47/doc/pcre2pattern.3"
+        }
+      ]
+    },
+    {
+      "canonical_key": "interaction.feature.numeric-escape-disambiguation.prerequisite.feature.numbered-backreference",
+      "obligation_id": "rcid:v1:obligation:u7:01a08268-1ead-7a7a-bde8-937937e59a0f",
+      "scientific_id": "rcid:v1:semantic-interaction:u7:01a1fcb7-3d58-7537-99a5-12848831115a",
+      "semantic_fingerprint_sha256": "53cbf723995c63bea7d6aa3bb4be08ce459e6e95ca667f836785e72e67e2a209",
+      "source_evidence": [
+        {
+          "locator": "Perl rules for non-class backslash 1-9",
+          "url": "https://raw.githubusercontent.com/PCRE2Project/pcre2/pcre2-10.47/doc/pcre2pattern.3"
+        }
+      ]
+    },
+    {
+      "canonical_key": "interaction.feature.simple-case-folding.modified-by.modifier.caseless-restrict",
+      "obligation_id": "rcid:v1:obligation:u7:01a08268-1ea8-73c5-88da-db4c631fd77a",
+      "scientific_id": "rcid:v1:semantic-interaction:u7:01a1fcb7-3d57-7ba9-b4cd-bcb2ed00eead",
+      "semantic_fingerprint_sha256": "cbf7bdf25c86280190758864bd87a2b34ceeb31ad2854b4b4a3f00643bc8498a",
+      "source_evidence": [
+        {
+          "locator": "CASELESS MATCHING",
+          "url": "https://raw.githubusercontent.com/PCRE2Project/pcre2/pcre2-10.47/doc/pcre2pattern.3"
+        },
+        {
+          "locator": "1.5 Simple Loose Matches",
+          "url": "https://www.unicode.org/reports/tr18/tr18-25.html#Simple_Loose_Matches"
+        }
+      ]
+    }
+  ],
+  "effective_date": "2026-11-21",
+  "obligation_snapshot_digest_sha256": "a36842a1a138ea4beeb0d3b50501a9443a85863f2d5c2f5b47b6b108f0ba4045",
+  "schema_version": "production-interaction-allocations.v1"
+}

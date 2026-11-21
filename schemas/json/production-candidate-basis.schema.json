@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/production-candidate-basis.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "families"],
+  "properties": {
+    "schema_version": {"const": "production-candidate-basis.v1"},
+    "families": {
+      "type": "array", "minItems": 1, "maxItems": 4096,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["family_key", "definition_sha256", "profile_scope", "premise", "expected_outcome", "comparison_family", "sources"],
+        "properties": {
+          "family_key": {"type": "string", "minLength": 1},
+          "definition_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "profile_scope": {"type": "string", "minLength": 1},
+          "premise": {"type": "string", "minLength": 1},
+          "expected_outcome": {"enum": ["match", "no-match", "compile-accept", "compile-reject", null]},
+          "comparison_family": {"type": ["string", "null"], "minLength": 1},
+          "sources": {
+            "type": "array", "minItems": 1, "uniqueItems": true,
+            "items": {
+              "type": "object", "additionalProperties": false,
+              "required": ["url", "locator"],
+              "properties": {
+                "url": {"type": "string", "pattern": "^https://"},
+                "locator": {"type": "string", "minLength": 1}
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

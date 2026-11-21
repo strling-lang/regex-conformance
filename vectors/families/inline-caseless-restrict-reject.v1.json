@@ -1,0 +1,40 @@
+{
+  "schema_version": "production-vector-family.v1",
+  "key": "inline-caseless-restrict-reject",
+  "requirement_id": "rcid:v1:semantic-requirement:u7:01a08268-2472-7bb6-9c76-75b42b5defd6",
+  "operation_id": "rcid:v1:operation:u7:01a077a2-095f-79a2-bed1-eed10d753928",
+  "manifestation_id": null,
+  "domain": "unicode-scalars",
+  "inputs": {
+    "pattern": {
+      "encoding": "utf-8",
+      "hex": "282a55544629283f6929283f723a6b296b"
+    },
+    "subjects": [],
+    "replacement": null,
+    "callback_fixture": null,
+    "options": [],
+    "initial_state": {}
+  },
+  "axes": {
+    "subjects": [
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "e284aa6b"
+        }
+      ]
+    ]
+  },
+  "finite_subjects": null,
+  "requested_observations": [
+    "match-state",
+    "spans"
+  ],
+  "deterministic_limits": {
+    "maximum_diagnostic_bytes": 4096,
+    "maximum_matches": 4,
+    "maximum_output_bytes": 4096,
+    "wall_time_ms": 1000
+  }
+}

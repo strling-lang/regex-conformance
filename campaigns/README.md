@@ -4,6 +4,10 @@ Campaign definitions, frozen input references, compact manifests, and campaign
 policy live here. Raw result shards, diagnostics, and worker spools remain in
 immutable evidence or operational storage.
 
+The [first production campaign design](../docs/campaigns/first-production-design.md)
+binds candidate premises and a proposed profile ahead of production profile
+freeze and qualification.
+
 `small-scale-qualification.v1.json` expands the frozen architectural
 vertical-slice campaign through a
 digest-bound overlay. Its 48 candidates reconcile to 26 included logical

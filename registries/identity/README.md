@@ -15,6 +15,11 @@ scientific and content identity rules, migration graph, and safe allocation
 procedure are documented in
 [`../../docs/architecture/scientific-identities.md`](../../docs/architecture/scientific-identities.md).
 
+`production-interaction-allocations.v1.json` supplies reviewed interaction
+identities for production-vector attribution. It binds the frozen base catalog
+and exact obligation snapshot and uses the existing assigned namespace and
+scientific fingerprint. See the [allocation and successor review](../../docs/architecture/interaction-identity-review.md).
+
 Generated assertion derivations use an assigned stable handle and a
 content-derived method revision. They describe why an assertion was emitted;
 they neither replace nor participate in the frozen identities of the

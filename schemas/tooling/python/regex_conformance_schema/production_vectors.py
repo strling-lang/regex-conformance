@@ -12,6 +12,7 @@ from typing import Any
 
 from .errors import fail
 from .identity import NamespaceRegistry, build_content_identity
+from .interaction_allocations import ALLOCATIONS_PATH, verify_interaction_allocations
 from .jsonio import canonical_bytes, load_strict
 from .obligation_snapshots import AUTHORITY_PATH, OBLIGATION_PATH, REQUIREMENT_PATH, SNAPSHOT_PATH
 from .profile import IdentityProfile
@@ -199,12 +200,18 @@ def load_vector_compiler_inputs(root: Path) -> VectorCompilerInputs:
     semantics = _load_snapshot(root, SNAPSHOT_PATH, obligations["semantic_authority"])
     by_requirement = {item["scientific_id"]: item for item in requirements["requirements"]}
     by_obligation = {item["scientific_id"]: item for item in obligations["obligations"]}
+    catalog = load_strict(root / CATALOG_PATH)
+    registry = NamespaceRegistry.load(root / NAMESPACE_PATH)
     interactions = {
         key: item["scientific_id"]
-        for item in load_strict(root / CATALOG_PATH)["bindings"]
-        if item["entity_class"] == "typed-interaction"
+        for item in catalog["bindings"]
+        if item["entity_class"] == "typed-interaction" and item["status"] == "active"
         for key in [item["canonical_key"], *item["former_keys"]]
     }
+    interactions.update(verify_interaction_allocations(
+        root, load_strict(root / ALLOCATIONS_PATH), catalog=catalog, registry=registry,
+        obligation_ref=current["obligation_snapshot"], obligations=by_obligation,
+    ))
     unresolved = {}
     for identifier, requirement in by_requirement.items():
         members = [by_obligation[key] for key in requirement["obligation_scientific_ids"]]
@@ -220,7 +227,7 @@ def load_vector_compiler_inputs(root: Path) -> VectorCompilerInputs:
         manifestations={item["scientific_id"]: item for item in semantics["manifestations"]},
         identities=interactions,
         unresolved_interactions=unresolved,
-        registry=NamespaceRegistry.load(root / NAMESPACE_PATH),
+        registry=registry,
         profile=IdentityProfile.from_record(load_strict(root / VECTOR_PROFILE_PATH)),
     )
 

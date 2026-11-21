@@ -8,12 +8,15 @@ import unittest
 
 from support import ROOT
 from regex_conformance_schema.errors import ConformanceDataError
+from regex_conformance_schema.interaction_allocations import ALLOCATIONS_PATH, verify_interaction_allocations
 from regex_conformance_schema.jsonio import canonical_bytes, load_strict
+from regex_conformance_schema.production_campaign_design import BASIS_PATH, bind_candidate_bases, build_production_campaign_design
 from regex_conformance_schema.production_vectors import (
     _load_snapshot,
     compile_vector_manifest,
     load_vector_compiler_inputs,
 )
+from regex_conformance_schema.scientific_identity import CATALOG_PATH
 from regex_conformance_schema.vector_manifest_verification import verify_vector_manifest
 
 
@@ -68,9 +71,9 @@ class ProductionVectorTests(unittest.TestCase):
         self.assertEqual(self.manifest, compile_vector_manifest(self.inputs, list(reversed(self.families))))
         self.assertEqual(self.manifest["counts"], {
             "requirements": 3378,
-            "requirements_with_candidate_stimuli": 6,
-            "requirements_with_unresolved_interaction_identities": 12,
-            "vector_revisions": 15,
+            "requirements_with_candidate_stimuli": 14,
+            "requirements_with_unresolved_interaction_identities": 4,
+            "vector_revisions": 25,
         })
         rows = self.manifest["requirement_coverage"]
         self.assertEqual(len({row["requirement_id"] for row in rows}), 3378)
@@ -89,8 +92,8 @@ class ProductionVectorTests(unittest.TestCase):
             row for row in self.manifest["requirement_coverage"]
             if row["status"] == "interaction-identity-unresolved"
         ]
-        self.assertEqual(len(blocked), 12)
-        self.assertEqual(len({key for row in blocked for key in row["blocking_interaction_keys"]}), 6)
+        self.assertEqual(len(blocked), 4)
+        self.assertEqual(len({key for row in blocked for key in row["blocking_interaction_keys"]}), 2)
         self.assertTrue(all(not row["vector_revision_ids"] for row in blocked))
         requirement = self.inputs.requirements[blocked[0]["requirement_id"]]
         family = {
@@ -100,6 +103,51 @@ class ProductionVectorTests(unittest.TestCase):
         }
         with self.assertRaisesRegex(ConformanceDataError, "vector-interaction-identity-unresolved"):
             compile_vector_manifest(self.inputs, [family])
+
+    def test_interaction_allocations_bind_exact_obligations_and_unique_assigned_ids(self):
+        record = load_strict(ROOT / ALLOCATIONS_PATH)
+        authority = {
+            "catalog": load_strict(ROOT / CATALOG_PATH), "obligation_ref": self.inputs.obligation_snapshot,
+            "obligations": self.inputs.obligations, "registry": self.inputs.registry,
+        }
+        allocated = verify_interaction_allocations(ROOT, record, **authority)
+        self.assertEqual(len(allocated), 4)
+        self.assertEqual(sum(bool(row["attribution"]["interaction_ids"]) for row in self.manifest["families"]), 8)
+
+        for error in ("interaction-allocation-reuse", "interaction-allocation-relation"):
+            with self.subTest(error=error):
+                changed = deepcopy(record)
+                first, second = changed["bindings"][:2]
+                if error == "interaction-allocation-reuse":
+                    second["scientific_id"] = first["scientific_id"]
+                else:
+                    second["obligation_id"] = first["obligation_id"]
+                del changed["allocation_digest_sha256"]
+                changed["allocation_digest_sha256"] = sha256(canonical_bytes(changed)).hexdigest()
+                with self.assertRaisesRegex(ConformanceDataError, error):
+                    verify_interaction_allocations(ROOT, changed, **authority)
+
+    def test_campaign_design_pins_candidate_inputs_and_remains_ineligible(self):
+        args = {"expected_manifest_digest": self.manifest["manifest_digest_sha256"]}
+        design = build_production_campaign_design(ROOT, self.inputs, self.manifest, self.families, **args)
+        reversed_design = build_production_campaign_design(ROOT, self.inputs, self.manifest, list(reversed(self.families)), **args)
+        self.assertEqual(design, reversed_design)
+        self.assertEqual(design["candidate_selection_count"], 16)
+        self.assertEqual({row["adapter_operation"] for row in design["candidate_bindings"]}, {"compile", "full-match", "search"})
+        self.assertEqual(design["native_span_unit"], "octet")
+        self.assertIsNone(design["production_execution_denominator"])
+        self.assertFalse(design["execution_ready"])
+
+    def test_campaign_basis_rejects_omission_and_invalid_paired_control(self):
+        basis = load_strict(ROOT / BASIS_PATH)
+        omission = deepcopy(basis)
+        omission["families"].pop()
+        with self.assertRaisesRegex(ConformanceDataError, "candidate-basis-coverage"):
+            bind_candidate_bases(ROOT, self.inputs, self.manifest, omission)
+        scope = next(row for row in basis["families"] if row["comparison_family"] is not None)
+        scope["profile_scope"] = "unsupported-substitution"
+        with self.assertRaisesRegex(ConformanceDataError, "candidate-basis-comparison"):
+            bind_candidate_bases(ROOT, self.inputs, self.manifest, basis)
 
     def test_oracle_or_arbitrary_attribution_cannot_enter_family_input(self):
         family = deepcopy(self.anchor)

@@ -1,25 +1,28 @@
-# Interaction identities requiring review
+# Interaction identity allocations and successor proposals
 
-The current denominator includes six interaction obligations with no assigned
-`semantic-interaction` identity in the [identity catalog](../../registries/identity/scientific-identities.v1.json).
+The current denominator includes six interaction obligations absent from the
+[frozen base catalog](../../registries/identity/scientific-identities.v1.json).
 Each obligation has a positive and a negative requirement. Their relation
 bases enter the denominator through `modifier_ids` or
 `prerequisite_feature_ids` in the [frozen semantic snapshot](../../semantic-corpus/snapshots/regex-semantic-features-2026-09-08.v4.json).
-Identity catalog construction reads the legacy interaction population. None
-of the six keys resolves as a current key or a former key. Each endpoint
-already has a scientific identity.
+Identity catalog construction reads the legacy interaction population. Each
+endpoint already has a scientific identity. On 2026-11-21 the Program Owner
+approved the four source-supported allocations. The verified
+[supplemental catalog](../../registries/identity/production-interaction-allocations.v1.json)
+binds their assigned UUIDv7 identities to the existing base catalog and
+obligation snapshot.
 
-This is a review proposal. The suffixes below identify rows in the
+The suffixes below identify rows in the
 [obligation snapshot](../../ontology/obligations/regex-semantic-obligations-2026-09-08.v1.json)
 and [requirement snapshot](../../vectors/requirements/regex-semantic-vector-requirements-2026-09-08.v2.json).
 Requirement suffixes appear in positive, then negative order.
 
-| Proposed disposition | Source feature | Relation and target | Obligation UUID suffix | Requirement UUID suffixes |
+| Disposition | Source feature | Relation and target | Obligation UUID suffix | Requirement UUID suffixes |
 | --- | --- | --- | --- | --- |
-| Allocate after review | `feature.inline-modifier-directive` | `modified-by` → `modifier.caseless-restrict` | `c3d936a73ed3` | `c2fb69075286`, `75b42b5defd6` |
-| Allocate after review | `feature.simple-case-folding` | `modified-by` → `modifier.caseless-restrict` | `db4c631fd77a` | `54c5aa32d6b9`, `491dfebafb11` |
-| Allocate after review | `feature.numeric-escape-disambiguation` | `prerequisite` → `feature.numbered-backreference` | `937937e59a0f` | `d33ed1ced941`, `40e3c3a19a44` |
-| Allocate after review | `feature.numeric-escape-disambiguation` | `prerequisite` → `feature.invalid-group-reference` | `a394b517f50a` | `ef9d29be1ceb`, `71d4b0cd3350` |
+| Allocated | `feature.inline-modifier-directive` | `modified-by` → `modifier.caseless-restrict` | `c3d936a73ed3` | `c2fb69075286`, `75b42b5defd6` |
+| Allocated | `feature.simple-case-folding` | `modified-by` → `modifier.caseless-restrict` | `db4c631fd77a` | `54c5aa32d6b9`, `491dfebafb11` |
+| Allocated | `feature.numeric-escape-disambiguation` | `prerequisite` → `feature.numbered-backreference` | `937937e59a0f` | `d33ed1ced941`, `40e3c3a19a44` |
+| Allocated | `feature.numeric-escape-disambiguation` | `prerequisite` → `feature.invalid-group-reference` | `a394b517f50a` | `ef9d29be1ceb`, `71d4b0cd3350` |
 | Review relation semantics before allocation | `feature.numeric-escape-disambiguation` | `prerequisite` → `feature.escaped-literal` | `b6923815f743` | `61804daaa43a`, `37c33ef21bfe` |
 | Review relation semantics before allocation | `feature.numeric-escape-disambiguation` | `prerequisite` → `feature.numeric-unicode-code-point-escape` | `a7dbde722dab` | `a71b3c02b3cc`, `2ec587f39fe3` |
 
@@ -40,25 +43,35 @@ Requirement suffixes appear in positive, then negative order.
    a reference beyond the pattern's capture count. Annex B separately alters
    legacy grammar. The existing applicability boundary must preserve those
    distinctions. [ECMAScript RegExp early errors](https://tc39.es/ecma262/2026/multipage/text-processing.html#sec-patterns-static-semantics-early-errors) · [ECMAScript Annex B RegExp extensions](https://tc39.es/ecma262/2026/multipage/additional-ecmascript-features-for-web-browsers.html#sec-regular-expressions-patterns)
-5. **Literal fallback.** The target feature currently means quoting a
-   metacharacter. ECMAScript Annex B documents legacy octal and
-   non-octal-decimal escapes. It does not establish that the fallback requires
-   metacharacter quoting. Ask whether the interaction should name a governed
-   fallback feature or be suppressed with explicit disposition. [ECMAScript Annex B RegExp extensions](https://tc39.es/ecma262/2026/multipage/additional-ecmascript-features-for-web-browsers.html#sec-regular-expressions-patterns)
-6. **Numeric character interpretation.** A bare digit sequence can produce an
-   octal character escape in the documented grammars. ECMAScript's `\u`
-   code-point forms are distinct productions. Confirm whether the existing
-   target denotes the relevant bare numeric escape in the researched model
-   before requiring its capability as an applicability prerequisite. [Python 3.14 regular expression syntax](https://docs.python.org/3.14/library/re.html#regular-expression-syntax) · [ECMAScript RegExp grammar](https://tc39.es/ecma262/2026/multipage/text-processing.html#sec-patterns)
 
-The Program Owner can review the four straightforward allocations together
-and separately disposition the two questioned prerequisite edges in the same
-decision. Use the existing assigned UUIDv7 `semantic-interaction` namespace
-and persist one identity per accepted source, relation, and target triple.
-Catalog construction should reconcile all three governed relation sources and
-detect duplicate triples. Adding identities to retained triples preserves the
-existing obligation and requirement IDs, cardinality, and predicates. Changing
-a relation or its applicability requires reviewed semantic lineage and a
-recomputed successor denominator, including explicit mappings for the old
-obligation and requirements. All twelve current rows retain their blocked
-dispositions until the corresponding approved change is recorded. [Scientific identity and migration contract](scientific-identities.md) · [Governance](../../GOVERNANCE.md)
+## Proposed successors for the disputed prerequisites
+
+For `b6923815f743`, replace `escaped-literal` with `literal-unit`, scoped to
+the legacy digit fallback. In ECMAScript Annex B without Unicode mode and
+without a corresponding capture, `\8` can enter the source-character
+identity-escape production and consume the digit `8`. Compare this with
+Unicode mode, where the missing group is an early error. Capability to quote
+a regexp metacharacter supplies neither branch. The successor predicate needs
+an exact legacy grammar capability in addition to `literal-unit`. Preserve the
+positive and negative roles from `61804daaa43a` and `37c33ef21bfe` in their
+respective successor requirements. [ECMAScript Annex B RegExp grammar](https://tc39.es/ecma262/2026/multipage/additional-ecmascript-features-for-web-browsers.html#sec-regular-expressions-patterns) · [ECMAScript early errors](https://tc39.es/ecma262/2026/multipage/text-processing.html#sec-patterns-static-semantics-early-errors)
+
+For `a7dbde722dab`, replace `numeric-unicode-code-point-escape` with a dedicated
+octal character escape capability. PCRE2 10.47 with its Perl rules can treat
+`\11` as tab below the capture threshold and as a decimal reference when
+eleven captures precede it. The rule works in octet mode. PCRE2's Python-octal
+option has a different digit rule. The existing Unicode feature's canonical
+manifestation is the hexadecimal notation of UTS #18. The new predicate should
+select the exact octal branch and applicable grammar. Preserve the positive
+and negative roles from `a71b3c02b3cc` and `2ec587f39fe3` in their respective
+successor requirements. [PCRE2 10.47, Octal escapes and back references](https://raw.githubusercontent.com/PCRE2Project/pcre2/pcre2-10.47/doc/pcre2pattern.3#L501) · [UTS #18, Hex Notation](https://www.unicode.org/reports/tr18/tr18-25.html#Hex_notation)
+
+The proposals retain both testing obligations. For the interaction-only
+replacement, map 2,388 obligations and 3,374 requirements to themselves, then
+map the two named predecessor obligations and four predecessor requirements
+to one successor each. Additional obligations derived from a new feature must
+be counted independently before acceptance of a successor snapshot.
+The four retained allocations change no existing obligation, requirement,
+predicate, or cardinality. The two disputed interactions still block their four
+requirements in the accepted 2,390-obligation and 3,378-requirement snapshots.
+[Scientific identity and migration contract](scientific-identities.md) · [Governance](../../GOVERNANCE.md)

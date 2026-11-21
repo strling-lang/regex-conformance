@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/production-interaction-allocations.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "effective_date", "base_catalog_digest_sha256", "obligation_snapshot_digest_sha256", "bindings", "allocation_digest_sha256"],
+  "properties": {
+    "schema_version": {"const": "production-interaction-allocations.v1"},
+    "effective_date": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
+    "base_catalog_digest_sha256": {"$ref": "#/$defs/sha256"},
+    "obligation_snapshot_digest_sha256": {"$ref": "#/$defs/sha256"},
+    "allocation_digest_sha256": {"$ref": "#/$defs/sha256"},
+    "bindings": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["canonical_key", "scientific_id", "obligation_id", "semantic_fingerprint_sha256", "source_evidence"],
+        "properties": {
+          "canonical_key": {"type": "string", "pattern": "^interaction\\."},
+          "scientific_id": {"type": "string", "pattern": "^rcid:v1:semantic-interaction:u7:"},
+          "obligation_id": {"type": "string", "pattern": "^rcid:v1:obligation:u7:"},
+          "semantic_fingerprint_sha256": {"$ref": "#/$defs/sha256"},
+          "source_evidence": {
+            "type": "array", "minItems": 1, "uniqueItems": true,
+            "items": {
+              "type": "object", "additionalProperties": false,
+              "required": ["url", "locator"],
+              "properties": {
+                "url": {"type": "string", "pattern": "^https://"},
+                "locator": {"type": "string", "minLength": 1}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {"sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+}
