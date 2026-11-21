@@ -709,12 +709,12 @@
       "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "locator": "L111",
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L111"
+          "locator": "L125-L129",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L125-L129"
         },
         {
-          "locator": "L860-L867",
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L860"
+          "locator": "L954-L962",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L954-L962"
         }
       ]
     },
@@ -727,12 +727,12 @@
       "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "locator": "L111",
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L111"
+          "locator": "L125-L129",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L125-L129"
         },
         {
-          "locator": "L860-L867",
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L860"
+          "locator": "L954-L962",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L954-L962"
         }
       ]
     },
@@ -745,12 +745,12 @@
       "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "locator": "L118",
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L118"
+          "locator": "L132-L136",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L132-L136"
         },
         {
-          "locator": "L860-L867",
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L860"
+          "locator": "L954-L962",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L954-L962"
         }
       ]
     },
@@ -763,12 +763,12 @@
       "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "locator": "L118",
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L118"
+          "locator": "L132-L136",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L132-L136"
         },
         {
-          "locator": "L860-L867",
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L860"
+          "locator": "L954-L962",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L954-L962"
         }
       ]
     },
@@ -781,12 +781,12 @@
       "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "locator": "L124",
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L124"
+          "locator": "L139-L144",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L139-L144"
         },
         {
-          "locator": "L860-L867",
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L860"
+          "locator": "L954-L962",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L954-L962"
         }
       ]
     },
@@ -799,12 +799,12 @@
       "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "locator": "L124",
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L124"
+          "locator": "L139-L144",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L139-L144"
         },
         {
-          "locator": "L860-L867",
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L860"
+          "locator": "L954-L962",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L954-L962"
         }
       ]
     },
@@ -817,12 +817,12 @@
       "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "locator": "L165",
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L165"
+          "locator": "L184-L188",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L184-L188"
         },
         {
-          "locator": "L860-L867",
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L860"
+          "locator": "L954-L962",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L954-L962"
         }
       ]
     },
@@ -835,12 +835,12 @@
       "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "locator": "L165",
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L165"
+          "locator": "L184-L188",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L184-L188"
         },
         {
-          "locator": "L860-L867",
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L860"
+          "locator": "L954-L962",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L954-L962"
         }
       ]
     },
@@ -853,12 +853,12 @@
       "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "locator": "L169",
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L169"
+          "locator": "L189-L197",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L189-L197"
         },
         {
-          "locator": "L860-L867",
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L860"
+          "locator": "L954-L962",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L954-L962"
         }
       ]
     },
@@ -871,12 +871,12 @@
       "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "locator": "L169",
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L169"
+          "locator": "L189-L197",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L189-L197"
         },
         {
-          "locator": "L860-L867",
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L860"
+          "locator": "L954-L962",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L954-L962"
         }
       ]
     },
@@ -889,12 +889,12 @@
       "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "locator": "L169",
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L169"
+          "locator": "L189-L197",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L189-L197"
         },
         {
-          "locator": "L860-L867",
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L860"
+          "locator": "L954-L962",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L954-L962"
         }
       ]
     },
@@ -907,12 +907,12 @@
       "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "locator": "L169",
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L169"
+          "locator": "L189-L197",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L189-L197"
         },
         {
-          "locator": "L860-L867",
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L860"
+          "locator": "L954-L962",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L954-L962"
         }
       ]
     },
@@ -925,12 +925,12 @@
       "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "locator": "L169",
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L169"
+          "locator": "L189-L197",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L189-L197"
         },
         {
-          "locator": "L860-L867",
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L860"
+          "locator": "L954-L962",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L954-L962"
         }
       ]
     },
@@ -943,12 +943,12 @@
       "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "locator": "L169",
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L169"
+          "locator": "L189-L197",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L189-L197"
         },
         {
-          "locator": "L860-L867",
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L860"
+          "locator": "L954-L962",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L954-L962"
         }
       ]
     },
@@ -961,12 +961,12 @@
       "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "locator": "L216",
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L216"
+          "locator": "L237-L249",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L237-L249"
         },
         {
-          "locator": "L860-L867",
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L860"
+          "locator": "L954-L962",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L954-L962"
         }
       ]
     },
@@ -979,12 +979,12 @@
       "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "locator": "L216",
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L216"
+          "locator": "L237-L249",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L237-L249"
         },
         {
-          "locator": "L860-L867",
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L860"
+          "locator": "L954-L962",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L954-L962"
         }
       ]
     },
@@ -997,12 +997,12 @@
       "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "locator": "L569",
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L569"
+          "locator": "L633-L648",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L633-L648"
         },
         {
-          "locator": "L860-L867",
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L860"
+          "locator": "L954-L962",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L954-L962"
         }
       ]
     },
@@ -1015,12 +1015,12 @@
       "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "locator": "L569",
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L569"
+          "locator": "L633-L648",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L633-L648"
         },
         {
-          "locator": "L860-L867",
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L860"
+          "locator": "L954-L962",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L954-L962"
         }
       ]
     },
@@ -1033,12 +1033,12 @@
       "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "locator": "L216",
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L216"
+          "locator": "L245-L251",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L245-L251"
         },
         {
-          "locator": "L860-L867",
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L860"
+          "locator": "L954-L962",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L954-L962"
         }
       ]
     },
@@ -1051,12 +1051,12 @@
       "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "locator": "L216",
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L216"
+          "locator": "L245-L251",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L245-L251"
         },
         {
-          "locator": "L860-L867",
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L860"
+          "locator": "L954-L962",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L954-L962"
         }
       ]
     },
@@ -1069,12 +1069,12 @@
       "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "locator": "L243-L249",
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L243-L249"
+          "locator": "L271-L278",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L271-L278"
         },
         {
-          "locator": "L860-L867",
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L860"
+          "locator": "L954-L962",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L954-L962"
         }
       ]
     },
@@ -1087,12 +1087,12 @@
       "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "locator": "L243-L249",
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L243-L249"
+          "locator": "L271-L278",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L271-L278"
         },
         {
-          "locator": "L860-L867",
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L860"
+          "locator": "L954-L962",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L954-L962"
         }
       ]
     }
