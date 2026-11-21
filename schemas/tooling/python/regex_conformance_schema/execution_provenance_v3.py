@@ -185,13 +185,20 @@ def _validate_attempt_native_evidence(root: Path, attempt: dict, receipt: dict |
             and observed["outputs"] == {"kind": "none", "values": []}
         )
     elif outcome == "compile-rejection":
-        consistent = (compile_status, execution_status, match_state) == ("rejected", "not-requested", "not-applicable") and native_error is not None
+        consistent = (
+            (compile_status, execution_status, match_state) == ("rejected", "not-requested", "not-applicable")
+            and native_error is not None and native_error["phase"] == "compile"
+            and not observed["matches"] and observed["cursor"] is None
+            and observed["outputs"] == {"kind": "none", "values": []}
+        )
     elif outcome in {"match", "no-match"}:
         consistent = request["operation"] != COMPILE and (
             compile_status, execution_status, match_state, native_error
         ) == ("accepted", "completed", outcome, None)
+        if request["operation"]["name"] in {"full-match", "search"}:
+            consistent = consistent and len(observed["matches"]) == (1 if outcome == "match" else 0)
     else:
-        consistent = execution_status == "rejected" and native_error is not None
+        consistent = execution_status == "rejected" and native_error is not None and native_error["phase"] == "execution"
     if not consistent:
         fail("native-evidence-outcome-mismatch", "scientific outcome contradicts native compile or execution status", path)
 

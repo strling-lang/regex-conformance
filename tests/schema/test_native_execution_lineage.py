@@ -124,9 +124,12 @@ class NativeExecutionLineageTests(unittest.TestCase):
 
     def test_rehashed_false_native_receipts_and_forged_outcome_are_rejected(self):
         for mutation in ("truncated", "not-started", "bad-checkpoint", "invalid-protocol", "wrong-operation",
-                         "wrong-correlator", "wrong-adapter", "missing-receipt", "forged-match", "response-inconsistent"):
+                         "wrong-correlator", "wrong-adapter", "missing-receipt", "forged-match", "response-inconsistent",
+                         "compile-error-wrong-phase", "match-missing-span"):
             with self.subTest(mutation=mutation), self.assertRaises(ConformanceDataError):
-                attempt, req, res = self.native_fixture()
+                attempt, req, res = self.native_fixture(
+                    rejected=mutation == "compile-error-wrong-phase", match=mutation == "match-missing-span",
+                )
                 terminal = attempt["terminality"]
                 if mutation == "not-started":
                     terminal["target_process_status"]["target_started"] = False
@@ -145,6 +148,10 @@ class NativeExecutionLineageTests(unittest.TestCase):
                     terminal["scientific_result_signature"] = legacy.result_signature("match", terminal["semantic_result"])
                 elif mutation == "response-inconsistent":
                     res["observation"] = {**res["observation"], "match_state": "match"}
+                elif mutation == "compile-error-wrong-phase":
+                    res["observation"]["native_error"]["phase"] = "execution"
+                elif mutation == "match-missing-span":
+                    terminal["outcome_class"] = res["observation"]["match_state"] = "match"
                 record, receipts = self.seal(attempt, req, res, truncate=mutation == "truncated")
                 successor.validate_lineage_set(ROOT, record, native_evidence={} if mutation == "missing-receipt" else receipts)
 
