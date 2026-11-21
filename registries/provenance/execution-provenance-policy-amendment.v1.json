@@ -1,0 +1,50 @@
+{
+  "attempt_schema_version": "physical-attempt-evidence.v3",
+  "authority": "program-owner-approved-compile-acceptance-successor",
+  "compile_acceptance": {
+    "compile_status": "accepted",
+    "execution_status": "not-requested",
+    "match_state": "not-applicable",
+    "native_error": null,
+    "operation": {
+      "name": "compile",
+      "version": "1.0.0"
+    }
+  },
+  "contracts_sha256": {
+    "registries/provenance/execution-provenance-policy.v1.json": "c37f10fc2f0347497df528783542edddc0c1e5e8b41f7e485c2be8a24c222e68",
+    "schemas/json/adapter-request.schema.json": "e146692ed9449030d062becf55757dfe049db99baf0e4c12ccb1f7aef95ae2d0",
+    "schemas/json/adapter-response.schema.json": "e52b6cd9349472a030a0cca95f45b4d099f5912a1601bf8b4ed7fe7c82b7c4e0",
+    "schemas/json/execution-lineage-set-v2.schema.json": "73b9e17f24f75c68758b916e9655898007adb4d365fd0e2f9a816d9929c7c417",
+    "schemas/json/execution-lineage-set.schema.json": "2b3185d67b49e56bafcc5a50f8fe422ff57c4e1aebc7ebf445c6cd2c612ed56f",
+    "schemas/json/logical-execution-disposition.schema.json": "068434f2ddefeb77489c8d5cf7bfd77c37e455ccba5590db28963cac90f2e692",
+    "schemas/json/native-execution-evidence.schema.json": "615f57ba34e40a26ad05c4e4ab1485e5b38ce2f25413ae7f989762362fd3a6a2",
+    "schemas/json/physical-attempt-evidence-v2.schema.json": "e127f04a13d484a3b1f57fe3963d31bbb61a5b914695e4da2de4edc32342605c",
+    "schemas/json/physical-attempt-evidence-v3.schema.json": "4a92a5a93b14fc4e1b9e4c58823bf8974bbb55d6243c3243a698eb460a546560",
+    "schemas/json/terminal-observation-content-v2.schema.json": "383f63fd66e1e8881ffedc2126fd2cb9ffcb9f99b88c8c6c86b33f2bf21e8fc1",
+    "schemas/json/terminal-observation-content-v3.schema.json": "4a5984791d1523186b7761678d6996793aeb396450eadd8c1e7f8ec13e634b81",
+    "schemas/tooling/python/regex_conformance_schema/execution_provenance.py": "92f6fa913e0cfcd2dc3199d67e4210d17f4696dc453b0e3568f071053e7595c9"
+  },
+  "legacy_execution_policy_revision_sha256": "c0095c600d03cc7f17012990d46e54b3e874a8f2cae4aa1a052f9953637b0a3a",
+  "lineage_schema_version": "execution-lineage-set.v2",
+  "native_receipt_schema_version": "native-execution-evidence.v1",
+  "native_terminal_response_outcomes": [
+    "compile-acceptance",
+    "compile-rejection",
+    "match",
+    "no-match",
+    "target-error",
+    "unsupported"
+  ],
+  "observation_schema_version": "terminal-observation-content.v3",
+  "policy_revision_sha256": "4b5a0023bf39ccd93e5924fbaa667809c4a48bf11edb3c2a8848709e03440000",
+  "predecessor_proposal_sha256": "103c3c3e2f4a03ff36775fbcd5fcb2db8bfeba6d33a36ac1ef385e75239cf0e5",
+  "qualification_report_sha256": "2982644256fe16eccbefb884d67fd925d9478e471b1f4a0e458a28ab0ae5f702",
+  "schema_version": "execution-provenance-policy-amendment.v1",
+  "scope": "prospective-native-execution-lineage",
+  "target_process_terminal_outcomes": [
+    "target-crash",
+    "target-resource-limit",
+    "target-timeout"
+  ]
+}

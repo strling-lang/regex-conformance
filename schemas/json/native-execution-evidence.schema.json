@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/native-execution-evidence.schema.json",
+  "title": "Native Execution Evidence v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "attempt_binding_sha256", "request_frame", "response_frame"],
+  "properties": {
+    "schema_version": {"const": "native-execution-evidence.v1"},
+    "attempt_binding_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "request_frame": {"$ref": "#/$defs/frame"},
+    "response_frame": {"$ref": "#/$defs/frame"}
+  },
+  "$defs": {
+    "frame": {
+      "type": "string",
+      "contentEncoding": "base64",
+      "minLength": 8,
+      "maxLength": 1398108
+    }
+  }
+}

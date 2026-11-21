@@ -46,6 +46,7 @@ class Pcre2ProductionAdjudicationTests(unittest.TestCase):
         contexts = [attempt["execution_context"] for attempt in attempts]
         vectors = [context["vector_revision_id"] for context in contexts]
         plan = {
+            "schema_version": "pcre2-production-comparison-plan.v1",
             "classification": "comparison-plan-only",
             "profile_revision_id": contexts[0]["profile_revision_id"],
             "environment_fingerprint_id": contexts[0]["environment_fingerprint_id"],
