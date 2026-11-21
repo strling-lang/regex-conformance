@@ -39,18 +39,35 @@ candidate. Those bounds exclude retries, isolation and runner overhead, and
 evidence storage. The production execution and capacity estimates still
 require realized profiles, evaluated applicability, and measured evidence.
 
-The production inputs still required are reviewed oracle and expectation
-bindings, a frozen production profile capability snapshot with evaluated
-applicability, qualified runtime and operation mapping, and authorization of
-the exact executable campaign. Publication requires separately verified
+The production inputs still required are admission of the exact oracle packet,
+a frozen production profile capability snapshot with evaluated applicability,
+qualified runtime and operation mapping, and authorization of the exact
+executable campaign. Publication requires separately verified
 operator evidence and follows the existing [R2 handoff](cloudflare-r2-operator-handoff.md).
 
-The [expectation-basis validator](../../schemas/tooling/python/regex_conformance_schema/evidence_admissibility.py)
-currently resolves oracle references in its validation fixture. Production
-admission needs a reviewed resolver for a pinned production oracle collection.
-Each binding must establish the exact vector, requirement, profile, operation,
-and campaign scope. The oracle collection's conflict check compares conventional
-results at requirement/profile/operation scope. A production representation
-must also distinguish different stimuli within that scope, for example by
-freezing an independently sourced rule and its vector-specific projection.
-Candidate output values carry no oracle authority.
+The [PCRE2 oracle review compiler](../../tools/campaigns/compile_pcre2_oracles.py)
+resolves the pinned candidate manifest and independently checks the request
+preflight digest. It verifies the archived PCRE2 10.47 manual against the
+document SHA-256 and binds six documentation-scoped expectations and ten
+same-profile relational premises. The exact vector, requirement, operation,
+profile graph, release, and candidate campaign scope are pinned. Conflicts
+are detected per stimulus, with every claimant retained and no winner chosen.
+An O4 binding contains its controls and permitted terminal values. A satisfied
+relation can establish only relation satisfaction.
+
+With no manual, the report retains all 16 rows as oracle inputs unavailable.
+When the archived source tar and detached signature are supplied, the compiler
+verifies both recipe byte commitments and compares the tar's manual to the
+pinned Git document. This comparison is a byte check. Environment realization
+checks the recipe digests before extraction. Production admission also needs a
+detached-signature verification receipt and fresh runtime qualification.
+
+The [capability review](../../schemas/tooling/python/regex_conformance_schema/production_admission.py)
+replays the canonical applicability evaluator using exact historical adapter
+operation declarations. It preserves unresolved feature, modifier, and
+manifestation inputs under the open-world contract. The result gives every
+blocked coordinate a trace and keeps the runnable set empty until the current
+realization and exact authorization are established. The original
+expectation-basis fixture verifier retains its historical behavior. New
+production observation-to-claim admission remains a separate reviewed
+integration.

@@ -84,13 +84,13 @@ class ProductionVectorTests(unittest.TestCase):
         self.assertEqual(self.manifest, compile_vector_manifest(self.inputs, list(reversed(self.families))))
         self.assertEqual(self.manifest["counts"], {
             "requirements": 3378,
-            "requirements_with_candidate_stimuli": 32,
+            "requirements_with_candidate_stimuli": 40,
             "requirements_with_unresolved_interaction_identities": 4,
-            "vector_revisions": 54,
+            "vector_revisions": 79,
         })
         rows = self.manifest["requirement_coverage"]
         self.assertEqual(len({row["requirement_id"] for row in rows}), 3378)
-        self.assertEqual(sum(row["status"] == "missing" for row in rows), 3342)
+        self.assertEqual(sum(row["status"] == "missing" for row in rows), 3334)
         self.assertEqual({row["status"] for row in rows}, {
             "missing", "candidate-stimuli-only", "interaction-identity-unresolved",
         })

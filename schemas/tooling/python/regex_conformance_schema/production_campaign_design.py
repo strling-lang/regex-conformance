@@ -94,6 +94,8 @@ def build_production_campaign_design(
 ) -> dict:
     verify_vector_manifest(inputs, manifest, families, expected_digest=expected_manifest_digest)
     basis = load_strict(root / BASIS_PATH)
+    family_keys = {item["key"] for item in manifest["families"]}
+    basis = {**basis, "families": [row for row in basis["families"] if row["family_key"] in family_keys]}
     bindings = bind_candidate_bases(root, inputs, manifest, basis)
     profile_bytes = (root / PROFILE_PATH).read_bytes()
     registry = load_strict(root / PROFILE_PATH)

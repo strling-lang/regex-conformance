@@ -509,6 +509,140 @@
           "locator": "L510-L523"
         }
       ]
+    },
+    {
+      "family_key": "cpython-wildcard-default-positive",
+      "definition_sha256": "69cd8e1cbbb01dcc2b544de6af7efa6165c4e02a1050868ccd76bb5df2942d66",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "premise": "The default dot accepts ordinary characters, embedded NUL, carriage return, and the Unicode line separator. The documented newline exclusion is exercised separately.",
+      "expected_outcome": "match",
+      "comparison_family": null,
+      "sources": [
+        {
+          "url": "https://github.com/python/cpython/blob/c63aec69bd59c55314c06c23f4c22c03de76fe45/Doc/library/re.rst#L89-L92",
+          "locator": "L89-L92"
+        }
+      ]
+    },
+    {
+      "family_key": "cpython-wildcard-default-negative",
+      "definition_sha256": "92ad164db550582d7fd7c0af5f78a68944d96184aaf3a9b5f534748ef71ce8f4",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "premise": "The default dot rejects line feed and cannot consume from an empty subject.",
+      "expected_outcome": "no-match",
+      "comparison_family": null,
+      "sources": [
+        {
+          "url": "https://github.com/python/cpython/blob/c63aec69bd59c55314c06c23f4c22c03de76fe45/Doc/library/re.rst#L89-L92",
+          "locator": "L89-L92"
+        }
+      ]
+    },
+    {
+      "family_key": "cpython-wildcard-dotall-newline",
+      "definition_sha256": "2d0d86bb14c41410d19ec3015034465a92d7573a3f74cab06ed8629ef457386d",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "premise": "The inline DOTALL group allows the dot to consume one line feed.",
+      "expected_outcome": "match",
+      "comparison_family": null,
+      "sources": [
+        {
+          "url": "https://github.com/python/cpython/blob/c63aec69bd59c55314c06c23f4c22c03de76fe45/Doc/library/re.rst#L89-L92",
+          "locator": "L89-L92"
+        }
+      ]
+    },
+    {
+      "family_key": "cpython-text-whitespace-positive",
+      "definition_sha256": "e6d6dc9443cbcf0baf6320f87bb63ed1764f43a72cb286d5990c096d8c0fb763",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "premise": "The text whitespace class includes the six ASCII whitespace characters and nonbreaking space.",
+      "expected_outcome": "match",
+      "comparison_family": null,
+      "sources": [
+        {
+          "url": "https://github.com/python/cpython/blob/c63aec69bd59c55314c06c23f4c22c03de76fe45/Doc/library/re.rst#L548-L555",
+          "locator": "L548-L555"
+        }
+      ]
+    },
+    {
+      "family_key": "cpython-text-whitespace-negative",
+      "definition_sha256": "a7c9a30d9ab9086d48612d05d3552e25ae5355e580184837356dbef3dbd388f4",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "premise": "Letter a, ZERO WIDTH SPACE, and NUL are outside the CPython text whitespace class based on str.isspace.",
+      "expected_outcome": "no-match",
+      "comparison_family": null,
+      "sources": [
+        {
+          "url": "https://github.com/python/cpython/blob/c63aec69bd59c55314c06c23f4c22c03de76fe45/Doc/library/re.rst#L548-L555",
+          "locator": "L548-L555"
+        },
+        {
+          "url": "https://github.com/python/cpython/blob/c63aec69bd59c55314c06c23f4c22c03de76fe45/Doc/library/stdtypes.rst#L2103-L2112",
+          "locator": "str.isspace and Unicode classification"
+        },
+        {
+          "url": "https://www.unicode.org/Public/16.0.0/ucd/UnicodeData.txt",
+          "locator": "U+200B, U+0000 and U+0061"
+        }
+      ]
+    },
+    {
+      "family_key": "cpython-alternation-positive",
+      "definition_sha256": "c88309cb2a3ed068b755400de87256288d301f1042b0a4428232330286b7d480",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "premise": "Each of the two literal alternatives can satisfy a full match on its own.",
+      "expected_outcome": "match",
+      "comparison_family": null,
+      "sources": [
+        {
+          "url": "https://github.com/python/cpython/blob/c63aec69bd59c55314c06c23f4c22c03de76fe45/Doc/library/re.rst#L271-L286",
+          "locator": "L271-L286"
+        }
+      ]
+    },
+    {
+      "family_key": "cpython-alternation-negative",
+      "definition_sha256": "d1a89b5ab61ea87d03eba4d4d52260a4ff38c1482cd41d661eb54dfedbb553a0",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "premise": "Alternation does not concatenate its branches or make them optional under full match.",
+      "expected_outcome": "no-match",
+      "comparison_family": null,
+      "sources": [
+        {
+          "url": "https://github.com/python/cpython/blob/c63aec69bd59c55314c06c23f4c22c03de76fe45/Doc/library/re.rst#L271-L286",
+          "locator": "L271-L286"
+        }
+      ]
+    },
+    {
+      "family_key": "cpython-empty-pattern-positive",
+      "definition_sha256": "29ea68973a62a54cdd4258b981d4bffda57b2625abf334ec95c8fa90fac0cea7",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "premise": "An empty expression can consume the whole empty string as a zero-length match.",
+      "expected_outcome": "match",
+      "comparison_family": null,
+      "sources": [
+        {
+          "url": "https://github.com/python/cpython/blob/c63aec69bd59c55314c06c23f4c22c03de76fe45/Doc/library/re.rst#L859-L864",
+          "locator": "L859-L864"
+        }
+      ]
+    },
+    {
+      "family_key": "cpython-empty-pattern-negative",
+      "definition_sha256": "655a1de33373ea8192e3318afe853fbbc253cc45d9c5e96582abf4515842567c",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "premise": "An empty expression cannot consume a nonempty subject for a full match.",
+      "expected_outcome": "no-match",
+      "comparison_family": null,
+      "sources": [
+        {
+          "url": "https://github.com/python/cpython/blob/c63aec69bd59c55314c06c23f4c22c03de76fe45/Doc/library/re.rst#L859-L864",
+          "locator": "L859-L864"
+        }
+      ]
     }
   ],
   "schema_version": "production-candidate-basis.v1"
