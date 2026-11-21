@@ -48,3 +48,6 @@ revisions, the two denominator snapshots, and one coverage row per semantic
 requirement. Candidate rows await reviewed expectation or characterization
 bindings, operation and profile execution recipes, and adequacy evidence before
 they can contribute to C4. Uncovered requirements retain `missing` rows.
+Requirements whose obligation names an interaction with no assigned scientific
+ID remain visible as `interaction-identity-unresolved`. Their rows identify the
+exact relations that require an identity allocation before vector attribution.

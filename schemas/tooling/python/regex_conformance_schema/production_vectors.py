@@ -43,6 +43,13 @@ def _load_snapshot(root: Path, path: Path, reference: dict) -> dict:
     return snapshot
 
 
+def _interaction_keys(members: list[dict]) -> set[str]:
+    return {
+        f"interaction.{member['feature_id']}.{basis['relation_type']}.{basis['target_id']}"
+        for member in members if (basis := member["interaction_basis"]) is not None
+    }
+
+
 def _attribution(family: dict, inputs: VectorCompilerInputs) -> dict:
     requirement = inputs.requirements.get(family["requirement_id"])
     if requirement is None or family["operation_id"] not in requirement["required_operation_scientific_ids"]:
@@ -52,15 +59,10 @@ def _attribution(family: dict, inputs: VectorCompilerInputs) -> dict:
         member["semantic_variant_basis"]["variant_scientific_id"]
         for member in members if member["semantic_variant_basis"] is not None
     })
-    interaction_ids = set()
-    for member in members:
-        interaction = member["interaction_basis"]
-        if interaction is not None:
-            key = f"interaction.{member['feature_id']}.{interaction['relation_type']}.{interaction['target_id']}"
-            identifier = inputs.identities.get(key)
-            if identifier is None:
-                fail("vector-attribution", "obligation interaction has no scientific identity", key)
-            interaction_ids.add(identifier)
+    missing_interactions = inputs.unresolved_interactions.get(family["requirement_id"])
+    if missing_interactions:
+        fail("vector-interaction-identity-unresolved", ", ".join(missing_interactions), family["key"])
+    interaction_ids = sorted({inputs.identities[key] for key in _interaction_keys(members)})
 
     manifestation_id = family["manifestation_id"]
     manifestation_scopes = [
@@ -79,7 +81,7 @@ def _attribution(family: dict, inputs: VectorCompilerInputs) -> dict:
         "facet_ids": sorted({member["facet_scientific_id"] for member in members}),
         "variant_ids": variant_ids,
         "manifestation_id": manifestation_id,
-        "interaction_ids": sorted(interaction_ids),
+        "interaction_ids": interaction_ids,
         "operation_id": family["operation_id"],
         "requirement_id": family["requirement_id"],
         "obligation_ids": sorted(requirement["obligation_scientific_ids"]),
@@ -177,6 +179,7 @@ class VectorCompilerInputs:
     obligations: dict
     manifestations: dict
     identities: dict
+    unresolved_interactions: dict[str, list[str]]
     registry: NamespaceRegistry
     profile: IdentityProfile
 
@@ -194,14 +197,29 @@ def load_vector_compiler_inputs(root: Path) -> VectorCompilerInputs:
     if requirements["obligation_snapshot"] != current["obligation_snapshot"]:
         fail("vector-denominator-drift", "requirements do not bind the current obligations")
     semantics = _load_snapshot(root, SNAPSHOT_PATH, obligations["semantic_authority"])
+    by_requirement = {item["scientific_id"]: item for item in requirements["requirements"]}
+    by_obligation = {item["scientific_id"]: item for item in obligations["obligations"]}
+    interactions = {
+        key: item["scientific_id"]
+        for item in load_strict(root / CATALOG_PATH)["bindings"]
+        if item["entity_class"] == "typed-interaction"
+        for key in [item["canonical_key"], *item["former_keys"]]
+    }
+    unresolved = {}
+    for identifier, requirement in by_requirement.items():
+        members = [by_obligation[key] for key in requirement["obligation_scientific_ids"]]
+        missing = sorted(_interaction_keys(members) - interactions.keys())
+        if missing:
+            unresolved[identifier] = missing
     return VectorCompilerInputs(
         schema=schema,
         requirement_snapshot=current["requirement_snapshot"],
         obligation_snapshot=current["obligation_snapshot"],
-        requirements={item["scientific_id"]: item for item in requirements["requirements"]},
-        obligations={item["scientific_id"]: item for item in obligations["obligations"]},
+        requirements=by_requirement,
+        obligations=by_obligation,
         manifestations={item["scientific_id"]: item for item in semantics["manifestations"]},
-        identities={item["canonical_key"]: item["scientific_id"] for item in load_strict(root / CATALOG_PATH)["bindings"]},
+        identities=interactions,
+        unresolved_interactions=unresolved,
         registry=NamespaceRegistry.load(root / NAMESPACE_PATH),
         profile=IdentityProfile.from_record(load_strict(root / VECTOR_PROFILE_PATH)),
     )
@@ -245,11 +263,15 @@ def compile_vector_manifest(inputs: VectorCompilerInputs, families: list[dict]) 
     coverage = []
     for identifier in sorted(inputs.requirements):
         revisions = sorted(by_requirement_vectors[identifier])
-        coverage.append({
+        row = {
             "requirement_id": identifier,
             "status": "candidate-stimuli-only" if revisions else "missing",
             "vector_revision_ids": revisions,
-        })
+        }
+        if identifier in inputs.unresolved_interactions:
+            row["status"] = "interaction-identity-unresolved"
+            row["blocking_interaction_keys"] = inputs.unresolved_interactions[identifier]
+        coverage.append(row)
     body = {
         "schema_version": "production-vector-expansion-manifest.v1",
         "scope": "stimulus-expansion-only",
@@ -258,6 +280,7 @@ def compile_vector_manifest(inputs: VectorCompilerInputs, families: list[dict]) 
         "counts": {
             "requirements": len(coverage),
             "requirements_with_candidate_stimuli": sum(bool(row["vector_revision_ids"]) for row in coverage),
+            "requirements_with_unresolved_interaction_identities": len(inputs.unresolved_interactions),
             "vector_revisions": len(vectors),
         },
         "families": [family_records[key] for key in sorted(family_records)],

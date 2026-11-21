@@ -26,17 +26,39 @@ class ProductionVectorTests(unittest.TestCase):
     def test_candidate_manifest_accounts_for_the_whole_denominator(self):
         self.assertEqual(self.manifest, compile_vector_manifest(self.inputs, list(reversed(self.families))))
         self.assertEqual(self.manifest["counts"], {
-            "requirements": 3378, "requirements_with_candidate_stimuli": 3, "vector_revisions": 9,
+            "requirements": 3378,
+            "requirements_with_candidate_stimuli": 3,
+            "requirements_with_unresolved_interaction_identities": 12,
+            "vector_revisions": 9,
         })
         rows = self.manifest["requirement_coverage"]
         self.assertEqual(len({row["requirement_id"] for row in rows}), 3378)
-        self.assertEqual(sum(row["status"] == "missing" for row in rows), 3375)
-        self.assertEqual({row["status"] for row in rows}, {"missing", "candidate-stimuli-only"})
+        self.assertEqual(sum(row["status"] == "missing" for row in rows), 3363)
+        self.assertEqual({row["status"] for row in rows}, {
+            "missing", "candidate-stimuli-only", "interaction-identity-unresolved",
+        })
         expected = {item["vector_revision_id"] for item in self.manifest["vectors"]}
         self.assertEqual({identifier for row in rows for identifier in row["vector_revision_ids"]}, expected)
         body = dict(self.manifest)
         digest = body.pop("manifest_digest_sha256")
         self.assertEqual(sha256(canonical_bytes(body)).hexdigest(), digest)
+
+    def test_missing_interaction_identity_remains_in_requirement_accounting(self):
+        blocked = [
+            row for row in self.manifest["requirement_coverage"]
+            if row["status"] == "interaction-identity-unresolved"
+        ]
+        self.assertEqual(len(blocked), 12)
+        self.assertEqual(len({key for row in blocked for key in row["blocking_interaction_keys"]}), 6)
+        self.assertTrue(all(not row["vector_revision_ids"] for row in blocked))
+        requirement = self.inputs.requirements[blocked[0]["requirement_id"]]
+        family = {
+            **self.families[0],
+            "requirement_id": requirement["scientific_id"],
+            "operation_id": requirement["required_operation_scientific_ids"][0],
+        }
+        with self.assertRaisesRegex(ConformanceDataError, "vector-interaction-identity-unresolved"):
+            compile_vector_manifest(self.inputs, [family])
 
     def test_oracle_or_arbitrary_attribution_cannot_enter_family_input(self):
         family = deepcopy(self.families[0])
