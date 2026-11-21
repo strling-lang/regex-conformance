@@ -92,3 +92,32 @@ capture in legacy mode (decimal reference). The PCRE2 10.47 controls use
 group is an error. These source-derived cases keep capture threshold, digit
 width, and grammar mode visible in the proposed applicability.
 [ECMAScript Annex B](https://tc39.es/ecma262/2026/multipage/additional-ecmascript-features-for-web-browsers.html#sec-regular-expressions-patterns) · [PCRE2 10.47 numeric escape grammar](https://raw.githubusercontent.com/PCRE2Project/pcre2/pcre2-10.47/doc/pcre2pattern.3#L501)
+
+### Joint Annex B successor verification
+
+The two retained questions can share one host scope. Annex B is required for
+browser hosts and optional for other ECMAScript hosts. For a host with the
+extension and a pattern without `u` or `v`, the ordered `AtomEscape` branches
+first consider an admissible decimal reference. The guard counts captures
+throughout the entire pattern. Outside character classes, an unbound `\8`
+can consume literal `8` through `SourceCharacterIdentityEscape` and an unbound
+`\11` can consume TAB through `LegacyOctalEscapeSequence`. With a corresponding
+group later in the pattern, both escapes take the reference branch. With `u`
+or `v` and no corresponding group, both are early errors. Keep the host grammar
+in the capability predicate and the flags, capture count and token placement
+in the exact stimulus and scope. [ECMAScript Annex B](https://tc39.es/ecma262/2026/multipage/additional-ecmascript-features-for-web-browsers.html#sec-regular-expressions-patterns) · [RegExp pattern early errors](https://tc39.es/ecma262/2026/multipage/text-processing.html#sec-patterns-static-semantics-early-errors)
+
+PCRE2's preceding-capture rule is an independent dialect control. Its
+character-class rules and `PCRE2_EXTRA_PYTHON_OCTAL` option produce additional
+scope boundaries. The Unicode hexadecimal feature and the single-code-unit
+escape do not encode the octal fallback. [PCRE2 10.47 pattern grammar](https://raw.githubusercontent.com/PCRE2Project/pcre2/pcre2-10.47/doc/pcre2pattern.3#L501) · [UTS #18 hexadecimal notation](https://www.unicode.org/reports/tr18/tr18-25.html#Hex_notation)
+
+`python tools/vectors/review_numeric_escape_successors.py --joint-review`
+reconciles all four predecessor requirements, emits the retained identity-set
+digests, and checks the one-for-one accounting. The accepted snapshots lack
+allocated identities for the exact Annex B grammar capability and octal
+prerequisite. The current derivation accepts feature prerequisites, so using a
+new feature also requires recomputing every obligation it induces before
+adopting a successor. The counts in the joint review describe the two-edge
+replacement only. The successor IDs and predicates are pending the full
+derivation and independent reconciliation.

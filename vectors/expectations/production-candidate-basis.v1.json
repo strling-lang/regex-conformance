@@ -643,6 +643,62 @@
           "locator": "L859-L864"
         }
       ]
+    },
+    {
+      "family_key": "cpython-subject-start-positive",
+      "definition_sha256": "cbe3eab42d8e020903de402e368c070b7373febd5be0d590a86ad6cd088f0e85",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "premise": "In CPython re.search, the absolute-start assertion admits offset zero with or without a final newline.",
+      "expected_outcome": "match",
+      "comparison_family": null,
+      "sources": [
+        {
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L487",
+          "locator": "L487"
+        }
+      ]
+    },
+    {
+      "family_key": "cpython-subject-start-negative",
+      "definition_sha256": "e14ecbf06d32416ab00a46537b96c1bb4e0632fb06c8d5d1420dbb9fbb78bb7e",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "premise": "The absolute-start assertion rejects an interior offset, including the start of a later line.",
+      "expected_outcome": "no-match",
+      "comparison_family": null,
+      "sources": [
+        {
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L487",
+          "locator": "L487"
+        }
+      ]
+    },
+    {
+      "family_key": "cpython-strict-subject-end-positive",
+      "definition_sha256": "88318adb91a4a8ea322a68c9214e63ca90086a5d6e83d40be0a93ac018369802",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "premise": "In CPython re.search, the strict end assertion admits the absolute end regardless of the match start offset.",
+      "expected_outcome": "match",
+      "comparison_family": null,
+      "sources": [
+        {
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L598",
+          "locator": "L598"
+        }
+      ]
+    },
+    {
+      "family_key": "cpython-strict-subject-end-negative",
+      "definition_sha256": "3a4608e51c63a5f7b5fb6088d76e74d89c869e45f9486f86f1277925bc330ed9",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "premise": "The strict end assertion rejects both an interior position and the position before a final newline.",
+      "expected_outcome": "no-match",
+      "comparison_family": null,
+      "sources": [
+        {
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L598",
+          "locator": "L598"
+        }
+      ]
     }
   ],
   "schema_version": "production-candidate-basis.v1"

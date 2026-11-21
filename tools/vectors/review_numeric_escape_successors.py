@@ -24,6 +24,7 @@ NEW_LITERAL = "feature.literal-unit"
 OLD_OCTAL = "feature.numeric-unicode-code-point-escape"
 ANNEX_B = "https://tc39.es/ecma262/2026/multipage/additional-ecmascript-features-for-web-browsers.html#sec-regular-expressions-patterns"
 PCRE2_OCTAL = "https://raw.githubusercontent.com/PCRE2Project/pcre2/pcre2-10.47/doc/pcre2pattern.3#L501"
+ECMA_EARLY_ERRORS = "https://tc39.es/ecma262/2026/multipage/text-processing.html#sec-patterns-static-semantics-early-errors"
 
 
 def digest(data: object) -> str:
@@ -109,11 +110,83 @@ def build_review(root: Path) -> dict:
     return {**body, "review_digest_sha256": digest(body)}
 
 
+def build_joint_review(root: Path) -> dict:
+    """Reconcile both Annex B questions with the accepted predecessor population."""
+    original = build_review(root)
+    inputs = load_vector_compiler_inputs(root)
+    questions = (
+        {
+            "name": "literal-digit-fallback", "production": "SourceCharacterIdentityEscape",
+            "existing_prerequisite_scientific_id": next(
+                row["scientific_id"] for row in load_strict(root / SNAPSHOT_PATH)["features"]
+                if row["feature_id"] == NEW_LITERAL
+            ),
+            "positive_stimulus": {"pattern": r"\8", "subject": "8", "interpretation": "literal U+0038"},
+            "negative_stimulus": {"pattern": r"()()()()()()()(q)\8", "subject": "q8", "interpretation": "reference to group 8"},
+            "forward_reference_control": {"pattern": r"\8()()()()()()()(q)", "subject": "q", "interpretation": "reference to group 8"},
+        },
+        {
+            "name": "legacy-octal-fallback", "production": "LegacyOctalEscapeSequence",
+            "existing_prerequisite_scientific_id": None,
+            "positive_stimulus": {"pattern": r"\11", "subject": "\t", "interpretation": "octal 011 gives U+0009"},
+            "negative_stimulus": {"pattern": r"()()()()()()()()()()(q)\11", "subject": "q\t", "interpretation": "reference to group 11"},
+            "forward_reference_control": {"pattern": r"\11()()()()()()()()()()(q)", "subject": "q", "interpretation": "reference to group 11"},
+        },
+    )
+    obligation_ids = set()
+    requirement_ids = set()
+    mappings = []
+    for question, row in zip(questions, original["dispositions"], strict=True):
+        predecessor = row["predecessor_obligation_id"]
+        roles = row["predecessor_requirements_by_retained_role"]
+        if predecessor in obligation_ids or requirement_ids.intersection(roles.values()):
+            fail("numeric-escape-joint-duplicate", "the two questions must have distinct predecessors")
+        obligation_ids.add(predecessor)
+        requirement_ids.update(roles.values())
+        mappings.append({**question, "predecessor_obligation_scientific_id": predecessor, "roles": [
+            {"role": role, "predecessor_requirement_scientific_id": identifier, "successor_requirement_scientific_id": None}
+            for role, identifier in sorted(roles.items())
+        ], "successor_obligation_scientific_id": None})
+    dependent = {
+        identifier for identifier, row in inputs.requirements.items()
+        if obligation_ids.intersection(row["obligation_scientific_ids"])
+    }
+    if dependent != requirement_ids or set(inputs.unresolved_interactions) != requirement_ids:
+        fail("numeric-escape-joint-lineage", "the proposed lineage does not cover the complete unresolved predecessor set")
+    retained_obligations = sorted(inputs.obligations.keys() - obligation_ids)
+    retained_requirements = sorted(inputs.requirements.keys() - requirement_ids)
+    body = {
+        "schema_version": "numeric-escape-joint-successor-verification.v1",
+        "classification": "prospective-migration",
+        "predecessor_review_digest_sha256": original["review_digest_sha256"],
+        "sources": [ANNEX_B, ECMA_EARLY_ERRORS, PCRE2_OCTAL,
+                    "https://www.unicode.org/reports/tr18/tr18-25.html#Hex_notation"],
+        "profile_scope": "ECMAScript host with the Annex B RegExp grammar",
+        "stimulus_scope": "Outside character classes. For fallback probes omit u and v and count captures across the entire pattern.",
+        "unicode_mode_control": "Without a corresponding capture, both digit sequences are early errors in u and v modes.",
+        "comparison_boundary": "The separate PCRE2 Perl-compatible octal rule uses preceding captures.",
+        "mappings": mappings,
+        "identity_retention": {
+            "obligation_count": len(retained_obligations), "obligation_id_set_sha256": digest(retained_obligations),
+            "requirement_count": len(retained_requirements), "requirement_id_set_sha256": digest(retained_requirements),
+        },
+        "one_for_one_replacement_totals": {
+            "obligations": len(retained_obligations) + len(mappings),
+            "requirements": len(retained_requirements) + sum(len(row["roles"]) for row in mappings),
+        },
+        "unadopted_dependencies": ["allocate exact Annex B grammar capability and octal prerequisite identities",
+                                   "compile and independently reconcile complete successor snapshots and predicate revisions"],
+    }
+    return {**body, "verification_digest_sha256": digest(body)}
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path)
+    parser.add_argument("--joint-review", action="store_true")
     args = parser.parse_args()
-    encoded = canonical_bytes(build_review(ROOT)) + b"\n"
+    builder = build_joint_review if args.joint_review else build_review
+    encoded = canonical_bytes(builder(ROOT)) + b"\n"
     if args.output:
         with args.output.open("xb") as stream:
             stream.write(encoded)

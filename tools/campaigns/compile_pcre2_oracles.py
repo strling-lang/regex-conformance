@@ -13,6 +13,7 @@ sys.path.insert(0, str(ROOT / "schemas/tooling/python"))
 
 from regex_conformance_schema.errors import fail  # noqa: E402
 from regex_conformance_schema.jsonio import canonical_bytes, load_strict, loads_strict  # noqa: E402
+from regex_conformance_schema.pcre2_campaign_handoff import build_handoff  # noqa: E402
 from regex_conformance_schema.pcre2_oracle_review import build_pcre2_oracle_report  # noqa: E402
 from regex_conformance_schema.production_vectors import load_vector_compiler_inputs  # noqa: E402
 
@@ -34,12 +35,16 @@ def main() -> None:
     parser.add_argument("--manual", type=Path, help="immutable PCRE2 10.47 pcre2pattern.3 bytes")
     parser.add_argument("--source-archive", type=Path)
     parser.add_argument("--detached-signature", type=Path)
+    parser.add_argument("--adjudication-handoff", type=Path, help="write the non-executable comparison inventory")
+    parser.add_argument("--expected-review-digest", help="independently pinned review digest required for comparison inventory")
     selection = parser.add_mutually_exclusive_group()
     selection.add_argument("--output", type=Path)
     selection.add_argument("--check", type=Path)
     args = parser.parse_args()
     if (args.source_archive is None) != (args.detached_signature is None):
         parser.error("supply the source archive and detached signature together")
+    if (args.adjudication_handoff is None) != (args.expected_review_digest is None):
+        parser.error("supply the adjudication handoff path and independently pinned review digest together")
     raw = bounded_read(args.manifest, 16 * 1024 * 1024)
     manifest = loads_strict(raw.decode("utf-8"))
     if canonical_bytes(manifest) + b"\n" != raw:
@@ -65,6 +70,10 @@ def main() -> None:
             stream.write(encoded)
     if args.check is not None and bounded_read(args.check, len(encoded)) != encoded:
         fail("production-oracle-report-drift", "review report differs from exact recomputation", str(args.check))
+    if args.adjudication_handoff is not None:
+        handoff = build_handoff(ROOT, report, expected_review_digest=args.expected_review_digest)
+        with args.adjudication_handoff.open("xb") as stream:
+            stream.write(canonical_bytes(handoff) + b"\n")
     if args.output is None and args.check is None:
         print(encoded.decode("utf-8"), end="")
     else:

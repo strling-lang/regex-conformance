@@ -84,13 +84,13 @@ class ProductionVectorTests(unittest.TestCase):
         self.assertEqual(self.manifest, compile_vector_manifest(self.inputs, list(reversed(self.families))))
         self.assertEqual(self.manifest["counts"], {
             "requirements": 3378,
-            "requirements_with_candidate_stimuli": 40,
+            "requirements_with_candidate_stimuli": 44,
             "requirements_with_unresolved_interaction_identities": 4,
-            "vector_revisions": 79,
+            "vector_revisions": 87,
         })
         rows = self.manifest["requirement_coverage"]
         self.assertEqual(len({row["requirement_id"] for row in rows}), 3378)
-        self.assertEqual(sum(row["status"] == "missing" for row in rows), 3334)
+        self.assertEqual(sum(row["status"] == "missing" for row in rows), 3330)
         self.assertEqual({row["status"] for row in rows}, {
             "missing", "candidate-stimuli-only", "interaction-identity-unresolved",
         })
@@ -265,6 +265,28 @@ class ProductionVectorTests(unittest.TestCase):
         for name, (mutated, expected) in cases.items():
             with self.subTest(mutation=name):
                 self.assertNotEqual(mutated, expected)
+
+    def test_absolute_anchor_cases_distinguish_line_anchors_and_literal_search(self):
+        bases = {row["family_key"]: row for row in load_strict(ROOT / BASIS_PATH)["families"]}
+        families = {row["key"]: row for row in self.manifest["families"]}
+        stimuli = {row["vector_revision_id"]: row["stimulus"] for row in self.manifest["vectors"]}
+        for label, models in (
+            ("subject-start", (lambda value: value.startswith("a"), lambda value: "\na" in value)),
+            ("strict-subject-end", (lambda value: value.endswith("a"), lambda value: value.endswith("a\n"))),
+        ):
+            exact, accepts_line_position = models
+            with self.subTest(anchor=label):
+                negative_subjects = []
+                for role in ("positive", "negative"):
+                    key = f"cpython-{label}-{role}"
+                    expected = bases[key]["expected_outcome"] == "match"
+                    for revision in families[key]["vector_revision_ids"]:
+                        subject = bytes.fromhex(stimuli[revision]["subjects"][0]["hex"]).decode("utf-8")
+                        self.assertEqual(exact(subject), expected)
+                        if not expected:
+                            negative_subjects.append(subject)
+                self.assertTrue(any(accepts_line_position(subject) for subject in negative_subjects))
+                self.assertTrue(all("a" in subject for subject in negative_subjects))
 
     def test_oracle_or_arbitrary_attribution_cannot_enter_family_input(self):
         family = deepcopy(self.anchor)
