@@ -1,0 +1,27 @@
+{
+  "schema_version": "production-vector-family.v1",
+  "key": "numeric-escape-diagnostics",
+  "requirement_id": "rcid:v1:semantic-requirement:u7:01a08268-2465-70c7-8d23-10086b047458",
+  "operation_id": "rcid:v1:operation:u7:01a077a2-095f-7d7f-8566-1b1ae078bb47",
+  "manifestation_id": "rcid:v1:manifestation:u7:01a07d96-a5bb-753a-b51e-ee3bac685a0c",
+  "domain": "unicode-scalars",
+  "inputs": {
+    "pattern": {"encoding": "utf-8", "hex": "5c787b3130666666667d"},
+    "subjects": [],
+    "replacement": null,
+    "callback_fixture": null,
+    "options": [],
+    "initial_state": {}
+  },
+  "axes": {
+    "pattern": [
+      {"encoding": "utf-8", "hex": "5c787b3130666666667d"},
+      {"encoding": "utf-8", "hex": "5c787b3131303030307d"},
+      {"encoding": "utf-8", "hex": "5c787b7d"},
+      {"encoding": "utf-8", "hex": "5c787b3431"}
+    ]
+  },
+  "finite_subjects": null,
+  "requested_observations": ["compile-diagnostics", "native-errors"],
+  "deterministic_limits": {"maximum_diagnostic_bytes": 4096, "maximum_matches": 4, "maximum_output_bytes": 4096, "wall_time_ms": 1000}
+}

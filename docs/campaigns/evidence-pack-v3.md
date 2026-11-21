@@ -55,6 +55,20 @@ that regeneration reproduces all 4,003 million-campaign logical segments and
 exactly 1,000,000 inputs. A lookup reads the root manifest and at most two
 content blocks; whole-corpus decompression and bucket listing are unnecessary.
 
+## Local publication preflight
+
+`tools/campaigns/verify_v3_publication_input.py` checks a staged pack against
+separately supplied campaign and manifest SHA-256 commitments. It reads each
+referenced object by its exact key, verifies its stored size and digest, and
+reports unique pack bytes and the conservative retained-byte bound including
+the supplied existing inventory and reserve. Supply those byte counts from
+the governing retained-byte ledger and capacity plan.
+
+The preflight validates the stored representation. A trusted publication
+still requires reconciled observations, retention-contract verification,
+signed-off certification and source scope, a verified destination, and
+approved request, time, and cost admission.
+
 Observation and attempt identities are deterministic content identities:
 
 ```text

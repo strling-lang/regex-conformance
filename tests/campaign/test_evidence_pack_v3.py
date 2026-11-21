@@ -4,6 +4,7 @@ from copy import deepcopy
 import json
 from pathlib import Path
 import sys
+import tempfile
 import unittest
 
 from jsonschema import Draft202012Validator
@@ -20,6 +21,8 @@ for source in (
 
 import regex_conformance_scale.evidence_pack_v3 as pack_v3  # noqa: E402
 from regex_conformance_scale.factorized_evidence import TokenTables  # noqa: E402
+from regex_conformance_schema.errors import ConformanceDataError  # noqa: E402
+from tools.campaigns.verify_v3_publication_input import verify_publication_input  # noqa: E402
 
 
 REPORT = ROOT / "reports" / "scale" / "evidence-pack-v3-capacity-certification.json"
@@ -81,6 +84,43 @@ class TokenTableTests(unittest.TestCase):
 
 
 class ProductionPackTests(unittest.TestCase):
+    def test_publication_preflight_verifies_exact_keys_and_retained_bytes(self) -> None:
+        pack = pack_v3.build_evidence_pack(
+            sample_blocks(),
+            campaign_manifest_sha256=CAMPAIGN_SHA,
+            counts={"logical_executions": 2, "observations": 2, "physical_attempts": 3},
+            canonical_input_derivation="fixture-compiler-v1",
+        )
+        with tempfile.TemporaryDirectory(dir=ROOT) as directory:
+            root = Path(directory)
+            manifests = root / "manifests" / "sha256"
+            objects = root / "objects" / "sha256"
+            manifests.mkdir(parents=True)
+            objects.mkdir(parents=True)
+            (manifests / f"{pack.manifest_sha256}.json").write_bytes(pack.manifest_bytes)
+            for digest, data in pack.objects.items():
+                (objects / f"{digest}.xz").write_bytes(data)
+            scope = {"manifest_sha256": pack.manifest_sha256, "campaign_manifest_sha256": CAMPAIGN_SHA}
+            report = verify_publication_input(root, **scope, already_retained_bytes=4, reserve_bytes=6)
+            self.assertEqual(report["manifest_key"], pack.manifest_key)
+            self.assertEqual(report["object_count_including_manifest"], len(pack.objects) + 1)
+            self.assertEqual(report["retained_byte_upper_bound_including_reserve"], pack.retained_bytes + 10)
+            with self.assertRaisesRegex(ConformanceDataError, "v3-publication-soft-stop"):
+                verify_publication_input(root, **scope, already_retained_bytes=4, reserve_bytes=pack_v3.SOFT_LIMIT_BYTES - pack.retained_bytes - 4)
+            with self.assertRaisesRegex(ConformanceDataError, "v3-publication-hard-cap"):
+                verify_publication_input(root, **scope, already_retained_bytes=4, reserve_bytes=pack_v3.HARD_LIMIT_BYTES)
+            wrong_scope = {**scope, "campaign_manifest_sha256": "7" * 64}
+            with self.assertRaisesRegex(ConformanceDataError, "v3-publication-campaign"):
+                verify_publication_input(root, **wrong_scope, already_retained_bytes=4, reserve_bytes=6)
+            digest, data = next(iter(pack.objects.items()))
+            object_path = objects / f"{digest}.xz"
+            object_path.write_bytes(bytes([data[0] ^ 1]) + data[1:])
+            with self.assertRaisesRegex(ConformanceDataError, "v3-publication-object-integrity"):
+                verify_publication_input(root, **scope, already_retained_bytes=4, reserve_bytes=6)
+            object_path.unlink()
+            with self.assertRaises(FileNotFoundError):
+                verify_publication_input(root, **scope, already_retained_bytes=4, reserve_bytes=6)
+
     def test_deterministic_pack_round_trip_and_bounded_lookup(self) -> None:
         blocks = sample_blocks()
         arguments = {

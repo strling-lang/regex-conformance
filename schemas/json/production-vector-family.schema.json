@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.strling.org/regex-conformance/production-vector-family.schema.json",
+  "title": "Declarative production vector family input",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "key", "requirement_id", "operation_id", "manifestation_id", "domain", "inputs", "axes", "finite_subjects", "requested_observations", "deterministic_limits"],
+  "properties": {
+    "schema_version": {"const": "production-vector-family.v1"},
+    "key": {"$ref": "#/$defs/token"},
+    "requirement_id": {"type": "string", "pattern": "^rcid:v1:semantic-requirement:u7:[0-9a-f-]{36}$"},
+    "operation_id": {"type": "string", "pattern": "^rcid:v1:operation:u7:[0-9a-f-]{36}$"},
+    "manifestation_id": {
+      "type": ["string", "null"], "pattern": "^rcid:v1:manifestation:u7:[0-9a-f-]{36}$"
+    },
+    "domain": {"enum": ["octets", "unicode-scalars", "encoded-code-units"]},
+    "inputs": {
+      "type": "object", "additionalProperties": false,
+      "required": ["pattern", "subjects", "replacement", "callback_fixture", "options", "initial_state"],
+      "properties": {
+        "pattern": {"$ref": "#/$defs/datum"},
+        "subjects": {"$ref": "#/$defs/subjects"},
+        "replacement": {"oneOf": [{"$ref": "#/$defs/datum"}, {"type": "null"}]},
+        "callback_fixture": {"oneOf": [{"$ref": "#/$defs/datum"}, {"type": "null"}]},
+        "options": {"$ref": "#/$defs/options"},
+        "initial_state": {"$ref": "#/$defs/state"}
+      }
+    },
+    "axes": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "pattern": {"$ref": "#/$defs/axis", "items": {"$ref": "#/$defs/datum"}},
+        "subjects": {"$ref": "#/$defs/axis", "items": {"$ref": "#/$defs/subjects"}},
+        "replacement": {"$ref": "#/$defs/axis", "items": {"oneOf": [{"$ref": "#/$defs/datum"}, {"type": "null"}]}},
+        "callback_fixture": {"$ref": "#/$defs/axis", "items": {"oneOf": [{"$ref": "#/$defs/datum"}, {"type": "null"}]}},
+        "options": {"$ref": "#/$defs/axis", "items": {"$ref": "#/$defs/options"}},
+        "initial_state": {"$ref": "#/$defs/axis", "items": {"$ref": "#/$defs/state"}}
+      }
+    },
+    "finite_subjects": {
+      "type": ["object", "null"], "additionalProperties": false,
+      "required": ["encoding", "alphabet_hex", "min_length", "max_length"],
+      "properties": {
+        "encoding": {"$ref": "#/$defs/encoding"},
+        "alphabet_hex": {
+          "type": "array", "minItems": 1, "maxItems": 32, "uniqueItems": true,
+          "items": {"type": "string", "pattern": "^(?:[0-9a-f]{2})+(?![\\s\\S])", "maxLength": 16}
+        },
+        "min_length": {"type": "integer", "minimum": 0, "maximum": 16},
+        "max_length": {"type": "integer", "minimum": 0, "maximum": 16}
+      }
+    },
+    "requested_observations": {
+      "type": "array", "minItems": 1, "maxItems": 32, "uniqueItems": true, "items": {"$ref": "#/$defs/token"}
+    },
+    "deterministic_limits": {
+      "type": "object", "additionalProperties": false,
+      "required": ["maximum_diagnostic_bytes", "maximum_matches", "maximum_output_bytes", "wall_time_ms"],
+      "properties": {
+        "maximum_diagnostic_bytes": {"type": "integer", "minimum": 1, "maximum": 1048576},
+        "maximum_matches": {"type": "integer", "minimum": 1, "maximum": 1000000},
+        "maximum_output_bytes": {"type": "integer", "minimum": 1, "maximum": 16777216},
+        "wall_time_ms": {"type": "integer", "minimum": 1, "maximum": 86400000}
+      }
+    }
+  },
+  "$defs": {
+    "token": {"type": "string", "maxLength": 96, "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*(?![\\s\\S])"},
+    "encoding": {"enum": ["octets", "utf-8", "utf-16-le", "utf-16-be", "utf-32-le", "utf-32-be"]},
+    "datum": {
+      "type": "object", "additionalProperties": false, "required": ["encoding", "hex"],
+      "properties": {
+        "encoding": {"$ref": "#/$defs/encoding"},
+        "hex": {"type": "string", "maxLength": 32768, "pattern": "^(?:[0-9a-f]{2})*(?![\\s\\S])"}
+      }
+    },
+    "subjects": {"type": "array", "maxItems": 32, "items": {"$ref": "#/$defs/datum"}},
+    "axis": {"type": "array", "minItems": 1, "maxItems": 256, "uniqueItems": true},
+    "state": {
+      "type": "object", "maxProperties": 32, "propertyNames": {"$ref": "#/$defs/token"},
+      "additionalProperties": {"type": ["integer", "boolean", "null"]}
+    },
+    "options": {"type": "array", "maxItems": 64, "uniqueItems": true, "items": {"$ref": "#/$defs/option"}},
+    "option": {
+      "type": "object", "additionalProperties": false, "required": ["name", "value"],
+      "properties": {
+        "name": {"$ref": "#/$defs/token"},
+        "value": {"oneOf": [{"type": ["boolean", "integer", "null"]}, {"$ref": "#/$defs/token"}, {"$ref": "#/$defs/datum"}]}
+      }
+    }
+  }
+}
