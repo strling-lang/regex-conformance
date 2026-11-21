@@ -197,46 +197,37 @@
       ]
     },
     {
-      "family_key": "cpython-line-end-positive",
+      "comparison_family": null,
       "definition_sha256": "e0ddfec1c35efd24d6d28f01c5546891845fd835fcb325b9ddc19a6d44a67137",
-      "profile_scope": "cpython-3.14.6-re-text",
-      "premise": "In CPython default mode, a dollar assertion admits the end of input and the position immediately preceding one final newline.",
       "expected_outcome": "match",
-      "comparison_family": null,
+      "family_key": "cpython-line-end-positive",
+      "premise": "In CPython default mode, a dollar assertion admits the end of input and the position immediately preceding one final newline.",
+      "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L100",
-          "locator": "L100"
+          "locator": "L100",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L100"
         }
       ]
     },
     {
-      "family_key": "cpython-line-end-negative",
+      "comparison_family": null,
       "definition_sha256": "697e67ea78803e3066c95fdfa74ba2c76f625bd839ba45c48aab22745782e80c",
-      "profile_scope": "cpython-3.14.6-re-text",
-      "premise": "The same default-mode assertion does not admit an interior position or an interior newline.",
       "expected_outcome": "no-match",
-      "comparison_family": null,
+      "family_key": "cpython-line-end-negative",
+      "premise": "The same default-mode assertion does not admit an interior position or an interior newline.",
+      "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L100",
-          "locator": "L100"
+          "locator": "L100",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L100"
         }
       ]
     },
     {
-      "family_key": "cpython-split-capture-edges",
-      "definition_sha256": "c076447de875988e0ee5cb37536e7a7f8adfe6b9fa9e3f8707f0c2efa61bbc00",
-      "profile_scope": "cpython-3.14.6-re-text",
-      "premise": "Captured separators are interleaved with the split fields. The leading and trailing captured separators delimit empty fields.",
-      "expected_outcome": "split-output",
       "comparison_family": null,
-      "sources": [
-        {
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L873-L895",
-          "locator": "L873-L895"
-        }
-      ],
+      "definition_sha256": "c076447de875988e0ee5cb37536e7a7f8adfe6b9fa9e3f8707f0c2efa61bbc00",
+      "expected_outcome": "split-output",
       "expected_output": [
         "",
         "...",
@@ -245,21 +236,21 @@
         "words",
         "...",
         ""
+      ],
+      "family_key": "cpython-split-capture-edges",
+      "premise": "Captured separators are interleaved with the split fields. The leading and trailing captured separators delimit empty fields.",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "sources": [
+        {
+          "locator": "L873-L895",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L873-L895"
+        }
       ]
     },
     {
-      "family_key": "cpython-split-empty-word-boundary",
-      "definition_sha256": "4b7156d8a6b6a7d1ea7a22ba9923e3707558e03ddea3620506cb48f99cdad2fb",
-      "profile_scope": "cpython-3.14.6-re-text",
-      "premise": "The zero-width word boundary splits without consuming delimiters. The boundary at the beginning yields an empty leading field.",
-      "expected_outcome": "split-output",
       "comparison_family": null,
-      "sources": [
-        {
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L896-L915",
-          "locator": "L896-L915"
-        }
-      ],
+      "definition_sha256": "4b7156d8a6b6a7d1ea7a22ba9923e3707558e03ddea3620506cb48f99cdad2fb",
+      "expected_outcome": "split-output",
       "expected_output": [
         "",
         "Words",
@@ -268,435 +259,444 @@
         ", ",
         "words",
         "."
+      ],
+      "family_key": "cpython-split-empty-word-boundary",
+      "premise": "The zero-width word boundary splits without consuming delimiters. The boundary at the beginning yields an empty leading field.",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "sources": [
+        {
+          "locator": "L896-L915",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L896-L915"
+        }
       ]
     },
     {
-      "family_key": "cpython-replacement-literal",
+      "comparison_family": null,
       "definition_sha256": "edf77dea4be19e478cf50472c363bbc01529527fc9cc5c56ccebeaea3ba70f9c",
-      "profile_scope": "cpython-3.14.6-re-text",
+      "expected_outcome": "replacement-output",
+      "expected_output": "$1-$1",
+      "family_key": "cpython-replacement-literal",
       "premise": "CPython string replacements recognize backslash expansion. A dollar and digit without a backslash are literal text and occur at each replaced position.",
-      "expected_outcome": "replacement-output",
-      "comparison_family": null,
+      "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L959-L969",
-          "locator": "L959-L969"
+          "locator": "L959-L969",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L959-L969"
         }
-      ],
-      "expected_output": "$1-$1"
+      ]
     },
     {
-      "family_key": "cpython-replacement-literal-control",
+      "comparison_family": null,
       "definition_sha256": "9556da7601aa6204866ca92650cad8173898039ff599d30c827d3987d51d214f",
-      "profile_scope": "cpython-3.14.6-re-text",
+      "expected_outcome": "replacement-output",
+      "expected_output": "x!-x!",
+      "family_key": "cpython-replacement-literal-control",
       "premise": "An explicitly referenced group zero contributes the full matched text instead of copying the replacement expression literally.",
-      "expected_outcome": "replacement-output",
-      "comparison_family": null,
+      "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L997-L1006",
-          "locator": "L997-L1006"
+          "locator": "L997-L1006",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L997-L1006"
         }
-      ],
-      "expected_output": "x!-x!"
+      ]
     },
     {
-      "family_key": "cpython-replacement-escape-newline",
+      "comparison_family": null,
       "definition_sha256": "74c0950ecc009e418ba731e9a19fb2868468b59c56917b82562ac6148143b7ad",
-      "profile_scope": "cpython-3.14.6-re-text",
+      "expected_outcome": "replacement-output",
+      "expected_output": "\n-\n",
+      "family_key": "cpython-replacement-escape-newline",
       "premise": "A backslash-n in a replacement string contributes a single newline character, once for each replacement.",
-      "expected_outcome": "replacement-output",
-      "comparison_family": null,
+      "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L959-L968",
-          "locator": "L959-L968"
+          "locator": "L959-L968",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L959-L968"
         }
-      ],
-      "expected_output": "\n-\n"
+      ]
     },
     {
-      "family_key": "cpython-replacement-escape-control",
+      "comparison_family": null,
       "definition_sha256": "bb46b0c0c1294347501aeb11aee8b8c6c5f299484921b78ecc612ad545a05580",
-      "profile_scope": "cpython-3.14.6-re-text",
+      "expected_outcome": "replacement-output",
+      "expected_output": "n-n",
+      "family_key": "cpython-replacement-escape-control",
       "premise": "The same letter without a backslash is a literal n and introduces no newline.",
-      "expected_outcome": "replacement-output",
-      "comparison_family": null,
+      "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L959-L968",
-          "locator": "L959-L968"
+          "locator": "L959-L968",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L959-L968"
         }
-      ],
-      "expected_output": "n-n"
+      ]
     },
     {
-      "family_key": "cpython-replacement-number-delimiter",
+      "comparison_family": null,
       "definition_sha256": "ff8b90d83a35b5c57e618bc8a58021d45f56f22e194e31fd02170d7dee63722a",
-      "profile_scope": "cpython-3.14.6-re-text",
+      "expected_outcome": "replacement-output",
+      "expected_output": "b0xb0",
+      "family_key": "cpython-replacement-number-delimiter",
       "premise": "A delimited numeric reference expands group two and leaves the following zero literal.",
-      "expected_outcome": "replacement-output",
-      "comparison_family": null,
+      "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L997-L1006",
-          "locator": "L997-L1006"
+          "locator": "L997-L1006",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L997-L1006"
         }
-      ],
-      "expected_output": "b0xb0"
+      ]
     },
     {
-      "family_key": "cpython-replacement-number-control",
+      "comparison_family": null,
       "definition_sha256": "204466443efaacb8406c370e788c469500ea5c230f687308adc5ed28e7c07d20",
-      "profile_scope": "cpython-3.14.6-re-text",
-      "premise": "The special zero reference returns the entire match. This control separates it from inserting a numbered subgroup.",
       "expected_outcome": "replacement-output",
-      "comparison_family": null,
+      "expected_output": "abxab",
+      "family_key": "cpython-replacement-number-control",
+      "premise": "The special zero reference returns the entire match. This control separates it from inserting a numbered subgroup.",
+      "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L997-L1006",
-          "locator": "L997-L1006"
+          "locator": "L997-L1006",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L997-L1006"
         }
-      ],
-      "expected_output": "abxab"
+      ]
     },
     {
-      "family_key": "cpython-bytes-digit-positive",
+      "comparison_family": null,
       "definition_sha256": "b6a91685ce80a5e0a5777b311520dd72420bb6fe49770ba54d146c0b723952ba",
-      "profile_scope": "cpython-3.14.6-re-bytes",
+      "expected_outcome": "match",
+      "family_key": "cpython-bytes-digit-positive",
       "premise": "In bytes patterns the digit class includes both ASCII endpoints.",
-      "expected_outcome": "match",
-      "comparison_family": null,
-      "sources": [
-        {
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L525-L538",
-          "locator": "L525-L538"
-        }
-      ]
-    },
-    {
-      "family_key": "cpython-bytes-digit-negative",
-      "definition_sha256": "e6d669029729262656a08cb0e539acac5416f96e7200eafcc40a52009021cbed",
       "profile_scope": "cpython-3.14.6-re-bytes",
+      "sources": [
+        {
+          "locator": "L525-L538",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L525-L538"
+        }
+      ]
+    },
+    {
+      "comparison_family": null,
+      "definition_sha256": "e6d669029729262656a08cb0e539acac5416f96e7200eafcc40a52009021cbed",
+      "expected_outcome": "no-match",
+      "family_key": "cpython-bytes-digit-negative",
       "premise": "The ASCII digit range excludes both adjacent ASCII characters and the non-ASCII octet B2.",
-      "expected_outcome": "no-match",
-      "comparison_family": null,
+      "profile_scope": "cpython-3.14.6-re-bytes",
       "sources": [
         {
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L525-L538",
-          "locator": "L525-L538"
+          "locator": "L525-L538",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L525-L538"
         }
       ]
     },
     {
-      "family_key": "cpython-unicode-digit-new-script",
+      "comparison_family": null,
       "definition_sha256": "caf33630317033959494a1d2db83af329e26d1598ca0cdeed085a31cf32b79f7",
-      "profile_scope": "cpython-3.14.6-re-text",
+      "expected_outcome": "match",
+      "family_key": "cpython-unicode-digit-new-script",
       "premise": "Unicode 16.0.0 assigns decimal digit category Nd to the first and last Ol Onal digits. The default text pattern includes both.",
-      "expected_outcome": "match",
-      "comparison_family": null,
+      "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L525-L535",
-          "locator": "L525-L535"
+          "locator": "L525-L535",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L525-L535"
         },
         {
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Modules/unicodedata_db.h#L2",
-          "locator": "UNIDATA_VERSION"
+          "locator": "UNIDATA_VERSION",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Modules/unicodedata_db.h#L2"
         },
         {
-          "url": "https://www.unicode.org/Public/16.0.0/ucd/UnicodeData.txt",
-          "locator": "U+1E5F0 through U+1E5FA"
+          "locator": "U+1E5F0 through U+1E5FA",
+          "url": "https://www.unicode.org/Public/16.0.0/ucd/UnicodeData.txt"
         },
         {
-          "url": "https://www.unicode.org/Public/16.0.0/ucd/DerivedAge.txt",
-          "locator": "1E5D0..1E5FA, age 16.0"
+          "locator": "1E5D0..1E5FA, age 16.0",
+          "url": "https://www.unicode.org/Public/16.0.0/ucd/DerivedAge.txt"
         }
       ]
     },
     {
-      "family_key": "cpython-unicode-digit-adjacent-letter",
+      "comparison_family": null,
       "definition_sha256": "9f4e56d22747101731306e7bfe966c57db12910312fbb69e35dd762dd4eda415",
-      "profile_scope": "cpython-3.14.6-re-text",
+      "expected_outcome": "no-match",
+      "family_key": "cpython-unicode-digit-adjacent-letter",
       "premise": "U+1E5F0 immediately precedes the Ol Onal digits but has category Lo in Unicode 16.0.0. The decimal digit class excludes it.",
-      "expected_outcome": "no-match",
-      "comparison_family": null,
+      "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L525-L535",
-          "locator": "L525-L535"
+          "locator": "L525-L535",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L525-L535"
         },
         {
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Modules/unicodedata_db.h#L2",
-          "locator": "UNIDATA_VERSION"
+          "locator": "UNIDATA_VERSION",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Modules/unicodedata_db.h#L2"
         },
         {
-          "url": "https://www.unicode.org/Public/16.0.0/ucd/UnicodeData.txt",
-          "locator": "U+1E5F0 through U+1E5FA"
+          "locator": "U+1E5F0 through U+1E5FA",
+          "url": "https://www.unicode.org/Public/16.0.0/ucd/UnicodeData.txt"
         },
         {
-          "url": "https://www.unicode.org/Public/16.0.0/ucd/DerivedAge.txt",
-          "locator": "1E5D0..1E5FA, age 16.0"
+          "locator": "1E5D0..1E5FA, age 16.0",
+          "url": "https://www.unicode.org/Public/16.0.0/ucd/DerivedAge.txt"
         }
       ]
     },
     {
-      "family_key": "cpython-word-boundary-positive",
+      "comparison_family": null,
       "definition_sha256": "d3a38b3072002b1f72971f1a219b668976043bf1deefe469820540643226a32f",
-      "profile_scope": "cpython-3.14.6-re-text",
+      "expected_outcome": "match",
+      "family_key": "cpython-word-boundary-positive",
       "premise": "A word character followed by punctuation or the input end satisfies the boundary.",
-      "expected_outcome": "match",
-      "comparison_family": null,
+      "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L491-L501",
-          "locator": "L491-L501"
+          "locator": "L491-L501",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L491-L501"
         }
       ]
     },
     {
-      "family_key": "cpython-word-boundary-negative",
+      "comparison_family": null,
       "definition_sha256": "48e27a6275286721212c9d620354ef6e0418cdb3a304ac020e7adda09a84310e",
-      "profile_scope": "cpython-3.14.6-re-text",
+      "expected_outcome": "no-match",
+      "family_key": "cpython-word-boundary-negative",
       "premise": "There is no word boundary between two word characters, including before an underscore.",
-      "expected_outcome": "no-match",
-      "comparison_family": null,
+      "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L491-L501",
-          "locator": "L491-L501"
+          "locator": "L491-L501",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L491-L501"
         }
       ]
     },
     {
-      "family_key": "cpython-nonword-boundary-positive",
+      "comparison_family": null,
       "definition_sha256": "a7882cb46737aef4801a3012f40bdb6dc4848bb4ae0757799f0a75af328187cd",
-      "profile_scope": "cpython-3.14.6-re-text",
+      "expected_outcome": "match",
+      "family_key": "cpython-nonword-boundary-positive",
       "premise": "After a word character, the non-boundary assertion accepts a following word character.",
-      "expected_outcome": "match",
-      "comparison_family": null,
+      "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L510-L523",
-          "locator": "L510-L523"
+          "locator": "L510-L523",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L510-L523"
         }
       ]
     },
     {
-      "family_key": "cpython-nonword-boundary-negative",
+      "comparison_family": null,
       "definition_sha256": "37047b43cd43fb334f1102790f20fae6418b7baa64cbdcdea59356ac23116202",
-      "profile_scope": "cpython-3.14.6-re-text",
+      "expected_outcome": "no-match",
+      "family_key": "cpython-nonword-boundary-negative",
       "premise": "The non-boundary assertion excludes the transitions to punctuation and the input end.",
-      "expected_outcome": "no-match",
-      "comparison_family": null,
+      "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L510-L523",
-          "locator": "L510-L523"
+          "locator": "L510-L523",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L510-L523"
         }
       ]
     },
     {
-      "family_key": "cpython-nonword-boundary-empty",
+      "comparison_family": null,
       "definition_sha256": "69beb1746f62fa7e19d216d7ab7626ffe74259e99c1950163898f5fc3c9c259b",
-      "profile_scope": "cpython-3.14.6-re-text",
+      "expected_outcome": "match",
+      "family_key": "cpython-nonword-boundary-empty",
       "premise": "The version 3.14 change admits a zero-width non-boundary match on empty input.",
-      "expected_outcome": "match",
-      "comparison_family": null,
+      "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L510-L523",
-          "locator": "L510-L523"
+          "locator": "L510-L523",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L510-L523"
         }
       ]
     },
     {
-      "family_key": "cpython-wildcard-default-positive",
+      "comparison_family": null,
       "definition_sha256": "69cd8e1cbbb01dcc2b544de6af7efa6165c4e02a1050868ccd76bb5df2942d66",
-      "profile_scope": "cpython-3.14.6-re-text",
+      "expected_outcome": "match",
+      "family_key": "cpython-wildcard-default-positive",
       "premise": "The default dot accepts ordinary characters, embedded NUL, carriage return, and the Unicode line separator. The documented newline exclusion is exercised separately.",
-      "expected_outcome": "match",
-      "comparison_family": null,
+      "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "url": "https://github.com/python/cpython/blob/c63aec69bd59c55314c06c23f4c22c03de76fe45/Doc/library/re.rst#L89-L92",
-          "locator": "L89-L92"
+          "locator": "L89-L92",
+          "url": "https://github.com/python/cpython/blob/c63aec69bd59c55314c06c23f4c22c03de76fe45/Doc/library/re.rst#L89-L92"
         }
       ]
     },
     {
-      "family_key": "cpython-wildcard-default-negative",
+      "comparison_family": null,
       "definition_sha256": "92ad164db550582d7fd7c0af5f78a68944d96184aaf3a9b5f534748ef71ce8f4",
-      "profile_scope": "cpython-3.14.6-re-text",
+      "expected_outcome": "no-match",
+      "family_key": "cpython-wildcard-default-negative",
       "premise": "The default dot rejects line feed and cannot consume from an empty subject.",
-      "expected_outcome": "no-match",
-      "comparison_family": null,
+      "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "url": "https://github.com/python/cpython/blob/c63aec69bd59c55314c06c23f4c22c03de76fe45/Doc/library/re.rst#L89-L92",
-          "locator": "L89-L92"
+          "locator": "L89-L92",
+          "url": "https://github.com/python/cpython/blob/c63aec69bd59c55314c06c23f4c22c03de76fe45/Doc/library/re.rst#L89-L92"
         }
       ]
     },
     {
-      "family_key": "cpython-wildcard-dotall-newline",
+      "comparison_family": null,
       "definition_sha256": "2d0d86bb14c41410d19ec3015034465a92d7573a3f74cab06ed8629ef457386d",
-      "profile_scope": "cpython-3.14.6-re-text",
+      "expected_outcome": "match",
+      "family_key": "cpython-wildcard-dotall-newline",
       "premise": "The inline DOTALL group allows the dot to consume one line feed.",
-      "expected_outcome": "match",
-      "comparison_family": null,
+      "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "url": "https://github.com/python/cpython/blob/c63aec69bd59c55314c06c23f4c22c03de76fe45/Doc/library/re.rst#L89-L92",
-          "locator": "L89-L92"
+          "locator": "L89-L92",
+          "url": "https://github.com/python/cpython/blob/c63aec69bd59c55314c06c23f4c22c03de76fe45/Doc/library/re.rst#L89-L92"
         }
       ]
     },
     {
-      "family_key": "cpython-text-whitespace-positive",
+      "comparison_family": null,
       "definition_sha256": "e6d6dc9443cbcf0baf6320f87bb63ed1764f43a72cb286d5990c096d8c0fb763",
-      "profile_scope": "cpython-3.14.6-re-text",
+      "expected_outcome": "match",
+      "family_key": "cpython-text-whitespace-positive",
       "premise": "The text whitespace class includes the six ASCII whitespace characters and nonbreaking space.",
-      "expected_outcome": "match",
-      "comparison_family": null,
+      "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "url": "https://github.com/python/cpython/blob/c63aec69bd59c55314c06c23f4c22c03de76fe45/Doc/library/re.rst#L548-L555",
-          "locator": "L548-L555"
+          "locator": "L548-L555",
+          "url": "https://github.com/python/cpython/blob/c63aec69bd59c55314c06c23f4c22c03de76fe45/Doc/library/re.rst#L548-L555"
         }
       ]
     },
     {
-      "family_key": "cpython-text-whitespace-negative",
+      "comparison_family": null,
       "definition_sha256": "a7c9a30d9ab9086d48612d05d3552e25ae5355e580184837356dbef3dbd388f4",
-      "profile_scope": "cpython-3.14.6-re-text",
+      "expected_outcome": "no-match",
+      "family_key": "cpython-text-whitespace-negative",
       "premise": "Letter a, ZERO WIDTH SPACE, and NUL are outside the CPython text whitespace class based on str.isspace.",
-      "expected_outcome": "no-match",
-      "comparison_family": null,
+      "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "url": "https://github.com/python/cpython/blob/c63aec69bd59c55314c06c23f4c22c03de76fe45/Doc/library/re.rst#L548-L555",
-          "locator": "L548-L555"
+          "locator": "L548-L555",
+          "url": "https://github.com/python/cpython/blob/c63aec69bd59c55314c06c23f4c22c03de76fe45/Doc/library/re.rst#L548-L555"
         },
         {
-          "url": "https://github.com/python/cpython/blob/c63aec69bd59c55314c06c23f4c22c03de76fe45/Doc/library/stdtypes.rst#L2103-L2112",
-          "locator": "str.isspace and Unicode classification"
+          "locator": "str.isspace and Unicode classification",
+          "url": "https://github.com/python/cpython/blob/c63aec69bd59c55314c06c23f4c22c03de76fe45/Doc/library/stdtypes.rst#L2103-L2112"
         },
         {
-          "url": "https://www.unicode.org/Public/16.0.0/ucd/UnicodeData.txt",
-          "locator": "U+200B, U+0000 and U+0061"
+          "locator": "U+200B, U+0000 and U+0061",
+          "url": "https://www.unicode.org/Public/16.0.0/ucd/UnicodeData.txt"
         }
       ]
     },
     {
-      "family_key": "cpython-alternation-positive",
+      "comparison_family": null,
       "definition_sha256": "c88309cb2a3ed068b755400de87256288d301f1042b0a4428232330286b7d480",
-      "profile_scope": "cpython-3.14.6-re-text",
+      "expected_outcome": "match",
+      "family_key": "cpython-alternation-positive",
       "premise": "Each of the two literal alternatives can satisfy a full match on its own.",
-      "expected_outcome": "match",
-      "comparison_family": null,
+      "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "url": "https://github.com/python/cpython/blob/c63aec69bd59c55314c06c23f4c22c03de76fe45/Doc/library/re.rst#L271-L286",
-          "locator": "L271-L286"
+          "locator": "L271-L286",
+          "url": "https://github.com/python/cpython/blob/c63aec69bd59c55314c06c23f4c22c03de76fe45/Doc/library/re.rst#L271-L286"
         }
       ]
     },
     {
-      "family_key": "cpython-alternation-negative",
+      "comparison_family": null,
       "definition_sha256": "d1a89b5ab61ea87d03eba4d4d52260a4ff38c1482cd41d661eb54dfedbb553a0",
-      "profile_scope": "cpython-3.14.6-re-text",
+      "expected_outcome": "no-match",
+      "family_key": "cpython-alternation-negative",
       "premise": "Alternation does not concatenate its branches or make them optional under full match.",
-      "expected_outcome": "no-match",
-      "comparison_family": null,
+      "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "url": "https://github.com/python/cpython/blob/c63aec69bd59c55314c06c23f4c22c03de76fe45/Doc/library/re.rst#L271-L286",
-          "locator": "L271-L286"
+          "locator": "L271-L286",
+          "url": "https://github.com/python/cpython/blob/c63aec69bd59c55314c06c23f4c22c03de76fe45/Doc/library/re.rst#L271-L286"
         }
       ]
     },
     {
-      "family_key": "cpython-empty-pattern-positive",
+      "comparison_family": null,
       "definition_sha256": "29ea68973a62a54cdd4258b981d4bffda57b2625abf334ec95c8fa90fac0cea7",
-      "profile_scope": "cpython-3.14.6-re-text",
+      "expected_outcome": "match",
+      "family_key": "cpython-empty-pattern-positive",
       "premise": "An empty expression can consume the whole empty string as a zero-length match.",
-      "expected_outcome": "match",
-      "comparison_family": null,
+      "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "url": "https://github.com/python/cpython/blob/c63aec69bd59c55314c06c23f4c22c03de76fe45/Doc/library/re.rst#L859-L864",
-          "locator": "L859-L864"
+          "locator": "L859-L864",
+          "url": "https://github.com/python/cpython/blob/c63aec69bd59c55314c06c23f4c22c03de76fe45/Doc/library/re.rst#L859-L864"
         }
       ]
     },
     {
-      "family_key": "cpython-empty-pattern-negative",
+      "comparison_family": null,
       "definition_sha256": "655a1de33373ea8192e3318afe853fbbc253cc45d9c5e96582abf4515842567c",
-      "profile_scope": "cpython-3.14.6-re-text",
+      "expected_outcome": "no-match",
+      "family_key": "cpython-empty-pattern-negative",
       "premise": "An empty expression cannot consume a nonempty subject for a full match.",
-      "expected_outcome": "no-match",
-      "comparison_family": null,
+      "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "url": "https://github.com/python/cpython/blob/c63aec69bd59c55314c06c23f4c22c03de76fe45/Doc/library/re.rst#L859-L864",
-          "locator": "L859-L864"
+          "locator": "L859-L864",
+          "url": "https://github.com/python/cpython/blob/c63aec69bd59c55314c06c23f4c22c03de76fe45/Doc/library/re.rst#L859-L864"
         }
       ]
     },
     {
-      "family_key": "cpython-subject-start-positive",
+      "comparison_family": null,
       "definition_sha256": "cbe3eab42d8e020903de402e368c070b7373febd5be0d590a86ad6cd088f0e85",
-      "profile_scope": "cpython-3.14.6-re-text",
+      "expected_outcome": "match",
+      "family_key": "cpython-subject-start-positive",
       "premise": "In CPython re.search, the absolute-start assertion admits offset zero with or without a final newline.",
-      "expected_outcome": "match",
-      "comparison_family": null,
+      "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L487",
-          "locator": "L487"
+          "locator": "L487",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L487"
         }
       ]
     },
     {
-      "family_key": "cpython-subject-start-negative",
+      "comparison_family": null,
       "definition_sha256": "e14ecbf06d32416ab00a46537b96c1bb4e0632fb06c8d5d1420dbb9fbb78bb7e",
-      "profile_scope": "cpython-3.14.6-re-text",
+      "expected_outcome": "no-match",
+      "family_key": "cpython-subject-start-negative",
       "premise": "The absolute-start assertion rejects an interior offset, including the start of a later line.",
-      "expected_outcome": "no-match",
-      "comparison_family": null,
+      "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L487",
-          "locator": "L487"
+          "locator": "L487",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L487"
         }
       ]
     },
     {
-      "family_key": "cpython-strict-subject-end-positive",
+      "comparison_family": null,
       "definition_sha256": "88318adb91a4a8ea322a68c9214e63ca90086a5d6e83d40be0a93ac018369802",
-      "profile_scope": "cpython-3.14.6-re-text",
-      "premise": "In CPython re.search, the strict end assertion admits the absolute end regardless of the match start offset.",
       "expected_outcome": "match",
-      "comparison_family": null,
+      "family_key": "cpython-strict-subject-end-positive",
+      "premise": "In CPython re.search, the strict end assertion admits the absolute end regardless of the match start offset.",
+      "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L598",
-          "locator": "L598"
+          "locator": "L598",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L598"
         }
       ]
     },
     {
-      "family_key": "cpython-strict-subject-end-negative",
-      "definition_sha256": "3a4608e51c63a5f7b5fb6088d76e74d89c869e45f9486f86f1277925bc330ed9",
-      "profile_scope": "cpython-3.14.6-re-text",
-      "premise": "The strict end assertion rejects both an interior position and the position before a final newline.",
-      "expected_outcome": "no-match",
       "comparison_family": null,
+      "definition_sha256": "3a4608e51c63a5f7b5fb6088d76e74d89c869e45f9486f86f1277925bc330ed9",
+      "expected_outcome": "no-match",
+      "family_key": "cpython-strict-subject-end-negative",
+      "premise": "The strict end assertion rejects both an interior position and the position before a final newline.",
+      "profile_scope": "cpython-3.14.6-re-text",
       "sources": [
         {
-          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L598",
-          "locator": "L598"
+          "locator": "L598",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L598"
         }
       ]
     },
@@ -1093,6 +1093,294 @@
         {
           "locator": "L954-L962",
           "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L954-L962"
+        }
+      ]
+    },
+    {
+      "comparison_family": null,
+      "definition_sha256": "0b326a8b1c199477f0f5beb6362d4eb0da5efe501de8677d495ec74d55800d8b",
+      "expected_outcome": "match",
+      "family_key": "cpython-bounded-positive-lookahead-positive",
+      "premise": "After a, the next character must be b. The lookahead consumes no input and the following class consumes b. Full matching consumes the entire subject.",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "sources": [
+        {
+          "locator": "L457-L463",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L457-L463"
+        },
+        {
+          "locator": "L954-L962",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L954-L962"
+        }
+      ]
+    },
+    {
+      "comparison_family": null,
+      "definition_sha256": "2e66799596bfb52d6ae23cc1320bad20fdfa6b3d79b9acc6261a6f9477e31c72",
+      "expected_outcome": "no-match",
+      "family_key": "cpython-bounded-positive-lookahead-negative",
+      "premise": "After a, the next character must be b. The lookahead consumes no input and the following class consumes b. Full matching consumes the entire subject.",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "sources": [
+        {
+          "locator": "L457-L463",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L457-L463"
+        },
+        {
+          "locator": "L954-L962",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L954-L962"
+        }
+      ]
+    },
+    {
+      "comparison_family": null,
+      "definition_sha256": "b038dd51060dec49ab3f8b13b35461e00a8f7fb268d9fedef8143ab0d754c939",
+      "expected_outcome": "match",
+      "family_key": "cpython-bounded-negative-lookahead-positive",
+      "premise": "After a, the next character must differ from b. The following class then consumes c. Full matching consumes the entire subject.",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "sources": [
+        {
+          "locator": "L464-L470",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L464-L470"
+        },
+        {
+          "locator": "L954-L962",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L954-L962"
+        }
+      ]
+    },
+    {
+      "comparison_family": null,
+      "definition_sha256": "252ee298c3952be3f182a4c62a1fa79d39c3a354630e5b9ebd2dae9900b91bdf",
+      "expected_outcome": "no-match",
+      "family_key": "cpython-bounded-negative-lookahead-negative",
+      "premise": "After a, the next character must differ from b. The following class then consumes c. Full matching consumes the entire subject.",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "sources": [
+        {
+          "locator": "L464-L470",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L464-L470"
+        },
+        {
+          "locator": "L954-L962",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L954-L962"
+        }
+      ]
+    },
+    {
+      "comparison_family": null,
+      "definition_sha256": "f71b784326e9d7f7a2cf912efef7d1974126d982cc30d18ef6deeef4d4dbe216",
+      "expected_outcome": "match",
+      "family_key": "cpython-bounded-fixed-positive-lookbehind-positive",
+      "premise": "The one-character lookbehind checks that the class consumed a before the final c. Full matching consumes the entire subject.",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "sources": [
+        {
+          "locator": "L473-L482",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L473-L482"
+        },
+        {
+          "locator": "L954-L962",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L954-L962"
+        }
+      ]
+    },
+    {
+      "comparison_family": null,
+      "definition_sha256": "88a78e68ba4fc19811ff2fad343d9a03805ab382218b551be62f28207e624c98",
+      "expected_outcome": "no-match",
+      "family_key": "cpython-bounded-fixed-positive-lookbehind-negative",
+      "premise": "The one-character lookbehind checks that the class consumed a before the final c. Full matching consumes the entire subject.",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "sources": [
+        {
+          "locator": "L473-L482",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L473-L482"
+        },
+        {
+          "locator": "L954-L962",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L954-L962"
+        }
+      ]
+    },
+    {
+      "comparison_family": null,
+      "definition_sha256": "c4a633337a48bfa5a7107cc7a2cd361379839f385b6d9b95bb7521c85bca5879",
+      "expected_outcome": "match",
+      "family_key": "cpython-bounded-fixed-negative-lookbehind-positive",
+      "premise": "The one-character negative lookbehind rejects a before the final c, so the class must consume b. Full matching consumes the entire subject.",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "sources": [
+        {
+          "locator": "L498-L505",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L498-L505"
+        },
+        {
+          "locator": "L954-L962",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L954-L962"
+        }
+      ]
+    },
+    {
+      "comparison_family": null,
+      "definition_sha256": "bfab4fb57608520a2438df982fd995b6d0a6fc653986d98a0370720ac59c7dd6",
+      "expected_outcome": "no-match",
+      "family_key": "cpython-bounded-fixed-negative-lookbehind-negative",
+      "premise": "The one-character negative lookbehind rejects a before the final c, so the class must consume b. Full matching consumes the entire subject.",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "sources": [
+        {
+          "locator": "L498-L505",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L498-L505"
+        },
+        {
+          "locator": "L954-L962",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L954-L962"
+        }
+      ]
+    },
+    {
+      "comparison_family": null,
+      "definition_sha256": "d76282ab58f253b8090f9cfc22d045ca109245a2ce114ba125b635a1de85fae1",
+      "expected_outcome": "match",
+      "family_key": "cpython-bounded-atomic-group-positive",
+      "premise": "The group commits to its first successful alternative. On ab it consumes ab and cannot revisit a to satisfy the final b. Full matching consumes the entire subject.",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "sources": [
+        {
+          "locator": "L396-L413",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L396-L413"
+        },
+        {
+          "locator": "L954-L962",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L954-L962"
+        }
+      ]
+    },
+    {
+      "comparison_family": null,
+      "definition_sha256": "ebb12f5315d4145e203d1da172e7ef91756b89db91ce51b3781ccd9a0d6912a1",
+      "expected_outcome": "no-match",
+      "family_key": "cpython-bounded-atomic-group-negative",
+      "premise": "The group commits to its first successful alternative. On ab it consumes ab and cannot revisit a to satisfy the final b. Full matching consumes the entire subject.",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "sources": [
+        {
+          "locator": "L396-L413",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L396-L413"
+        },
+        {
+          "locator": "L954-L962",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L954-L962"
+        }
+      ]
+    },
+    {
+      "comparison_family": null,
+      "definition_sha256": "b40932b205f477f1151f7306017a45a6a88ccd5956b1e97fcb0eb2ad9c921e85",
+      "expected_outcome": "match",
+      "family_key": "cpython-bounded-possessive-quantifier-positive",
+      "premise": "The possessive repetition consumes every initial a and cannot return one to the following class. The final class must consume b. Full matching consumes the entire subject.",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "sources": [
+        {
+          "locator": "L158-L180",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L158-L180"
+        },
+        {
+          "locator": "L954-L962",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L954-L962"
+        }
+      ]
+    },
+    {
+      "comparison_family": null,
+      "definition_sha256": "eac65187e7a2003e31d412e3acfe33d90c16225b8acf0ce7c8299a20b5a9445e",
+      "expected_outcome": "no-match",
+      "family_key": "cpython-bounded-possessive-quantifier-negative",
+      "premise": "The possessive repetition consumes every initial a and cannot return one to the following class. The final class must consume b. Full matching consumes the entire subject.",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "sources": [
+        {
+          "locator": "L158-L180",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L158-L180"
+        },
+        {
+          "locator": "L954-L962",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L954-L962"
+        }
+      ]
+    },
+    {
+      "comparison_family": null,
+      "definition_sha256": "b437ae8878eb15d382c15b98619c1304fa4e0cc7feab4fe2b3cd87a1d90a100f",
+      "expected_outcome": "match",
+      "family_key": "cpython-release-search-non-word-boundary-positive",
+      "premise": "On this domain, the zero-width assertion succeeds where the adjacent word-status flags agree, including the empty string in this release.",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "sources": [
+        {
+          "locator": "L571-L585",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L571-L585"
+        },
+        {
+          "locator": "L924-L934",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L924-L934"
+        }
+      ]
+    },
+    {
+      "comparison_family": null,
+      "definition_sha256": "d07bc06747969d5c20aa45a2c9b27dd5d834d24c7aa0abcb4b39422dfda3ea7b",
+      "expected_outcome": "no-match",
+      "family_key": "cpython-release-search-non-word-boundary-negative",
+      "premise": "On this domain, the zero-width assertion succeeds where the adjacent word-status flags agree, including the empty string in this release.",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "sources": [
+        {
+          "locator": "L571-L585",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L571-L585"
+        },
+        {
+          "locator": "L924-L934",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L924-L934"
+        }
+      ]
+    },
+    {
+      "comparison_family": null,
+      "definition_sha256": "e0fc719b5ab2134dd8fe8ebbf64389e8309688e19f9d8d2a36c1bf353c1b0b08",
+      "expected_outcome": "match",
+      "family_key": "cpython-release-search-subject-end-strict-positive",
+      "premise": "The position after the literal a must be the strict end of the subject, including when the subject contains newline characters.",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "sources": [
+        {
+          "locator": "L664-L673",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L664-L673"
+        },
+        {
+          "locator": "L924-L934",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L924-L934"
+        }
+      ]
+    },
+    {
+      "comparison_family": null,
+      "definition_sha256": "68e7955a3076b72e0fc30e094842f5918ed8883ecbe269c29b1a33451ed66e50",
+      "expected_outcome": "no-match",
+      "family_key": "cpython-release-search-subject-end-strict-negative",
+      "premise": "The position after the literal a must be the strict end of the subject, including when the subject contains newline characters.",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "sources": [
+        {
+          "locator": "L664-L673",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L664-L673"
+        },
+        {
+          "locator": "L924-L934",
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L924-L934"
         }
       ]
     }

@@ -1,0 +1,40 @@
+{
+  "axes": {
+    "subjects": [
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6162"
+        }
+      ]
+    ]
+  },
+  "deterministic_limits": {
+    "maximum_diagnostic_bytes": 4096,
+    "maximum_matches": 2,
+    "maximum_output_bytes": 4096,
+    "wall_time_ms": 1000
+  },
+  "domain": "unicode-scalars",
+  "finite_subjects": null,
+  "inputs": {
+    "callback_fixture": null,
+    "initial_state": {},
+    "options": [],
+    "pattern": {
+      "encoding": "utf-8",
+      "hex": "61283f3d62295b62635d"
+    },
+    "replacement": null,
+    "subjects": []
+  },
+  "key": "cpython-bounded-positive-lookahead-positive",
+  "manifestation_id": null,
+  "operation_id": "rcid:v1:operation:u7:01a077a2-095f-70a3-b65f-ebfd7c23c9ea",
+  "requested_observations": [
+    "match-state",
+    "spans"
+  ],
+  "requirement_id": "rcid:v1:semantic-requirement:u7:01a08268-2469-7776-87d7-99205633815d",
+  "schema_version": "production-vector-family.v1"
+}

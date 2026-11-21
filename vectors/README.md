@@ -85,6 +85,19 @@ partition includes every other subject in the finite domain, including NUL
 where the selected class excludes it. The 528 stimuli map to eight requirements.
 [CPython set grammar](https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L237-L278) · [CPython word class](https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L633-L648)
 
+The CPython assertion and backtracking families partition all 40 strings over
+`a`, `b`, and `c` through length three. The 240 full-match probes cover
+twelve requirements for lookahead, fixed-width lookbehind, atomic groups,
+and possessive quantifiers. Each pair includes a case that would change
+outcome if the assertion were removed or backtracking were allowed.
+[CPython assertions](https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L457-L505) · [Atomic groups](https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L399-L413) · [Possessive quantifiers](https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L162-L180)
+
+The CPython search families complete finite subject partitions for `\B` and
+`a\z`, including the empty subject and a terminal newline. They reuse two
+existing stimuli and add 40 probes across four existing requirements. The
+candidate premises apply to CPython 3.14.6 text matching.
+[CPython non-word boundaries](https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L571-L585) · [Strict subject end](https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L664-L673)
+
 The numbered-reference families use `([ab])\1` and the four two-octet words
 over `a` and `b`. The subjects distinguish reference equality from merely
 consuming another member of the class. The malformed-reference family uses a

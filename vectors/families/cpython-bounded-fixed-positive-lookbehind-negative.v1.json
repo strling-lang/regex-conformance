@@ -1,0 +1,268 @@
+{
+  "axes": {
+    "subjects": [
+      [
+        {
+          "encoding": "utf-8",
+          "hex": ""
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "61"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6161"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "616161"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "616162"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "616163"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6162"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "616261"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "616262"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "616263"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "616361"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "616362"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "616363"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "62"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6261"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "626161"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "626162"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "626163"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6262"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "626261"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "626262"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "626263"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6263"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "626361"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "626362"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "626363"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "63"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6361"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "636161"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "636162"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "636163"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6362"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "636261"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "636262"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "636263"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "6363"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "636361"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "636362"
+        }
+      ],
+      [
+        {
+          "encoding": "utf-8",
+          "hex": "636363"
+        }
+      ]
+    ]
+  },
+  "deterministic_limits": {
+    "maximum_diagnostic_bytes": 4096,
+    "maximum_matches": 2,
+    "maximum_output_bytes": 4096,
+    "wall_time_ms": 1000
+  },
+  "domain": "unicode-scalars",
+  "finite_subjects": null,
+  "inputs": {
+    "callback_fixture": null,
+    "initial_state": {},
+    "options": [],
+    "pattern": {
+      "encoding": "utf-8",
+      "hex": "5b61625d283f3c3d612963"
+    },
+    "replacement": null,
+    "subjects": []
+  },
+  "key": "cpython-bounded-fixed-positive-lookbehind-negative",
+  "manifestation_id": null,
+  "operation_id": "rcid:v1:operation:u7:01a077a2-095f-70a3-b65f-ebfd7c23c9ea",
+  "requested_observations": [
+    "match-state",
+    "spans"
+  ],
+  "requirement_id": "rcid:v1:semantic-requirement:u7:01a08268-2473-7532-baee-58572556c4bc",
+  "schema_version": "production-vector-family.v1"
+}

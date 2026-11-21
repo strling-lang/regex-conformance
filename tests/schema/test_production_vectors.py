@@ -85,13 +85,13 @@ class ProductionVectorTests(unittest.TestCase):
         self.assertEqual(self.manifest, compile_vector_manifest(self.inputs, list(reversed(self.families))))
         self.assertEqual(self.manifest["counts"], {
             "requirements": 3378,
-            "requirements_with_candidate_stimuli": 66,
+            "requirements_with_candidate_stimuli": 78,
             "requirements_with_unresolved_interaction_identities": 4,
-            "vector_revisions": 1056,
+            "vector_revisions": 1336,
         })
         rows = self.manifest["requirement_coverage"]
         self.assertEqual(len({row["requirement_id"] for row in rows}), 3378)
-        self.assertEqual(sum(row["status"] == "missing" for row in rows), 3308)
+        self.assertEqual(sum(row["status"] == "missing" for row in rows), 3296)
         self.assertEqual({row["status"] for row in rows}, {
             "missing", "candidate-stimuli-only", "interaction-identity-unresolved",
         })
@@ -150,6 +150,62 @@ class ProductionVectorTests(unittest.TestCase):
                     self.assertTrue(all(len(row["subjects"]) == 1 for row in cases))
                     self.assertEqual({bytes.fromhex(row["subjects"][0]["hex"]) for row in cases}, samples)
                     self.assertEqual(len(cases), len(samples))
+
+    def test_assertion_and_backtracking_partitions_keep_discriminating_controls(self):
+        domain = {b"".join(word) for size in range(4) for word in product((b"a", b"b", b"c"), repeat=size)}
+        models = {
+            "positive-lookahead": (b"a(?=b)[bc]", {b"ab"}, {b"ab", b"ac"}),
+            "negative-lookahead": (b"a(?!b)[bc]", {b"ac"}, {b"ab", b"ac"}),
+            "fixed-positive-lookbehind": (b"[ab](?<=a)c", {b"ac"}, {b"ac", b"bc"}),
+            "fixed-negative-lookbehind": (b"[ab](?<!a)c", {b"bc"}, {b"ac", b"bc"}),
+            "atomic-group": (b"(?>ab|a)b", {b"abb"}, {b"ab", b"abb"}),
+            "possessive-quantifier": (b"a*+[ab]", {b"b", b"ab", b"aab"}, {b"a", b"aa", b"aaa", b"b", b"ab", b"aab"}),
+        }
+        families = {row["key"]: row for row in self.manifest["families"]}
+        stimuli = {row["vector_revision_id"]: row["stimulus"] for row in self.manifest["vectors"]}
+        bases = {row["family_key"]: row for row in load_strict(ROOT / BASIS_PATH)["families"]}
+        for feature, (pattern, accepted, relaxed) in models.items():
+            self.assertTrue(accepted < relaxed <= domain)
+            for role, expected in (("positive", accepted), ("negative", domain - accepted)):
+                key = f"cpython-bounded-{feature}-{role}"
+                with self.subTest(feature=feature, role=role):
+                    family = families[key]
+                    self.assertEqual(family["attribution"]["evidence_role"], role)
+                    self.assertEqual(bases[key]["expected_outcome"], "match" if role == "positive" else "no-match")
+                    cases = [stimuli[identifier] for identifier in family["vector_revision_ids"]]
+                    self.assertEqual({bytes.fromhex(row["pattern"]["hex"]) for row in cases}, {pattern})
+                    self.assertEqual({bytes.fromhex(row["subjects"][0]["hex"]) for row in cases}, expected)
+                    self.assertEqual(len(cases), len(expected))
+
+    def test_release_search_partitions_reuse_existing_subjects_and_detect_boundary_errors(self):
+        domain = {b"".join(word) for size in range(3) for word in product((b"!", b"a", b"_", b"\n"), repeat=size)}
+        non_boundary = set()
+        for subject in domain:
+            word = [False, *(char in b"a_" for char in subject), False]
+            if any(left == right for left, right in zip(word, word[1:])):
+                non_boundary.add(subject)
+        patterns = {
+            "non-word-boundary": (rb"\B", non_boundary, ()),
+            "subject-end-strict": (rb"a\z", {subject for subject in domain if subject.endswith(b"a")},
+                                   ("cpython-strict-subject-end-positive", "cpython-strict-subject-end-negative")),
+        }
+        families = {row["key"]: row for row in self.manifest["families"]}
+        stimuli = {row["vector_revision_id"]: row["stimulus"] for row in self.manifest["vectors"]}
+        bases = {row["family_key"]: row for row in load_strict(ROOT / BASIS_PATH)["families"]}
+        for feature, (pattern, accepted, predecessors) in patterns.items():
+            included = {"match": [], "no-match": []}
+            for key in (*predecessors, *(f"cpython-release-search-{feature}-{role}" for role in ("positive", "negative"))):
+                for identifier in families[key]["vector_revision_ids"]:
+                    row = stimuli[identifier]
+                    self.assertEqual(bytes.fromhex(row["pattern"]["hex"]), pattern)
+                    subject = bytes.fromhex(row["subjects"][0]["hex"])
+                    if subject in domain:
+                        included[bases[key]["expected_outcome"]].append(subject)
+            with self.subTest(feature=feature):
+                self.assertCountEqual(included["match"], accepted)
+                self.assertCountEqual(included["no-match"], domain - accepted)
+        self.assertIn(b"", non_boundary)
+        self.assertNotIn(b"a\n", patterns["subject-end-strict"][1])
 
     def test_missing_interaction_identity_remains_in_requirement_accounting(self):
         blocked = [
