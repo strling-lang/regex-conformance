@@ -28,12 +28,10 @@ adversarial fixtures live under `tests/fixtures/certification/`.
 
 ## Authority boundary
 
-The canonical program workspace owns governance intent, Program Owner
-decisions, and later policy amendments. This repository owns the exact
-versioned encoding of the accepted policy: schemas, predicates, evaluator,
-fixtures, and deterministic reports. Changing an accepted meaning requires a
-new recorded governance decision and a new contract revision; evaluator code
-cannot silently reinterpret it.
+The repository records accepted policy in versioned schemas, predicates,
+evaluator code, fixtures, and deterministic reports. A change to an accepted
+meaning requires a recorded decision under [Governance](../GOVERNANCE.md) and
+a new contract revision.
 
 The current contract uses the accepted meanings:
 

@@ -1,10 +1,8 @@
 # Scientific implementation dependencies
 
 This document records the repository-facing dependency architecture for
-finishing the Regex Conformance data project. It explains why the work must be
-performed in this order without becoming a second operational tracker. Live
-status, assignments, approvals, and owner decisions remain in the canonical
-program workspace.
+finishing the Regex Conformance data project. It explains why these dependencies
+are ordered. Approval requirements are defined in [Governance](../../GOVERNANCE.md).
 
 ## Rebaseline boundary
 

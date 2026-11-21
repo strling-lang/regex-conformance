@@ -3,9 +3,7 @@
 Provider-neutral services for machine inspection, resource planning/admission,
 environment lifecycle, cache/transfer management, durable recoverable local
 state, lifecycle events, CLI/API surfaces, and hard containment live here. The
-Control Plane owns operational orchestration only; it does not own canonical
-definitions, empirical evidence, certification truth, or Notion development
-status.
+Control Plane owns operational orchestration.
 
 The initial implementation is a Python 3.12 standard-library-first service layer
 under `python/`, governed by the latest-stable release-line coverage policy. Its

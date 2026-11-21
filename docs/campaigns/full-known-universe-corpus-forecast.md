@@ -33,27 +33,23 @@ decision.
 
 ## Governing interpretation
 
-The [Foundation Completeness Contract](https://app.notion.com/p/3ba7d94064758154bf88ddfc16566b33)
-keeps executable facilities distinct from standards and from backend lineage.
-[The latest-stable release-line coverage policy](https://app.notion.com/p/3bc7d9406475811c9e0ec29a4a626ba3)
-selects the latest stable patch/update within each upstream-governed release
-line; it does not retain every servicing patch as an active obligation. Compact
+This forecast distinguished executable facilities, standards, and backend
+lineage. It selected the latest stable patch or update within each
+upstream-governed release line as the active representative. Compact
 supersession identity remains, and already-published evidence is immutable.
 
-The [profile derivation contract](https://app.notion.com/p/3ba7d94064758191b1c1cb7c06995fdb)
-creates profiles only for persistent behavioral differences. Examples include
+The forecast counted persistent behavioral differences as profile dimensions. Examples include
 PCRE2 code-unit width and ordinary versus DFA matchers, the six `std::regex`
 grammars, .NET's NonBacktracking engine, Trino's Joni/RE2J choice, and
 Hyperscan's block/stream/vectored surfaces. Per-call flags, operations,
 patterns, subjects, replacements, and ordinary platform performance strata do
 not multiply profile identity.
 
-The [raw storage contract](https://app.notion.com/p/3ba7d940647581379bddfdc2fcfacf4d)
-permits canonical logical inputs, raw result/attempt evidence, required raw
+The forecast included canonical logical inputs, raw result and attempt evidence, required raw
 diagnostics, minimal binding manifests/integrity metadata, and lossless
-repacking of those records. It forbids normalized observations, warehouse or
-Parquet data, compatibility datasets, reports, summaries, indexes, caches,
-and site artifacts in R2.
+repacking of those records. It excluded derived observations, warehouses,
+compatibility data, reports, indexes, caches, and site artifacts from raw
+storage. The current format is documented in [Evidence Pack v3](evidence-pack-v3.md).
 
 ## Universe and profile accounting
 

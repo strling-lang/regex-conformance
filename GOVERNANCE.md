@@ -5,9 +5,8 @@ reversible implementation work is delegated; changes that alter scientific
 meaning, certification, identity, or a trusted execution boundary require
 explicit review at the level of their consequences.
 
-This document summarizes repository-facing governance. The controlling charter,
-program state, accepted decisions, and risk records remain in the canonical
-[program hub][program-hub] and its linked registers.
+This document defines repository-facing governance, including who can approve
+consequential changes and when the approval must be recorded.
 
 ## Roles
 
@@ -85,5 +84,3 @@ protected definitions and approved manifests through a pull-based assignment
 path, verifies immutable artifact identities, and uses scoped, preferably
 ephemeral credentials. No fork or pull-request workflow may select a trusted
 self-hosted runner or execute arbitrary contributor code there.
-
-[program-hub]: https://app.notion.com/p/3ba7d9406475810db8eec9b5c449ffb7?pvs=204

@@ -77,7 +77,6 @@ The following are intentionally absent from the scaffold:
 - local machine inventory, transfers, assignments, checkpoints, processes,
   spools, telemetry, sustained operating-envelope checkpoints/reports, and ETA
   state, which are non-canonical Control Plane state;
-- Notion task/decision/risk records; and
 - copies of normative specifications or independent product-language contracts;
   the tracked semantic corpus stores researched claim bindings, not ownership
   of an upstream standard's authority.

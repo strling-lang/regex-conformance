@@ -3,7 +3,7 @@
 This handoff defines the configuration boundary for the accepted production Evidence Pack v2
 publisher. It authorizes only the smallest manual non-corpus integration
 canary after local gates pass; it does not authorize a material corpus upload.
-Do not paste any credential value into Git, Notion, an issue, a pull request, a
+Do not paste any credential value into Git, an issue, a pull request, a
 terminal transcript, or this task.
 
 ## Official provider contract

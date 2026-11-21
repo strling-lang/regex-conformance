@@ -1,8 +1,9 @@
 # Documentation
 
 Repository-owned architecture, operation, contribution, reproduction, and
-publication documentation lives here. Program status and decisions remain in
-Notion; normative regex knowledge remains in the Regex Knowledge Program.
+publication documentation lives here. The
+[semantic corpus](../semantic-corpus/README.md) records researched regex
+semantics and their upstream sources.
 
 Start with [the repository layout](architecture/repository-layout.md). Security
 and repository administrators should also read the

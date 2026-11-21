@@ -17,6 +17,7 @@ from regex_conformance_schema.production_vectors import (  # noqa: E402
     compile_vector_manifest,
     load_vector_compiler_inputs,
 )
+from regex_conformance_schema.vector_manifest_verification import verify_vector_manifest  # noqa: E402
 
 
 MAX_FAMILY_FILES = 4096
@@ -30,7 +31,11 @@ def main() -> int:
     output = parser.add_mutually_exclusive_group()
     output.add_argument("--output", type=Path, help="write a new canonical manifest")
     output.add_argument("--check", type=Path, help="verify an existing manifest byte for byte")
+    output.add_argument("--verify", type=Path, help="reconcile a pinned manifest without expanding it")
+    parser.add_argument("--expected-digest", help="independently pinned body digest required with --verify")
     args = parser.parse_args()
+    if (args.verify is None) != (args.expected_digest is None):
+        parser.error("--verify and --expected-digest must be supplied together")
 
     if len(args.families) > MAX_FAMILY_FILES:
         fail("vector-family-file-count", "too many family definitions for one manifest")
@@ -43,7 +48,20 @@ def main() -> int:
         if len(raw) > MAX_FAMILY_FILE_BYTES or input_bytes > MAX_FAMILY_INPUT_BYTES:
             fail("vector-family-file-size", "family definitions exceed the input byte limit", str(path))
         families.append(loads_strict(raw.decode("utf-8")))
-    manifest = compile_vector_manifest(load_vector_compiler_inputs(ROOT), families)
+    inputs = load_vector_compiler_inputs(ROOT)
+    if args.verify is not None:
+        maximum = 32 * 1024 * 1024
+        with args.verify.open("rb") as stream:
+            raw = stream.read(maximum + 1)
+        if len(raw) > maximum:
+            fail("vector-manifest-size", "manifest exceeds the verification byte limit")
+        manifest = loads_strict(raw.decode("utf-8"))
+        counts = verify_vector_manifest(inputs, manifest, families, expected_digest=args.expected_digest)
+        if canonical_bytes(manifest) + b"\n" != raw:
+            fail("vector-manifest-drift", "manifest bytes are not canonical", str(args.verify))
+        print(canonical_bytes({"manifest_digest_sha256": args.expected_digest, **counts}).decode())
+        return 0
+    manifest = compile_vector_manifest(inputs, families)
     encoded = canonical_bytes(manifest) + b"\n"
     if args.output is not None:
         with args.output.open("xb") as stream:

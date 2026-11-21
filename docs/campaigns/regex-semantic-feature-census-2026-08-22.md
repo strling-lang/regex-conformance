@@ -22,9 +22,8 @@ diagnostic, performance sample, or scientific coordinate was removed.
 
 ## Authority resolution
 
-The retired Notion Knowledge workspace can no longer serve as a machine
-authority. The repository-backed `semantic-corpus/` snapshot family is now the
-one canonical home for researched regex semantic identities and source-claim
+The repository-backed `semantic-corpus/` snapshot family is the canonical home
+for researched regex semantic identities and source-claim
 bindings. `ontology/projections/` remains a content-addressed consumer layer.
 Empirical evidence remains descriptive, not normative; STRling retains
 language/compiler authority; the website must derive a LEFT JOIN view rather

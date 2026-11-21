@@ -14,8 +14,7 @@ a standards guarantee.
 ## Program status
 
 This section describes the latest committed repository certification state.
-Revalidate it whenever a certification or campaign boundary changes; live
-planning and approval status remains in the canonical program hub.
+Revalidate it whenever a certification or campaign boundary changes.
 
 Repository bootstrap and the portable Control Plane foundation are certified.
 The architectural vertical slice is active. Its exact PCRE2, CPython, and
@@ -85,11 +84,6 @@ fixtures are synthetic, waivers affect gates only, and C4 remains `FAIL` at
 The bounded freeze claim and its supersession rules are documented in the
 [semantic universe freeze](docs/architecture/semantic-universe-freeze.md).
 
-Program planning, dependencies, decisions, risks, and certification gates are
-maintained in the canonical [STRling Regex Conformance Program][program-hub].
-The controlling constitutional text is the [Regex Conformance Foundation
-Specification][foundation].
-
 ## Authority boundaries
 
 Each durable fact class has one primary home:
@@ -108,8 +102,6 @@ Each durable fact class has one primary home:
   outranks immutable evidence.
 - Local Control Plane state is recoverable operational state and is not
   canonical scientific evidence.
-- Notion owns the development program: work status, dependencies, decisions,
-  risks, assumptions, and certification gates.
 
 Regex Conformance consumes an immutable identified projection of the semantic
 corpus. Empirical observations cannot redefine a feature, and public products
@@ -281,6 +273,4 @@ Licensing for empirical datasets, third-party runtime artifacts, and derived
 public evidence is governed separately by artifact class and is not implied by
 the repository source license.
 
-[program-hub]: https://app.notion.com/p/3ba7d9406475810db8eec9b5c449ffb7?pvs=204
-[foundation]: https://app.notion.com/p/3ba7d94064758154bf88ddfc16566b33?pvs=204
 [protection]: docs/governance/repository-protection-policy.md

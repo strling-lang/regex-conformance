@@ -14,26 +14,67 @@ from regex_conformance_schema.production_vectors import (
     compile_vector_manifest,
     load_vector_compiler_inputs,
 )
+from regex_conformance_schema.vector_manifest_verification import verify_vector_manifest
 
 
 class ProductionVectorTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.families = [load_strict(path) for path in sorted((ROOT / "vectors/families").glob("*.json"))]
+        by_key = {family["key"]: family for family in cls.families}
+        cls.anchor = by_key["line-start-negative"]
+        cls.escapes = by_key["numeric-escape-diagnostics"]
         cls.inputs = load_vector_compiler_inputs(ROOT)
         cls.manifest = compile_vector_manifest(cls.inputs, cls.families)
+
+    def test_verifier_reconciles_pinned_manifest(self):
+        digest = self.manifest["manifest_digest_sha256"]
+        self.assertEqual(verify_vector_manifest(self.inputs, self.manifest, self.families, expected_digest=digest), self.manifest["counts"])
+        with self.assertRaisesRegex(ConformanceDataError, "vector-manifest-digest"):
+            verify_vector_manifest(self.inputs, self.manifest, self.families, expected_digest="0" * 64)
+
+    def assert_manifest_mutation_rejected(self, manifest, expected_error):
+        del manifest["manifest_digest_sha256"]
+        digest = sha256(canonical_bytes(manifest)).hexdigest()
+        manifest["manifest_digest_sha256"] = digest
+        with self.assertRaisesRegex(ConformanceDataError, expected_error):
+            verify_vector_manifest(self.inputs, manifest, self.families, expected_digest=digest)
+
+    def test_verifier_rejects_rehashed_denominator_omission(self):
+        manifest = deepcopy(self.manifest)
+        manifest["requirement_coverage"].pop()
+        manifest["counts"]["requirements"] -= 1
+        self.assert_manifest_mutation_rejected(manifest, "vector-manifest-requirement-set")
+
+    def test_verifier_rejects_rehashed_certification_claim(self):
+        manifest = deepcopy(self.manifest)
+        manifest["certified"] = True
+        self.assert_manifest_mutation_rejected(manifest, "vector-manifest-scope")
+
+    def test_verifier_rejects_rehashed_stimulus_change_and_coherent_omission(self):
+        manifest = deepcopy(self.manifest)
+        manifest["vectors"][0]["stimulus"]["pattern"]["hex"] = "61"
+        self.assert_manifest_mutation_rejected(manifest, "vector-manifest-revision")
+        manifest = deepcopy(self.manifest)
+        missing = manifest["families"][0]["vector_revision_ids"].pop()
+        manifest["vectors"] = [item for item in manifest["vectors"] if item["vector_revision_id"] != missing]
+        for row in manifest["requirement_coverage"]:
+            if missing in row["vector_revision_ids"]:
+                row["vector_revision_ids"].remove(missing)
+        manifest["counts"]["vector_revisions"] -= 1
+        self.assert_manifest_mutation_rejected(manifest, "vector-manifest-family-cardinality")
 
     def test_candidate_manifest_accounts_for_the_whole_denominator(self):
         self.assertEqual(self.manifest, compile_vector_manifest(self.inputs, list(reversed(self.families))))
         self.assertEqual(self.manifest["counts"], {
             "requirements": 3378,
-            "requirements_with_candidate_stimuli": 3,
+            "requirements_with_candidate_stimuli": 6,
             "requirements_with_unresolved_interaction_identities": 12,
-            "vector_revisions": 9,
+            "vector_revisions": 15,
         })
         rows = self.manifest["requirement_coverage"]
         self.assertEqual(len({row["requirement_id"] for row in rows}), 3378)
-        self.assertEqual(sum(row["status"] == "missing" for row in rows), 3363)
+        self.assertEqual(sum(row["status"] == "missing" for row in rows), 3360)
         self.assertEqual({row["status"] for row in rows}, {
             "missing", "candidate-stimuli-only", "interaction-identity-unresolved",
         })
@@ -53,7 +94,7 @@ class ProductionVectorTests(unittest.TestCase):
         self.assertTrue(all(not row["vector_revision_ids"] for row in blocked))
         requirement = self.inputs.requirements[blocked[0]["requirement_id"]]
         family = {
-            **self.families[0],
+            **self.anchor,
             "requirement_id": requirement["scientific_id"],
             "operation_id": requirement["required_operation_scientific_ids"][0],
         }
@@ -61,30 +102,33 @@ class ProductionVectorTests(unittest.TestCase):
             compile_vector_manifest(self.inputs, [family])
 
     def test_oracle_or_arbitrary_attribution_cannot_enter_family_input(self):
-        family = deepcopy(self.families[0])
+        family = deepcopy(self.anchor)
         family["expected_result"] = {"matched": True}
         with self.assertRaisesRegex(ConformanceDataError, "schema-validation-failed"):
             compile_vector_manifest(self.inputs, [family])
         del family["expected_result"]
-        family["operation_id"] = self.families[-1]["operation_id"]
+        family["operation_id"] = self.escapes["operation_id"]
         with self.assertRaisesRegex(ConformanceDataError, "vector-attribution"):
             compile_vector_manifest(self.inputs, [family])
 
     def test_manifestation_scope_cannot_be_omitted_or_substituted(self):
-        family = deepcopy(self.families[-1])
+        family = deepcopy(self.escapes)
         family["manifestation_id"] = None
         with self.assertRaisesRegex(ConformanceDataError, "select an in-scope manifestation"):
             compile_vector_manifest(self.inputs, [family])
-        family["manifestation_id"] = self.families[0]["manifestation_id"]
+        family["manifestation_id"] = self.anchor["manifestation_id"]
         with self.assertRaisesRegex(ConformanceDataError, "different feature"):
             compile_vector_manifest(self.inputs, [family])
 
     def test_finite_enumeration_is_exact_and_fail_closed_at_the_bound(self):
-        family = deepcopy(self.families[0])
+        family = deepcopy(self.anchor)
         family["axes"] = {}
         alphabet = ["61", "62"]
         family["finite_subjects"] = {"encoding": "octets", "alphabet_hex": alphabet, "min_length": 0, "max_length": 2}
         manifest = compile_vector_manifest(self.inputs, [family])
+        self.assertEqual(verify_vector_manifest(
+            self.inputs, manifest, [family], expected_digest=manifest["manifest_digest_sha256"],
+        ), manifest["counts"])
         self.assertEqual(
             {item["stimulus"]["subjects"][0]["hex"] for item in manifest["vectors"]},
             {"", "61", "62", "6161", "6162", "6261", "6262"},
@@ -97,7 +141,7 @@ class ProductionVectorTests(unittest.TestCase):
             compile_vector_manifest(self.inputs, [family])
 
     def test_unicode_bytes_preserve_equivalent_spellings_and_malformed_input(self):
-        family = deepcopy(self.families[-1])
+        family = deepcopy(self.escapes)
         family["axes"]["pattern"] = [
             {"encoding": "utf-8", "hex": "c3a9"},
             {"encoding": "utf-8", "hex": "65cc81"},
@@ -153,3 +197,15 @@ class ProductionVectorTests(unittest.TestCase):
         for mutant in (accepts_interior, enables_newline_anchor, consumes_anchor):
             with self.subTest(mutant=mutant.__name__):
                 self.assertTrue(any(mutant(subject) != expected[subject] for subject in subjects))
+
+    def test_numbered_reference_controls_detect_class_only_and_literal_mutations(self):
+        expected = {b"aa": True, b"bb": True, b"ab": False, b"ba": False}
+        subjects = {
+            bytes.fromhex(item["stimulus"]["subjects"][0]["hex"])
+            for item in self.manifest["vectors"] if item["stimulus"]["pattern"]["hex"] == "285b61625d295c31"
+        }
+        self.assertEqual(subjects, set(expected))
+        for subject in subjects:
+            self.assertEqual(subject[0] == subject[1], expected[subject])
+        self.assertTrue(any(all(byte in b"ab" for byte in subject) != expected[subject] for subject in subjects))
+        self.assertTrue(any(subject.endswith(b"1") != expected[subject] for subject in subjects))

@@ -37,11 +37,13 @@ manifest byte for byte.
 
 ```sh
 python tools/vectors/compile_production_vectors.py \
-  vectors/families/line-start-positive.v1.json \
-  vectors/families/line-start-negative.v1.json \
-  vectors/families/numeric-escape-diagnostics.v1.json \
-  --output vector-candidates.json
+  vectors/families/*.json --output vector-candidates.json
 ```
+
+Supply `--verify vector-candidates.json --expected-digest <pinned SHA-256>` with
+the same definitions to verify the manifest without running the generator. The
+verifier recomputes vector identities and checks family membership, expansion
+cardinality, and every requirement row against the current denominator.
 
 The manifest binds each family definition digest, exact content-derived vector
 revisions, the two denominator snapshots, and one coverage row per semantic
@@ -51,3 +53,10 @@ they can contribute to C4. Uncovered requirements retain `missing` rows.
 Requirements whose obligation names an interaction with no assigned scientific
 ID remain visible as `interaction-identity-unresolved`. Their rows identify the
 exact relations that require an identity allocation before vector attribution.
+
+The numbered-reference families use `([ab])\1` and the four two-octet words
+over `a` and `b`. The subjects distinguish reference equality from merely
+consuming another member of the class. The malformed-reference family uses a
+single-digit reference to an absent capture, with and without an earlier
+capture. The documented spelling and interpretation are specific to the
+profile's grammar. [PCRE2 pattern specification, Backreferences](https://www.pcre.org/current/doc/html/pcre2pattern.html)

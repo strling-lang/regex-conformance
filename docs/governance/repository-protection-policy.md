@@ -81,7 +81,6 @@ After completing a coherent repository-changing task:
 7. Confirm the resulting bounded hosted-integrity run verified the exact
    envelope and local certification root, used the disposable hosted runner,
    requested no secrets or write permission, and produced no artifact.
-8. Update canonical Notion evidence only after repository and remote state agree.
 
 Any failure keeps the task incomplete. The promotion tool deliberately surfaces
 Git's remote rejection diagnostic so a real server-side restriction can be

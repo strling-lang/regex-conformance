@@ -1,0 +1,22 @@
+{
+  "schema_version": "production-vector-family.v1",
+  "key": "invalid-numbered-reference",
+  "requirement_id": "rcid:v1:semantic-requirement:u7:01a08268-246a-7db6-8758-176efa0dfc50",
+  "operation_id": "rcid:v1:operation:u7:01a077a2-095f-7d7f-8566-1b1ae078bb47",
+  "manifestation_id": "rcid:v1:manifestation:u7:01a077a2-0913-7059-a6fb-86a3f8faf226",
+  "domain": "octets",
+  "inputs": {
+    "pattern": {"encoding": "octets", "hex": "5c31"},
+    "subjects": [],
+    "replacement": null,
+    "callback_fixture": null,
+    "options": [],
+    "initial_state": {}
+  },
+  "axes": {
+    "pattern": [{"encoding": "octets", "hex": "5c31"}, {"encoding": "octets", "hex": "2861295c32"}]
+  },
+  "finite_subjects": null,
+  "requested_observations": ["compile-diagnostics", "native-errors"],
+  "deterministic_limits": {"maximum_diagnostic_bytes": 4096, "maximum_matches": 4, "maximum_output_bytes": 4096, "wall_time_ms": 1000}
+}

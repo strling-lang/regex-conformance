@@ -13,8 +13,7 @@ public presentation; `.github` owns organization defaults.
 
 ## Repository identifier hygiene
 
-Planning identifiers belong only in the external program tracker. Do not add
-phase, task, gate, milestone, decision, risk, or similar tracker codes to
+Do not add phase, task, gate, milestone, decision, risk, or similar planning codes to
 repository documentation, source comments or docstrings, configuration
 comments, generated public documentation, or user-facing examples. Use durable
 descriptive terminology instead. Do not rewrite immutable evidence,

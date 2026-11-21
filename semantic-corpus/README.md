@@ -20,10 +20,8 @@ The authority boundary is deliberate:
 - public products derive views from the corpus plus Conformance evidence. They
   do not maintain another feature taxonomy.
 
-The former Notion-based Knowledge program is retired. Recoverable claims were
-validated and provenance-bound. Nine provisional bridge identities that are no
-longer recoverable remain explicit unresolved candidates; they were not guessed
-from names or memory.
+The snapshot preserves validated legacy claims with their provenance. Nine
+unrecoverable provisional bridge identities remain explicit unresolved candidates.
 
 ## Frozen declared-cutoff semantic snapshot
 
