@@ -195,6 +195,320 @@
           "url": "https://raw.githubusercontent.com/PCRE2Project/pcre2/pcre2-10.47/doc/pcre2pattern.3"
         }
       ]
+    },
+    {
+      "family_key": "cpython-line-end-positive",
+      "definition_sha256": "e0ddfec1c35efd24d6d28f01c5546891845fd835fcb325b9ddc19a6d44a67137",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "premise": "In CPython default mode, a dollar assertion admits the end of input and the position immediately preceding one final newline.",
+      "expected_outcome": "match",
+      "comparison_family": null,
+      "sources": [
+        {
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L100",
+          "locator": "L100"
+        }
+      ]
+    },
+    {
+      "family_key": "cpython-line-end-negative",
+      "definition_sha256": "697e67ea78803e3066c95fdfa74ba2c76f625bd839ba45c48aab22745782e80c",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "premise": "The same default-mode assertion does not admit an interior position or an interior newline.",
+      "expected_outcome": "no-match",
+      "comparison_family": null,
+      "sources": [
+        {
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L100",
+          "locator": "L100"
+        }
+      ]
+    },
+    {
+      "family_key": "cpython-split-capture-edges",
+      "definition_sha256": "c076447de875988e0ee5cb37536e7a7f8adfe6b9fa9e3f8707f0c2efa61bbc00",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "premise": "Captured separators are interleaved with the split fields. The leading and trailing captured separators delimit empty fields.",
+      "expected_outcome": "split-output",
+      "comparison_family": null,
+      "sources": [
+        {
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L873-L895",
+          "locator": "L873-L895"
+        }
+      ],
+      "expected_output": [
+        "",
+        "...",
+        "words",
+        ", ",
+        "words",
+        "...",
+        ""
+      ]
+    },
+    {
+      "family_key": "cpython-split-empty-word-boundary",
+      "definition_sha256": "4b7156d8a6b6a7d1ea7a22ba9923e3707558e03ddea3620506cb48f99cdad2fb",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "premise": "The zero-width word boundary splits without consuming delimiters. The boundary at the beginning yields an empty leading field.",
+      "expected_outcome": "split-output",
+      "comparison_family": null,
+      "sources": [
+        {
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L896-L915",
+          "locator": "L896-L915"
+        }
+      ],
+      "expected_output": [
+        "",
+        "Words",
+        ", ",
+        "words",
+        ", ",
+        "words",
+        "."
+      ]
+    },
+    {
+      "family_key": "cpython-replacement-literal",
+      "definition_sha256": "edf77dea4be19e478cf50472c363bbc01529527fc9cc5c56ccebeaea3ba70f9c",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "premise": "CPython string replacements recognize backslash expansion. A dollar and digit without a backslash are literal text and occur at each replaced position.",
+      "expected_outcome": "replacement-output",
+      "comparison_family": null,
+      "sources": [
+        {
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L959-L969",
+          "locator": "L959-L969"
+        }
+      ],
+      "expected_output": "$1-$1"
+    },
+    {
+      "family_key": "cpython-replacement-literal-control",
+      "definition_sha256": "9556da7601aa6204866ca92650cad8173898039ff599d30c827d3987d51d214f",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "premise": "An explicitly referenced group zero contributes the full matched text instead of copying the replacement expression literally.",
+      "expected_outcome": "replacement-output",
+      "comparison_family": null,
+      "sources": [
+        {
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L997-L1006",
+          "locator": "L997-L1006"
+        }
+      ],
+      "expected_output": "x!-x!"
+    },
+    {
+      "family_key": "cpython-replacement-escape-newline",
+      "definition_sha256": "74c0950ecc009e418ba731e9a19fb2868468b59c56917b82562ac6148143b7ad",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "premise": "A backslash-n in a replacement string contributes a single newline character, once for each replacement.",
+      "expected_outcome": "replacement-output",
+      "comparison_family": null,
+      "sources": [
+        {
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L959-L968",
+          "locator": "L959-L968"
+        }
+      ],
+      "expected_output": "\n-\n"
+    },
+    {
+      "family_key": "cpython-replacement-escape-control",
+      "definition_sha256": "bb46b0c0c1294347501aeb11aee8b8c6c5f299484921b78ecc612ad545a05580",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "premise": "The same letter without a backslash is a literal n and introduces no newline.",
+      "expected_outcome": "replacement-output",
+      "comparison_family": null,
+      "sources": [
+        {
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L959-L968",
+          "locator": "L959-L968"
+        }
+      ],
+      "expected_output": "n-n"
+    },
+    {
+      "family_key": "cpython-replacement-number-delimiter",
+      "definition_sha256": "ff8b90d83a35b5c57e618bc8a58021d45f56f22e194e31fd02170d7dee63722a",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "premise": "A delimited numeric reference expands group two and leaves the following zero literal.",
+      "expected_outcome": "replacement-output",
+      "comparison_family": null,
+      "sources": [
+        {
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L997-L1006",
+          "locator": "L997-L1006"
+        }
+      ],
+      "expected_output": "b0xb0"
+    },
+    {
+      "family_key": "cpython-replacement-number-control",
+      "definition_sha256": "204466443efaacb8406c370e788c469500ea5c230f687308adc5ed28e7c07d20",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "premise": "The special zero reference returns the entire match. This control separates it from inserting a numbered subgroup.",
+      "expected_outcome": "replacement-output",
+      "comparison_family": null,
+      "sources": [
+        {
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L997-L1006",
+          "locator": "L997-L1006"
+        }
+      ],
+      "expected_output": "abxab"
+    },
+    {
+      "family_key": "cpython-bytes-digit-positive",
+      "definition_sha256": "b6a91685ce80a5e0a5777b311520dd72420bb6fe49770ba54d146c0b723952ba",
+      "profile_scope": "cpython-3.14.6-re-bytes",
+      "premise": "In bytes patterns the digit class includes both ASCII endpoints.",
+      "expected_outcome": "match",
+      "comparison_family": null,
+      "sources": [
+        {
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L525-L538",
+          "locator": "L525-L538"
+        }
+      ]
+    },
+    {
+      "family_key": "cpython-bytes-digit-negative",
+      "definition_sha256": "e6d669029729262656a08cb0e539acac5416f96e7200eafcc40a52009021cbed",
+      "profile_scope": "cpython-3.14.6-re-bytes",
+      "premise": "The ASCII digit range excludes both adjacent ASCII characters and the non-ASCII octet B2.",
+      "expected_outcome": "no-match",
+      "comparison_family": null,
+      "sources": [
+        {
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L525-L538",
+          "locator": "L525-L538"
+        }
+      ]
+    },
+    {
+      "family_key": "cpython-unicode-digit-new-script",
+      "definition_sha256": "caf33630317033959494a1d2db83af329e26d1598ca0cdeed085a31cf32b79f7",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "premise": "Unicode 16.0.0 assigns decimal digit category Nd to the first and last Ol Onal digits. The default text pattern includes both.",
+      "expected_outcome": "match",
+      "comparison_family": null,
+      "sources": [
+        {
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L525-L535",
+          "locator": "L525-L535"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Modules/unicodedata_db.h#L2",
+          "locator": "UNIDATA_VERSION"
+        },
+        {
+          "url": "https://www.unicode.org/Public/16.0.0/ucd/UnicodeData.txt",
+          "locator": "U+1E5F0 through U+1E5FA"
+        },
+        {
+          "url": "https://www.unicode.org/Public/16.0.0/ucd/DerivedAge.txt",
+          "locator": "1E5D0..1E5FA, age 16.0"
+        }
+      ]
+    },
+    {
+      "family_key": "cpython-unicode-digit-adjacent-letter",
+      "definition_sha256": "9f4e56d22747101731306e7bfe966c57db12910312fbb69e35dd762dd4eda415",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "premise": "U+1E5F0 immediately precedes the Ol Onal digits but has category Lo in Unicode 16.0.0. The decimal digit class excludes it.",
+      "expected_outcome": "no-match",
+      "comparison_family": null,
+      "sources": [
+        {
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L525-L535",
+          "locator": "L525-L535"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Modules/unicodedata_db.h#L2",
+          "locator": "UNIDATA_VERSION"
+        },
+        {
+          "url": "https://www.unicode.org/Public/16.0.0/ucd/UnicodeData.txt",
+          "locator": "U+1E5F0 through U+1E5FA"
+        },
+        {
+          "url": "https://www.unicode.org/Public/16.0.0/ucd/DerivedAge.txt",
+          "locator": "1E5D0..1E5FA, age 16.0"
+        }
+      ]
+    },
+    {
+      "family_key": "cpython-word-boundary-positive",
+      "definition_sha256": "d3a38b3072002b1f72971f1a219b668976043bf1deefe469820540643226a32f",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "premise": "A word character followed by punctuation or the input end satisfies the boundary.",
+      "expected_outcome": "match",
+      "comparison_family": null,
+      "sources": [
+        {
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L491-L501",
+          "locator": "L491-L501"
+        }
+      ]
+    },
+    {
+      "family_key": "cpython-word-boundary-negative",
+      "definition_sha256": "48e27a6275286721212c9d620354ef6e0418cdb3a304ac020e7adda09a84310e",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "premise": "There is no word boundary between two word characters, including before an underscore.",
+      "expected_outcome": "no-match",
+      "comparison_family": null,
+      "sources": [
+        {
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L491-L501",
+          "locator": "L491-L501"
+        }
+      ]
+    },
+    {
+      "family_key": "cpython-nonword-boundary-positive",
+      "definition_sha256": "a7882cb46737aef4801a3012f40bdb6dc4848bb4ae0757799f0a75af328187cd",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "premise": "After a word character, the non-boundary assertion accepts a following word character.",
+      "expected_outcome": "match",
+      "comparison_family": null,
+      "sources": [
+        {
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L510-L523",
+          "locator": "L510-L523"
+        }
+      ]
+    },
+    {
+      "family_key": "cpython-nonword-boundary-negative",
+      "definition_sha256": "37047b43cd43fb334f1102790f20fae6418b7baa64cbdcdea59356ac23116202",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "premise": "The non-boundary assertion excludes the transitions to punctuation and the input end.",
+      "expected_outcome": "no-match",
+      "comparison_family": null,
+      "sources": [
+        {
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L510-L523",
+          "locator": "L510-L523"
+        }
+      ]
+    },
+    {
+      "family_key": "cpython-nonword-boundary-empty",
+      "definition_sha256": "69beb1746f62fa7e19d216d7ab7626ffe74259e99c1950163898f5fc3c9c259b",
+      "profile_scope": "cpython-3.14.6-re-text",
+      "premise": "The version 3.14 change admits a zero-width non-boundary match on empty input.",
+      "expected_outcome": "match",
+      "comparison_family": null,
+      "sources": [
+        {
+          "url": "https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst#L510-L523",
+          "locator": "L510-L523"
+        }
+      ]
     }
   ],
   "schema_version": "production-candidate-basis.v1"

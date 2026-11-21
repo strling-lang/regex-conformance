@@ -26,6 +26,7 @@ VECTOR_SCHEMA_FAMILY_ID = "rcid:v1:schema-family:u7:01a0779c-5485-7240-b0ee-4846
 MAX_FAMILY_MEMBERS = 4096
 MAX_VECTOR_BYTES = 256 * 1024
 MAX_MANIFEST_VECTOR_BYTES = 16 * 1024 * 1024
+ENCODED_UNIT_WIDTHS = {"utf-8": 1, "utf-16-le": 2, "utf-16-be": 2, "utf-32-le": 4, "utf-32-be": 4}
 
 
 def _digest(value: Any) -> str:
@@ -130,6 +131,10 @@ def _check_datum(datum: dict, domain: str, key: str) -> None:
             bytes.fromhex(datum["hex"]).decode("utf-8", errors="strict")
         except UnicodeDecodeError:
             fail("vector-input-domain", "malformed Unicode belongs in the encoded code unit domain", key)
+    if domain == "encoded-code-units":
+        width = ENCODED_UNIT_WIDTHS.get(encoding)
+        if width is None or len(datum["hex"]) % (2 * width):
+            fail("vector-input-domain", "encoded data requires whole code units of its declared width", key)
 
 
 def _stimuli(family: dict, attribution: dict, requirement: dict):

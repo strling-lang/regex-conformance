@@ -1,0 +1,38 @@
+{
+  "schema_version": "production-vector-family.v1",
+  "key": "cpython-replacement-number-delimiter",
+  "requirement_id": "rcid:v1:semantic-requirement:u7:01a077a2-098c-7fc2-8f79-76868a250682",
+  "operation_id": "rcid:v1:operation:u7:01a077a2-095f-79b9-8557-6aa3371e3a5a",
+  "manifestation_id": null,
+  "domain": "unicode-scalars",
+  "inputs": {
+    "pattern": {
+      "encoding": "utf-8",
+      "hex": "286129286229"
+    },
+    "subjects": [
+      {
+        "encoding": "utf-8",
+        "hex": "6162786162"
+      }
+    ],
+    "replacement": {
+      "encoding": "utf-8",
+      "hex": "5c673c323e30"
+    },
+    "callback_fixture": null,
+    "options": [],
+    "initial_state": {}
+  },
+  "axes": {},
+  "finite_subjects": null,
+  "requested_observations": [
+    "replacement-output"
+  ],
+  "deterministic_limits": {
+    "maximum_diagnostic_bytes": 4096,
+    "maximum_matches": 32,
+    "maximum_output_bytes": 4096,
+    "wall_time_ms": 1000
+  }
+}

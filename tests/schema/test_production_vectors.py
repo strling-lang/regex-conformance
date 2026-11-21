@@ -3,6 +3,7 @@ from __future__ import annotations
 from copy import deepcopy
 from hashlib import sha256
 from pathlib import Path
+import sys
 import tempfile
 import unittest
 
@@ -11,6 +12,7 @@ from regex_conformance_schema.errors import ConformanceDataError
 from regex_conformance_schema.interaction_allocations import ALLOCATIONS_PATH, verify_interaction_allocations
 from regex_conformance_schema.jsonio import canonical_bytes, load_strict
 from regex_conformance_schema.production_campaign_design import BASIS_PATH, bind_candidate_bases, build_production_campaign_design
+from regex_conformance_schema.production_preflight import REQUEST_SCHEMA, _project_request, build_production_preflight
 from regex_conformance_schema.production_vectors import (
     _load_snapshot,
     compile_vector_manifest,
@@ -67,17 +69,28 @@ class ProductionVectorTests(unittest.TestCase):
         manifest["counts"]["vector_revisions"] -= 1
         self.assert_manifest_mutation_rejected(manifest, "vector-manifest-family-cardinality")
 
+    def test_verifier_rejects_rehashed_family_swap_and_duplicate_revision(self):
+        manifest = deepcopy(self.manifest)
+        families = {row["key"]: row for row in manifest["families"]}
+        split = families["cpython-split-capture-edges"]
+        other = families["cpython-split-empty-word-boundary"]
+        split["vector_revision_ids"], other["vector_revision_ids"] = other["vector_revision_ids"], split["vector_revision_ids"]
+        self.assert_manifest_mutation_rejected(manifest, "vector-manifest-stimulus-scope")
+        manifest = deepcopy(self.manifest)
+        manifest["vectors"].insert(0, deepcopy(manifest["vectors"][0]))
+        self.assert_manifest_mutation_rejected(manifest, "vector-manifest-order")
+
     def test_candidate_manifest_accounts_for_the_whole_denominator(self):
         self.assertEqual(self.manifest, compile_vector_manifest(self.inputs, list(reversed(self.families))))
         self.assertEqual(self.manifest["counts"], {
             "requirements": 3378,
-            "requirements_with_candidate_stimuli": 14,
+            "requirements_with_candidate_stimuli": 32,
             "requirements_with_unresolved_interaction_identities": 4,
-            "vector_revisions": 25,
+            "vector_revisions": 54,
         })
         rows = self.manifest["requirement_coverage"]
         self.assertEqual(len({row["requirement_id"] for row in rows}), 3378)
-        self.assertEqual(sum(row["status"] == "missing" for row in rows), 3360)
+        self.assertEqual(sum(row["status"] == "missing" for row in rows), 3342)
         self.assertEqual({row["status"] for row in rows}, {
             "missing", "candidate-stimuli-only", "interaction-identity-unresolved",
         })
@@ -148,6 +161,110 @@ class ProductionVectorTests(unittest.TestCase):
         scope["profile_scope"] = "unsupported-substitution"
         with self.assertRaisesRegex(ConformanceDataError, "candidate-basis-comparison"):
             bind_candidate_bases(ROOT, self.inputs, self.manifest, basis)
+
+    def test_exact_output_requires_typed_value_and_matching_operation(self):
+        basis = load_strict(ROOT / BASIS_PATH)
+        row = next(item for item in basis["families"] if item["family_key"] == "cpython-split-capture-edges")
+        expected = row.pop("expected_output")
+        with self.assertRaisesRegex(ConformanceDataError, "schema-validation-failed"):
+            bind_candidate_bases(ROOT, self.inputs, self.manifest, basis)
+        row["expected_output"] = ""
+        with self.assertRaisesRegex(ConformanceDataError, "schema-validation-failed"):
+            bind_candidate_bases(ROOT, self.inputs, self.manifest, basis)
+        row["expected_outcome"] = "replacement-output"
+        with self.assertRaisesRegex(ConformanceDataError, "candidate-basis-output-scope"):
+            bind_candidate_bases(ROOT, self.inputs, self.manifest, basis)
+        row["expected_output"] = expected
+        row["expected_outcome"] = "split-output"
+        row["oracle_revision_id"] = "made-up"
+        with self.assertRaisesRegex(ConformanceDataError, "schema-validation-failed"):
+            bind_candidate_bases(ROOT, self.inputs, self.manifest, basis)
+
+    def test_preflight_preserves_pattern_bytes_and_never_creates_evidence(self):
+        sys.path.insert(0, str(ROOT / "adapters/python"))
+        try:
+            from regex_conformance_adapters.model import ExecuteRequest
+        finally:
+            sys.path.pop(0)
+        preflight = build_production_preflight(
+            ROOT, self.inputs, self.manifest, self.families,
+            expected_manifest_digest=self.manifest["manifest_digest_sha256"],
+        )
+        self.assertFalse(preflight["execution_ready"])
+        self.assertIsNone(preflight["production_execution_denominator"])
+        self.assertEqual(len(preflight["request_previews"]), 16)
+        self.assertEqual(len(preflight["requirements"]), 3378)
+        self.assertTrue(all(not row["execution_eligible"] and not row["c4_credit_from_preflight"] for row in preflight["requirements"]))
+        stimuli = {row["vector_revision_id"]: row["stimulus"] for row in self.manifest["vectors"]}
+        for preview in preflight["request_previews"]:
+            identifier = preview["vector_revision_id"]
+            stimulus = stimuli[identifier]
+            request = ExecuteRequest.from_record(preview["request_preview"])
+            self.assertEqual(request.trace_reference, identifier)
+            self.assertEqual(request.pattern.value, bytes.fromhex(stimulus["pattern"]["hex"]))
+            if request.operation == "compile":
+                self.assertEqual(stimulus["subjects"], [])
+                self.assertEqual(preview["subject_slot"], "compile-placeholder")
+                self.assertEqual(request.subjects[0].value, b"")
+            else:
+                self.assertEqual(preview["subject_slot"], "semantic-subject")
+                self.assertEqual(request.subjects[0].value, bytes.fromhex(stimulus["subjects"][0]["hex"]))
+
+    def test_transport_refuses_unmapped_stimulus_fields(self):
+        schema = load_strict(ROOT / REQUEST_SCHEMA)
+        changes = {
+            "subjects": ("production-transport-subjects", []),
+            "initial_state": ("production-transport-state", {"occurrence": 2, "start_offset": 0}),
+            "options": ("production-transport-option", [{"name": "utf", "value": 1}]),
+            "replacement": ("production-transport-input", {"encoding": "octets", "hex": ""}),
+            "domain": ("production-transport-encoding", "encoded-code-units"),
+        }
+        for field, (error, value) in changes.items():
+            with self.subTest(field=field):
+                vector = deepcopy(next(item for item in self.manifest["vectors"] if item["stimulus"]["subjects"]))
+                vector["stimulus"][field] = value
+                with self.assertRaisesRegex(ConformanceDataError, error):
+                    _project_request(vector, "search", {}, schema)
+
+    def test_encoded_units_preserve_unpaired_surrogates_but_reject_partial_units(self):
+        family = deepcopy(self.anchor)
+        family["domain"] = "encoded-code-units"
+        family["axes"] = {}
+        family["inputs"]["pattern"] = {"encoding": "utf-16-le", "hex": "6100"}
+        family["inputs"]["subjects"] = [{"encoding": "utf-16-le", "hex": "00d8"}]
+        manifest = compile_vector_manifest(self.inputs, [family])
+        verify_vector_manifest(self.inputs, manifest, [family], expected_digest=manifest["manifest_digest_sha256"])
+        self.assertEqual(manifest["vectors"][0]["stimulus"]["subjects"], family["inputs"]["subjects"])
+        for malformed in ({"encoding": "utf-16-le", "hex": "d8"}, {"encoding": "utf-32-be", "hex": "0000"}):
+            family["inputs"]["subjects"] = [malformed]
+            with self.assertRaisesRegex(ConformanceDataError, "vector-input-domain"):
+                compile_vector_manifest(self.inputs, [family])
+
+    def test_cpython_output_candidates_distinguish_semantic_mutations(self):
+        by_key = {row["family_key"]: row for row in load_strict(ROOT / BASIS_PATH)["families"]}
+        families = {row["key"]: row for row in self.manifest["families"]}
+        stimuli = {row["vector_revision_id"]: row["stimulus"] for row in self.manifest["vectors"]}
+        boundary_stimulus = stimuli[families["cpython-split-empty-word-boundary"]["vector_revision_ids"][0]]
+        replacement_stimulus = stimuli[families["cpython-replacement-number-delimiter"]["vector_revision_ids"][0]]
+        unsplit = bytes.fromhex(boundary_stimulus["subjects"][0]["hex"]).decode("utf-8")
+        literal = bytes.fromhex(replacement_stimulus["replacement"]["hex"]).decode("utf-8")
+        captured = by_key["cpython-split-capture-edges"]["expected_output"]
+        boundary = by_key["cpython-split-empty-word-boundary"]["expected_output"]
+        numbered = by_key["cpython-replacement-number-delimiter"]["expected_output"]
+        self.assertEqual(captured, ["", "...", "words", ", ", "words", "...", ""])
+        self.assertEqual(boundary, ["", "Words", ", ", "words", ", ", "words", "."])
+        self.assertEqual(numbered, "b0xb0")
+        cases = {
+            "discard-captured-delimiters": (captured[::2], captured),
+            "discard-split-edge-fields": (captured[1:-1], captured),
+            "ignore-all-zero-width-delimiters": ([unsplit], boundary),
+            "drop-leading-empty-split-field": (boundary[1:], boundary),
+            "treat-replacement-as-literal": (f"{literal}x{literal}", numbered),
+            "consume-following-replacement-digit": (numbered.replace("0", ""), numbered),
+        }
+        for name, (mutated, expected) in cases.items():
+            with self.subTest(mutation=name):
+                self.assertNotEqual(mutated, expected)
 
     def test_oracle_or_arbitrary_attribution_cannot_enter_family_input(self):
         family = deepcopy(self.anchor)

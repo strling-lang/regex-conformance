@@ -16,6 +16,7 @@ from .production_vectors import (
     VECTOR_SCHEMA_FAMILY_ID,
     VectorCompilerInputs,
     _attribution,
+    _check_datum,
     _finite_count,
 )
 from .schema import validate_instance
@@ -156,6 +157,9 @@ def verify_vector_manifest(
                 fail("vector-manifest-axis", "stimulus includes an undeclared axis value", key)
             if finite is not None and not _finite_subject_member(stimulus["subjects"], finite):
                 fail("vector-manifest-axis", "subject is outside the finite language", key)
+            for datum in [stimulus["pattern"], *stimulus["subjects"], stimulus["replacement"], stimulus["callback_fixture"]]:
+                if datum is not None:
+                    _check_datum(datum, family["domain"], key)
         by_requirement[family["requirement_id"]].update(revisions)
         reached.update(revisions)
     if reached != vectors.keys():

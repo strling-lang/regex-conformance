@@ -14,6 +14,7 @@ sys.path.insert(0, str(ROOT / "schemas/tooling/python"))
 from regex_conformance_schema.errors import fail  # noqa: E402
 from regex_conformance_schema.jsonio import canonical_bytes, load_strict, loads_strict  # noqa: E402
 from regex_conformance_schema.production_campaign_design import build_production_campaign_design  # noqa: E402
+from regex_conformance_schema.production_preflight import build_production_preflight  # noqa: E402
 from regex_conformance_schema.production_vectors import load_vector_compiler_inputs  # noqa: E402
 
 
@@ -21,6 +22,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("manifest", type=Path)
     parser.add_argument("--expected-digest", required=True)
+    parser.add_argument("--transport-preflight", action="store_true", help="project offline request previews and coverage accounting")
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--output", type=Path)
     mode.add_argument("--check", type=Path)
@@ -34,7 +36,8 @@ def main() -> int:
     if canonical_bytes(manifest) + b"\n" != raw:
         fail("campaign-design-input-bytes", "candidate manifest is not canonical")
     families = [load_strict(path) for path in sorted((ROOT / "vectors/families").glob("*.json"))]
-    result = build_production_campaign_design(
+    builder = build_production_preflight if args.transport_preflight else build_production_campaign_design
+    result = builder(
         ROOT, load_vector_compiler_inputs(ROOT), manifest, families,
         expected_manifest_digest=args.expected_digest,
     )
@@ -49,9 +52,11 @@ def main() -> int:
     if args.output is None and args.check is None:
         print(encoded.decode("utf-8"), end="")
     else:
-        print(canonical_bytes({
-            key: result[key] for key in ("design_digest_sha256", "execution_ready", "candidate_selection_count")
-        }).decode("utf-8"))
+        keys = (
+            ("preflight_digest_sha256", "execution_ready") if args.transport_preflight
+            else ("design_digest_sha256", "execution_ready", "candidate_selection_count")
+        )
+        print(canonical_bytes({key: result[key] for key in keys}).decode("utf-8"))
     return 0
 
 

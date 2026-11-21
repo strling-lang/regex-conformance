@@ -1,0 +1,36 @@
+{
+  "schema_version": "production-vector-family.v1",
+  "key": "cpython-unicode-digit-adjacent-letter",
+  "requirement_id": "rcid:v1:semantic-requirement:u7:01a08268-246d-7d70-aed8-7472650b2bb8",
+  "operation_id": "rcid:v1:operation:u7:01a077a2-095f-70a3-b65f-ebfd7c23c9ea",
+  "manifestation_id": null,
+  "domain": "unicode-scalars",
+  "inputs": {
+    "pattern": {
+      "encoding": "utf-8",
+      "hex": "5c64"
+    },
+    "subjects": [
+      {
+        "encoding": "utf-8",
+        "hex": "f09e97b0"
+      }
+    ],
+    "replacement": null,
+    "callback_fixture": null,
+    "options": [],
+    "initial_state": {}
+  },
+  "axes": {},
+  "finite_subjects": null,
+  "requested_observations": [
+    "match-state",
+    "spans"
+  ],
+  "deterministic_limits": {
+    "maximum_diagnostic_bytes": 4096,
+    "maximum_matches": 4,
+    "maximum_output_bytes": 4096,
+    "wall_time_ms": 1000
+  }
+}

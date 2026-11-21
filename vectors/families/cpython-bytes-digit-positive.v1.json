@@ -1,0 +1,46 @@
+{
+  "schema_version": "production-vector-family.v1",
+  "key": "cpython-bytes-digit-positive",
+  "requirement_id": "rcid:v1:semantic-requirement:u7:01a08268-2476-795d-b31a-21d99eaf5760",
+  "operation_id": "rcid:v1:operation:u7:01a077a2-095f-70a3-b65f-ebfd7c23c9ea",
+  "manifestation_id": null,
+  "domain": "octets",
+  "inputs": {
+    "pattern": {
+      "encoding": "octets",
+      "hex": "5c64"
+    },
+    "subjects": [],
+    "replacement": null,
+    "callback_fixture": null,
+    "options": [],
+    "initial_state": {}
+  },
+  "axes": {
+    "subjects": [
+      [
+        {
+          "encoding": "octets",
+          "hex": "30"
+        }
+      ],
+      [
+        {
+          "encoding": "octets",
+          "hex": "39"
+        }
+      ]
+    ]
+  },
+  "finite_subjects": null,
+  "requested_observations": [
+    "match-state",
+    "spans"
+  ],
+  "deterministic_limits": {
+    "maximum_diagnostic_bytes": 4096,
+    "maximum_matches": 4,
+    "maximum_output_bytes": 4096,
+    "wall_time_ms": 1000
+  }
+}

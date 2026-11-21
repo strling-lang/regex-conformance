@@ -1,8 +1,11 @@
 # Cloudflare R2 operator handoff
 
-This handoff defines the configuration boundary for the accepted production Evidence Pack v2
-publisher. It authorizes only the smallest manual non-corpus integration
-canary after local gates pass; it does not authorize a material corpus upload.
+This handoff defines the configuration boundary for the evidence publisher.
+New production evidence uses [Compact Evidence Pack v3](evidence-pack-v3.md).
+The existing v2 packs, historical receipts, and bounded two-object integration
+canary retain their versions and exact-key protocol. The canary requires
+authenticated operator evidence and the existing local admission gates.
+Material corpus publication requires a separate authorization.
 Do not paste any credential value into Git, an issue, a pull request, a
 terminal transcript, or this task.
 
@@ -75,8 +78,8 @@ that non-sensitive configuration belongs in variables. See
 [GitHub Actions secrets](https://docs.github.com/en/actions/concepts/security/secrets)
 and [GitHub Actions variables](https://docs.github.com/en/actions/concepts/workflows-and-actions/variables).
 The trusted manual canary maps only the two secrets into its protected job,
-job, mask derived sensitive values, and run only from trusted protected
-revisions. Public-contributor code and untrusted pull requests receive neither
+masks derived sensitive values, and runs only from trusted protected revisions.
+Public-contributor code and untrusted pull requests receive neither
 the secrets nor a credential-bearing execution path.
 
 For the local Executioner, store the same two secret values in the operating
@@ -102,7 +105,8 @@ headers.
 - The bucket remains private and dedicated, with no independent writers.
 - No warehouse, cache, credentials, execution scratch, or public-contributor
   output is uploaded. Exact diagnostics and raw governed performance samples
-  required by Evidence Pack v2 are authoritative evidence and remain eligible.
+  required by the governing Evidence Pack contract are authoritative evidence
+  and remain eligible. Historical v2 commitments retain their original meaning.
 - Normal recovery uses the durable local manifest and exact keys: no repeated
   `LIST`, polling, redundant `HEAD`/`GET`, or broad read-back scan.
 - Content-addressed `PutObject` uses `If-None-Match: *`; every new object gets
@@ -117,6 +121,12 @@ headers.
   publisher's byte/request admission controls.
 
 ## Integration confirmation
+
+The authenticated operator record identifies the exact account, dedicated
+bucket, jurisdiction, direct S3 endpoint and Standard storage class. It
+confirms privacy, disabled public access, exclusive writers, bucket-specific
+Object Read & Write access and the authorized canary workflow revision.
+Record configuration and permission metadata only.
 
 Before dispatch, verify only the six configuration names in the
 `strling-lang/regex-conformance` repository; never retrieve their values. The

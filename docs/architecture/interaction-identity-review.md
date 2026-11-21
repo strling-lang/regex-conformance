@@ -75,3 +75,20 @@ The four retained allocations change no existing obligation, requirement,
 predicate, or cardinality. The two disputed interactions still block their four
 requirements in the accepted 2,390-obligation and 3,378-requirement snapshots.
 [Scientific identity and migration contract](scientific-identities.md) · [Governance](../../GOVERNANCE.md)
+
+Run `python tools/vectors/review_numeric_escape_successors.py` to replay the
+prerequisite bases from the current semantic derivation and emit the exact
+predecessor mappings by retained evidence role. The literal-target-only replay
+keeps the remaining prerequisite bases byte-equivalent and changes exactly
+one basis. The Annex B predicate still requires a governed revision. The
+octal target has no allocated identity, so its successor basis and the full
+successor denominator remain open.
+
+The Annex B controls cover `\8` with no captures in legacy mode (literal
+digit), the same pattern in Unicode mode (early error), and a preceding eighth
+capture in legacy mode (decimal reference). The PCRE2 10.47 controls use
+`\11` with fewer than eleven preceding captures (TAB) and with eleven
+(reference). In Python-octal mode, `\11` remains a reference and an absent
+group is an error. These source-derived cases keep capture threshold, digit
+width, and grammar mode visible in the proposed applicability.
+[ECMAScript Annex B](https://tc39.es/ecma262/2026/multipage/additional-ecmascript-features-for-web-browsers.html#sec-regular-expressions-patterns) · [PCRE2 10.47 numeric escape grammar](https://raw.githubusercontent.com/PCRE2Project/pcre2/pcre2-10.47/doc/pcre2pattern.3#L501)

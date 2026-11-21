@@ -28,8 +28,10 @@ words in a prefix-free finite alphabet over a specified length interval.
 Stimulus fields carry lowercase hexadecimal bytes and an explicit encoding.
 This preserves decomposed and precomposed Unicode and allows malformed encoded
 code units to be authored without relying on a JSON parser to retain them.
-`unicode-scalars` accepts strictly valid UTF-8. `encoded-code-units` retains the
-declared encoding and exact bytes for native input handling.
+`unicode-scalars` accepts strictly valid UTF-8. `encoded-code-units` retains
+whole units at the declared width. It preserves malformed UTF-8 sequences and
+unpaired UTF-16 surrogates for native input handling. Use the octet domain
+to probe byte-level truncation inside an individual wide unit.
 
 Compile the checked-in families or provide selected definition files. The
 output path must be new. `--check` rebuilds and compares a previously emitted
@@ -57,6 +59,11 @@ The [candidate basis](expectations/production-candidate-basis.v1.json) binds
 source locators and scoped premises to exact family definition digests. The
 [campaign design](../docs/campaigns/first-production-design.md) validates this
 binding and the paired interaction controls before selecting candidates.
+It also checks that exact split and replacement premises describe one stimulus
+with the matching operation and requested observation. The CPython 3.14.6
+candidates include line-end controls, captured separators at subject edges,
+zero-width splitting, and distinct literal, escaped, and group-expanded
+replacement outputs. [Tagged CPython regular-expression documentation](https://raw.githubusercontent.com/python/cpython/v3.14.6/Doc/library/re.rst)
 
 The numbered-reference families use `([ab])\1` and the four two-octet words
 over `a` and `b`. The subjects distinguish reference equality from merely

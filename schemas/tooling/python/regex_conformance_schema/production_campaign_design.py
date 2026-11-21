@@ -20,6 +20,15 @@ ADAPTER_PATH = Path("adapters/manifests/pcre2-ordinary.v1.json")
 RECIPE_PATH = Path("environments/recipes/pcre2-10.47-linux-x86-64.v1.json")
 PROFILE_SCOPE = "pcre2-10.47-ordinary-8"
 COMPLEMENT = {"match": "no-match", "no-match": "match", "compile-accept": "compile-reject", "compile-reject": "compile-accept"}
+OUTCOME_OBSERVATION = {
+    "match": "match-state", "no-match": "match-state",
+    "compile-accept": "compile-diagnostics", "compile-reject": "compile-diagnostics",
+    "split-output": "split-output", "replacement-output": "replacement-output",
+}
+OUTPUT_OPERATIONS = {
+    "split-output": {"operation.split"},
+    "replacement-output": {"operation.replace-all", "operation.replace-first"},
+}
 PCRE2_OPERATIONS = {
     "rcid:v1:operation:u7:01a077a2-095f-7d7f-8566-1b1ae078bb47": "compile",
     "rcid:v1:operation:u7:01a077a2-095f-70a3-b65f-ebfd7c23c9ea": "full-match",
@@ -46,7 +55,20 @@ def bind_candidate_bases(root: Path, inputs: VectorCompilerInputs, manifest: dic
         expected = entry["expected_outcome"]
         if requirement["evidence_role"] == "characterization" and expected is not None:
             fail("candidate-basis-characterization", "characterization cannot carry a verdict", key)
-        observation = "compile-diagnostics" if expected in {"compile-accept", "compile-reject"} else "match-state"
+        if "expected_output" in entry:
+            operation_keys = {
+                identifier: name for name, identifier in zip(
+                    requirement["required_operation_ids"], requirement["required_operation_scientific_ids"], strict=True,
+                )
+            }
+            revisions = family["vector_revision_ids"]
+            if (
+                len(revisions) != 1
+                or outcomes[revisions[0]]["domain"] != "unicode-scalars"
+                or operation_keys[attribution["operation_id"]] not in OUTPUT_OPERATIONS[expected]
+            ):
+                fail("candidate-basis-output-scope", "exact text output must refer to one text stimulus and the matching operation", key)
+        observation = OUTCOME_OBSERVATION.get(expected)
         if expected is not None and any(observation not in outcomes[value]["requested_observations"] for value in family["vector_revision_ids"]):
             fail("candidate-basis-observation", "stimuli do not request the stated observation", key)
         peer_key = entry["comparison_family"]
@@ -57,7 +79,7 @@ def bind_candidate_bases(root: Path, inputs: VectorCompilerInputs, manifest: dic
             other = families[peer_key]["attribution"]
             if (
                 peer["comparison_family"] != key or peer["profile_scope"] != entry["profile_scope"]
-                or expected is None or peer["expected_outcome"] != COMPLEMENT[expected]
+                or expected not in COMPLEMENT or peer["expected_outcome"] != COMPLEMENT[expected]
                 or attribution["operation_id"] != other["operation_id"]
                 or attribution["obligation_ids"] != other["obligation_ids"]
                 or {attribution["evidence_role"], other["evidence_role"]} != {"positive", "negative"}
